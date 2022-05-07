@@ -1,5 +1,84 @@
 <template>
-  <div class="home row">
+
+  <div class="home-container">
+    <swiper class="mySwiper"
+      :slides-per-view="3"
+      :space-between="30"
+      :loop="false"
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+    >
+      <swiper-slide
+        v-for="n in 5"
+        :key="n"
+        class="test"
+        :class="{test_2: true}"
+      >
+        <div>{{ 29+n }}</div>
+        <img
+          :src="getImageUrl(29+n)"
+          width="600"
+          height="400"
+          class="img-fluid w-100 mx-auto"
+          blank="true"
+        >
+      </swiper-slide>
+    </swiper>
+
+    <swiper
+      :slides-per-view="3"
+      :space-between="30"
+      loop
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+    >
+      <swiper-slide
+        v-for="n in 5"
+        :key="n"
+        class="test"
+        :class="{test_2: true}"
+      >
+        <div>{{ 34+n }}</div>
+        <img
+          :src="getImageUrl(34+n)"
+          width="600"
+          height="400"
+          class="img-fluid w-100 mx-auto"
+          blank="true"
+        >
+      </swiper-slide>
+    </swiper>
+
+    <h2>pagination - navigation</h2>
+    <swiper
+      :slides-per-view="3"
+      :space-between="30"
+      :loop="false"
+      :pagination="true"
+      :navigation="true"
+      @swiper="onSwiper"
+      @slideChange="onSlideChange"
+    >
+      <swiper-slide
+        v-for="n in 5"
+        :key="n"
+        class="test"
+        :class="{test_2: true}"
+      >
+        <div>{{ 34+n }}</div>
+        <img
+          :src="getImageUrl(34+n)"
+          width="600"
+          height="400"
+          class="img-fluid w-100 mx-auto"
+          blank="true"
+        >
+      </swiper-slide>
+    </swiper>
+  </div>
+
+
+  <!--<div class="home row">
     <div class="col-md-3">
       <span class="hipster img-fluid rounded"></span>
     </div>
@@ -73,7 +152,22 @@
         >!
       </p>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script lang="ts" src="./home.component.ts"></script>
+<style lang="scss" scoped>
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+.w-100 {
+  width: 100%;
+}
+.ml-auto, .mx-auto {
+  margin-left: auto;
+}
+.mr-auto, .mx-auto {
+  margin-right: auto;
+}
+</style>
