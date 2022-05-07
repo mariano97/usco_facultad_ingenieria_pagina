@@ -23,14 +23,15 @@
 
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-    "christian-kohler.npm-intellisense",
-    "firsttris.vscode-jest-runner",
-    "ms-vscode.vscode-typescript-tslint-plugin",
-    "dbaeumer.vscode-eslint",
-    "vscjava.vscode-java-pack",
-    "pivotal.vscode-boot-dev-pack",
-    "esbenp.prettier-vscode"
-  ],
+	"christian-kohler.npm-intellisense",
+	"firsttris.vscode-jest-runner",
+	"ms-vscode.vscode-typescript-tslint-plugin",
+	"dbaeumer.vscode-eslint",
+	"vscjava.vscode-java-pack",
+	"pivotal.vscode-boot-dev-pack",
+	"esbenp.prettier-vscode",
+	"jhipster-ide.jdl"
+],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [9060, 3001, 9000, 8081],

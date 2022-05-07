@@ -138,5 +138,8 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": {
+    "vigilada-minedu": "Vigilada por el Ministerio de Educación Nacional",
+    "usco-nit": "NIT: 891180084-2"
+  }
 }

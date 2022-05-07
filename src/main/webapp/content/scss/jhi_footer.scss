@@ -1,0 +1,29 @@
+@import 'custom-variables';
+
+
+#footer.footer {
+  background-color: $second-usco-color;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  .footer-content-informacio-usco h4 {
+    color: #1E262B;
+    font-size: 12px;
+    text-align: center;
+  }
+
+}
+
+
+/*================================================
+  screens
+  =============================
+*/
+
+@media (max-width: 767px) {
+  #footer.footer .vertical-divider-red {
+    display: none;
+  }
+}

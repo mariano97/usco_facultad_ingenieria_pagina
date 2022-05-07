@@ -1,0 +1,130 @@
+@import 'custom-variables';
+
+
+/* ==========================================================================
+    Navbar
+    ========================================================================== */
+.navbar-version {
+  font-size: 10px;
+  color: #ccc;
+}
+
+.jh-navbar {
+  background-color: $primary-color;
+  padding: 0.2em 1em;
+}
+
+.jh-navbar .profile-image {
+  margin: -10px 0px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.jh-navbar .dropdown-item.active,
+.jh-navbar .dropdown-item.active:focus,
+.jh-navbar .dropdown-item.active:hover {
+  background-color: #353d47;
+}
+
+.jh-navbar .dropdown-toggle::after {
+  margin-left: 0.15em;
+}
+
+.jh-navbar ul.navbar-nav {
+  padding: 0.5em;
+}
+
+.jh-navbar .navbar-nav .nav-item {
+  margin-left: 1.5rem;
+}
+
+.jh-navbar a.nav-link,
+.jh-navbar .no-bold {
+  font-weight: 400;
+}
+
+.jh-navbar .jh-navbar-toggler {
+  color: #ccc;
+  font-size: 1.5em;
+  padding: 10px;
+}
+
+.jh-navbar .jh-navbar-toggler:hover {
+  color: #fff;
+}
+
+
+.jh-navbar .navbar-title {
+  display: block;
+  vertical-align: middle;
+  color: white;
+  text-transform: uppercase;
+  white-space: normal;
+}
+
+.jh-navbar .navbar-title-first {
+  font-size: 10px;
+}
+
+.jh-navbar .navbar-title-second {
+  font-size: 20px;
+}
+
+/* ==========================================================================
+    Logo styles
+    ========================================================================== */
+.navbar-brand.logo {
+  padding: 5px 15px;
+  margin-left: 3rem;
+}
+
+
+.jh-navbar .logo-img {
+  background-size: contain;
+  width: inherit;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+/*
+  tamaños de pantalla
+*/
+
+@media (max-width: 767px) {
+  .jh-navbar {
+    .logo {
+      margin-left: 0px;
+      margin-right: 0px;
+      .row {
+        display: flex;
+        flex-wrap: nowrap;
+
+        .navbar-title {
+          &-first {
+            font-size: 10px;
+          }
+          &-second {
+          font-size: 15px;
+          }
+        }
+        .col-sm-auto {
+          width: auto !important;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .jh-navbar-toggler {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1150px) {
+  span span {
+    display: none;
+  }
+}

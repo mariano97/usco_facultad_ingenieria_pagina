@@ -1,6 +1,8 @@
 {
   "global": {
-    "title": "Pagina_facultad_ingenieria_proyecto",
+    "title": "",
+    "title-first": "facultad de",
+    "title-second": "INGENIERIA",
     "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=es\">actualice su navegador</a> para mejorar su experiencia.",
     "menu": {
       "home": "Inicio",
@@ -137,5 +139,8 @@
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
-  "footer": "Pie de página"
+  "footer": {
+    "vigilada-minedu": "Vigilada por el Ministerio de Educación Nacional",
+    "usco-nit": "NIT: 891180084-2"
+  }
 }
