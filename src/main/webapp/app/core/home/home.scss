@@ -1,0 +1,29 @@
+@import '../../../content/scss/custom-variables';
+
+.home-container {
+  .container-slider {
+    .swiper-button-disabled {
+      display: none;
+    }
+    .swiper-button {
+      &-next {
+        color: $color-red;
+        right: 30px;
+      }
+      &-prev {
+        color: $color-red;
+        left: 30px;
+      }
+    }
+    .swiper-pagination {
+      .swiper-pagination-bullet-active {
+        background: $color-red;
+      }
+    }
+    img {
+      height: 500px;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}

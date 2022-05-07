@@ -6,6 +6,7 @@ import { Navigation, Pagination } from 'swiper';
 import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 
 import 'swiper/swiper-bundle.css';
+import './home.scss';
 
 SwiperCore.use([Navigation, Pagination]);
 @Component({
@@ -13,17 +14,6 @@ SwiperCore.use([Navigation, Pagination]);
     Swiper,
     SwiperSlide,
   },
-  methods: {
-    getImageUrl (imageId) {
-      return `https://picsum.photos/600/400/?image=${imageId}`;
-    },
-    onSwiper (swiper) {
-      console.warn(swiper);
-    },
-    onSlideChange () {
-      console.warn('slide change');
-    }
-  }
 })
 export default class Home extends Vue {
   @Inject('loginService')
@@ -41,5 +31,16 @@ export default class Home extends Vue {
     return this.$store.getters.account?.login ?? '';
   }
 
+  public getImageUrl (imageId) {
+    return `https://picsum.photos/600/400/?image=${imageId}`;
+  }
+
+  public onSwiper (swiper) {
+    console.warn(swiper);
+  }
+
+  public onSlideChange () {
+    console.warn('slide change');
+  }
 
 }

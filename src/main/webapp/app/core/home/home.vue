@@ -1,80 +1,32 @@
 <template>
 
   <div class="home-container">
-    <swiper class="mySwiper"
-      :slides-per-view="3"
-      :space-between="30"
-      :loop="false"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-    >
-      <swiper-slide
-        v-for="n in 5"
-        :key="n"
-        class="test"
-        :class="{test_2: true}"
+    <div class="container-slider">
+      <swiper
+        :slides-per-view="1"
+        :space-between="0"
+        :loop="false"
+        :pagination="true"
+        :navigation="true"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
       >
-        <div>{{ 29+n }}</div>
-        <img
-          :src="getImageUrl(29+n)"
-          width="600"
-          height="400"
-          class="img-fluid w-100 mx-auto"
-          blank="true"
+        <swiper-slide
+          v-for="n in 10"
+          :key="n"
+          class="test"
+          :class="{test_2: true}"
         >
-      </swiper-slide>
-    </swiper>
-
-    <swiper
-      :slides-per-view="3"
-      :space-between="30"
-      loop
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-    >
-      <swiper-slide
-        v-for="n in 5"
-        :key="n"
-        class="test"
-        :class="{test_2: true}"
-      >
-        <div>{{ 34+n }}</div>
-        <img
-          :src="getImageUrl(34+n)"
-          width="600"
-          height="400"
-          class="img-fluid w-100 mx-auto"
-          blank="true"
-        >
-      </swiper-slide>
-    </swiper>
-
-    <h2>pagination - navigation</h2>
-    <swiper
-      :slides-per-view="3"
-      :space-between="30"
-      :loop="false"
-      :pagination="true"
-      :navigation="true"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-    >
-      <swiper-slide
-        v-for="n in 5"
-        :key="n"
-        class="test"
-        :class="{test_2: true}"
-      >
-        <div>{{ 34+n }}</div>
-        <img
-          :src="getImageUrl(34+n)"
-          width="600"
-          height="400"
-          class="img-fluid w-100 mx-auto"
-          blank="true"
-        >
-      </swiper-slide>
-    </swiper>
+          <img
+            :src="getImageUrl(34+n)"
+            width="600"
+            height="400"
+            class="img-fluid w-100 mx-auto"
+            blank="true"
+          >
+        </swiper-slide>
+      </swiper>
+    </div>
   </div>
 
 
