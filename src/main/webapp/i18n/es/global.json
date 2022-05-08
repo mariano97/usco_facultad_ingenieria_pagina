@@ -142,5 +142,11 @@
   "footer": {
     "vigilada-minedu": "Vigilada por el Ministerio de Educación Nacional",
     "usco-nit": "NIT: 891180084-2"
+  },
+  "fragments": {
+    "fragment-noticias": {
+      "title": "Noticias",
+      "ver-mas": "Ver más"
+    }
   }
 }

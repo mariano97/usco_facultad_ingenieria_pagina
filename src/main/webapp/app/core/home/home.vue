@@ -1,32 +1,36 @@
 <template>
 
   <div class="home-container">
-    <div class="container-slider">
-      <swiper
-        :slides-per-view="1"
-        :space-between="0"
-        :loop="false"
-        :pagination="true"
-        :navigation="true"
-        @swiper="onSwiper"
-        @slideChange="onSlideChange"
-      >
-        <swiper-slide
-          v-for="n in 10"
-          :key="n"
-          class="test"
-          :class="{test_2: true}"
+      <div class="container-slider">
+        <swiper
+          :slides-per-view="1"
+          :space-between="0"
+          :loop="false"
+          :pagination="true"
+          :navigation="true"
+          @swiper="onSwiper"
+          @slideChange="onSlideChange"
         >
-          <img
-            :src="getImageUrl(34+n)"
-            width="600"
-            height="400"
-            class="img-fluid w-100 mx-auto"
-            blank="true"
+          <swiper-slide
+            v-for="n in 10"
+            :key="n"
+            class="test"
+            :class="{test_2: true}"
           >
-        </swiper-slide>
-      </swiper>
-    </div>
+            <img
+              :src="getImageUrl(34+n)"
+              class="img-fluid w-100 mx-auto"
+              blank="true"
+            >
+          </swiper-slide>
+        </swiper>
+      </div>
+    </section>
+    <section>
+      <div class="container-noticias container">
+        <fragment-noticias nombre="pepe"></fragment-noticias>
+      </div>
+    </section>
   </div>
 
 

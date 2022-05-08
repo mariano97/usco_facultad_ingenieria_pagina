@@ -1,5 +1,5 @@
-import Component from 'vue-class-component';
-import { Inject, Vue } from 'vue-property-decorator';
+// import Component from 'vue-class-component';
+import { Inject, Vue, Component } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
 
 import { Navigation, Pagination } from 'swiper';
@@ -7,12 +7,15 @@ import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 
 import 'swiper/swiper-bundle.css';
 import './home.scss';
+import NoticiasFragment from '@/shared/fragments/noticias/noticias-fragment.vue';
+
 
 SwiperCore.use([Navigation, Pagination]);
 @Component({
   components: {
     Swiper,
     SwiperSlide,
+    'fragment-noticias': NoticiasFragment,
   },
 })
 export default class Home extends Vue {
