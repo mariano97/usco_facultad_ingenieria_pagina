@@ -6,8 +6,14 @@ const ResetPasswordInit = () => import('@/account/reset-password/init/reset-pass
 const ResetPasswordFinish = () => import('@/account/reset-password/finish/reset-password-finish.vue');
 const ChangePassword = () => import('@/account/change-password/change-password.vue');
 const Settings = () => import('@/account/settings/settings.vue');
+const Login = () => import('@/account/login/login.vue');
 
 export default [
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
   {
     path: '/register',
     name: 'Register',

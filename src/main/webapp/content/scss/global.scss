@@ -287,6 +287,12 @@ ui bootstrap tweaks
   }
 }
 
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='email']:focus {
+  box-shadow: $color-box-shadow-primary-color !important;
+}
+
 
 @import 'jhi-navbar.scss';
 @import 'jhi_footer.scss';

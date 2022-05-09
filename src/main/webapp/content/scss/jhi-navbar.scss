@@ -11,7 +11,55 @@
 
 .jh-navbar {
   background-color: $primary-color;
-  padding: 0.2em 1em;
+  padding: 0rem 1rem !important;
+  #header-tabs {
+    padding: 0rem 0rem !important;
+  }
+  .logo {
+    padding: 0.7rem 0 !important;
+  }
+
+  #header-tabs {
+    ul.navbar-nav {
+      padding-bottom: 0rem;
+      padding-top: 0rem;
+      padding-left: 1rem;
+      padding-right: 0rem;
+      background-color: $primary-color;
+      &:empty {
+        padding: 0.5rem 0rem;
+      }
+      li.nav-item {
+        margin-left: 0px !important;
+        height: 70px;
+        a.router-link-active {
+          display: none !important;
+        }
+        a {
+          color: $color-amarillo-extreme;
+          height: 70px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding-right: 18px;
+          padding-left: 18px;
+          &:hover {
+            color: $color-amarillo-extreme;
+            h4 {
+              color: $color-amarillo-extreme;
+            }
+            background-color: $color-dark;
+          }
+        }
+        h4 {
+          margin: 0px !important;
+          color: $color-gris-light;
+          font-weight: bold;
+          font-size: 20px;
+        }
+      }
+    }
+  }
 }
 
 .jh-navbar .profile-image {
@@ -87,10 +135,15 @@
   vertical-align: middle;
 }
 
-
 /*
   tamaños de pantalla
 */
+
+@media (min-width: 992px) {
+  .jh-navbar {
+    padding-right: 0px !important;
+  }
+}
 
 @media (max-width: 767px) {
   .jh-navbar {

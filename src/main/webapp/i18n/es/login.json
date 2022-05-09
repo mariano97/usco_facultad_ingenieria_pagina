@@ -1,7 +1,8 @@
 {
   "login": {
-    "title": "Iniciar la sesión",
+    "title": "Ingresar",
     "form": {
+      "correo-electronico": "Correo Electronico",
       "password": "Contraseña",
       "password.placeholder": "Su contraseña",
       "rememberme": "Iniciar la sesión automáticamente",

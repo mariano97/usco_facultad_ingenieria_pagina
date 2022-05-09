@@ -31,6 +31,12 @@
         <fragment-noticias nombre="pepe"></fragment-noticias>
       </div>
     </section>
+    <router-link class="alert-link" to="/register" v-text="$t('global.messages.info.register.link')"
+            >Register a new account</router-link
+          >
+    <router-link class="alert-link" to="/login">
+      Iniciar sesión
+    </router-link>
   </div>
 
 

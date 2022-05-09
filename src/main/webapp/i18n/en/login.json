@@ -2,6 +2,7 @@
   "login": {
     "title": "Sign in",
     "form": {
+      "correo-electronico": "Correo Electronico",
       "password": "Password",
       "password.placeholder": "Your password",
       "rememberme": "Remember me",
