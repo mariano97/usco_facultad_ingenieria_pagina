@@ -42,6 +42,20 @@
         </swiper-slide>
       </swiper>
     </div>
+    <div class="container-ver-todo mt-5 row mx-0">
+      <div class="col p-0 d-flex align-items-center">
+        <hr />
+      </div>
+      <div class="col-sm-auto p-0 d-flex align-items-center">
+        <router-link to="/">
+          <button class="btn btn-ver-todo d-flex justify-content-center align-items-center"
+            v-text="$t('fragments.fragment-noticias.ver-todo')">Ver todo</button>
+        </router-link>
+      </div>
+      <div class="col p-0 d-flex align-items-center">
+        <hr />
+      </div>
+    </div>
   </div>
 </template>
 

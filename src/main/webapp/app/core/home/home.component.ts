@@ -8,6 +8,7 @@ import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 import 'swiper/swiper-bundle.css';
 import './home.scss';
 import NoticiasFragment from '@/shared/fragments/noticias/noticias-fragment.vue';
+import EventosFragment from '@/shared/fragments/eventos/eventos-fragment.vue';
 
 
 SwiperCore.use([Navigation, Pagination]);
@@ -16,6 +17,7 @@ SwiperCore.use([Navigation, Pagination]);
     Swiper,
     SwiperSlide,
     'fragment-noticias': NoticiasFragment,
+    'fragment-eventos': EventosFragment,
   },
 })
 export default class Home extends Vue {

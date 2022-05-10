@@ -1,12 +1,12 @@
-@import '/src/main/webapp/content/scss/custom-variables';
+@import '../../../../content/scss/custom-variables';
 
-.container-fragment-noticias {
+.container-fragment-eventos {
   h2.title {
     color: $color-gris;
     font-size: 40px;
     text-align: center;
   }
-  .container-swiper-noticias {
+  .container-swiper-eventos {
     .swiper-button-disabled {
       display: none;
     }
@@ -29,7 +29,7 @@
         left: 30px;
       }
     }
-    .card-container-noticias {
+    .card-container-eventos {
       .imagen img {
         width: 100%;
         height: 250px;
@@ -43,28 +43,50 @@
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
         .container-fecha .fecha {
-          color: $color-red;
+          color: $color-gris;
           font-size: 15px;
           font-weight: bold;
         }
-        .conatiner-title-noticias .title {
+        .conatiner-title-eventos .title {
           color: $color-gris;
           font-size: 24px;
           text-align: start !important;
           font-weight: bolder;
         }
-        .container-desc-noticia p {
-          color: $color-dark;
-          font-size: 15px;
-          line-height: $line-height-20;
-
-          display: block;
-          display: -webkit-box;
-          height: 100px;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        img {
+          max-width: 30px;
+        }
+        .container-lugar, .container-fecha {
+          .col-sm-auto:nth-child(2) {
+            padding-left: 5px;
+            padding-right: 5px;
+          }
+        }
+        .container-lugar {
+          h4 {
+            margin-bottom: 0px;
+          }
+          h4.text-lugar {
+            color: $color-red;
+            font-size: 15px;
+          }
+          h4.ubicacion {
+            color: $color-dark;
+            font-size: 15px;
+          }
+        }
+        .container-fecha {
+          h4 {
+            margin-bottom: 0px;
+          }
+          h4.text-fecha {
+            color: $color-red;
+            font-size: 15px;
+          }
+          h4.fecha {
+            color: $color-dark;
+            font-size: 15px;
+          }
         }
       }
       .boton-ver-mas {

@@ -28,15 +28,20 @@
     </section>
     <section>
       <div class="container-noticias container">
-        <fragment-noticias nombre="pepe"></fragment-noticias>
+        <fragment-noticias></fragment-noticias>
       </div>
     </section>
-    <router-link class="alert-link" to="/register" v-text="$t('global.messages.info.register.link')"
+    <section>
+      <div class="container-eventos container">
+        <fragment-eventos></fragment-eventos>
+      </div>
+    </section>
+    <!--<router-link class="alert-link" to="/register" v-text="$t('global.messages.info.register.link')"
             >Register a new account</router-link
           >
     <router-link class="alert-link" to="/login">
       Iniciar sesión
-    </router-link>
+    </router-link>-->
   </div>
 
 

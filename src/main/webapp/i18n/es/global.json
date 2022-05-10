@@ -147,7 +147,15 @@
   "fragments": {
     "fragment-noticias": {
       "title": "Noticias",
-      "ver-mas": "Ver más"
+      "ver-mas": "Ver más",
+      "ver-todo": "Ver todas las noticias"
+    },
+    "fragment-eventos": {
+      "title": "Eventos",
+      "text-lugar": "Lugar:",
+      "text-fecha": "Fecha:",
+      "ver-mas": "Ver más",
+      "ver-todo": "Ver todos los eventos"
     }
   }
 }
