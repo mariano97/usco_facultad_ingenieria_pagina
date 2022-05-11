@@ -1,0 +1,25 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "tablaTiposCatalogo": {
+      "home": {
+        "title": "Tabla Tipos Catalogos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Tabla Tipos Catalogo",
+        "createOrEditLabel": "Crear o editar Tabla Tipos Catalogo",
+        "notFound": "Ningún Tabla Tipos Catalogos encontrado"
+      },
+      "created": "Un nuevo Tabla Tipos Catalogo ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tabla Tipos Catalogo ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tabla Tipos Catalogo ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tabla Tipos Catalogo {{ id }}?"
+      },
+      "detail": {
+        "title": "Tabla Tipos Catalogo"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "estado": "Estado"
+    }
+  }
+}
