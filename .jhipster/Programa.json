@@ -1,0 +1,115 @@
+{
+  "changelogDate": "20220511152408",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codigoSnies",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codigoRegistroCalificado",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fechaRegistroCalificado",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombreTituloOtorgado",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "numeroCreditos",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "duracionPrograma",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "presentacionPrograma",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "mision",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "vision",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "perfilEstudiante",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "perfilEgresado",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "perfilOcupacional",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "urlFotoPrograma",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dirigidoAQuien",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "costoPrograma",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "name": "Programa",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "tablaElementoCatalogo",
+      "relationshipName": "nivelFormacion",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "tablaElementoCatalogo",
+      "relationshipName": "tipoFormacion",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "facultad",
+      "relationshipName": "facultad",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

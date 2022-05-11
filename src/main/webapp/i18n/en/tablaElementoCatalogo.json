@@ -1,0 +1,27 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "tablaElementoCatalogo": {
+      "home": {
+        "title": "Tabla Elemento Catalogos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tabla Elemento Catalogo",
+        "createOrEditLabel": "Create or edit a Tabla Elemento Catalogo",
+        "notFound": "No Tabla Elemento Catalogos found"
+      },
+      "created": "A new Tabla Elemento Catalogo is created with identifier {{ param }}",
+      "updated": "A Tabla Elemento Catalogo is updated with identifier {{ param }}",
+      "deleted": "A Tabla Elemento Catalogo is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tabla Elemento Catalogo {{ id }}?"
+      },
+      "detail": {
+        "title": "Tabla Elemento Catalogo"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "abreviatura": "Abreviatura",
+      "estado": "Estado",
+      "tablaTiposCatalogo": "Tabla Tipos Catalogo"
+    }
+  }
+}

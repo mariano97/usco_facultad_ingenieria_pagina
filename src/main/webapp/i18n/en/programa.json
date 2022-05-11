@@ -1,0 +1,43 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "programa": {
+      "home": {
+        "title": "Programas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Programa",
+        "createOrEditLabel": "Create or edit a Programa",
+        "notFound": "No Programas found"
+      },
+      "created": "A new Programa is created with identifier {{ param }}",
+      "updated": "A Programa is updated with identifier {{ param }}",
+      "deleted": "A Programa is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Programa {{ id }}?"
+      },
+      "detail": {
+        "title": "Programa"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "codigoSnies": "Codigo Snies",
+      "codigoRegistroCalificado": "Codigo Registro Calificado",
+      "fechaRegistroCalificado": "Fecha Registro Calificado",
+      "nombreTituloOtorgado": "Nombre Titulo Otorgado",
+      "numeroCreditos": "Numero Creditos",
+      "duracionPrograma": "Duracion Programa",
+      "presentacionPrograma": "Presentacion Programa",
+      "mision": "Mision",
+      "vision": "Vision",
+      "perfilEstudiante": "Perfil Estudiante",
+      "perfilEgresado": "Perfil Egresado",
+      "perfilOcupacional": "Perfil Ocupacional",
+      "urlFotoPrograma": "Url Foto Programa",
+      "dirigidoAQuien": "Dirigido A Quien",
+      "costoPrograma": "Costo Programa",
+      "estado": "Estado",
+      "nivelFormacion": "Nivel Formacion",
+      "tipoFormacion": "Tipo Formacion",
+      "facultad": "Facultad"
+    }
+  }
+}

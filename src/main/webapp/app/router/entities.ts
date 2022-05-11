@@ -15,6 +15,18 @@ const TablaTiposCatalogo = () => import('@/entities/tabla-tipos-catalogo/tabla-t
 const TablaTiposCatalogoUpdate = () => import('@/entities/tabla-tipos-catalogo/tabla-tipos-catalogo-update.vue');
 // prettier-ignore
 const TablaTiposCatalogoDetails = () => import('@/entities/tabla-tipos-catalogo/tabla-tipos-catalogo-details.vue');
+// prettier-ignore
+const TablaElementoCatalogo = () => import('@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.vue');
+// prettier-ignore
+const TablaElementoCatalogoUpdate = () => import('@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo-update.vue');
+// prettier-ignore
+const TablaElementoCatalogoDetails = () => import('@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo-details.vue');
+// prettier-ignore
+const Programa = () => import('@/entities/programa/programa.vue');
+// prettier-ignore
+const ProgramaUpdate = () => import('@/entities/programa/programa-update.vue');
+// prettier-ignore
+const ProgramaDetails = () => import('@/entities/programa/programa-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -67,6 +79,54 @@ export default {
       path: 'tabla-tipos-catalogo/:tablaTiposCatalogoId/view',
       name: 'TablaTiposCatalogoView',
       component: TablaTiposCatalogoDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'tabla-elemento-catalogo',
+      name: 'TablaElementoCatalogo',
+      component: TablaElementoCatalogo,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'tabla-elemento-catalogo/new',
+      name: 'TablaElementoCatalogoCreate',
+      component: TablaElementoCatalogoUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'tabla-elemento-catalogo/:tablaElementoCatalogoId/edit',
+      name: 'TablaElementoCatalogoEdit',
+      component: TablaElementoCatalogoUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'tabla-elemento-catalogo/:tablaElementoCatalogoId/view',
+      name: 'TablaElementoCatalogoView',
+      component: TablaElementoCatalogoDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'programa',
+      name: 'Programa',
+      component: Programa,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'programa/new',
+      name: 'ProgramaCreate',
+      component: ProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'programa/:programaId/edit',
+      name: 'ProgramaEdit',
+      component: ProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'programa/:programaId/view',
+      name: 'ProgramaView',
+      component: ProgramaDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

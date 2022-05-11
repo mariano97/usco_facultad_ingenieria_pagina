@@ -12,6 +12,8 @@
         "main": "Entidades",
         "facultad": "Facultad",
         "tablaTiposCatalogo": "Tabla Tipos Catalogo",
+        "tablaElementoCatalogo": "Tabla Elemento Catalogo",
+        "programa": "Programa",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
