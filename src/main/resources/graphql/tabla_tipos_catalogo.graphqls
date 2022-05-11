@@ -1,0 +1,18 @@
+type TablaTiposCatalogo {
+    id: ID!
+    nombre: String!
+    estado: Boolean!
+}
+
+#Root
+type Query {
+    findAllTablaTiposCatalogos: [TablaTiposCatalogo]!
+    countTablaTiposCatalogo: Long!
+}
+
+#Root
+type Mutation {
+    createTablaTiposCatalogo(nombre: String!,
+        estado: Boolean!): TablaTiposCatalogo!
+}
+

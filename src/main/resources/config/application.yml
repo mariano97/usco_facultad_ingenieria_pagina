@@ -214,3 +214,8 @@ jhipster:
 # ===================================================================
 
 # application:
+
+#Graphql
+#graphql:
+#  servlet:
+#    mapping: /apis/graphql
