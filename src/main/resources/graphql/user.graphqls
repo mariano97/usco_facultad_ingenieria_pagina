@@ -1,0 +1,13 @@
+type Query{
+    account: User
+}
+
+type Mutation{
+
+}
+
+
+type User {
+    id: ID!
+    login: String!
+}

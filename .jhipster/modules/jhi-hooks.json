@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Graphql generator",
+        "npmPackageName": "generator-jhipster-graphql",
+        "description": "Graphql code generator from the jhipster engine",
+        "hookFor": "entity",
+        "hookType": "post",
+        "generatorCallback": "jhipster-graphql:app"
+    }
+]
