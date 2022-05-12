@@ -96,6 +96,7 @@ public class SecurityConfiguration {
             .pathMatchers("/*.*").permitAll()
             .pathMatchers("/graphiql").permitAll()
             .pathMatchers("/graphql").permitAll()
+            .pathMatchers("/vendor/**").permitAll()
             .pathMatchers("/api/graphiql").permitAll()
             .pathMatchers("/api/graphql").permitAll()
             .pathMatchers("/subscriptions").permitAll()
