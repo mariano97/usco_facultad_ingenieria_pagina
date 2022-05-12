@@ -1,12 +1,12 @@
 type Programa {
     id: ID!
     nombre: String!
-    codigoSnies: Long!
-    codigoRegistroCalificado: Long!
+    codigoSnies: Int!
+    codigoRegistroCalificado: Int!
     fechaRegistroCalificado: String!
     nombreTituloOtorgado: String!
     numeroCreditos: Int!
-    duracionPrograma: Long
+    duracionPrograma: Int
     presentacionPrograma: String!
     mision: String!
     vision: String!
@@ -15,7 +15,7 @@ type Programa {
     perfilOcupacional: String
     urlFotoPrograma: String
     dirigidoAQuien: String
-    costoPrograma: BigDecimal!
+    costoPrograma: Float!
     estado: Boolean!
     tipoFormacion: TablaElementoCatalogo!
     nivelFormacion: TablaElementoCatalogo!
@@ -24,30 +24,9 @@ type Programa {
 
 #Root
 type Query {
-    findAllProgramas: [Programa]!
-    countPrograma: Long!
+
+    programa(id: ID!): Programa
+
 }
 
-#Root
-type Mutation {
-    createPrograma(nombre: String!,
-        codigoSnies: Long!,
-        codigoRegistroCalificado: Long!,
-        fechaRegistroCalificado: String!,
-        nombreTituloOtorgado: String!,
-        numeroCreditos: Int!,
-        duracionPrograma: Long,
-        presentacionPrograma: String!,
-        mision: String!,
-        vision: String!,
-        perfilEstudiante: String,
-        perfilEgresado: String!,
-        perfilOcupacional: String,
-        urlFotoPrograma: String,
-        dirigidoAQuien: String,
-        costoPrograma: BigDecimal!,
-        estado: Boolean!,
-        tipoFormacion: TablaElementoCatalogo!,
-        nivelFormacion: TablaElementoCatalogo!,
-        facultad: Facultad!): Programa!
-}
+

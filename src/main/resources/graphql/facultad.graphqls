@@ -1,16 +1,5 @@
 type Facultad {
-    id: Int!
+    id: ID!
     nombre: String!
 }
 
-#Root
-type Query {
-    findAllFacultades: [Facultad]!
-    countFacultad: Long!
-}
-
-#Root
-type Mutation {
-    createFacultad(id: Int!,
-        nombre: String!): Facultad!
-}

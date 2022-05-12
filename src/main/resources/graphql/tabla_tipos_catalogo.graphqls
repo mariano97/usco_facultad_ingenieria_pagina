@@ -4,15 +4,4 @@ type TablaTiposCatalogo {
     estado: Boolean!
 }
 
-#Root
-type Query {
-    findAllTablaTiposCatalogos: [TablaTiposCatalogo]!
-    countTablaTiposCatalogo: Long!
-}
-
-#Root
-type Mutation {
-    createTablaTiposCatalogo(nombre: String!,
-        estado: Boolean!): TablaTiposCatalogo!
-}
 

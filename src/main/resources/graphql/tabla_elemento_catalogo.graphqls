@@ -6,17 +6,4 @@ type TablaElementoCatalogo {
     tablaTiposCatalogo: TablaTiposCatalogo
 }
 
-#Root
-type Query {
-    findAllTablaElementoCatalogos: [TablaElementoCatalogo]!
-    countTablaElementoCatalogo: Long!
-}
-
-#Root
-type Mutation {
-    createTablaElementoCatalogo(nombre: String!,
-        abreviatura: String!,
-        estado: Boolean!,
-        tablaTiposCatalogo: TablaTiposCatalogo!): TablaElementoCatalogo!
-}
 
