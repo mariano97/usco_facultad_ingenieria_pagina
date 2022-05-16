@@ -17,6 +17,9 @@ public class TablaTiposCatalogoDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Boolean estado;
 
+    @NotNull(message = "must not be null")
+    private String keyIdentificador;
+
     public Long getId() {
         return id;
     }
@@ -39,6 +42,14 @@ public class TablaTiposCatalogoDTO implements Serializable {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public String getKeyIdentificador() {
+        return keyIdentificador;
+    }
+
+    public void setKeyIdentificador(String keyIdentificador) {
+        this.keyIdentificador = keyIdentificador;
     }
 
     @Override
@@ -69,6 +80,7 @@ public class TablaTiposCatalogoDTO implements Serializable {
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
             ", estado='" + getEstado() + "'" +
+            ", keyIdentificador='" + getKeyIdentificador() + "'" +
             "}";
     }
 }

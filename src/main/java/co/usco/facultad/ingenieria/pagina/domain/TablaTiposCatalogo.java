@@ -27,6 +27,10 @@ public class TablaTiposCatalogo implements Serializable {
     @Column("estado")
     private Boolean estado;
 
+    @NotNull(message = "must not be null")
+    @Column("key_identificador")
+    private String keyIdentificador;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -68,6 +72,19 @@ public class TablaTiposCatalogo implements Serializable {
         this.estado = estado;
     }
 
+    public String getKeyIdentificador() {
+        return this.keyIdentificador;
+    }
+
+    public TablaTiposCatalogo keyIdentificador(String keyIdentificador) {
+        this.setKeyIdentificador(keyIdentificador);
+        return this;
+    }
+
+    public void setKeyIdentificador(String keyIdentificador) {
+        this.keyIdentificador = keyIdentificador;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -94,6 +111,7 @@ public class TablaTiposCatalogo implements Serializable {
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
             ", estado='" + getEstado() + "'" +
+            ", keyIdentificador='" + getKeyIdentificador() + "'" +
             "}";
     }
 }

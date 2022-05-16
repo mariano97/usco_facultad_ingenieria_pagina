@@ -15,6 +15,9 @@ const validations: any = {
     estado: {
       required,
     },
+    keyIdentificador: {
+      required,
+    },
   },
 };
 

@@ -60,6 +60,33 @@
               </small>
             </div>
           </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.tablaTiposCatalogo.keyIdentificador')"
+              for="tabla-tipos-catalogo-keyIdentificador"
+              >Key Identificador</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="keyIdentificador"
+              id="tabla-tipos-catalogo-keyIdentificador"
+              data-cy="keyIdentificador"
+              :class="{ valid: !$v.tablaTiposCatalogo.keyIdentificador.$invalid, invalid: $v.tablaTiposCatalogo.keyIdentificador.$invalid }"
+              v-model="$v.tablaTiposCatalogo.keyIdentificador.$model"
+              required
+            />
+            <div v-if="$v.tablaTiposCatalogo.keyIdentificador.$anyDirty && $v.tablaTiposCatalogo.keyIdentificador.$invalid">
+              <small
+                class="form-text text-danger"
+                v-if="!$v.tablaTiposCatalogo.keyIdentificador.required"
+                v-text="$t('entity.validation.required')"
+              >
+                This field is required.
+              </small>
+            </div>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

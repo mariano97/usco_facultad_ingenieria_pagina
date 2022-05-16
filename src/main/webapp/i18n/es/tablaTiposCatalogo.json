@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "nombre": "Nombre",
-      "estado": "Estado"
+      "estado": "Estado",
+      "keyIdentificador": "Key Identificador"
     }
   }
 }

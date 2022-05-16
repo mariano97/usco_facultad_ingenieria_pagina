@@ -44,6 +44,10 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.tablaTiposCatalogo.estado')">Estado</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('keyIdentificador')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.tablaTiposCatalogo.keyIdentificador')">Key Identificador</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'keyIdentificador'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -56,6 +60,7 @@
             </td>
             <td>{{ tablaTiposCatalogo.nombre }}</td>
             <td>{{ tablaTiposCatalogo.estado }}</td>
+            <td>{{ tablaTiposCatalogo.keyIdentificador }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link

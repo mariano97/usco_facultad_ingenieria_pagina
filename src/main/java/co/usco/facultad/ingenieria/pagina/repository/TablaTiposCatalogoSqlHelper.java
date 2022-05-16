@@ -13,6 +13,7 @@ public class TablaTiposCatalogoSqlHelper {
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
         columns.add(Column.aliased("nombre", table, columnPrefix + "_nombre"));
         columns.add(Column.aliased("estado", table, columnPrefix + "_estado"));
+        columns.add(Column.aliased("key_identificador", table, columnPrefix + "_key_identificador"));
 
         return columns;
     }

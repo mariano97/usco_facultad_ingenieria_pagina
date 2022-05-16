@@ -1,3 +1,4 @@
+import pages from '@/router/pages';
 import { Authority } from '@/shared/security/authority';
 /* tslint:disable */
 // prettier-ignore
@@ -28,11 +29,13 @@ const ProgramaUpdate = () => import('@/entities/programa/programa-update.vue');
 // prettier-ignore
 const ProgramaDetails = () => import('@/entities/programa/programa-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
+const ProgramasLista = () => import('@/core/programas-lista/programas-lista.vue');
 
 export default {
   path: '/',
   component: Entities,
   children: [
+    ...pages,
     {
       path: 'facultad',
       name: 'Facultad',
@@ -85,7 +88,7 @@ export default {
       path: 'tabla-elemento-catalogo',
       name: 'TablaElementoCatalogo',
       component: TablaElementoCatalogo,
-      meta: { authorities: [Authority.USER] },
+      // meta: { authorities: [Authority.USER] },
     },
     {
       path: 'tabla-elemento-catalogo/new',

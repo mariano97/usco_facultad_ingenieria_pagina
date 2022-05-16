@@ -29,7 +29,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       service = new TablaTiposCatalogoService();
-      elemDefault = new TablaTiposCatalogo(123, 'AAAAAAA', false);
+      elemDefault = new TablaTiposCatalogo(123, 'AAAAAAA', false, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -83,6 +83,7 @@ describe('Service Tests', () => {
           {
             nombre: 'BBBBBB',
             estado: true,
+            keyIdentificador: 'BBBBBB',
           },
           elemDefault
         );
@@ -139,6 +140,7 @@ describe('Service Tests', () => {
           {
             nombre: 'BBBBBB',
             estado: true,
+            keyIdentificador: 'BBBBBB',
           },
           elemDefault
         );

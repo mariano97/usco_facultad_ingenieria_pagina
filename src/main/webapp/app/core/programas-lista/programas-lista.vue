@@ -1,0 +1,85 @@
+<template>
+  <div class="container-programas-lista">
+    <section>
+      <div class="container-imagen">
+        <img alt="imagen-programas-lista" src="/content/images/imagen_libros_usco.jpeg" class=""/>
+      </div>
+    </section>
+    <section class="container mt-5 mb-3 container-formulario-filtrado">
+      <div class="container-campos-busqueda row mx-0">
+        <div class="col-lg-4 col-sm-auto form-group">
+          <label class="form-control-label" for="nombre_programa" v-text="$t('programas-lista.filtro.nombre-programa')">Nombre programa</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nombre_programa"
+            name="namePrograma"
+            placeholder="Eg. Ingenieria"
+          />
+        </div>
+        <div class="col-lg-4 col-sm-auto form-group">
+          <label class="form-control-label" for="tipo_programa" v-text="$t('programas-lista.filtro.tipo-programa')">Tipo de programa</label>
+          <select class="form-control" id="tipo_programa">
+            <option value="0">Seleccione</option>
+            <option v-for="(elemento, index) in listTiposPrograma" :key="index" :value="elemento.id">{{elemento.nombre}}</option>
+          </select>
+        </div>
+        <div class="col-lg-4 col-sm-auto d-flex justify-content-center align-items-center">
+          <button class="btn" v-text="$t('programas-lista.filtro.btn-limpiar-campos')">
+            Limpiar campos
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="container mb-5 mt-3">
+      <div class="container-resultados-programas">
+        <div class="col">
+          <div class="container-resultado row mx-0">
+            <div class="col-sm-9">
+              <div class="conatiner-nombre-programa">
+                <h2 class="mb-0 title-programa">Titulo</h2>
+              </div>
+              <div class="cotainer-body">
+                <div class="row mx-0">
+                  <div class="col-sm-auto pl-0 pr-2">
+                    <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.codigo-snies')">Codigo SNIES</h4>
+                  </div>
+                  <div class="col">
+                    <h4 class="data">dadadadas</h4>
+                  </div>
+                </div>
+                <div class="row mx-0">
+                  <div class="col-sm-auto pl-0 pr-2">
+                    <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.tipo-programa')">Tipo programa</h4>
+                  </div>
+                  <div class="col">
+                    <h4 class="data">dadadadas</h4>
+                  </div>
+                </div>
+                <div class="flex-column mx-0">
+                  <div class="col-sm-auto pl-0 pr-2">
+                    <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.descripcion')">Descripción</h4>
+                  </div>
+                  <div class="col px-0">
+                    <p class="data">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col container-button-ver">
+              <router-link to="/">
+                <button class="btn btn-ver-programa d-flex align-items-center justify-content-center" v-text="$t('programas-lista.resultados.buttons.ver')">Ver</button>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script lang="ts" src="./programas-lista.component.ts"></script>

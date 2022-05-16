@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.web.rest;
 import co.usco.facultad.ingenieria.pagina.repository.TablaElementoCatalogoRepository;
 import co.usco.facultad.ingenieria.pagina.service.TablaElementoCatalogoService;
 import co.usco.facultad.ingenieria.pagina.service.dto.TablaElementoCatalogoDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.TablaTiposCatalogoDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -171,6 +172,22 @@ public class TablaElementoCatalogoResource {
                             .body(res)
                     );
             });
+    }
+
+    @GetMapping(value = {
+        "/open/tabla-elemento-catalogos/tipo-catalogo-key-identificador",
+        "/tabla-elemento-catalogos/tipo-catalogo-key-identificador"
+    })
+    public Mono<ResponseEntity<List<TablaElementoCatalogoDTO>>> getElementosCatalogoByTipoCatalogoKeyIdentificador(
+        @RequestParam("key_identificador") String keyIdentificador
+    ) {
+        log.debug("REST request get elementos catalogo by Tipo Catalogo Key Identificador");
+        log.debug("param: key_identificador: {}", keyIdentificador);
+
+        Mono<List<TablaElementoCatalogoDTO>> listaTablaElementoCatalogoDTO = tablaElementoCatalogoService
+            .findByTiposCatalogoKeyIdentificador(keyIdentificador).collectList();
+
+        return ResponseUtil.wrapOrNotFound(listaTablaElementoCatalogoDTO);
     }
 
     /**

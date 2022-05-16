@@ -40,6 +40,9 @@ class TablaTiposCatalogoResourceIT {
     private static final Boolean DEFAULT_ESTADO = false;
     private static final Boolean UPDATED_ESTADO = true;
 
+    private static final String DEFAULT_KEY_IDENTIFICADOR = "AAAAAAAAAA";
+    private static final String UPDATED_KEY_IDENTIFICADOR = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/tabla-tipos-catalogos";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -67,7 +70,10 @@ class TablaTiposCatalogoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TablaTiposCatalogo createEntity(EntityManager em) {
-        TablaTiposCatalogo tablaTiposCatalogo = new TablaTiposCatalogo().nombre(DEFAULT_NOMBRE).estado(DEFAULT_ESTADO);
+        TablaTiposCatalogo tablaTiposCatalogo = new TablaTiposCatalogo()
+            .nombre(DEFAULT_NOMBRE)
+            .estado(DEFAULT_ESTADO)
+            .keyIdentificador(DEFAULT_KEY_IDENTIFICADOR);
         return tablaTiposCatalogo;
     }
 
@@ -78,7 +84,10 @@ class TablaTiposCatalogoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TablaTiposCatalogo createUpdatedEntity(EntityManager em) {
-        TablaTiposCatalogo tablaTiposCatalogo = new TablaTiposCatalogo().nombre(UPDATED_NOMBRE).estado(UPDATED_ESTADO);
+        TablaTiposCatalogo tablaTiposCatalogo = new TablaTiposCatalogo()
+            .nombre(UPDATED_NOMBRE)
+            .estado(UPDATED_ESTADO)
+            .keyIdentificador(UPDATED_KEY_IDENTIFICADOR);
         return tablaTiposCatalogo;
     }
 
@@ -121,6 +130,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo testTablaTiposCatalogo = tablaTiposCatalogoList.get(tablaTiposCatalogoList.size() - 1);
         assertThat(testTablaTiposCatalogo.getNombre()).isEqualTo(DEFAULT_NOMBRE);
         assertThat(testTablaTiposCatalogo.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testTablaTiposCatalogo.getKeyIdentificador()).isEqualTo(DEFAULT_KEY_IDENTIFICADOR);
     }
 
     @Test
@@ -191,6 +201,28 @@ class TablaTiposCatalogoResourceIT {
     }
 
     @Test
+    void checkKeyIdentificadorIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tablaTiposCatalogoRepository.findAll().collectList().block().size();
+        // set the field null
+        tablaTiposCatalogo.setKeyIdentificador(null);
+
+        // Create the TablaTiposCatalogo, which fails.
+        TablaTiposCatalogoDTO tablaTiposCatalogoDTO = tablaTiposCatalogoMapper.toDto(tablaTiposCatalogo);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(tablaTiposCatalogoDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<TablaTiposCatalogo> tablaTiposCatalogoList = tablaTiposCatalogoRepository.findAll().collectList().block();
+        assertThat(tablaTiposCatalogoList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllTablaTiposCatalogos() {
         // Initialize the database
         tablaTiposCatalogoRepository.save(tablaTiposCatalogo).block();
@@ -211,7 +243,9 @@ class TablaTiposCatalogoResourceIT {
             .jsonPath("$.[*].nombre")
             .value(hasItem(DEFAULT_NOMBRE))
             .jsonPath("$.[*].estado")
-            .value(hasItem(DEFAULT_ESTADO.booleanValue()));
+            .value(hasItem(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.[*].keyIdentificador")
+            .value(hasItem(DEFAULT_KEY_IDENTIFICADOR));
     }
 
     @Test
@@ -235,7 +269,9 @@ class TablaTiposCatalogoResourceIT {
             .jsonPath("$.nombre")
             .value(is(DEFAULT_NOMBRE))
             .jsonPath("$.estado")
-            .value(is(DEFAULT_ESTADO.booleanValue()));
+            .value(is(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.keyIdentificador")
+            .value(is(DEFAULT_KEY_IDENTIFICADOR));
     }
 
     @Test
@@ -259,7 +295,7 @@ class TablaTiposCatalogoResourceIT {
 
         // Update the tablaTiposCatalogo
         TablaTiposCatalogo updatedTablaTiposCatalogo = tablaTiposCatalogoRepository.findById(tablaTiposCatalogo.getId()).block();
-        updatedTablaTiposCatalogo.nombre(UPDATED_NOMBRE).estado(UPDATED_ESTADO);
+        updatedTablaTiposCatalogo.nombre(UPDATED_NOMBRE).estado(UPDATED_ESTADO).keyIdentificador(UPDATED_KEY_IDENTIFICADOR);
         TablaTiposCatalogoDTO tablaTiposCatalogoDTO = tablaTiposCatalogoMapper.toDto(updatedTablaTiposCatalogo);
 
         webTestClient
@@ -277,6 +313,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo testTablaTiposCatalogo = tablaTiposCatalogoList.get(tablaTiposCatalogoList.size() - 1);
         assertThat(testTablaTiposCatalogo.getNombre()).isEqualTo(UPDATED_NOMBRE);
         assertThat(testTablaTiposCatalogo.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testTablaTiposCatalogo.getKeyIdentificador()).isEqualTo(UPDATED_KEY_IDENTIFICADOR);
     }
 
     @Test
@@ -359,7 +396,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo partialUpdatedTablaTiposCatalogo = new TablaTiposCatalogo();
         partialUpdatedTablaTiposCatalogo.setId(tablaTiposCatalogo.getId());
 
-        partialUpdatedTablaTiposCatalogo.estado(UPDATED_ESTADO);
+        partialUpdatedTablaTiposCatalogo.estado(UPDATED_ESTADO).keyIdentificador(UPDATED_KEY_IDENTIFICADOR);
 
         webTestClient
             .patch()
@@ -376,6 +413,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo testTablaTiposCatalogo = tablaTiposCatalogoList.get(tablaTiposCatalogoList.size() - 1);
         assertThat(testTablaTiposCatalogo.getNombre()).isEqualTo(DEFAULT_NOMBRE);
         assertThat(testTablaTiposCatalogo.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testTablaTiposCatalogo.getKeyIdentificador()).isEqualTo(UPDATED_KEY_IDENTIFICADOR);
     }
 
     @Test
@@ -389,7 +427,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo partialUpdatedTablaTiposCatalogo = new TablaTiposCatalogo();
         partialUpdatedTablaTiposCatalogo.setId(tablaTiposCatalogo.getId());
 
-        partialUpdatedTablaTiposCatalogo.nombre(UPDATED_NOMBRE).estado(UPDATED_ESTADO);
+        partialUpdatedTablaTiposCatalogo.nombre(UPDATED_NOMBRE).estado(UPDATED_ESTADO).keyIdentificador(UPDATED_KEY_IDENTIFICADOR);
 
         webTestClient
             .patch()
@@ -406,6 +444,7 @@ class TablaTiposCatalogoResourceIT {
         TablaTiposCatalogo testTablaTiposCatalogo = tablaTiposCatalogoList.get(tablaTiposCatalogoList.size() - 1);
         assertThat(testTablaTiposCatalogo.getNombre()).isEqualTo(UPDATED_NOMBRE);
         assertThat(testTablaTiposCatalogo.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testTablaTiposCatalogo.getKeyIdentificador()).isEqualTo(UPDATED_KEY_IDENTIFICADOR);
     }
 
     @Test

@@ -12,6 +12,11 @@
       "fieldName": "estado",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "keyIdentificador",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
     }
   ],
   "jpaMetamodelFiltering": false,

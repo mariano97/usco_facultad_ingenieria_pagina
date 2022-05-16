@@ -1,0 +1,5 @@
+id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
+1;Pregrados;ESTPRE;true;1
+2;Postgrados;ESTPOST;true;1
+3;Virtual;FORMVTL;true;2
+4;Presencial;FORMPRSNL;true;2

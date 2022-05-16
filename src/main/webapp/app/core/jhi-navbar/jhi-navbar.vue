@@ -33,6 +33,9 @@
 
     <b-collapse is-nav id="header-tabs" class="nav-container-items">
       <b-navbar-nav class="ml-auto">
+        <b-nav-item to="/programas-lista" v-if="!authenticated" class="nav-item-ingresar d-flex justify-content-center align-items-center">
+          <h4 v-text="$t('global.menu.programas')">Programas</h4>
+        </b-nav-item>
         <b-nav-item to="/login" exact v-if="!authenticated" class="nav-item-ingresar d-flex justify-content-center align-items-center">
           <h4 v-text="$t('global.menu.login')">Ingresar</h4>
         </b-nav-item>

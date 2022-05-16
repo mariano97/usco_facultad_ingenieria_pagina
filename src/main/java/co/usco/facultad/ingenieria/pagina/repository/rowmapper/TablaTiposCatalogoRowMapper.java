@@ -27,6 +27,7 @@ public class TablaTiposCatalogoRowMapper implements BiFunction<Row, String, Tabl
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
         entity.setNombre(converter.fromRow(row, prefix + "_nombre", String.class));
         entity.setEstado(converter.fromRow(row, prefix + "_estado", Boolean.class));
+        entity.setKeyIdentificador(converter.fromRow(row, prefix + "_key_identificador", String.class));
         return entity;
     }
 }

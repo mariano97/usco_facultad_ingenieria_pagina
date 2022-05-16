@@ -7,6 +7,7 @@
     "menu": {
       "home": "Inicio",
       "login": "Ingresar",
+      "programas": "Programas",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entidades",
@@ -160,6 +161,26 @@
       "text-fecha": "Fecha:",
       "ver-mas": "Ver más",
       "ver-todo": "Ver todos los eventos"
+    }
+  },
+  "programas-lista": {
+    "filtro": {
+      "nombre-programa": "Nombre del programa",
+      "tipo-programa": "Tipo de programa",
+      "btn-limpiar-campos": "Limpiar Campos"
+    },
+    "placeholder": {
+      "nombre-programa": "Eg. Ingenieria"
+    },
+    "resultados": {
+      "titulos": {
+        "codigo-snies": "Código SNIES:",
+        "descripcion": "Descripción:",
+        "tipo-programa": "Tipo programa:"
+      },
+      "buttons": {
+        "ver": "Ver..."
+      }
     }
   }
 }
