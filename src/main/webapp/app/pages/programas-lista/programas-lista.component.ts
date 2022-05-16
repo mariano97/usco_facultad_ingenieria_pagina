@@ -1,8 +1,8 @@
-import { IPrograma } from './../../shared/model/programa.model';
+import { IPrograma } from '../../shared/model/programa.model';
 import './programas-lista.scss';
 import TablaElementoCatalogoService from '../../entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import ProgramaService from '@/entities/programa/programa.service';
-import { ITablaElementoCatalogo } from './../../shared/model/tabla-elemento-catalogo.model';
+import { ITablaElementoCatalogo } from '../../shared/model/tabla-elemento-catalogo.model';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 
 
