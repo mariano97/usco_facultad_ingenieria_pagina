@@ -176,7 +176,10 @@ public class ProgramaResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programas in body.
      */
-    @GetMapping("/programas")
+    @GetMapping(value = {
+        "/programas",
+        "/open/programas"
+    })
     public Mono<ResponseEntity<List<ProgramaDTO>>> getAllProgramas(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request,

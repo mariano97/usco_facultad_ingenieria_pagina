@@ -15,29 +15,36 @@
             id="nombre_programa"
             name="namePrograma"
             placeholder="Eg. Ingenieria"
+            v-model="formNamePrograma"
+            @change="filtrarProgramas"
           />
         </div>
         <div class="col-lg-4 col-sm-auto form-group">
           <label class="form-control-label" for="tipo_programa" v-text="$t('programas-lista.filtro.tipo-programa')">Tipo de programa</label>
-          <select class="form-control" id="tipo_programa">
+          <select
+            class="form-control"
+            id="tipo_programa"
+            v-model="formSelectTipoPrograma"
+            @change="filtrarProgramas"
+          >
             <option value="0">Seleccione</option>
             <option v-for="(elemento, index) in listTiposPrograma" :key="index" :value="elemento.id">{{elemento.nombre}}</option>
           </select>
         </div>
         <div class="col-lg-4 col-sm-auto d-flex justify-content-center align-items-center">
-          <button class="btn" v-text="$t('programas-lista.filtro.btn-limpiar-campos')">
+          <button class="btn" v-text="$t('programas-lista.filtro.btn-limpiar-campos')" @click="limpiarCampos()">
             Limpiar campos
           </button>
         </div>
       </div>
     </section>
     <section class="container mb-5 mt-3">
-      <div class="container-resultados-programas">
-        <div class="col">
+      <div class="container-resultados-programas row mx-0">
+        <div class="col" v-for="(programa, index) in listProgramas" :key="index">
           <div class="container-resultado row mx-0">
             <div class="col-sm-9">
               <div class="conatiner-nombre-programa">
-                <h2 class="mb-0 title-programa">Titulo</h2>
+                <h2 class="mb-0 title-programa">{{ programa.nombre }}</h2>
               </div>
               <div class="cotainer-body">
                 <div class="row mx-0">
@@ -45,7 +52,7 @@
                     <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.codigo-snies')">Codigo SNIES</h4>
                   </div>
                   <div class="col">
-                    <h4 class="data">dadadadas</h4>
+                    <h4 class="data">{{ programa.codigoSnies }}</h4>
                   </div>
                 </div>
                 <div class="row mx-0">
@@ -53,7 +60,7 @@
                     <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.tipo-programa')">Tipo programa</h4>
                   </div>
                   <div class="col">
-                    <h4 class="data">dadadadas</h4>
+                    <h4 class="data">{{ programa.nivelFormacion.nombre }}</h4>
                   </div>
                 </div>
                 <div class="flex-column mx-0">
@@ -61,10 +68,8 @@
                     <h4 class="title-opcion" v-text="$t('programas-lista.resultados.titulos.descripcion')">Descripción</h4>
                   </div>
                   <div class="col px-0">
-                    <p class="data">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
+                    <p class="data">
+                      {{ programa.presentacionPrograma }}
                     </p>
                   </div>
                 </div>

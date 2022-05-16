@@ -81,8 +81,12 @@ public class TablaElementoCatalogoServiceImpl implements TablaElementoCatalogoSe
     @Transactional(readOnly = true)
     public Flux<TablaElementoCatalogoDTO> findByTiposCatalogoKeyIdentificador(String keyIdentificador) {
         log.debug("dentro de servicios: {}", keyIdentificador);
-        return tablaElementoCatalogoRepository.findByTablaTiposCatalogoKeyIdentificador(keyIdentificador)
+        Flux<TablaElementoCatalogoDTO> tablacatalofo = tablaElementoCatalogoRepository.findByTablaTiposCatalogoKeyIdentificador(keyIdentificador)
             .map(tablaElementoCatalogoMapper::toDto);
+        tablacatalofo.subscribe(data -> {
+            log.debug("data: {}", data.toString());
+        });
+        return tablacatalofo;
     }
 
     public Mono<Long> countAll() {
