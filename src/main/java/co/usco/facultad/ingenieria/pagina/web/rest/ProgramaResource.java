@@ -1,5 +1,6 @@
 package co.usco.facultad.ingenieria.pagina.web.rest;
 
+import co.usco.facultad.ingenieria.pagina.domain.Programa;
 import co.usco.facultad.ingenieria.pagina.repository.ProgramaRepository;
 import co.usco.facultad.ingenieria.pagina.service.ProgramaService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
@@ -212,6 +213,15 @@ public class ProgramaResource {
     public Mono<ResponseEntity<ProgramaDTO>> getPrograma(@PathVariable Long id) {
         log.debug("REST request to get Programa : {}", id);
         Mono<ProgramaDTO> programaDTO = programaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(programaDTO);
+    }
+
+    @GetMapping(value = {
+        "/open/programas/by-codigo-snies"
+    })
+    public Mono<ResponseEntity<ProgramaDTO>> getProgramaByCodigoSnies(@RequestParam("codigo_snies") Long codigoSnies) {
+        log.debug("REST get programa by codigoSnies: {}", codigoSnies);
+        Mono<ProgramaDTO> programaDTO = programaService.findByCodigoSnies(codigoSnies);
         return ResponseUtil.wrapOrNotFound(programaDTO);
     }
 

@@ -1,4 +1,14 @@
 {
+  "programa": {
+    "titulos": {
+      "codigo-snies": "Código SNIES:",
+      "registo-calificado": "Registro calificado",
+      "metodologia": "Metodologia",
+      "nivel-formacion": "Nivel de formación",
+      "titulo-otorgado": "Titulo otorgado",
+      "numero-creditos": "Número de créditos"
+    }
+  },
   "paginaFacultadIngenieriaProyectoApp": {
     "programa": {
       "home": {

@@ -1,5 +1,6 @@
 import pages from '@/router/pages';
 import { Authority } from '@/shared/security/authority';
+import pagesUsuarios from './pages-usuarios';
 /* tslint:disable */
 // prettier-ignore
 const Entities = () => import('@/entities/entities.vue');
@@ -29,13 +30,13 @@ const ProgramaUpdate = () => import('@/entities/programa/programa-update.vue');
 // prettier-ignore
 const ProgramaDetails = () => import('@/entities/programa/programa-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
-const ProgramasLista = () => import('@/pages/programas-lista/programas-lista.vue');
 
 export default {
   path: '/',
   component: Entities,
   children: [
     pages,
+    pagesUsuarios,
     {
       path: 'facultad',
       name: 'Facultad',

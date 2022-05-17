@@ -109,7 +109,7 @@
             {{ value.name }}
           </b-dropdown-item>
         </b-nav-item-dropdown>-->
-        <!--<b-nav-item-dropdown
+        <b-nav-item-dropdown
           right
           href="javascript:void(0);"
           id="account-menu"
@@ -149,7 +149,7 @@
             <font-awesome-icon icon="user-plus" />
             <span v-text="$t('global.menu.account.register')">Register</span>
           </b-dropdown-item>
-        </b-nav-item-dropdown>-->
+        </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

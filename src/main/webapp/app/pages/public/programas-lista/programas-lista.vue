@@ -76,7 +76,7 @@
               </div>
             </div>
             <div class="col container-button-ver">
-              <router-link to="/">
+              <router-link :to="'/faultad-ingenieria/programa-descripcion/' + programa.codigoSnies">
                 <button class="btn btn-ver-programa d-flex align-items-center justify-content-center" v-text="$t('programas-lista.resultados.buttons.ver')">Ver</button>
               </router-link>
             </div>

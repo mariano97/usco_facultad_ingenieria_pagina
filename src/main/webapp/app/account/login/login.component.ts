@@ -1,3 +1,4 @@
+import { Authority } from '@/shared/security/authority';
 import AccountService from '@/account/account.service';
 import axios from 'axios';
 import { Component, Vue, Inject } from 'vue-property-decorator';
@@ -36,12 +37,27 @@ export default class Login extends Vue {
         }
         this.authenticationError = false;
         // this.$root.$emit('bv::hide::modal', 'login-page');
-        this.accountService().retrieveAccount();
-        this.$router.push('/');
+        /* this.accountService()
+          .retrieveAccount()
+          .then(res => {
+            if (res) {
+              const authoritiesString = this.accountService().userAuthorities as Array<string>;
+              this.redirectSegunAuthorities(authoritiesString);
+            }
+        }); */
       })
       .catch(() => {
         this.authenticationError = true;
       });
   }
 
+  private redirectSegunAuthorities(authorities: string[]): void {
+    if (authorities.includes(Authority.ADMIN)) {
+      this.$router.push('/faultad-ingenieria/programas-lista');
+    } else if (authorities.includes(Authority.PROFESOR)) {
+      this.$router.push({
+        name: 'inicio_usuario',
+      });
+    }
+  }
 }

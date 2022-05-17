@@ -44,6 +44,8 @@ public interface ProgramaRepository extends ReactiveCrudRepository<Programa, Lon
     @Query("SELECT * FROM programa entity WHERE entity.facultad_id IS NULL")
     Flux<Programa> findAllWhereFacultadIsNull();
 
+    Mono<Programa> findByCodigoSnies(Long codigoSnies);
+
     @Override
     <S extends Programa> Mono<S> save(S entity);
 

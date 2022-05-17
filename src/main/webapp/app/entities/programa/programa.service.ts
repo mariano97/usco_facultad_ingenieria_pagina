@@ -48,6 +48,24 @@ export default class ProgramaService {
     });
   }
 
+  public findByCodigoSnies(isAutenticate: boolean, codigoSnies: number): Promise<IPrograma> {
+    const url = isAutenticate ? baseApiUrl : `${baseOpenApiUrl}/by-codigo-snies`;
+    return new Promise<IPrograma>((resolve, reject) => {
+      axios
+        .get(url, {
+          params: {
+            codigo_snies: codigoSnies,
+          }
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
