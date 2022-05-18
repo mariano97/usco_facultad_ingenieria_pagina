@@ -1,0 +1,82 @@
+@import '../../../content/scss/custom-variables';
+
+
+.container-sidbar-usuario {
+  .sidbar-usuario {
+    background-color: $color-gris-light;
+    max-width: 30vw;
+    width: 25vw;
+    section.conatiner-encabezado {
+      padding-left: 5%;
+      padding-right: 5%;
+      div.horizontal-divides-red {
+        padding-top: 3.5rem;
+        padding-bottom: 3.5rem;
+      }
+      img.imagen_usuario {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+      img.mini_imagen_sidbar {
+        width: 25px;
+        max-width: 25px;
+      }
+      h3.nombre_usuario {
+        color: $color-gris;
+        font-size: 20px;
+        margin-bottom: 1rem !important;
+      }
+      h4.texto_usuario_sidbar {
+        color: $color-gris;
+        font-size: 15px;
+        margin: 0px !important;
+      }
+    }
+    section.container-opciones-rutas {
+      div.horizontal-divides-red {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+      }
+      a {
+        &:hover {
+          text-decoration: none;
+        }
+        button {
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          cursor: pointer;
+          &:hover {
+            background-color: $color-red-light;
+          }
+          img {
+            max-width:40px;
+          }
+          h4 {
+            color: $color-gris;
+            margin-bottom: 0px;
+            font-size: 20px;
+          }
+        }
+
+      }
+    }
+    .container-opciones-config {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      button {
+        &:hover {
+          background-color: $color-red-light;
+        }
+        img {
+          max-width: 40px;
+        }
+        h4 {
+          color: $color-gris;
+          margin-bottom: 0px;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}

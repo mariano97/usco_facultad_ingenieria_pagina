@@ -37,14 +37,16 @@ export default class Login extends Vue {
         }
         this.authenticationError = false;
         // this.$root.$emit('bv::hide::modal', 'login-page');
-        /* this.accountService()
+        this.accountService()
           .retrieveAccount()
           .then(res => {
             if (res) {
               const authoritiesString = this.accountService().userAuthorities as Array<string>;
+              console.log("auths");
+              console.log(authoritiesString);
               this.redirectSegunAuthorities(authoritiesString);
             }
-        }); */
+        });
       })
       .catch(() => {
         this.authenticationError = true;
@@ -52,12 +54,16 @@ export default class Login extends Vue {
   }
 
   private redirectSegunAuthorities(authorities: string[]): void {
+    console.log("dentro de metodo redirect");
+    console.log(authorities);
     if (authorities.includes(Authority.ADMIN)) {
       this.$router.push('/faultad-ingenieria/programas-lista');
     } else if (authorities.includes(Authority.PROFESOR)) {
       this.$router.push({
         name: 'inicio_usuario',
       });
+    } else {
+      console.log("dentro de else");
     }
   }
 }

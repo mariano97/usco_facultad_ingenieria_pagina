@@ -182,5 +182,17 @@
         "ver": "Ver..."
       }
     }
+  },
+  "paginas": {
+    "privado": {
+      "sidbar": {
+        "opciones": {
+          "programas": "Programas",
+          "profesores": "Profesores",
+          "sedes": "Sedes",
+          "salir": "Salir"
+        }
+      }
+    }
   }
 }

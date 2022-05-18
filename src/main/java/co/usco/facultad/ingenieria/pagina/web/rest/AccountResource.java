@@ -99,6 +99,7 @@ public class AccountResource {
      */
     @GetMapping("/account")
     public Mono<AdminUserDTO> getAccount() {
+
         return userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)

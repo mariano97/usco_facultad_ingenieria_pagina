@@ -1,5 +1,5 @@
-import { IPrograma } from '../../../shared/model/programa.model';
 import ProgramaService from '@/entities/programa/programa.service';
+import { IPrograma } from '@/shared/model/programa.model';
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import './programa.scss';
 
