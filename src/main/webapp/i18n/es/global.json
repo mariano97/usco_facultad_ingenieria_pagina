@@ -192,6 +192,17 @@
           "sedes": "Sedes",
           "salir": "Salir"
         }
+      },
+      "programas-lista": {
+        "title-page": "Lista de programas",
+        "buttons": {
+          "button-crear": "Crear programa"
+        },
+        "tabla": {
+          "nombre-programa": "Nombre programa",
+          "codigo-snies": "SNIES",
+          "nivel-formacion": "Nivel formación"
+        }
       }
     }
   }

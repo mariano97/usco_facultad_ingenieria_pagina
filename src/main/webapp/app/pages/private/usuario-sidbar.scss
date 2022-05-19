@@ -58,7 +58,12 @@
             font-size: 20px;
           }
         }
-
+      }
+      .router-link-active {
+        background-color: $color-red-light;
+        button {
+          background-color: $color-red-light;
+        }
       }
     }
     .container-opciones-config {

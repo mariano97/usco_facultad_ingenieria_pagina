@@ -22,7 +22,7 @@
       <section class="container-opciones-rutas">
         <div class="horizontal-divides-red w-100">
           <div class="">
-            <router-link :to="{ name: 'inicio_usuario' }" class="opcion-sidbar py-4">
+            <router-link :to="{ name: 'usuario_programas_lista' }" class="opcion-sidbar py-4">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
                   <div class="col-sm-auto">

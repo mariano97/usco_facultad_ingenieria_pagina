@@ -1,0 +1,95 @@
+@import '../../../../content/scss/custom-variables';
+
+
+.container-usuario-programas-lista {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  h2.title-page {
+    color: $color-gris;
+    font-size: 28px;
+    margin: 0px;
+  }
+  a{
+    &:hover {
+      text-decoration: none;
+    }
+    button.btn-crear-programa {
+      background-color: $color-red;
+      color: $color-amarillo;
+      height: 50px;
+      width: 200px;
+      border-radius: 15px;
+      font-size: 20px;
+      &:hover {
+        background-color: $primary-color;
+        color: $color-gris-light;
+      }
+    }
+  }
+  section.tabla-resultados {
+    margin-top: 2.5rem;
+    table {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      overflow: hidden;
+      thead {
+        border: 1px solid $color-red;
+        th {
+          background-color: $color-red;
+          border-color: $color-red;
+          color: $color-amarillo;
+          font-size: 20px;
+        }
+      }
+      tbody {
+        border: 1px solid $color-gris;
+        tr {
+          border-bottom: 1px solid $color-gris;
+          cursor: pointer;
+          &:hover {
+            background-color: $color-red-light;
+          }
+          td {
+            color: $color-gris;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+    .content-paginacion {
+      div.info {
+        color: $color-gris;
+        font-size: 15px;
+      }
+      ul {
+        li {
+          &.disabled {
+            display: none;
+          }
+          &.active {
+            button {
+              background-color: $color-red !important;
+              color: $color-gris-light !important;
+            }
+          }
+          &.page-item {
+            button {
+              color: $color-gris;
+              &:hover {
+                background-color: $color-red-light;
+
+              }
+            }
+          }
+          .page-link {
+            border: 1px solid $color-gris !important;
+          }
+        }
+      }
+    }
+  }
+}
