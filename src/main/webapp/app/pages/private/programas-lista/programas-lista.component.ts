@@ -1,8 +1,8 @@
 import { IPrograma } from '@/shared/model/programa.model';
 import ProgramaService from '@/entities/programa/programa.service';
 import { Vue, Component, Inject } from 'vue-property-decorator';
+import accionesConstants from '@/shared/constants/acciones.constants';
 import './programas-lista.scss';
-
 @Component
 export default class ProgramasLista extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
@@ -16,6 +16,9 @@ export default class ProgramasLista extends Vue {
   public queryCount: number = null;
 
   public programasList: IPrograma[] = [];
+
+  public constantEditarPrograma = accionesConstants.ACCION_EDITAR_PROGRAMAS_LISTA;
+  public constantCrearPrograma = accionesConstants.ACCION_EDITAR_PROGRAMAS_LISTA;
 
   public mounted(): void {
     this.consultarAlProgramas();

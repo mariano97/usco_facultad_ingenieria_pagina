@@ -34,7 +34,7 @@
             <router-link
               v-for="programa in programasList" :key="programa.id" data-cy="programa"
               tag="tr"
-              :to="{ name: 'inicio_usuario' }"
+              :to="{ name: 'usuario_programa_descripcion', params: { programaId: programa.id, accion: constantEditarPrograma } }"
             >
               <td>{{ programa.nombre }}</td>
               <td>{{ programa.codigoSnies }}</td>
