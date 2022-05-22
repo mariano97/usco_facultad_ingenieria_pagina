@@ -214,3 +214,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+google:
+  ruta:
+    credenciales-file: "/Users/marioandresserranouruena/usco/pagina_facultad_ingenieria_proyecto/src/main/resources/config/google/credenciales-service-account-d8426d427709.json"
