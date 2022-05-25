@@ -39,8 +39,8 @@
       </div>
     </section>
     <section class="container mb-5 mt-3">
-      <div class="container-resultados-programas row mx-0">
-        <div class="col" v-for="(programa, index) in listProgramas" :key="index">
+      <div class="container-resultados-programas row mx-0 my-3" v-for="(programaArrayFront, index) in listArrayProgramas" :key="index">
+        <div class="col" v-for="(programa, index2) in programaArrayFront" :key="index2">
           <div class="container-resultado row mx-0">
             <div class="col-sm-9">
               <div class="conatiner-nombre-programa">

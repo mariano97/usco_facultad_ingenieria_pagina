@@ -14,6 +14,7 @@ export default class ProgramasLista extends Vue {
 
   private listTiposPrograma: ITablaElementoCatalogo[] = [];
   private listProgramas: IPrograma[] = [];
+  private listArrayProgramas: IPrograma[][] = [];
   private listProgramasTemp: IPrograma[] = [];
   public formNamePrograma = null;
   public formSelectTipoPrograma = 0;
@@ -40,7 +41,21 @@ export default class ProgramasLista extends Vue {
       .then(res => {
         this.listProgramas = res;
         this.listProgramasTemp = res;
+        this.agruparProgramasInArray(res);
       });
+  }
+
+  private agruparProgramasInArray(programas: IPrograma[]): void {
+    console.log(programas);
+    this.listArrayProgramas = [];
+    for (let i = 0; i < programas.length; i += 2) {
+      if (!(programas.length % 2) || programas.length - i != 1) {
+        this.listArrayProgramas.push([programas[i], programas[i + 1]]);
+      } else {
+        this.listArrayProgramas.push([programas[i]]);
+      }
+    }
+    console.log(this.listArrayProgramas);
   }
 
   public limpiarCampos(): void {
@@ -68,6 +83,7 @@ export default class ProgramasLista extends Vue {
       listaFiltarda = this.listProgramasTemp;
     }
     this.listProgramas = listaFiltarda;
+    this.agruparProgramasInArray(this.listProgramas);
   }
 
 }

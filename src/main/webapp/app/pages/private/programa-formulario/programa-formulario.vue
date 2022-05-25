@@ -1,6 +1,6 @@
 <template>
   <div class="container_formulario_programa">
-    <section class="header_arrow">
+    <section class="header_arrow d-flex justify-content-between">
       <div class="d-flex justify-content-start">
         <div class="row mx-0">
           <div class="col-sm-auto px-0 d-flex align-items-center">
@@ -8,10 +8,22 @@
               <img alt="retornar" src="/content/images/iconos/left-arrow-red.png" />
             </router-link>
           </div>
-          <div class="col">
+          <div class="col d-flex align-items-center">
             <h2 class="title_formulario_return">Programa</h2>
           </div>
         </div>
+      </div>
+      <div class="col-sm-auto">
+        <button
+          v-if="isModeEdit && !enableEdit"
+          class="btn btn_editar d-flex align-items-center justify-content-center"
+          type="button"
+          id="btn_editar"
+          v-text="$t('entity.action.edit')"
+          v-on:click="enableFormularioEditar()"
+        >
+          Editar
+        </button>
       </div>
     </section>
     <section class="programa_formulario">
@@ -30,6 +42,7 @@
                 class="form-control"
                 placeholder="Eg. Ingenieria de Software"
                 v-model="$v.programa.nombre.$model"
+                :disabled="checkHabilitacionCampos()"
                 required
               />
               <div class="" v-if="$v.programa.nombre.$anyDirty && $v.programa.nombre.$invalid">
@@ -50,6 +63,7 @@
                   class="form-control"
                   placeholder="Eg. 12345"
                   v-model.number="$v.programa.codigoSnies.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.programa.codigoSnies.$anyDirty && $v.programa.codigoSnies.$invalid">
@@ -75,6 +89,7 @@
                   class="form-control"
                   placeholder="Eg. 12345"
                   v-model.number="$v.programa.codigoRegistroCalificado.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.programa.codigoRegistroCalificado.$anyDirty && $v.programa.codigoRegistroCalificado.$invalid">
@@ -101,11 +116,19 @@
                   v-text="$t('programa.formulario.labels.fechaRegistroCalificado')"
                   >Fecha registro calificado</label
                 >
+                <!--<date-picker type="date">
+
+                </date-picker>-->
                 <input
                   type="date"
                   id="fecha_registro_calificado"
                   name="fecha_registro_calificado"
                   class="form-control"
+                  min="1900-01-01"
+                  :max="dateMax"
+                  :value="convertDateTimeFromServer($v.programa.fechaRegistroCalificado.$model)"
+                  @change="updateInstantField('fechaRegistroCalificado', $event)"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
               </div>
@@ -120,6 +143,7 @@
                   class="form-control"
                   placeholder="Eg. 345"
                   v-model.number="$v.programa.numeroCreditos.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.programa.numeroCreditos.$anyDirty && $v.programa.numeroCreditos.$invalid">
@@ -148,6 +172,7 @@
                       class="form-control"
                       placeholder="Eg. 10"
                       v-model.number="$v.programa.duracionPrograma.$model"
+                      :disabled="checkHabilitacionCampos()"
                     />
                   </div>
                   <div class="col-sm-auto">
@@ -166,6 +191,7 @@
                   class="form-control"
                   placeholder="Eg. Ingeniero de software"
                   v-model="$v.programa.nombreTituloOtorgado.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.programa.nombreTituloOtorgado.$anyDirty && $v.programa.nombreTituloOtorgado.$invalid">
@@ -189,6 +215,7 @@
                   class="form-control"
                   placeholder="Eg. 1000000"
                   v-model="$v.programa.costoPrograma.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.programa.costoPrograma.$anyDirty && $v.programa.costoPrograma.$invalid">
@@ -209,11 +236,19 @@
                 <select
                   class="form-control"
                   id="tipo_metodologia"
+                  name="tipo_metodologia"
                   v-model="programa.tipoFormacion"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 >
                   <option v-if="!programa.tipoFormacion" selected v-bind:value="null">Seleccione</option>
-                  <option v-for="(tipoFormacion, index) in listTiposFormacion" :key="index" :value="tipoFormacion.id">
+                  <option
+                    v-for="tipoFormacion in listTiposFormacion"
+                    :key="tipoFormacion.id"
+                    v-bind:value="
+                      programa.tipoFormacion && programa.tipoFormacion.id === tipoFormacion.id ? programa.tipoFormacion : tipoFormacion
+                    "
+                  >
                     {{ tipoFormacion.nombre }}
                   </option>
                 </select>
@@ -230,11 +265,19 @@
                 <select
                   class="form-control"
                   id="nivel_formacion"
+                  name="nivel_formacion"
                   v-model="programa.nivelFormacion"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 >
                   <option v-if="!programa.nivelFormacion" selected v-bind:value="null">Seleccione</option>
-                  <option v-for="(tipoPrograma, index) in listTiposPrograma" :key="index" :value="tipoPrograma.id">
+                  <option
+                    v-for="tipoPrograma in listTiposPrograma"
+                    :key="tipoPrograma.id"
+                    v-bind:value="
+                      programa.nivelFormacion && programa.nivelFormacion.id === tipoPrograma.id ? programa.nivelFormacion : tipoPrograma
+                    "
+                  >
                     {{ tipoPrograma.nombre }}
                   </option>
                 </select>
@@ -281,6 +324,7 @@
                       rows="5"
                       placeholder="Eg. Es un programa dado por profesores de primera..."
                       v-model="$v.programa.presentacionPrograma.$model"
+                      :disabled="checkHabilitacionCampos()"
                       required
                     ></textarea>
                     <div v-if="$v.programa.presentacionPrograma.$anyDirty && $v.programa.presentacionPrograma.$invalid">
@@ -310,6 +354,7 @@
                         cols="50"
                         rows="5"
                         placeholder="Eg. En el 2025 seremos el programa más..."
+                        :disabled="checkHabilitacionCampos()"
                         v-model="$v.programa.mision.$model"
                         required
                       ></textarea>
@@ -338,6 +383,7 @@
                         rows="5"
                         placeholder="Eg. En el 2025 seremos el programa más..."
                         v-model="$v.programa.vision.$model"
+                        :disabled="checkHabilitacionCampos()"
                         required
                       ></textarea>
                       <div v-if="$v.programa.vision.$anyDirty && $v.programa.vision.$invalid">
@@ -376,6 +422,7 @@
                       rows="5"
                       placeholder="Eg. En el 2025 seremos el programa más..."
                       v-model="$v.programa.perfilEstudiante.$model"
+                      :disabled="checkHabilitacionCampos()"
                     ></textarea>
                   </div>
                   <div class="row">
@@ -398,6 +445,7 @@
                         rows="5"
                         placeholder="Eg. En el 2025 seremos el programa más..."
                         v-model="$v.programa.perfilOcupacional.$model"
+                        :disabled="checkHabilitacionCampos()"
                       ></textarea>
                     </div>
                     <div class="form-group col">
@@ -419,6 +467,7 @@
                         rows="5"
                         placeholder="Eg. En el 2025 seremos el programa más..."
                         v-model="$v.programa.perfilEgresado.$model"
+                        :disabled="checkHabilitacionCampos()"
                         required
                       ></textarea>
                     </div>
@@ -431,20 +480,24 @@
             <div class="row mx-0">
               <div class="col-sm-auto">
                 <button
+                  v-if="enableEdit"
                   class="btn btn_cancel d-flex align-items-center justify-content-center"
                   type="button"
                   id="btn_cancel"
                   v-text="$t('entity.action.cancel')"
+                  v-on:click="cancelarAccion()"
                 >
                   Cancelar
                 </button>
               </div>
               <div class="col-sm-auto">
                 <button
+                  v-if="enableEdit"
                   class="btn btn_guardar d-flex align-items-center justify-content-center"
                   type="submit"
                   id="btn_guardar"
                   v-text="$t('entity.action.save')"
+                  :disabled="$v.programa.$invalid || isSaving"
                 >
                   Guardar
                 </button>

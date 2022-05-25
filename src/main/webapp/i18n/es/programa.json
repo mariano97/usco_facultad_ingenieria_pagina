@@ -2,11 +2,13 @@
   "programa": {
     "titulos": {
       "codigo-snies": "Código SNIES:",
-      "registo-calificado": "Registro calificado",
-      "metodologia": "Metodologia",
-      "nivel-formacion": "Nivel de formación",
-      "titulo-otorgado": "Titulo otorgado",
-      "numero-creditos": "Número de créditos"
+      "registo-calificado": "Registro calificado:",
+      "metodologia": "Metodologia:",
+      "nivel-formacion": "Nivel de formación:",
+      "titulo-otorgado": "Titulo otorgado:",
+      "numero-creditos": "Número de créditos:",
+      "duracionPrograma":"Duración:",
+      "costoPrograma":"Costo:"
     },
     "formulario": {
       "labels": {

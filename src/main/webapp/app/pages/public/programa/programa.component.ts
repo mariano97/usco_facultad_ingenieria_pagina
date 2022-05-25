@@ -1,5 +1,7 @@
 import ProgramaService from '@/entities/programa/programa.service';
+import { DATE_FORMAT, DATE_FORMAT_FULL_MONTH } from '@/shared/date/filters';
 import { IPrograma } from '@/shared/model/programa.model';
+import dayjs from 'dayjs';
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import './programa.scss';
 
@@ -21,6 +23,7 @@ export default class Programa extends Vue {
     this.programaService()
       .findByCodigoSnies(this.$store.getters.authenticated, Number(this.codigoSniesTemp))
       .then(res => {
+        res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
       })
       .catch(err => {
@@ -28,4 +31,10 @@ export default class Programa extends Vue {
       });
   }
 
+  public convertDateTimeFromServer(date: Date): string {
+    if (date && dayjs(date).isValid()) {
+      return dayjs(date).format(DATE_FORMAT_FULL_MONTH);
+    }
+    return null;
+  }
 }

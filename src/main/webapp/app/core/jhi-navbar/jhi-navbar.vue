@@ -117,6 +117,7 @@
           active-class="active"
           class="pointer"
           data-cy="accountMenu"
+          v-if="hasAnyAuthority('ROLE_ADMIN')"
         >
           <span slot="button-content" class="navbar-dropdown-menu">
             <font-awesome-icon icon="user" />
