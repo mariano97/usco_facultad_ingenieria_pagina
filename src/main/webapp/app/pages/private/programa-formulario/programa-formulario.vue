@@ -1,5 +1,460 @@
 <template>
-  <div></div>
+  <div class="container_formulario_programa">
+    <section class="header_arrow">
+      <div class="d-flex justify-content-start">
+        <div class="row mx-0">
+          <div class="col-sm-auto px-0 d-flex align-items-center">
+            <router-link :to="{ name: 'usuario_programas_lista' }" class="">
+              <img alt="retornar" src="/content/images/iconos/left-arrow-red.png" />
+            </router-link>
+          </div>
+          <div class="col">
+            <h2 class="title_formulario_return">Programa</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="programa_formulario">
+      <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
+        <div class="">
+          <div class="container_upload_image"></div>
+          <div class="">
+            <div class="col form-group px-0">
+              <label class="form-control-label" v-text="$t('programa.formulario.labels.nombrePrograma')" for="nombre_programa"
+                >Nombre del programa</label
+              >
+              <input
+                type="text"
+                id="nombre_programa"
+                name="nombre_programa"
+                class="form-control"
+                placeholder="Eg. Ingenieria de Software"
+                v-model="$v.programa.nombre.$model"
+                required
+              />
+              <div class="" v-if="$v.programa.nombre.$anyDirty && $v.programa.nombre.$invalid">
+                <small class="form-text text-danger" v-if="!$v.programa.nombre.required" v-text="$t('entity.validation.required')">
+                  Este campo es obligatorio.
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-3">
+                <label for="codigo_snies" class="form-control-label" v-text="$t('programa.formulario.labels.codigoSnies')"
+                  >Código SNIES</label
+                >
+                <input
+                  type="number"
+                  id="codigo_snies"
+                  name="codigo_snies"
+                  class="form-control"
+                  placeholder="Eg. 12345"
+                  v-model.number="$v.programa.codigoSnies.$model"
+                  required
+                />
+                <div v-if="$v.programa.codigoSnies.$anyDirty && $v.programa.codigoSnies.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.programa.codigoSnies.required" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                  <small class="form-text text-danger" v-if="!$v.programa.codigoSnies.numeric" v-text="$t('entity.validation.number')">
+                    This field should be a number.
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label
+                  for="codigo_registro_calificado"
+                  class="form-control-label"
+                  v-text="$t('programa.formulario.labels.codigoRegistroCalificado')"
+                  >Código registro calificado</label
+                >
+                <input
+                  type="number"
+                  id="codigo_registro_calificado"
+                  name="codigo_registro_calificado"
+                  class="form-control"
+                  placeholder="Eg. 12345"
+                  v-model.number="$v.programa.codigoRegistroCalificado.$model"
+                  required
+                />
+                <div v-if="$v.programa.codigoRegistroCalificado.$anyDirty && $v.programa.codigoRegistroCalificado.$invalid">
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.programa.codigoRegistroCalificado.required"
+                    v-text="$t('entity.validation.required')"
+                  >
+                    This field is required.
+                  </small>
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.programa.codigoRegistroCalificado.numeric"
+                    v-text="$t('entity.validation.number')"
+                  >
+                    This field should be a number.
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label
+                  for="fecha_registro_calificado"
+                  class="form-control-label"
+                  v-text="$t('programa.formulario.labels.fechaRegistroCalificado')"
+                  >Fecha registro calificado</label
+                >
+                <input
+                  type="date"
+                  id="fecha_registro_calificado"
+                  name="fecha_registro_calificado"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-3">
+                <label for="creditos" class="form-control-label" v-text="$t('programa.formulario.labels.creditos')">Creditos</label>
+                <input
+                  type="number"
+                  id="creditos"
+                  name="creditos"
+                  class="form-control"
+                  placeholder="Eg. 345"
+                  v-model.number="$v.programa.numeroCreditos.$model"
+                  required
+                />
+                <div v-if="$v.programa.numeroCreditos.$anyDirty && $v.programa.numeroCreditos.$invalid">
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.programa.numeroCreditos.required"
+                    v-text="$t('entity.validation.required')"
+                  >
+                    This field is required.
+                  </small>
+                  <small class="form-text text-danger" v-if="!$v.programa.numeroCreditos.numeric" v-text="$t('entity.validation.number')">
+                    This field should be a number.
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="duracion_programa" class="form-control-label" v-text="$t('programa.formulario.labels.duracionPrograma')"
+                  >Duración programa</label
+                >
+                <div class="row">
+                  <div class="col">
+                    <input
+                      type="number"
+                      id="duracion_programa"
+                      name="duracion_programa"
+                      class="form-control"
+                      placeholder="Eg. 10"
+                      v-model.number="$v.programa.duracionPrograma.$model"
+                    />
+                  </div>
+                  <div class="col-sm-auto">
+                    <h4 class="texto-semestre" v-text="$t('programa.formulario.textos.semestres')">Semestres</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="titulo_otorgado" class="form-control-label" v-text="$t('programa.formulario.labels.titloOtorgado')"
+                  >Titulo otrogado</label
+                >
+                <input
+                  type="text"
+                  id="titulo_otorgado"
+                  name="titulo_otorgado"
+                  class="form-control"
+                  placeholder="Eg. Ingeniero de software"
+                  v-model="$v.programa.nombreTituloOtorgado.$model"
+                  required
+                />
+                <div v-if="$v.programa.nombreTituloOtorgado.$anyDirty && $v.programa.nombreTituloOtorgado.$invalid">
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.programa.nombreTituloOtorgado.required"
+                    v-text="$t('entity.validation.required')"
+                  >
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col-3">
+                <label for="costo_programa" class="form-control-label" v-text="$t('programa.formulario.labels.costoPrograma')"
+                  >Titulo otrogado</label
+                >
+                <input
+                  type="number"
+                  id="costo_programa"
+                  name="costo_programa"
+                  class="form-control"
+                  placeholder="Eg. 1000000"
+                  v-model="$v.programa.costoPrograma.$model"
+                  required
+                />
+                <div v-if="$v.programa.costoPrograma.$anyDirty && $v.programa.costoPrograma.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.programa.costoPrograma.required" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                  <small class="form-text text-danger" v-if="!$v.programa.costoPrograma.numeric" v-text="$t('entity.validation.number')">
+                    This field should be a number.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="tipo_metodologia" class="form-control-label" v-text="$t('programa.formulario.labels.tipoMetodologia')"
+                  >Tipo de metodologia</label
+                >
+                <select
+                  class="form-control"
+                  id="tipo_metodologia"
+                  v-model="programa.tipoFormacion"
+                  required
+                >
+                  <option v-if="!programa.tipoFormacion" selected v-bind:value="null">Seleccione</option>
+                  <option v-for="(tipoFormacion, index) in listTiposFormacion" :key="index" :value="tipoFormacion.id">
+                    {{ tipoFormacion.nombre }}
+                  </option>
+                </select>
+                <div v-if="$v.programa.tipoFormacion.$anyDirty && $v.programa.tipoFormacion.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.programa.tipoFormacion.required" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="nivel_formacion" class="form-control-label" v-text="$t('programa.formulario.labels.nivelFormacion')"
+                  >Nivel de formación</label
+                >
+                <select
+                  class="form-control"
+                  id="nivel_formacion"
+                  v-model="programa.nivelFormacion"
+                  required
+                >
+                  <option v-if="!programa.nivelFormacion" selected v-bind:value="null">Seleccione</option>
+                  <option v-for="(tipoPrograma, index) in listTiposPrograma" :key="index" :value="tipoPrograma.id">
+                    {{ tipoPrograma.nombre }}
+                  </option>
+                </select>
+                <div v-if="$v.programa.nivelFormacion.$anyDirty && $v.programa.nivelFormacion.$invalid">
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.programa.nivelFormacion.required"
+                    v-text="$t('entity.validation.required')"
+                  >
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="tab">
+              <input type="checkbox" id="check_presentacio" />
+              <label
+                class="tab-label item_acordion"
+                for="check_presentacio"
+                v-text="$t('programa.formulario.labels.presentacionProgramaTitle')"
+                >Presentación del programa</label
+              >
+              <div class="tab-content web_tabs">
+                <div class="">
+                  <div class="col px-0 form-group">
+                    <label
+                      for="presentacion_programa"
+                      class="form-control-label"
+                      v-text="$t('programa.formulario.labels.presentacionPrograma')"
+                      >¿Cúal es la presentación del programa?</label
+                    >
+                    <div class="d-flex justify-content-end">
+                      <small
+                        class="count_tamano_text"
+                        :class="{ count_text_limit: countCharacter(255, $v.programa.presentacionPrograma.$model) < 10 }"
+                        >Quedan {{ countCharacter(255, $v.programa.presentacionPrograma.$model) }} caracteres</small
+                      >
+                    </div>
+                    <textarea
+                      id="presentacion_programa"
+                      class="form-control"
+                      name="presentacion_programa"
+                      cols="50"
+                      rows="5"
+                      placeholder="Eg. Es un programa dado por profesores de primera..."
+                      v-model="$v.programa.presentacionPrograma.$model"
+                      required
+                    ></textarea>
+                    <div v-if="$v.programa.presentacionPrograma.$anyDirty && $v.programa.presentacionPrograma.$invalid">
+                      <small
+                        class="form-text text-danger"
+                        v-if="!$v.programa.presentacionPrograma.required"
+                        v-text="$t('entity.validation.required')"
+                      >
+                        This field is required.
+                      </small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <label for="mision_programa" class="form-control-label" v-text="$t('programa.formulario.labels.misionPrograma')"
+                        >Misión del programa</label
+                      >
+                      <div class="d-flex justify-content-end">
+                        <small class="count_tamano_text" :class="{ count_text_limit: countCharacter(255, $v.programa.mision.$model) < 10 }"
+                          >Quedan {{ countCharacter(255, $v.programa.mision.$model) }} caracteres</small
+                        >
+                      </div>
+                      <textarea
+                        id="mision_programa"
+                        class="form-control"
+                        name="mision_programa"
+                        cols="50"
+                        rows="5"
+                        placeholder="Eg. En el 2025 seremos el programa más..."
+                        v-model="$v.programa.mision.$model"
+                        required
+                      ></textarea>
+                      <div v-if="$v.programa.mision.$anyDirty && $v.programa.mision.$invalid">
+                        <small class="form-text text-danger" v-if="!$v.programa.mision.required" v-text="$t('entity.validation.required')">
+                          This field is required.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="form-group col">
+                      <label for="vision_programa" class="form-control-label" v-text="$t('programa.formulario.labels.visionPrograma')"
+                        >Visión del programa</label
+                      >
+                      <div class="d-flex justify-content-end">
+                        <small
+                          class="count_tamano_text"
+                          :class="{ count_text_limit: countCharacter(255, $v.programa.vision.$model) < 10 }"
+                          >Quedan {{ countCharacter(255, $v.programa.vision.$model) }} caracteres</small
+                        >
+                      </div>
+                      <textarea
+                        id="vision_programa"
+                        class="form-control"
+                        name="vision_programa"
+                        cols="50"
+                        rows="5"
+                        placeholder="Eg. En el 2025 seremos el programa más..."
+                        v-model="$v.programa.vision.$model"
+                        required
+                      ></textarea>
+                      <div v-if="$v.programa.vision.$anyDirty && $v.programa.vision.$invalid">
+                        <small class="form-text text-danger" v-if="!$v.programa.vision.required" v-text="$t('entity.validation.required')">
+                          This field is required.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab">
+              <input type="checkbox" id="perfiles_programa" />
+              <label class="tab-label item_acordion" for="perfiles_programa" v-text="$t('programa.formulario.labels.prefilesProgramaTitle')"
+                >Perfiles del programa</label
+              >
+              <div class="tab-content web_tabs">
+                <div class="">
+                  <div class="col px-0 form-group">
+                    <label for="perfil_estudiante" class="form-control-label" v-text="$t('programa.formulario.labels.perfilEstudiante')"
+                      >perfilEstudiante</label
+                    >
+                    <div class="d-flex justify-content-end">
+                      <small
+                        class="count_tamano_text"
+                        :class="{ count_text_limit: countCharacter(255, $v.programa.perfilEstudiante.$model) < 10 }"
+                        >Quedan {{ countCharacter(255, $v.programa.perfilEstudiante.$model) }} caracteres</small
+                      >
+                    </div>
+                    <textarea
+                      id="perfil_estudiante"
+                      class="form-control"
+                      name="perfil_estudiante"
+                      cols="50"
+                      rows="5"
+                      placeholder="Eg. En el 2025 seremos el programa más..."
+                      v-model="$v.programa.perfilEstudiante.$model"
+                    ></textarea>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <label for="perfil_ocupacional" class="form-control-label" v-text="$t('programa.formulario.labels.perfilOcupacional')"
+                        >perfilEstudiante</label
+                      >
+                      <div class="d-flex justify-content-end">
+                        <small
+                          class="count_tamano_text"
+                          :class="{ count_text_limit: countCharacter(255, $v.programa.perfilOcupacional.$model) < 10 }"
+                          >Quedan {{ countCharacter(255, $v.programa.perfilOcupacional.$model) }} caracteres</small
+                        >
+                      </div>
+                      <textarea
+                        id="perfil_ocupacional"
+                        class="form-control"
+                        name="perfil_ocupacional"
+                        cols="50"
+                        rows="5"
+                        placeholder="Eg. En el 2025 seremos el programa más..."
+                        v-model="$v.programa.perfilOcupacional.$model"
+                      ></textarea>
+                    </div>
+                    <div class="form-group col">
+                      <label for="perfil_egresado" class="form-control-label" v-text="$t('programa.formulario.labels.pefilEgresado')"
+                        >Visión del programa</label
+                      >
+                      <div class="d-flex justify-content-end">
+                        <small
+                          class="count_tamano_text"
+                          :class="{ count_text_limit: countCharacter(255, $v.programa.perfilEgresado.$model) < 10 }"
+                          >Quedan {{ countCharacter(255, $v.programa.perfilEgresado.$model) }} caracteres</small
+                        >
+                      </div>
+                      <textarea
+                        id="perfil_egresado"
+                        class="form-control"
+                        name="perfil_egresado"
+                        cols="50"
+                        rows="5"
+                        placeholder="Eg. En el 2025 seremos el programa más..."
+                        v-model="$v.programa.perfilEgresado.$model"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <section class="buttons_formulario">
+            <div class="row mx-0">
+              <div class="col-sm-auto">
+                <button
+                  class="btn btn_cancel d-flex align-items-center justify-content-center"
+                  type="button"
+                  id="btn_cancel"
+                  v-text="$t('entity.action.cancel')"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-sm-auto">
+                <button
+                  class="btn btn_guardar d-flex align-items-center justify-content-center"
+                  type="submit"
+                  id="btn_guardar"
+                  v-text="$t('entity.action.save')"
+                >
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </form>
+    </section>
+  </div>
 </template>
 
 <script lang="ts" src="./programa-formulario.component.ts"></script>

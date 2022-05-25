@@ -18,7 +18,7 @@ export default class ProgramasLista extends Vue {
   public programasList: IPrograma[] = [];
 
   public constantEditarPrograma = accionesConstants.ACCION_EDITAR_PROGRAMAS_LISTA;
-  public constantCrearPrograma = accionesConstants.ACCION_EDITAR_PROGRAMAS_LISTA;
+  public constantCrearPrograma = accionesConstants.ACCION_CREAR_PROGRAMAS_LISTA;
 
   public mounted(): void {
     this.consultarAlProgramas();

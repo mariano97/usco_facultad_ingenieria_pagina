@@ -7,6 +7,31 @@
       "nivel-formacion": "Nivel de formación",
       "titulo-otorgado": "Titulo otorgado",
       "numero-creditos": "Número de créditos"
+    },
+    "formulario": {
+      "labels": {
+        "nombrePrograma": "Nombre del programa",
+        "codigoSnies": "Código Snies",
+        "codigoRegistroCalificado":"Código Registro Calificado",
+        "fechaRegistroCalificado":"Fecha Registro Calificado",
+        "creditos": "Creditos",
+        "duracionPrograma":"Duración Programa",
+        "titloOtorgado": "Titulo otorgado",
+        "costoPrograma": "Costo Programa",
+        "tipoMetodologia": "Tipo de metodologia",
+        "nivelFormacion":"Nivel Formación",
+        "presentacionProgramaTitle": "Presentación del programa",
+        "presentacionPrograma":"¿Cúal es la presentación del programa?",
+        "misionPrograma": "Misión del programa",
+        "visionPrograma": "Visión del programa",
+        "prefilesProgramaTitle": "Perfiles del programa",
+        "perfilEstudiante":"Perfil del estudiante",
+        "perfilOcupacional": "Perfil Ocupacional",
+        "pefilEgresado": "Perfil del egresado"
+      },
+      "textos": {
+        "semestres": "Semestres"
+      }
     }
   },
   "paginaFacultadIngenieriaProyectoApp": {

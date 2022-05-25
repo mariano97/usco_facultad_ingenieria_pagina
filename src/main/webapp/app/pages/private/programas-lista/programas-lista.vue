@@ -6,7 +6,7 @@
           <h2 class="title-page" v-text="$t('paginas.privado.programas-lista.title-page')">Lista de programas</h2>
         </div>
         <div class="">
-          <router-link to="/">
+          <router-link :to="{ name: 'usuario_crear_programa', params: { accion: constantCrearPrograma } }">
             <button class="btn btn-crear-programa d-flex align-items-center justify-content-center" v-text="$t('paginas.privado.programas-lista.buttons.button-crear')">
               Crear Programa
             </button>

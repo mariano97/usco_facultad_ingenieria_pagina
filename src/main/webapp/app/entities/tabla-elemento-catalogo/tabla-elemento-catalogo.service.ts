@@ -88,7 +88,7 @@ export default class TablaElementoCatalogoService {
   }
 
   public getAllByTipoCatalogoKeyIdentificador(isAutenticate: boolean, keyIdentificador: string): Promise<ITablaElementoCatalogo[]> {
-    const url = isAutenticate ? baseApiUrl : `${baseApiUrlOpen}/tipo-catalogo-key-identificador`;
+    const url = isAutenticate ? `${baseApiUrl}/tipo-catalogo-key-identificador` : `${baseApiUrlOpen}/tipo-catalogo-key-identificador`;
     return new Promise<ITablaElementoCatalogo[]>((resolve, reject) => {
       axios
         .get(`${url}`, {
