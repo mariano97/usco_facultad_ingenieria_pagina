@@ -25,5 +25,17 @@
                                  constraintName="fk_programa__facultad_id"
                                  referencedColumnNames="id"
                                  referencedTableName="facultad"/>
+
+        <addForeignKeyConstraint baseColumnNames="programa_id"
+                                 baseTableName="rel_programa__sede"
+                                 constraintName="fk_rel_programa__sede__programa_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="programa"/>
+
+        <addForeignKeyConstraint baseColumnNames="sede_id"
+                                 baseTableName="rel_programa__sede"
+                                 constraintName="fk_rel_programa__sede__sede_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sede"/>
     </changeSet>
 </databaseChangeLog>

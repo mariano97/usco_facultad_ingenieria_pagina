@@ -109,6 +109,14 @@
       "relationshipName": "facultad",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "sede",
+      "otherEntityRelationshipName": "programa",
+      "ownerSide": true,
+      "relationshipName": "sede",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

@@ -4,6 +4,9 @@ import { required, decimal } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 
+import ProgramaService from '@/entities/programa/programa.service';
+import { IPrograma } from '@/shared/model/programa.model';
+
 import { ISede, Sede } from '@/shared/model/sede.model';
 import SedeService from './sede.service';
 
@@ -37,6 +40,10 @@ export default class SedeUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
 
   public sede: ISede = new Sede();
+
+  @Inject('programaService') private programaService: () => ProgramaService;
+
+  public programas: IPrograma[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -45,6 +52,7 @@ export default class SedeUpdate extends Vue {
       if (to.params.sedeId) {
         vm.retrieveSede(to.params.sedeId);
       }
+      vm.initRelationships();
     });
   }
 
@@ -116,5 +124,11 @@ export default class SedeUpdate extends Vue {
     this.$router.go(-1);
   }
 
-  public initRelationships(): void {}
+  public initRelationships(): void {
+    this.programaService()
+      .retrieve()
+      .then(res => {
+        this.programas = res.data;
+      });
+  }
 }

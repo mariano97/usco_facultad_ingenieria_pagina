@@ -9,6 +9,7 @@ import SedeUpdateComponent from '@/entities/sede/sede-update.vue';
 import SedeClass from '@/entities/sede/sede-update.component';
 import SedeService from '@/entities/sede/sede.service';
 
+import ProgramaService from '@/entities/programa/programa.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -42,6 +43,11 @@ describe('Component Tests', () => {
         provide: {
           sedeService: () => sedeServiceStub,
           alertService: () => new AlertService(),
+
+          programaService: () =>
+            sinon.createStubInstance<ProgramaService>(ProgramaService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
         },
       });
       comp = wrapper.vm;

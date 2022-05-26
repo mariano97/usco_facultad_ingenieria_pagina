@@ -1,8 +1,10 @@
 package co.usco.facultad.ingenieria.pagina.repository;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
 
 import co.usco.facultad.ingenieria.pagina.domain.Programa;
+import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.FacultadRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.ProgramaRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.TablaElementoCatalogoRowMapper;
@@ -54,6 +56,8 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
     private static final Table nivelFormacionTable = Table.aliased("tabla_elemento_catalogo", "nivelFormacion");
     private static final Table tipoFormacionTable = Table.aliased("tabla_elemento_catalogo", "tipoFormacion");
     private static final Table facultadTable = Table.aliased("facultad", "facultad");
+
+    private static final EntityManager.LinkTable sedeLink = new EntityManager.LinkTable("rel_programa__sede", "programa_id", "sede_id");
 
     public ProgramaRepositoryInternalImpl(
         R2dbcEntityTemplate template,
@@ -141,6 +145,20 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
 
     @Override
     public <S extends Programa> Mono<S> save(S entity) {
-        return super.save(entity);
+        return super.save(entity).flatMap((S e) -> updateRelations(e));
+    }
+
+    protected <S extends Programa> Mono<S> updateRelations(S entity) {
+        Mono<Void> result = entityManager.updateLinkTable(sedeLink, entity.getId(), entity.getSedes().stream().map(Sede::getId)).then();
+        return result.thenReturn(entity);
+    }
+
+    @Override
+    public Mono<Void> deleteById(Long entityId) {
+        return deleteRelations(entityId).then(super.deleteById(entityId));
+    }
+
+    protected Mono<Void> deleteRelations(Long entityId) {
+        return entityManager.deleteFromLinkTable(sedeLink, entityId);
     }
 }

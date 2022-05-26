@@ -15,6 +15,8 @@ import ProgramaService from '@/entities/programa/programa.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 
 import FacultadService from '@/entities/facultad/facultad.service';
+
+import SedeService from '@/entities/sede/sede.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -56,6 +58,11 @@ describe('Component Tests', () => {
 
           facultadService: () =>
             sinon.createStubInstance<FacultadService>(FacultadService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          sedeService: () =>
+            sinon.createStubInstance<SedeService>(SedeService, {
               retrieve: sinon.stub().resolves({}),
             } as any),
         },

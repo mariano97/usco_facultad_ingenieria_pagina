@@ -12,6 +12,9 @@ import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.m
 import FacultadService from '@/entities/facultad/facultad.service';
 import { IFacultad } from '@/shared/model/facultad.model';
 
+import SedeService from '@/entities/sede/sede.service';
+import { ISede } from '@/shared/model/sede.model';
+
 import { IPrograma, Programa } from '@/shared/model/programa.model';
 import ProgramaService from './programa.service';
 
@@ -90,6 +93,10 @@ export default class ProgramaUpdate extends Vue {
   @Inject('facultadService') private facultadService: () => FacultadService;
 
   public facultads: IFacultad[] = [];
+
+  @Inject('sedeService') private sedeService: () => SedeService;
+
+  public sedes: ISede[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -110,6 +117,7 @@ export default class ProgramaUpdate extends Vue {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.programa.sedes = [];
   }
 
   public save(): void {
@@ -205,5 +213,17 @@ export default class ProgramaUpdate extends Vue {
       .then(res => {
         this.facultads = res.data;
       });
+    this.sedeService()
+      .retrieve()
+      .then(res => {
+        this.sedes = res.data;
+      });
+  }
+
+  public getSelected(selectedVals, option): any {
+    if (selectedVals) {
+      return selectedVals.find(value => option.id === value.id) ?? option;
+    }
+    return option;
   }
 }

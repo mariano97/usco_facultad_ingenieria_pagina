@@ -1,6 +1,9 @@
 package co.usco.facultad.ingenieria.pagina.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -38,6 +41,10 @@ public class Sede implements Serializable {
     @NotNull(message = "must not be null")
     @Column("estado")
     private Boolean estado;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes" }, allowSetters = true)
+    private Set<Programa> programas = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -117,6 +124,37 @@ public class Sede implements Serializable {
 
     public void setEstado(Boolean estado) {
         this.estado = estado;
+    }
+
+    public Set<Programa> getProgramas() {
+        return this.programas;
+    }
+
+    public void setProgramas(Set<Programa> programas) {
+        if (this.programas != null) {
+            this.programas.forEach(i -> i.removeSede(this));
+        }
+        if (programas != null) {
+            programas.forEach(i -> i.addSede(this));
+        }
+        this.programas = programas;
+    }
+
+    public Sede programas(Set<Programa> programas) {
+        this.setProgramas(programas);
+        return this;
+    }
+
+    public Sede addPrograma(Programa programa) {
+        this.programas.add(programa);
+        programa.getSedes().add(this);
+        return this;
+    }
+
+    public Sede removePrograma(Programa programa) {
+        this.programas.remove(programa);
+        programa.getSedes().remove(this);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

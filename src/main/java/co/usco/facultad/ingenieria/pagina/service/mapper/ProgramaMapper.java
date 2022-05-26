@@ -2,10 +2,14 @@ package co.usco.facultad.ingenieria.pagina.service.mapper;
 
 import co.usco.facultad.ingenieria.pagina.domain.Facultad;
 import co.usco.facultad.ingenieria.pagina.domain.Programa;
+import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.domain.TablaElementoCatalogo;
 import co.usco.facultad.ingenieria.pagina.service.dto.FacultadDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.SedeDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.TablaElementoCatalogoDTO;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.mapstruct.*;
 
 /**
@@ -16,7 +20,11 @@ public interface ProgramaMapper extends EntityMapper<ProgramaDTO, Programa> {
     @Mapping(target = "nivelFormacion", source = "nivelFormacion", qualifiedByName = "tablaElementoCatalogoNombre")
     @Mapping(target = "tipoFormacion", source = "tipoFormacion", qualifiedByName = "tablaElementoCatalogoNombre")
     @Mapping(target = "facultad", source = "facultad", qualifiedByName = "facultadNombre")
+    @Mapping(target = "sedes", source = "sedes", qualifiedByName = "sedeNombreSet")
     ProgramaDTO toDto(Programa s);
+
+    @Mapping(target = "removeSede", ignore = true)
+    Programa toEntity(ProgramaDTO programaDTO);
 
     @Named("tablaElementoCatalogoNombre")
     @BeanMapping(ignoreByDefault = true)
@@ -29,4 +37,15 @@ public interface ProgramaMapper extends EntityMapper<ProgramaDTO, Programa> {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "nombre", source = "nombre")
     FacultadDTO toDtoFacultadNombre(Facultad facultad);
+
+    @Named("sedeNombre")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nombre", source = "nombre")
+    SedeDTO toDtoSedeNombre(Sede sede);
+
+    @Named("sedeNombreSet")
+    default Set<SedeDTO> toDtoSedeNombreSet(Set<Sede> sede) {
+        return sede.stream().map(this::toDtoSedeNombre).collect(Collectors.toSet());
+    }
 }

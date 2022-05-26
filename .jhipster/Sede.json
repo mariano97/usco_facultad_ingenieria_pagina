@@ -33,6 +33,14 @@
   "name": "Sede",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "programa",
+      "otherEntityRelationshipName": "sede",
+      "ownerSide": false,
+      "relationshipName": "programa",
+      "relationshipType": "many-to-many"
+    }
+  ],
   "service": "serviceImpl"
 }

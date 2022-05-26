@@ -79,6 +79,20 @@
         <dropDefaultValue tableName="programa" columnName="fecha_registro_calificado" columnDataType="${datetimeType}"/>
     </changeSet>
 
+    <changeSet id="20220511152408-1-relations" author="jhipster">
+
+        <createTable tableName="rel_programa__sede">
+            <column name="sede_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="programa_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="programa_id, sede_id" tableName="rel_programa__sede"/>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

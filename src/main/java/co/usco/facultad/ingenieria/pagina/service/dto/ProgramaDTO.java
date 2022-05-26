@@ -3,7 +3,9 @@ package co.usco.facultad.ingenieria.pagina.service.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -64,6 +66,8 @@ public class ProgramaDTO implements Serializable {
     private TablaElementoCatalogoDTO tipoFormacion;
 
     private FacultadDTO facultad;
+
+    private Set<SedeDTO> sedes = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -233,6 +237,14 @@ public class ProgramaDTO implements Serializable {
         this.facultad = facultad;
     }
 
+    public Set<SedeDTO> getSedes() {
+        return sedes;
+    }
+
+    public void setSedes(Set<SedeDTO> sedes) {
+        this.sedes = sedes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -279,6 +291,7 @@ public class ProgramaDTO implements Serializable {
             ", nivelFormacion=" + getNivelFormacion() +
             ", tipoFormacion=" + getTipoFormacion() +
             ", facultad=" + getFacultad() +
+            ", sedes=" + getSedes() +
             "}";
     }
 }

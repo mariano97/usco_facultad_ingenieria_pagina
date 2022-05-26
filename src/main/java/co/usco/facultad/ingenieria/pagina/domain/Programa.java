@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -95,6 +97,10 @@ public class Programa implements Serializable {
 
     @Transient
     private Facultad facultad;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "programas" }, allowSetters = true)
+    private Set<Sede> sedes = new HashSet<>();
 
     @Column("nivel_formacion_id")
     private Long nivelFormacionId;
@@ -380,6 +386,31 @@ public class Programa implements Serializable {
 
     public Programa facultad(Facultad facultad) {
         this.setFacultad(facultad);
+        return this;
+    }
+
+    public Set<Sede> getSedes() {
+        return this.sedes;
+    }
+
+    public void setSedes(Set<Sede> sedes) {
+        this.sedes = sedes;
+    }
+
+    public Programa sedes(Set<Sede> sedes) {
+        this.setSedes(sedes);
+        return this;
+    }
+
+    public Programa addSede(Sede sede) {
+        this.sedes.add(sede);
+        sede.getProgramas().add(this);
+        return this;
+    }
+
+    public Programa removeSede(Sede sede) {
+        this.sedes.remove(sede);
+        sede.getProgramas().remove(this);
         return this;
     }
 

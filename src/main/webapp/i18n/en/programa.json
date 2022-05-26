@@ -37,7 +37,8 @@
       "estado": "Estado",
       "nivelFormacion": "Nivel Formacion",
       "tipoFormacion": "Tipo Formacion",
-      "facultad": "Facultad"
+      "facultad": "Facultad",
+      "sede": "Sede"
     }
   }
 }

@@ -22,7 +22,8 @@
       "latitud": "Latitud",
       "longitud": "Longitud",
       "direccion": "Direccion",
-      "estado": "Estado"
+      "estado": "Estado",
+      "programa": "Programa"
     }
   }
 }
