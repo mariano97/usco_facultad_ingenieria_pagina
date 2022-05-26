@@ -29,6 +29,12 @@ const Programa = () => import('@/entities/programa/programa.vue');
 const ProgramaUpdate = () => import('@/entities/programa/programa-update.vue');
 // prettier-ignore
 const ProgramaDetails = () => import('@/entities/programa/programa-details.vue');
+// prettier-ignore
+const Sede = () => import('@/entities/sede/sede.vue');
+// prettier-ignore
+const SedeUpdate = () => import('@/entities/sede/sede-update.vue');
+// prettier-ignore
+const SedeDetails = () => import('@/entities/sede/sede-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -131,6 +137,30 @@ export default {
       path: 'programa/:programaId/view',
       name: 'ProgramaView',
       component: ProgramaDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'sede',
+      name: 'Sede',
+      component: Sede,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'sede/new',
+      name: 'SedeCreate',
+      component: SedeUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'sede/:sedeId/edit',
+      name: 'SedeEdit',
+      component: SedeUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'sede/:sedeId/view',
+      name: 'SedeView',
+      component: SedeDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

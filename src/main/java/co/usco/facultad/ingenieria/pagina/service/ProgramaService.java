@@ -41,8 +41,6 @@ public interface ProgramaService {
      */
     Flux<ProgramaDTO> findAll(Pageable pageable);
 
-    Mono<ProgramaDTO> findByCodigoSnies(Long codigoSnies);
-
     /**
      * Get all the programas with eager load of many-to-many relationships.
      *

@@ -12,6 +12,7 @@
         "tablaTiposCatalogo": "Tabla Tipos Catalogo",
         "tablaElementoCatalogo": "Tabla Elemento Catalogo",
         "programa": "Programa",
+        "sede": "Sede",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

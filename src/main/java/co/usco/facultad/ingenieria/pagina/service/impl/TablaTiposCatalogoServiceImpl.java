@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Random;
-import java.util.UUID;
-
 /**
  * Service Implementation for managing {@link TablaTiposCatalogo}.
  */
@@ -40,7 +37,6 @@ public class TablaTiposCatalogoServiceImpl implements TablaTiposCatalogoService 
     @Override
     public Mono<TablaTiposCatalogoDTO> save(TablaTiposCatalogoDTO tablaTiposCatalogoDTO) {
         log.debug("Request to save TablaTiposCatalogo : {}", tablaTiposCatalogoDTO);
-        tablaTiposCatalogoDTO.setKeyIdentificador(UUID.randomUUID().toString());
         return tablaTiposCatalogoRepository
             .save(tablaTiposCatalogoMapper.toEntity(tablaTiposCatalogoDTO))
             .map(tablaTiposCatalogoMapper::toDto);

@@ -45,9 +45,6 @@ public interface ProgramaRepository extends ReactiveCrudRepository<Programa, Lon
     Flux<Programa> findAllWhereFacultadIsNull();
 
     @Override
-    Mono<Programa> findByCodigoSnies(Long codigoSnies);
-
-    @Override
     <S extends Programa> Mono<S> save(S entity);
 
     @Override
@@ -76,8 +73,6 @@ interface ProgramaRepositoryInternal {
     Flux<Programa> findAllWithEagerRelationships();
 
     Flux<Programa> findAllWithEagerRelationships(Pageable page);
-
-    Mono<Programa> findByCodigoSnies(Long codigoSnies);
 
     Mono<Void> deleteById(Long id);
 }

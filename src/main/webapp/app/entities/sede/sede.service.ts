@@ -2,13 +2,13 @@ import axios from 'axios';
 
 import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+import { ISede } from '@/shared/model/sede.model';
 
-const baseApiUrl = 'api/tabla-elemento-catalogos';
+const baseApiUrl = 'api/sedes';
 
-export default class TablaElementoCatalogoService {
-  public find(id: number): Promise<ITablaElementoCatalogo> {
-    return new Promise<ITablaElementoCatalogo>((resolve, reject) => {
+export default class SedeService {
+  public find(id: number): Promise<ISede> {
+    return new Promise<ISede>((resolve, reject) => {
       axios
         .get(`${baseApiUrl}/${id}`)
         .then(res => {
@@ -46,8 +46,8 @@ export default class TablaElementoCatalogoService {
     });
   }
 
-  public create(entity: ITablaElementoCatalogo): Promise<ITablaElementoCatalogo> {
-    return new Promise<ITablaElementoCatalogo>((resolve, reject) => {
+  public create(entity: ISede): Promise<ISede> {
+    return new Promise<ISede>((resolve, reject) => {
       axios
         .post(`${baseApiUrl}`, entity)
         .then(res => {
@@ -59,8 +59,8 @@ export default class TablaElementoCatalogoService {
     });
   }
 
-  public update(entity: ITablaElementoCatalogo): Promise<ITablaElementoCatalogo> {
-    return new Promise<ITablaElementoCatalogo>((resolve, reject) => {
+  public update(entity: ISede): Promise<ISede> {
+    return new Promise<ISede>((resolve, reject) => {
       axios
         .put(`${baseApiUrl}/${entity.id}`, entity)
         .then(res => {
@@ -72,8 +72,8 @@ export default class TablaElementoCatalogoService {
     });
   }
 
-  public partialUpdate(entity: ITablaElementoCatalogo): Promise<ITablaElementoCatalogo> {
-    return new Promise<ITablaElementoCatalogo>((resolve, reject) => {
+  public partialUpdate(entity: ISede): Promise<ISede> {
+    return new Promise<ISede>((resolve, reject) => {
       axios
         .patch(`${baseApiUrl}/${entity.id}`, entity)
         .then(res => {

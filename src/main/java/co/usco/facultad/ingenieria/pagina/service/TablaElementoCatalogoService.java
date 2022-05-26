@@ -50,15 +50,6 @@ public interface TablaElementoCatalogoService {
     Flux<TablaElementoCatalogoDTO> findAllWithEagerRelationships(Pageable pageable);
 
     /**
-     *
-     * Obtener todos los elementos por el campo TiposCatalogo keyIdentificador
-     *
-     * @param keyIdentificador
-     * @return
-     */
-    Flux<TablaElementoCatalogoDTO> findByTiposCatalogoKeyIdentificador(String keyIdentificador);
-
-    /**
      * Returns the number of tablaElementoCatalogos available.
      * @return the number of entities in the database.
      *

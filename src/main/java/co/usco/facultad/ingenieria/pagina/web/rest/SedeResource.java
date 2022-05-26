@@ -1,8 +1,8 @@
 package co.usco.facultad.ingenieria.pagina.web.rest;
 
-import co.usco.facultad.ingenieria.pagina.repository.ProgramaRepository;
-import co.usco.facultad.ingenieria.pagina.service.ProgramaService;
-import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.repository.SedeRepository;
+import co.usco.facultad.ingenieria.pagina.service.SedeService;
+import co.usco.facultad.ingenieria.pagina.service.dto.SedeDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,47 +33,47 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.reactive.ResponseUtil;
 
 /**
- * REST controller for managing {@link co.usco.facultad.ingenieria.pagina.domain.Programa}.
+ * REST controller for managing {@link co.usco.facultad.ingenieria.pagina.domain.Sede}.
  */
 @RestController
 @RequestMapping("/api")
-public class ProgramaResource {
+public class SedeResource {
 
-    private final Logger log = LoggerFactory.getLogger(ProgramaResource.class);
+    private final Logger log = LoggerFactory.getLogger(SedeResource.class);
 
-    private static final String ENTITY_NAME = "programa";
+    private static final String ENTITY_NAME = "sede";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final ProgramaService programaService;
+    private final SedeService sedeService;
 
-    private final ProgramaRepository programaRepository;
+    private final SedeRepository sedeRepository;
 
-    public ProgramaResource(ProgramaService programaService, ProgramaRepository programaRepository) {
-        this.programaService = programaService;
-        this.programaRepository = programaRepository;
+    public SedeResource(SedeService sedeService, SedeRepository sedeRepository) {
+        this.sedeService = sedeService;
+        this.sedeRepository = sedeRepository;
     }
 
     /**
-     * {@code POST  /programas} : Create a new programa.
+     * {@code POST  /sedes} : Create a new sede.
      *
-     * @param programaDTO the programaDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new programaDTO, or with status {@code 400 (Bad Request)} if the programa has already an ID.
+     * @param sedeDTO the sedeDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new sedeDTO, or with status {@code 400 (Bad Request)} if the sede has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/programas")
-    public Mono<ResponseEntity<ProgramaDTO>> createPrograma(@Valid @RequestBody ProgramaDTO programaDTO) throws URISyntaxException {
-        log.debug("REST request to save Programa : {}", programaDTO);
-        if (programaDTO.getId() != null) {
-            throw new BadRequestAlertException("A new programa cannot already have an ID", ENTITY_NAME, "idexists");
+    @PostMapping("/sedes")
+    public Mono<ResponseEntity<SedeDTO>> createSede(@Valid @RequestBody SedeDTO sedeDTO) throws URISyntaxException {
+        log.debug("REST request to save Sede : {}", sedeDTO);
+        if (sedeDTO.getId() != null) {
+            throw new BadRequestAlertException("A new sede cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        return programaService
-            .save(programaDTO)
+        return sedeService
+            .save(sedeDTO)
             .map(result -> {
                 try {
                     return ResponseEntity
-                        .created(new URI("/api/programas/" + result.getId()))
+                        .created(new URI("/api/sedes/" + result.getId()))
                         .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                         .body(result);
                 } catch (URISyntaxException e) {
@@ -83,37 +83,37 @@ public class ProgramaResource {
     }
 
     /**
-     * {@code PUT  /programas/:id} : Updates an existing programa.
+     * {@code PUT  /sedes/:id} : Updates an existing sede.
      *
-     * @param id the id of the programaDTO to save.
-     * @param programaDTO the programaDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated programaDTO,
-     * or with status {@code 400 (Bad Request)} if the programaDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the programaDTO couldn't be updated.
+     * @param id the id of the sedeDTO to save.
+     * @param sedeDTO the sedeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated sedeDTO,
+     * or with status {@code 400 (Bad Request)} if the sedeDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the sedeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/programas/{id}")
-    public Mono<ResponseEntity<ProgramaDTO>> updatePrograma(
+    @PutMapping("/sedes/{id}")
+    public Mono<ResponseEntity<SedeDTO>> updateSede(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ProgramaDTO programaDTO
+        @Valid @RequestBody SedeDTO sedeDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Programa : {}, {}", id, programaDTO);
-        if (programaDTO.getId() == null) {
+        log.debug("REST request to update Sede : {}, {}", id, sedeDTO);
+        if (sedeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, programaDTO.getId())) {
+        if (!Objects.equals(id, sedeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return programaRepository
+        return sedeRepository
             .existsById(id)
             .flatMap(exists -> {
                 if (!exists) {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                return programaService
-                    .update(programaDTO)
+                return sedeService
+                    .update(sedeDTO)
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                     .map(result ->
                         ResponseEntity
@@ -125,37 +125,37 @@ public class ProgramaResource {
     }
 
     /**
-     * {@code PATCH  /programas/:id} : Partial updates given fields of an existing programa, field will ignore if it is null
+     * {@code PATCH  /sedes/:id} : Partial updates given fields of an existing sede, field will ignore if it is null
      *
-     * @param id the id of the programaDTO to save.
-     * @param programaDTO the programaDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated programaDTO,
-     * or with status {@code 400 (Bad Request)} if the programaDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the programaDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the programaDTO couldn't be updated.
+     * @param id the id of the sedeDTO to save.
+     * @param sedeDTO the sedeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated sedeDTO,
+     * or with status {@code 400 (Bad Request)} if the sedeDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the sedeDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the sedeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/programas/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public Mono<ResponseEntity<ProgramaDTO>> partialUpdatePrograma(
+    @PatchMapping(value = "/sedes/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    public Mono<ResponseEntity<SedeDTO>> partialUpdateSede(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody ProgramaDTO programaDTO
+        @NotNull @RequestBody SedeDTO sedeDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Programa partially : {}, {}", id, programaDTO);
-        if (programaDTO.getId() == null) {
+        log.debug("REST request to partial update Sede partially : {}, {}", id, sedeDTO);
+        if (sedeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, programaDTO.getId())) {
+        if (!Objects.equals(id, sedeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
-        return programaRepository
+        return sedeRepository
             .existsById(id)
             .flatMap(exists -> {
                 if (!exists) {
                     return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
                 }
 
-                Mono<ProgramaDTO> result = programaService.partialUpdate(programaDTO);
+                Mono<SedeDTO> result = sedeService.partialUpdate(sedeDTO);
 
                 return result
                     .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -169,23 +169,21 @@ public class ProgramaResource {
     }
 
     /**
-     * {@code GET  /programas} : get all the programas.
+     * {@code GET  /sedes} : get all the sedes.
      *
      * @param pageable the pagination information.
      * @param request a {@link ServerHttpRequest} request.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of programas in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sedes in body.
      */
-    @GetMapping("/programas")
-    public Mono<ResponseEntity<List<ProgramaDTO>>> getAllProgramas(
+    @GetMapping("/sedes")
+    public Mono<ResponseEntity<List<SedeDTO>>> getAllSedes(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        ServerHttpRequest request,
-        @RequestParam(required = false, defaultValue = "true") boolean eagerload
+        ServerHttpRequest request
     ) {
-        log.debug("REST request to get a page of Programas");
-        return programaService
+        log.debug("REST request to get a page of Sedes");
+        return sedeService
             .countAll()
-            .zipWith(programaService.findAll(pageable).collectList())
+            .zipWith(sedeService.findAll(pageable).collectList())
             .map(countWithEntities ->
                 ResponseEntity
                     .ok()
@@ -200,29 +198,29 @@ public class ProgramaResource {
     }
 
     /**
-     * {@code GET  /programas/:id} : get the "id" programa.
+     * {@code GET  /sedes/:id} : get the "id" sede.
      *
-     * @param id the id of the programaDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the programaDTO, or with status {@code 404 (Not Found)}.
+     * @param id the id of the sedeDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the sedeDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/programas/{id}")
-    public Mono<ResponseEntity<ProgramaDTO>> getPrograma(@PathVariable Long id) {
-        log.debug("REST request to get Programa : {}", id);
-        Mono<ProgramaDTO> programaDTO = programaService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(programaDTO);
+    @GetMapping("/sedes/{id}")
+    public Mono<ResponseEntity<SedeDTO>> getSede(@PathVariable Long id) {
+        log.debug("REST request to get Sede : {}", id);
+        Mono<SedeDTO> sedeDTO = sedeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(sedeDTO);
     }
 
     /**
-     * {@code DELETE  /programas/:id} : delete the "id" programa.
+     * {@code DELETE  /sedes/:id} : delete the "id" sede.
      *
-     * @param id the id of the programaDTO to delete.
+     * @param id the id of the sedeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/programas/{id}")
+    @DeleteMapping("/sedes/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public Mono<ResponseEntity<Void>> deletePrograma(@PathVariable Long id) {
-        log.debug("REST request to delete Programa : {}", id);
-        return programaService
+    public Mono<ResponseEntity<Void>> deleteSede(@PathVariable Long id) {
+        log.debug("REST request to delete Sede : {}", id);
+        return sedeService
             .delete(id)
             .map(result ->
                 ResponseEntity

@@ -131,12 +131,6 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
         return findAllBy(page);
     }
 
-    @Override
-    public Mono<Programa> findByCodigoSnies(Long codigoSnies) {
-        Comparison whereClause = Conditions.isEqual(entityTable.column("codigo_snies"), Conditions.just(codigoSnies.toString()));
-        return createQuery(null, whereClause).one();
-    }
-
     private Programa process(Row row, RowMetadata metadata) {
         Programa entity = programaMapper.apply(row, "e");
         entity.setNivelFormacion(tablaelementocatalogoMapper.apply(row, "nivelFormacion"));

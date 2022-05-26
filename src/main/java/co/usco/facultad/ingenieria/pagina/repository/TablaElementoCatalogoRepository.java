@@ -33,12 +33,6 @@ public interface TablaElementoCatalogoRepository
     @Query("SELECT * FROM tabla_elemento_catalogo entity WHERE entity.tabla_tipos_catalogo_id IS NULL")
     Flux<TablaElementoCatalogo> findAllWhereTablaTiposCatalogoIsNull();
 
-    @Query("SELECT tec.id, tec.nombre, tec.abreviatura, tec.estado, tec.tabla_tipos_catalogo_id " +
-        "FROM tabla_elemento_catalogo tec " +
-        "JOIN  tabla_tipos_catalogo ttc ON ttc.id = tec.tabla_tipos_catalogo_id " +
-        "WHERE ttc.key_identificador = :keyIdentificador")
-    Flux<TablaElementoCatalogo> findByTablaTiposCatalogoKeyIdentificador(String keyIdentificador);
-
     @Override
     <S extends TablaElementoCatalogo> Mono<S> save(S entity);
 
