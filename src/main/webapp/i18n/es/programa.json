@@ -8,13 +8,19 @@
       "titulo-otorgado": "Titulo otorgado:",
       "numero-creditos": "Número de créditos:",
       "duracionPrograma":"Duración:",
-      "costoPrograma":"Costo:"
+      "costoPrograma":"Costo:",
+      "caracteristicas": "Caracteristicas",
+      "perfil-estudiante": "Pefil del estudiante",
+      "perfil-egresado": "Perfil del egresado",
+      "perfil-ocupacional": "Perfil ocupacional",
+      "plan-estudio": "Plan de estudio"
     },
     "otros": {
-      "que-ofrecemos": "Que ofrecemos",
+      "que-ofrecemos": "¿Que ofrecemos?",
       "mision": "Nuestra Misión",
       "vision": "Nuestra Visión",
-      "dirigido-a-quien": "Va dirigio a"
+      "dirigido-a-quien": "A quien va dirigio"
+
     },
     "formulario": {
       "labels": {

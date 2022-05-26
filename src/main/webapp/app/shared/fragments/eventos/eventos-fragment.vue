@@ -15,9 +15,9 @@
         >
           <div class="card-container-eventos">
             <div class="imagen">
-              <!--<img
+              <img
                 :src="getImageUrl(30+n)"
-              />-->
+              />
             </div>
             <div class="body">
               <div class="conatiner-title-eventos">

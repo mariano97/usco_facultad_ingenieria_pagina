@@ -1,6 +1,7 @@
 <template>
+  <div  class="">
+    <section class="home-container">
 
-  <div class="home-container">
       <div class="container-slider">
         <swiper
           :slides-per-view="1"

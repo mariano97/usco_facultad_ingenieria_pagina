@@ -1,6 +1,6 @@
 import { IPresentacionBasico } from '@/shared/model/presentacion-basico.model';
 import ProgramaService from '@/entities/programa/programa.service';
-import { Navigation, Pagination } from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper';
 import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 import { DATE_FORMAT_FULL_MONTH } from '@/shared/date/filters';
 import { IPrograma } from '@/shared/model/programa.model';
@@ -9,7 +9,7 @@ import { Vue, Component, Inject } from 'vue-property-decorator';
 import 'swiper/swiper-bundle.css';
 import './programa.scss';
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 @Component({
   components: {
@@ -25,6 +25,7 @@ export default class Programa extends Vue {
 
   public programa: IPrograma = {};
   public pesentacionBasico: IPresentacionBasico[] = [];
+  public isPresentacionBasicaLoaded = false;
 
   public created(): void {
     this.consultarPrograma();
@@ -52,6 +53,7 @@ export default class Programa extends Vue {
   }
 
   private llenarListaPresentacion(programa: IPrograma): void {
+    this.isPresentacionBasicaLoaded = false;
     this.pesentacionBasico = [];
     if (programa.presentacionPrograma && programa.presentacionPrograma.trim().length > 0) {
       this.pesentacionBasico.push({
@@ -78,6 +80,7 @@ export default class Programa extends Vue {
       });
     }
     console.log(this.pesentacionBasico);
+    this.isPresentacionBasicaLoaded = true;
   }
 
   public getImageUrl (imageId) {

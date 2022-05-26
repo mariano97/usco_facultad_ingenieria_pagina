@@ -22,6 +22,7 @@ module.exports = (env, options) => {
     new BrowserSyncPlugin(
       {
         host: 'localhost',
+        // cambiar siempre por puerto 9000
         port: 9000,
         proxy: {
           target: `http://localhost:${options.watch ? '8081' : '9060'}`,
