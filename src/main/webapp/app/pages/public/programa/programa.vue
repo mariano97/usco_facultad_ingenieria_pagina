@@ -162,7 +162,7 @@
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
-                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/sombrero-de-graduacion-gray.png" />
+                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/occupational-profile-gray.png" />
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                       <h2 class="title" v-text="$t('programa.titulos.perfil-ocupacional')">Perfil ocupacional</h2>
