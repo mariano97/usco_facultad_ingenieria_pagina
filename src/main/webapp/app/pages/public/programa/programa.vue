@@ -86,6 +86,29 @@
         </div>
       </div>
     </section>
+    <!--<section class="informacion_presentacion">
+      <div class="container-swiper-presentacion">
+        <swiper :slides-per-view="1" :space-between="50" :loop="false" :navigation="true" :pagination="true">
+          <swiper-slide v-for="info in pesentacionBasico" :key="info.title" class="slide-swiper">
+            <div class="card-container-presentacion mx-auto">
+              <div class="">
+                <div class="container-title horizontal-divides-red-22 d-flex align-items-center justify-content-center">
+                  <h1 class="title">{{ info.title }}</h1>
+                </div>
+                <div class="body-descripcion">
+                  <p class="text">{{ info.descripcion }}</p>
+                </div>
+              </div>
+            </div>-->
+            <!--<img
+              :src="getImageUrl(34+n)"
+              class="img-fluid w-100 mx-auto"
+              blank="true"
+            >-->
+          <!--</swiper-slide>
+        </swiper>-->
+      </div>
+    </section>
   </div>
 </template>
 

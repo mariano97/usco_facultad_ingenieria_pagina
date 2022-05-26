@@ -10,6 +10,12 @@
       "duracionPrograma":"Duración:",
       "costoPrograma":"Costo:"
     },
+    "otros": {
+      "que-ofrecemos": "Que ofrecemos",
+      "mision": "Nuestra Misión",
+      "vision": "Nuestra Visión",
+      "dirigido-a-quien": "Va dirigio a"
+    },
     "formulario": {
       "labels": {
         "nombrePrograma": "Nombre del programa",

@@ -1,7 +1,7 @@
 import { Navigation, Pagination } from 'swiper';
 import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 import { Component, Vue } from 'vue-property-decorator';
-
+import 'swiper/swiper-bundle.css';
 import './eventos-fragment.scss';
 
 SwiperCore.use([Navigation, Pagination]);

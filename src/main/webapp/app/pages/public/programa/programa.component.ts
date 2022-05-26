@@ -1,11 +1,22 @@
+import { IPresentacionBasico } from '@/shared/model/presentacion-basico.model';
 import ProgramaService from '@/entities/programa/programa.service';
-import { DATE_FORMAT, DATE_FORMAT_FULL_MONTH } from '@/shared/date/filters';
+import { Navigation, Pagination } from 'swiper';
+import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
+import { DATE_FORMAT_FULL_MONTH } from '@/shared/date/filters';
 import { IPrograma } from '@/shared/model/programa.model';
 import dayjs from 'dayjs';
 import { Vue, Component, Inject } from 'vue-property-decorator';
+import 'swiper/swiper-bundle.css';
 import './programa.scss';
 
-@Component
+SwiperCore.use([Navigation, Pagination]);
+
+@Component({
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+})
 export default class Programa extends Vue {
 
   private codigoSniesTemp = this.$route.params.codigo_snies;
@@ -13,6 +24,7 @@ export default class Programa extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
 
   public programa: IPrograma = {};
+  public pesentacionBasico: IPresentacionBasico[] = [];
 
   public created(): void {
     this.consultarPrograma();
@@ -25,6 +37,7 @@ export default class Programa extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
+        this.llenarListaPresentacion(this.programa);
       })
       .catch(err => {
         console.error(err);
@@ -36,5 +49,38 @@ export default class Programa extends Vue {
       return dayjs(date).format(DATE_FORMAT_FULL_MONTH);
     }
     return null;
+  }
+
+  private llenarListaPresentacion(programa: IPrograma): void {
+    this.pesentacionBasico = [];
+    if (programa.presentacionPrograma && programa.presentacionPrograma.trim().length > 0) {
+      this.pesentacionBasico.push({
+        title: this.$t('programa.otros.que-ofrecemos').toString(),
+        descripcion: programa.presentacionPrograma,
+      });
+    }
+    if (programa.mision && programa.mision.trim().length > 0) {
+      this.pesentacionBasico.push({
+        title: this.$t('programa.otros.mision').toString(),
+        descripcion: programa.mision,
+      });
+    }
+    if (programa.vision && programa.vision.trim().length > 0) {
+      this.pesentacionBasico.push({
+        title: this.$t('programa.otros.vision').toString(),
+        descripcion: programa.vision,
+      });
+    }
+    if (programa.dirigidoAQuien && programa.dirigidoAQuien.trim().length > 0) {
+      this.pesentacionBasico.push({
+        title: this.$t('programa.otros.dirigido-a-quien').toString(),
+        descripcion: programa.dirigidoAQuien,
+      });
+    }
+    console.log(this.pesentacionBasico);
+  }
+
+  public getImageUrl (imageId) {
+    return `https://picsum.photos/600/400/?image=${imageId}`;
   }
 }

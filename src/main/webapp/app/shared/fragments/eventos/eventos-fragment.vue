@@ -9,15 +9,15 @@
         :navigation="true"
       >
         <swiper-slide
-          v-for="n in 10"
+          v-for="n in 4"
           :key="n"
           class="slide-swiper"
         >
           <div class="card-container-eventos">
             <div class="imagen">
-              <img
+              <!--<img
                 :src="getImageUrl(30+n)"
-              />
+              />-->
             </div>
             <div class="body">
               <div class="conatiner-title-eventos">
