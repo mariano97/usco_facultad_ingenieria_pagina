@@ -54,6 +54,10 @@ public class Sede implements Serializable {
     @Column("correo_electronico")
     private String correoElectronico;
 
+    @NotNull(message = "must not be null")
+    @Column("codigo_indicativo")
+    private String codigoIndicativo;
+
     @Transient
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes" }, allowSetters = true)
     private Set<Programa> programas = new HashSet<>();
@@ -177,6 +181,19 @@ public class Sede implements Serializable {
         this.correoElectronico = correoElectronico;
     }
 
+    public String getCodigoIndicativo() {
+        return this.codigoIndicativo;
+    }
+
+    public Sede codigoIndicativo(String codigoIndicativo) {
+        this.setCodigoIndicativo(codigoIndicativo);
+        return this;
+    }
+
+    public void setCodigoIndicativo(String codigoIndicativo) {
+        this.codigoIndicativo = codigoIndicativo;
+    }
+
     public Set<Programa> getProgramas() {
         return this.programas;
     }
@@ -240,6 +257,7 @@ public class Sede implements Serializable {
             ", telefonoFijo='" + getTelefonoFijo() + "'" +
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", correoElectronico='" + getCorreoElectronico() + "'" +
+            ", codigoIndicativo='" + getCodigoIndicativo() + "'" +
             "}";
     }
 }

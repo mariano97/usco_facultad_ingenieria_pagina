@@ -192,6 +192,29 @@
               </small>
             </div>
           </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.codigoIndicativo')"
+              for="sede-codigoIndicativo"
+              >Codigo Indicativo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="codigoIndicativo"
+              id="sede-codigoIndicativo"
+              data-cy="codigoIndicativo"
+              :class="{ valid: !$v.sede.codigoIndicativo.$invalid, invalid: $v.sede.codigoIndicativo.$invalid }"
+              v-model="$v.sede.codigoIndicativo.$model"
+              required
+            />
+            <div v-if="$v.sede.codigoIndicativo.$anyDirty && $v.sede.codigoIndicativo.$invalid">
+              <small class="form-text text-danger" v-if="!$v.sede.codigoIndicativo.required" v-text="$t('entity.validation.required')">
+                This field is required.
+              </small>
+            </div>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

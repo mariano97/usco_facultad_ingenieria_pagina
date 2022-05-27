@@ -35,6 +35,9 @@ public class SedeDTO implements Serializable {
     @NotNull(message = "must not be null")
     private String correoElectronico;
 
+    @NotNull(message = "must not be null")
+    private String codigoIndicativo;
+
     public Long getId() {
         return id;
     }
@@ -107,6 +110,14 @@ public class SedeDTO implements Serializable {
         this.correoElectronico = correoElectronico;
     }
 
+    public String getCodigoIndicativo() {
+        return codigoIndicativo;
+    }
+
+    public void setCodigoIndicativo(String codigoIndicativo) {
+        this.codigoIndicativo = codigoIndicativo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -141,6 +152,7 @@ public class SedeDTO implements Serializable {
             ", telefonoFijo='" + getTelefonoFijo() + "'" +
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", correoElectronico='" + getCorreoElectronico() + "'" +
+            ", codigoIndicativo='" + getCodigoIndicativo() + "'" +
             "}";
     }
 }

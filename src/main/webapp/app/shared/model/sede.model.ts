@@ -10,6 +10,7 @@ export interface ISede {
   telefonoFijo?: string | null;
   telefonoCelular?: string | null;
   correoElectronico?: string;
+  codigoIndicativo?: string;
   programas?: IPrograma[] | null;
 }
 
@@ -24,6 +25,7 @@ export class Sede implements ISede {
     public telefonoFijo?: string | null,
     public telefonoCelular?: string | null,
     public correoElectronico?: string,
+    public codigoIndicativo?: string,
     public programas?: IPrograma[] | null
   ) {
     this.estado = this.estado ?? false;

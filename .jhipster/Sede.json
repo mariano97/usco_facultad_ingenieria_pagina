@@ -44,6 +44,11 @@
       "fieldName": "correoElectronico",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codigoIndicativo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
     }
   ],
   "jpaMetamodelFiltering": false,

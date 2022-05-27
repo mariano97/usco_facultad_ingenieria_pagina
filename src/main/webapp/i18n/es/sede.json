@@ -1,7 +1,4 @@
 {
-  "sede": {
-
-  },
   "paginaFacultadIngenieriaProyectoApp": {
     "sede": {
       "home": {
@@ -29,6 +26,7 @@
       "telefonoFijo": "Telefono Fijo",
       "telefonoCelular": "Telefono Celular",
       "correoElectronico": "Correo Electronico",
+      "codigoIndicativo": "Codigo Indicativo",
       "programa": "Programa"
     }
   }

@@ -59,6 +59,10 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.correoElectronico')">Correo Electronico</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'correoElectronico'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('codigoIndicativo')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.codigoIndicativo')">Codigo Indicativo</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'codigoIndicativo'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -75,6 +79,7 @@
             <td>{{ sede.telefonoFijo }}</td>
             <td>{{ sede.telefonoCelular }}</td>
             <td>{{ sede.correoElectronico }}</td>
+            <td>{{ sede.codigoIndicativo }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'SedeView', params: { sedeId: sede.id } }" custom v-slot="{ navigate }">

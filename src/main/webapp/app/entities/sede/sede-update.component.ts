@@ -38,6 +38,9 @@ const validations: any = {
     correoElectronico: {
       required,
     },
+    codigoIndicativo: {
+      required,
+    },
   },
 };
 
