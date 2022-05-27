@@ -10,7 +10,7 @@ export default class ProgramasLista extends Vue {
   public itemsPerPage = 10;
   public page = 1;
   public previusPage = 1;
-  public propiedadOrder = 'id';
+  public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
   public queryCount: number = null;
@@ -41,13 +41,14 @@ export default class ProgramasLista extends Vue {
         err => {
           console.error("error obtener programas");
           console.error(err);
+          this.programasList = [];
         }
       );
   }
 
   public sort(): Array<any> {
-    const result = [this.propiedadOrder + ',' + (this.reverse ? 'desc' : 'asc')];
-    if (this.propiedadOrder !== 'id') {
+    const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
+    if (this.propOrder !== 'id') {
       result.push('id');
     }
     return result;
@@ -64,4 +65,9 @@ export default class ProgramasLista extends Vue {
     this.consultarAlProgramas();
   }
 
+  public changeOrder(propOrder: string): void {
+    this.propOrder = propOrder;
+    this.reverse = !this.reverse;
+    this.transition();
+  }
 }

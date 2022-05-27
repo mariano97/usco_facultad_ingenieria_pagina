@@ -31,13 +31,19 @@ export function initFilters() {
     return '';
   });
   Vue.filter('toCOPCurrency', value => {
-    if (typeof value !== "number") {
-        return value;
+    if (typeof value !== 'number') {
+      return value;
     }
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'COP',
     });
     return formatter.format(value);
+  });
+  Vue.filter('formatTelefonoFijo', (value: string) => {
+    if (value) {
+      return '(608) ' + value;
+    }
+    return '';
   });
 }

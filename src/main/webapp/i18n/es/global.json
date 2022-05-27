@@ -204,6 +204,18 @@
           "codigo-snies": "SNIES",
           "nivel-formacion": "Nivel formación"
         }
+      },
+      "sedes-lista": {
+        "title-page": "Lista de sedes",
+        "buttons": {
+          "button-crear": "Crear sede"
+        },
+        "tabla": {
+          "nombre-sede": "Nombre sede",
+          "direccion-sede": "Dirección",
+          "telefono-sede": "Teléfono",
+          "email": "Correo electronico"
+        }
       }
     }
   }

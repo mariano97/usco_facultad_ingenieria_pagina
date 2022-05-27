@@ -19,14 +19,17 @@
         <table class="table" aria-describedby="programas">
           <thead class="thead-dark">
             <tr>
-              <th scope="row">
+              <th scope="row" v-on:click="changeOrder('nombre')">
                 <span v-text="$t('paginas.privado.programas-lista.tabla.nombre-programa')">Nombre programa</span>
+                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nombre'"></jhi-sort-indicator>
               </th>
-              <th scope="row">
+              <th scope="row" v-on:click="changeOrder('codigoSnies')">
                 <span v-text="$t('paginas.privado.programas-lista.tabla.codigo-snies')">SNIES</span>
+                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'codigoSnies'"></jhi-sort-indicator>
               </th>
-              <th scope="row">
+              <th scope="row" v-on:click="changeOrder('nivelFormacion.nombre')">
                 <span v-text="$t('paginas.privado.programas-lista.tabla.nivel-formacion')">nivel-formacion</span>
+                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nivelFormacion.nombre'"></jhi-sort-indicator>
               </th>
             </tr>
           </thead>
@@ -49,7 +52,13 @@
             <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>
           </div>
           <div class="row justify-content-center">
-            <b-pagination size="md" :total-rows="totalItems" v-model="page" :per-page="itemsPerPage" :change="loadPage(page)"></b-pagination>
+            <b-pagination
+              size="md"
+              :total-rows="totalItems"
+              v-model="page"
+              :per-page="itemsPerPage"
+              :change="loadPage(page)"
+            ></b-pagination>
           </div>
         </div>
       </div>
