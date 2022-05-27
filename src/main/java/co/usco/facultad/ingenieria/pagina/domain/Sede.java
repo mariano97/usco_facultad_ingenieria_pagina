@@ -42,6 +42,18 @@ public class Sede implements Serializable {
     @Column("estado")
     private Boolean estado;
 
+    @Size(max = 7)
+    @Column("telefono_fijo")
+    private String telefonoFijo;
+
+    @Size(max = 10)
+    @Column("telefono_celular")
+    private String telefonoCelular;
+
+    @NotNull(message = "must not be null")
+    @Column("correo_electronico")
+    private String correoElectronico;
+
     @Transient
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes" }, allowSetters = true)
     private Set<Programa> programas = new HashSet<>();
@@ -126,6 +138,45 @@ public class Sede implements Serializable {
         this.estado = estado;
     }
 
+    public String getTelefonoFijo() {
+        return this.telefonoFijo;
+    }
+
+    public Sede telefonoFijo(String telefonoFijo) {
+        this.setTelefonoFijo(telefonoFijo);
+        return this;
+    }
+
+    public void setTelefonoFijo(String telefonoFijo) {
+        this.telefonoFijo = telefonoFijo;
+    }
+
+    public String getTelefonoCelular() {
+        return this.telefonoCelular;
+    }
+
+    public Sede telefonoCelular(String telefonoCelular) {
+        this.setTelefonoCelular(telefonoCelular);
+        return this;
+    }
+
+    public void setTelefonoCelular(String telefonoCelular) {
+        this.telefonoCelular = telefonoCelular;
+    }
+
+    public String getCorreoElectronico() {
+        return this.correoElectronico;
+    }
+
+    public Sede correoElectronico(String correoElectronico) {
+        this.setCorreoElectronico(correoElectronico);
+        return this;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
     public Set<Programa> getProgramas() {
         return this.programas;
     }
@@ -186,6 +237,9 @@ public class Sede implements Serializable {
             ", longitud=" + getLongitud() +
             ", direccion='" + getDireccion() + "'" +
             ", estado='" + getEstado() + "'" +
+            ", telefonoFijo='" + getTelefonoFijo() + "'" +
+            ", telefonoCelular='" + getTelefonoCelular() + "'" +
+            ", correoElectronico='" + getCorreoElectronico() + "'" +
             "}";
     }
 }

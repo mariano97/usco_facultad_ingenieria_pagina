@@ -30,6 +30,9 @@ public class SedeRowMapper implements BiFunction<Row, String, Sede> {
         entity.setLongitud(converter.fromRow(row, prefix + "_longitud", Double.class));
         entity.setDireccion(converter.fromRow(row, prefix + "_direccion", String.class));
         entity.setEstado(converter.fromRow(row, prefix + "_estado", Boolean.class));
+        entity.setTelefonoFijo(converter.fromRow(row, prefix + "_telefono_fijo", String.class));
+        entity.setTelefonoCelular(converter.fromRow(row, prefix + "_telefono_celular", String.class));
+        entity.setCorreoElectronico(converter.fromRow(row, prefix + "_correo_electronico", String.class));
         return entity;
     }
 }

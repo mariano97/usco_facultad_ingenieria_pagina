@@ -47,6 +47,18 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.estado')">Estado</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('telefonoFijo')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.telefonoFijo')">Telefono Fijo</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'telefonoFijo'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('telefonoCelular')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.telefonoCelular')">Telefono Celular</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'telefonoCelular'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('correoElectronico')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.correoElectronico')">Correo Electronico</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'correoElectronico'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -60,6 +72,9 @@
             <td>{{ sede.longitud }}</td>
             <td>{{ sede.direccion }}</td>
             <td>{{ sede.estado }}</td>
+            <td>{{ sede.telefonoFijo }}</td>
+            <td>{{ sede.telefonoCelular }}</td>
+            <td>{{ sede.correoElectronico }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'SedeView', params: { sedeId: sede.id } }" custom v-slot="{ navigate }">

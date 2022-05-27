@@ -7,6 +7,9 @@ export interface ISede {
   longitud?: number;
   direccion?: string;
   estado?: boolean;
+  telefonoFijo?: string | null;
+  telefonoCelular?: string | null;
+  correoElectronico?: string;
   programas?: IPrograma[] | null;
 }
 
@@ -18,6 +21,9 @@ export class Sede implements ISede {
     public longitud?: number,
     public direccion?: string,
     public estado?: boolean,
+    public telefonoFijo?: string | null,
+    public telefonoCelular?: string | null,
+    public correoElectronico?: string,
     public programas?: IPrograma[] | null
   ) {
     this.estado = this.estado ?? false;

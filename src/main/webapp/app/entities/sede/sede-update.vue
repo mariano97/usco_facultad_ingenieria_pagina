@@ -120,6 +120,78 @@
               </small>
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-control-label" v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.telefonoFijo')" for="sede-telefonoFijo"
+              >Telefono Fijo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="telefonoFijo"
+              id="sede-telefonoFijo"
+              data-cy="telefonoFijo"
+              :class="{ valid: !$v.sede.telefonoFijo.$invalid, invalid: $v.sede.telefonoFijo.$invalid }"
+              v-model="$v.sede.telefonoFijo.$model"
+            />
+            <div v-if="$v.sede.telefonoFijo.$anyDirty && $v.sede.telefonoFijo.$invalid">
+              <small
+                class="form-text text-danger"
+                v-if="!$v.sede.telefonoFijo.maxLength"
+                v-text="$t('entity.validation.maxlength', { max: 7 })"
+              >
+                This field cannot be longer than 7 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.telefonoCelular')"
+              for="sede-telefonoCelular"
+              >Telefono Celular</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="telefonoCelular"
+              id="sede-telefonoCelular"
+              data-cy="telefonoCelular"
+              :class="{ valid: !$v.sede.telefonoCelular.$invalid, invalid: $v.sede.telefonoCelular.$invalid }"
+              v-model="$v.sede.telefonoCelular.$model"
+            />
+            <div v-if="$v.sede.telefonoCelular.$anyDirty && $v.sede.telefonoCelular.$invalid">
+              <small
+                class="form-text text-danger"
+                v-if="!$v.sede.telefonoCelular.maxLength"
+                v-text="$t('entity.validation.maxlength', { max: 10 })"
+              >
+                This field cannot be longer than 10 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.correoElectronico')"
+              for="sede-correoElectronico"
+              >Correo Electronico</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="correoElectronico"
+              id="sede-correoElectronico"
+              data-cy="correoElectronico"
+              :class="{ valid: !$v.sede.correoElectronico.$invalid, invalid: $v.sede.correoElectronico.$invalid }"
+              v-model="$v.sede.correoElectronico.$model"
+              required
+            />
+            <div v-if="$v.sede.correoElectronico.$anyDirty && $v.sede.correoElectronico.$invalid">
+              <small class="form-text text-danger" v-if="!$v.sede.correoElectronico.required" v-text="$t('entity.validation.required')">
+                This field is required.
+              </small>
+            </div>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

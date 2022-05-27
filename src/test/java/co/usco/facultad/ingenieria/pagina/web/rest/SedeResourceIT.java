@@ -49,6 +49,15 @@ class SedeResourceIT {
     private static final Boolean DEFAULT_ESTADO = false;
     private static final Boolean UPDATED_ESTADO = true;
 
+    private static final String DEFAULT_TELEFONO_FIJO = "AAAAAAA";
+    private static final String UPDATED_TELEFONO_FIJO = "BBBBBBB";
+
+    private static final String DEFAULT_TELEFONO_CELULAR = "AAAAAAAAAA";
+    private static final String UPDATED_TELEFONO_CELULAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CORREO_ELECTRONICO = "AAAAAAAAAA";
+    private static final String UPDATED_CORREO_ELECTRONICO = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/sedes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -81,7 +90,10 @@ class SedeResourceIT {
             .latitud(DEFAULT_LATITUD)
             .longitud(DEFAULT_LONGITUD)
             .direccion(DEFAULT_DIRECCION)
-            .estado(DEFAULT_ESTADO);
+            .estado(DEFAULT_ESTADO)
+            .telefonoFijo(DEFAULT_TELEFONO_FIJO)
+            .telefonoCelular(DEFAULT_TELEFONO_CELULAR)
+            .correoElectronico(DEFAULT_CORREO_ELECTRONICO);
         return sede;
     }
 
@@ -97,7 +109,10 @@ class SedeResourceIT {
             .latitud(UPDATED_LATITUD)
             .longitud(UPDATED_LONGITUD)
             .direccion(UPDATED_DIRECCION)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .telefonoFijo(UPDATED_TELEFONO_FIJO)
+            .telefonoCelular(UPDATED_TELEFONO_CELULAR)
+            .correoElectronico(UPDATED_CORREO_ELECTRONICO);
         return sede;
     }
 
@@ -143,6 +158,9 @@ class SedeResourceIT {
         assertThat(testSede.getLongitud()).isEqualTo(DEFAULT_LONGITUD);
         assertThat(testSede.getDireccion()).isEqualTo(DEFAULT_DIRECCION);
         assertThat(testSede.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testSede.getTelefonoFijo()).isEqualTo(DEFAULT_TELEFONO_FIJO);
+        assertThat(testSede.getTelefonoCelular()).isEqualTo(DEFAULT_TELEFONO_CELULAR);
+        assertThat(testSede.getCorreoElectronico()).isEqualTo(DEFAULT_CORREO_ELECTRONICO);
     }
 
     @Test
@@ -279,6 +297,28 @@ class SedeResourceIT {
     }
 
     @Test
+    void checkCorreoElectronicoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = sedeRepository.findAll().collectList().block().size();
+        // set the field null
+        sede.setCorreoElectronico(null);
+
+        // Create the Sede, which fails.
+        SedeDTO sedeDTO = sedeMapper.toDto(sede);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(sedeDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<Sede> sedeList = sedeRepository.findAll().collectList().block();
+        assertThat(sedeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllSedes() {
         // Initialize the database
         sedeRepository.save(sede).block();
@@ -305,7 +345,13 @@ class SedeResourceIT {
             .jsonPath("$.[*].direccion")
             .value(hasItem(DEFAULT_DIRECCION))
             .jsonPath("$.[*].estado")
-            .value(hasItem(DEFAULT_ESTADO.booleanValue()));
+            .value(hasItem(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.[*].telefonoFijo")
+            .value(hasItem(DEFAULT_TELEFONO_FIJO))
+            .jsonPath("$.[*].telefonoCelular")
+            .value(hasItem(DEFAULT_TELEFONO_CELULAR))
+            .jsonPath("$.[*].correoElectronico")
+            .value(hasItem(DEFAULT_CORREO_ELECTRONICO));
     }
 
     @Test
@@ -335,7 +381,13 @@ class SedeResourceIT {
             .jsonPath("$.direccion")
             .value(is(DEFAULT_DIRECCION))
             .jsonPath("$.estado")
-            .value(is(DEFAULT_ESTADO.booleanValue()));
+            .value(is(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.telefonoFijo")
+            .value(is(DEFAULT_TELEFONO_FIJO))
+            .jsonPath("$.telefonoCelular")
+            .value(is(DEFAULT_TELEFONO_CELULAR))
+            .jsonPath("$.correoElectronico")
+            .value(is(DEFAULT_CORREO_ELECTRONICO));
     }
 
     @Test
@@ -364,7 +416,10 @@ class SedeResourceIT {
             .latitud(UPDATED_LATITUD)
             .longitud(UPDATED_LONGITUD)
             .direccion(UPDATED_DIRECCION)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .telefonoFijo(UPDATED_TELEFONO_FIJO)
+            .telefonoCelular(UPDATED_TELEFONO_CELULAR)
+            .correoElectronico(UPDATED_CORREO_ELECTRONICO);
         SedeDTO sedeDTO = sedeMapper.toDto(updatedSede);
 
         webTestClient
@@ -385,6 +440,9 @@ class SedeResourceIT {
         assertThat(testSede.getLongitud()).isEqualTo(UPDATED_LONGITUD);
         assertThat(testSede.getDireccion()).isEqualTo(UPDATED_DIRECCION);
         assertThat(testSede.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testSede.getTelefonoFijo()).isEqualTo(UPDATED_TELEFONO_FIJO);
+        assertThat(testSede.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
+        assertThat(testSede.getCorreoElectronico()).isEqualTo(UPDATED_CORREO_ELECTRONICO);
     }
 
     @Test
@@ -467,7 +525,11 @@ class SedeResourceIT {
         Sede partialUpdatedSede = new Sede();
         partialUpdatedSede.setId(sede.getId());
 
-        partialUpdatedSede.nombre(UPDATED_NOMBRE).longitud(UPDATED_LONGITUD).direccion(UPDATED_DIRECCION);
+        partialUpdatedSede
+            .nombre(UPDATED_NOMBRE)
+            .longitud(UPDATED_LONGITUD)
+            .direccion(UPDATED_DIRECCION)
+            .correoElectronico(UPDATED_CORREO_ELECTRONICO);
 
         webTestClient
             .patch()
@@ -487,6 +549,9 @@ class SedeResourceIT {
         assertThat(testSede.getLongitud()).isEqualTo(UPDATED_LONGITUD);
         assertThat(testSede.getDireccion()).isEqualTo(UPDATED_DIRECCION);
         assertThat(testSede.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testSede.getTelefonoFijo()).isEqualTo(DEFAULT_TELEFONO_FIJO);
+        assertThat(testSede.getTelefonoCelular()).isEqualTo(DEFAULT_TELEFONO_CELULAR);
+        assertThat(testSede.getCorreoElectronico()).isEqualTo(UPDATED_CORREO_ELECTRONICO);
     }
 
     @Test
@@ -505,7 +570,10 @@ class SedeResourceIT {
             .latitud(UPDATED_LATITUD)
             .longitud(UPDATED_LONGITUD)
             .direccion(UPDATED_DIRECCION)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .telefonoFijo(UPDATED_TELEFONO_FIJO)
+            .telefonoCelular(UPDATED_TELEFONO_CELULAR)
+            .correoElectronico(UPDATED_CORREO_ELECTRONICO);
 
         webTestClient
             .patch()
@@ -525,6 +593,9 @@ class SedeResourceIT {
         assertThat(testSede.getLongitud()).isEqualTo(UPDATED_LONGITUD);
         assertThat(testSede.getDireccion()).isEqualTo(UPDATED_DIRECCION);
         assertThat(testSede.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testSede.getTelefonoFijo()).isEqualTo(UPDATED_TELEFONO_FIJO);
+        assertThat(testSede.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
+        assertThat(testSede.getCorreoElectronico()).isEqualTo(UPDATED_CORREO_ELECTRONICO);
     }
 
     @Test

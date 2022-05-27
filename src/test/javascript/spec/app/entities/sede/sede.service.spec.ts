@@ -29,7 +29,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       service = new SedeService();
-      elemDefault = new Sede(123, 'AAAAAAA', 0, 0, 'AAAAAAA', false);
+      elemDefault = new Sede(123, 'AAAAAAA', 0, 0, 'AAAAAAA', false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -86,6 +86,9 @@ describe('Service Tests', () => {
             longitud: 1,
             direccion: 'BBBBBB',
             estado: true,
+            telefonoFijo: 'BBBBBB',
+            telefonoCelular: 'BBBBBB',
+            correoElectronico: 'BBBBBB',
           },
           elemDefault
         );
@@ -114,6 +117,7 @@ describe('Service Tests', () => {
           {
             longitud: 1,
             estado: true,
+            telefonoFijo: 'BBBBBB',
           },
           new Sede()
         );
@@ -146,6 +150,9 @@ describe('Service Tests', () => {
             longitud: 1,
             direccion: 'BBBBBB',
             estado: true,
+            telefonoFijo: 'BBBBBB',
+            telefonoCelular: 'BBBBBB',
+            correoElectronico: 'BBBBBB',
           },
           elemDefault
         );

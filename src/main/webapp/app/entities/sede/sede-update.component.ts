@@ -1,6 +1,6 @@
 import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { required, decimal } from 'vuelidate/lib/validators';
+import { required, decimal, maxLength } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 
@@ -27,6 +27,15 @@ const validations: any = {
       required,
     },
     estado: {
+      required,
+    },
+    telefonoFijo: {
+      maxLength: maxLength(7),
+    },
+    telefonoCelular: {
+      maxLength: maxLength(10),
+    },
+    correoElectronico: {
       required,
     },
   },

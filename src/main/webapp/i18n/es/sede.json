@@ -23,6 +23,9 @@
       "longitud": "Longitud",
       "direccion": "Direccion",
       "estado": "Estado",
+      "telefonoFijo": "Telefono Fijo",
+      "telefonoCelular": "Telefono Celular",
+      "correoElectronico": "Correo Electronico",
       "programa": "Programa"
     }
   }
