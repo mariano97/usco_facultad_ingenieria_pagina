@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 
 const baseApiUrl = 'api/tabla-elemento-catalogos';
+const baseApiUrlOpen = 'api/open/tabla-elemento-catalogos';
 
 export default class TablaElementoCatalogoService {
   public find(id: number): Promise<ITablaElementoCatalogo> {
@@ -76,6 +77,24 @@ export default class TablaElementoCatalogoService {
     return new Promise<ITablaElementoCatalogo>((resolve, reject) => {
       axios
         .patch(`${baseApiUrl}/${entity.id}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getAllByTipoCatalogoKeyIdentificador(isAutenticate: boolean, keyIdentificador: string): Promise<ITablaElementoCatalogo[]> {
+    const url = isAutenticate ? `${baseApiUrl}/tipo-catalogo-key-identificador` : `${baseApiUrlOpen}/tipo-catalogo-key-identificador`;
+    return new Promise<ITablaElementoCatalogo[]>((resolve, reject) => {
+      axios
+        .get(`${url}`, {
+          params: {
+            key_identificador: keyIdentificador,
+          },
+        })
         .then(res => {
           resolve(res.data);
         })

@@ -44,6 +44,9 @@ public interface ProgramaRepository extends ReactiveCrudRepository<Programa, Lon
     @Query("SELECT * FROM programa entity WHERE entity.facultad_id IS NULL")
     Flux<Programa> findAllWhereFacultadIsNull();
 
+    @Override
+    Mono<Programa> findByCodigoSnies(Long codigoSnies);
+
     @Query(
         "SELECT entity.* FROM programa entity JOIN rel_programa__sede joinTable ON entity.id = joinTable.sede_id WHERE joinTable.sede_id = :id"
     )
@@ -78,6 +81,8 @@ interface ProgramaRepositoryInternal {
     Flux<Programa> findAllWithEagerRelationships();
 
     Flux<Programa> findAllWithEagerRelationships(Pageable page);
+
+    Mono<Programa> findByCodigoSnies(Long codigoSnies);
 
     Mono<Void> deleteById(Long id);
 }

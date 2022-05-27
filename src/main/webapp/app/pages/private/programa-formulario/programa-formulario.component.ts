@@ -92,8 +92,8 @@ export default class ProgramaFormulario extends Vue {
 
   public beforeRouteEnter (to, from, next) {
     next(vm => {
-      if (to.params.programaId) {
-        vm.consultarPrograma(to.params.programaId);
+      if (to.params.codigoSnies) {
+        vm.consultarPrograma(to.params.codigoSnies);
         vm.isModeEdit = true;
         vm.enableEdit = false;
       }

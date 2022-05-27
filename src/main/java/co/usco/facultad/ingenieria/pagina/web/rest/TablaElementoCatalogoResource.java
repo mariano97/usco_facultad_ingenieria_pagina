@@ -173,6 +173,22 @@ public class TablaElementoCatalogoResource {
             });
     }
 
+    @GetMapping(value = {
+        "/open/tabla-elemento-catalogos/tipo-catalogo-key-identificador",
+        "/tabla-elemento-catalogos/tipo-catalogo-key-identificador"
+    })
+    public Mono<ResponseEntity<List<TablaElementoCatalogoDTO>>> getElementosCatalogoByTipoCatalogoKeyIdentificador(
+        @RequestParam("key_identificador") String keyIdentificador
+    ) {
+        log.debug("REST request get elementos catalogo by Tipo Catalogo Key Identificador");
+        log.debug("param: key_identificador: {}", keyIdentificador);
+
+        Mono<List<TablaElementoCatalogoDTO>> listaTablaElementoCatalogoDTO = tablaElementoCatalogoService
+            .findByTiposCatalogoKeyIdentificador(keyIdentificador).collectList();
+
+        return ResponseUtil.wrapOrNotFound(listaTablaElementoCatalogoDTO);
+    }
+
     /**
      * {@code GET  /tabla-elemento-catalogos} : get all the tablaElementoCatalogos.
      *

@@ -24,7 +24,7 @@ export default {
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
     {
-      path: 'programa-descripcion/:programaId/:accion',
+      path: 'programa-descripcion/:codigoSnies/:accion',
       name: 'usuario_programa_descripcion',
       component: ProgramaFormulario,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
