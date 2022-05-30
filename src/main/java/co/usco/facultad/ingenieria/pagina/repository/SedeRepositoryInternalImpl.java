@@ -88,6 +88,12 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
         return createQuery(null, whereClause).one();
     }
 
+    @Override
+    public Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("codigo_indicativo"), Conditions.just(codigoIdicativo));
+        return createQuery(null, whereClause).one();
+    }
+
     private Sede process(Row row, RowMetadata metadata) {
         Sede entity = sedeMapper.apply(row, "e");
         return entity;

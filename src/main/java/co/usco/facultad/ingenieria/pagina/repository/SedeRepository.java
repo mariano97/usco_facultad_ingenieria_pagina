@@ -41,4 +41,6 @@ interface SedeRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Sede> findAllBy(Pageable pageable, Criteria criteria);
 
+    Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo);
+
 }

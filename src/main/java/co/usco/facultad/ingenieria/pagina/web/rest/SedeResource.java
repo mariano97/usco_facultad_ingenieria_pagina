@@ -197,6 +197,18 @@ public class SedeResource {
             );
     }
 
+    @GetMapping("/sedes/find-by-codigo-indicativo")
+    public Mono<ResponseEntity<SedeDTO>> getSedeByCodigoIndicativo(@RequestParam("codigo_indicativo") String codigoIndicativo) {
+        log.debug("dentro de getSedeByCodigoIndicativo: {}", codigoIndicativo);
+        return sedeService.findByCodigoIndicativo(codigoIndicativo)
+            .map(sede ->
+                ResponseEntity.ok()
+                    .headers(
+                        HeaderUtil.createAlert(applicationName, "getSedeByCodigoIndicativo", codigoIndicativo)
+                    )
+                    .body(sede));
+    }
+
     /**
      * {@code GET  /sedes/:id} : get the "id" sede.
      *

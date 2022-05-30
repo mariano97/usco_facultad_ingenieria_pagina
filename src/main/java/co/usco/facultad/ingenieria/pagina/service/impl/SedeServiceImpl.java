@@ -65,6 +65,12 @@ public class SedeServiceImpl implements SedeService {
         return sedeRepository.findAllBy(pageable).map(sedeMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<SedeDTO> findByCodigoIndicativo(String codigoIndicativo) {
+        return sedeRepository.fundByCodigoIndicativo(codigoIndicativo).map(sedeMapper::toDto);
+    }
+
     public Mono<Long> countAll() {
         return sedeRepository.count();
     }

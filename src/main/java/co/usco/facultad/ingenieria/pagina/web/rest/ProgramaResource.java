@@ -216,6 +216,7 @@ public class ProgramaResource {
     }
 
     @GetMapping(value = {
+        "/programas/by-codigo-snies",
         "/open/programas/by-codigo-snies"
     })
     public Mono<ResponseEntity<ProgramaDTO>> getProgramaByCodigoSnies(@RequestParam("codigo_snies") Long codigoSnies) {

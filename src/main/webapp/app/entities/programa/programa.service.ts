@@ -49,7 +49,7 @@ export default class ProgramaService {
   }
 
   public findByCodigoSnies(isAutenticate: boolean, codigoSnies: number): Promise<IPrograma> {
-    const url = isAutenticate ? baseApiUrl : `${baseOpenApiUrl}/by-codigo-snies`;
+    const url = isAutenticate ? `${baseApiUrl}/by-codigo-snies` : `${baseOpenApiUrl}/by-codigo-snies`;
     return new Promise<IPrograma>((resolve, reject) => {
       axios
         .get(url, {

@@ -1,4 +1,18 @@
 {
+  "sede": {
+    "formulario": {
+      "labels": {
+        "nombreSede": "Nombre de la sede",
+        "latitud": "Latitud",
+        "longitud": "Longitud",
+        "direccion": "Dirección",
+        "telefonoFijo":"Telefono Fijo",
+        "telefonoCelular":"Telefono Celular",
+        "email": "Correo electronico",
+        "codigoIndicativo":"Código Indicativo"
+      }
+    }
+  },
   "paginaFacultadIngenieriaProyectoApp": {
     "sede": {
       "home": {

@@ -187,7 +187,7 @@ export default class ProgramaFormulario extends Vue {
 
   public consultarPrograma(programaId: number): void {
     this.programaService()
-      .find(programaId)
+      .findByCodigoSnies(this.$store.getters.authenticated, Number(programaId))
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;

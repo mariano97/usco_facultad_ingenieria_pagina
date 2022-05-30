@@ -20,6 +20,23 @@ export default class SedeService {
     });
   }
 
+  public findByCodigoIndicativo(codigoIndicativo: string): Promise<ISede> {
+    return new Promise<ISede>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/find-by-codigo-indicativo`, {
+          params: {
+            codigo_indicativo: codigoIndicativo,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

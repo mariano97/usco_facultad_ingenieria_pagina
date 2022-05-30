@@ -1,5 +1,6 @@
 package co.usco.facultad.ingenieria.pagina.service;
 
+import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.service.dto.SedeDTO;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
@@ -40,6 +41,8 @@ public interface SedeService {
      * @return the list of entities.
      */
     Flux<SedeDTO> findAll(Pageable pageable);
+
+    Mono<SedeDTO> findByCodigoIndicativo(String codigoIndicativo);
 
     /**
      * Returns the number of sedes available.

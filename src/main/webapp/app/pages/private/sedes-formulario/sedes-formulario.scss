@@ -1,1 +1,32 @@
 @import '../../../../content/scss/custom-variables';
+
+.container_sedes_formulario {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  section.header_arrow {
+    padding-bottom: 2rem;
+    img {
+      max-width: 30px;
+    }
+    h2.title_formulario_return {
+      color: $color-gris;
+      font-size: 28px;
+      margin-bottom: 0px !important;
+    }
+  }
+  section.sede_formulario {
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+
+  }
+  input, select, textarea {
+    border: none;
+    border-color: $color-red;
+    border-radius: 0px;
+    box-shadow: $color-box-shadow;
+  }
+}
