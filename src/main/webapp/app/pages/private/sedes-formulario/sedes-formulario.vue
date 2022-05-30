@@ -179,6 +179,12 @@
         </div>
       </form>
     </section>
+    <section class="map_continer">
+      <l-map ref="map" style="height: 250px; width: 100%" :zoom="3" :center="[47.413220, -1.219482]">
+        <l-tile-layer :url="urlMap" :attribution="copyrightMap" />
+        <v-geosearch :options="geosearchOptions" ></v-geosearch>
+      </l-map>
+    </section>
   </div>
 </template>
 
