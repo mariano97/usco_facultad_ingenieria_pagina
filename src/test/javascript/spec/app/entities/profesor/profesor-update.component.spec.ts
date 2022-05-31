@@ -9,6 +9,9 @@ import ProfesorUpdateComponent from '@/entities/profesor/profesor-update.vue';
 import ProfesorClass from '@/entities/profesor/profesor-update.component';
 import ProfesorService from '@/entities/profesor/profesor.service';
 
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+
+import FacultadService from '@/entities/facultad/facultad.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -42,6 +45,16 @@ describe('Component Tests', () => {
         provide: {
           profesorService: () => profesorServiceStub,
           alertService: () => new AlertService(),
+
+          tablaElementoCatalogoService: () =>
+            sinon.createStubInstance<TablaElementoCatalogoService>(TablaElementoCatalogoService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          facultadService: () =>
+            sinon.createStubInstance<FacultadService>(FacultadService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
         },
       });
       comp = wrapper.vm;

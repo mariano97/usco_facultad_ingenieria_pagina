@@ -60,6 +60,22 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.oficina')">Oficina</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'oficina'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('userId')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.userId')">User Id</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'userId'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('tablaElementoCatalogo.nombre')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
+              <jhi-sort-indicator
+                :current-order="propOrder"
+                :reverse="reverse"
+                :field-name="'tablaElementoCatalogo.nombre'"
+              ></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('facultad.nombre')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.facultad')">Facultad</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'facultad.nombre'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -75,6 +91,22 @@
             <td>{{ profesor.perfil }}</td>
             <td>{{ profesor.telefonoCelular }}</td>
             <td>{{ profesor.oficina }}</td>
+            <td>{{ profesor.userId }}</td>
+            <td>
+              <div v-if="profesor.tablaElementoCatalogo">
+                <router-link
+                  :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: profesor.tablaElementoCatalogo.id } }"
+                  >{{ profesor.tablaElementoCatalogo.nombre }}</router-link
+                >
+              </div>
+            </td>
+            <td>
+              <div v-if="profesor.facultad">
+                <router-link :to="{ name: 'FacultadView', params: { facultadId: profesor.facultad.id } }">{{
+                  profesor.facultad.nombre
+                }}</router-link>
+              </div>
+            </td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'ProfesorView', params: { profesorId: profesor.id } }" custom v-slot="{ navigate }">

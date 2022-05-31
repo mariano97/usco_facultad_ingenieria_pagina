@@ -24,7 +24,10 @@
       "activo": "Activo",
       "perfil": "Perfil",
       "telefonoCelular": "Telefono Celular",
-      "oficina": "Oficina"
+      "oficina": "Oficina",
+      "userId": "User Id",
+      "tablaElementoCatalogo": "Tabla Elemento Catalogo",
+      "facultad": "Facultad"
     }
   }
 }

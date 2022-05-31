@@ -1,5 +1,6 @@
 package co.usco.facultad.ingenieria.pagina.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
@@ -41,6 +42,23 @@ public class Profesor implements Serializable {
 
     @Column("oficina")
     private String oficina;
+
+    @NotNull(message = "must not be null")
+    @Column("user_id")
+    private Long userId;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
+    private TablaElementoCatalogo tablaElementoCatalogo;
+
+    @Transient
+    private Facultad facultad;
+
+    @Column("tabla_elemento_catalogo_id")
+    private Long tablaElementoCatalogoId;
+
+    @Column("facultad_id")
+    private Long facultadId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -148,6 +166,63 @@ public class Profesor implements Serializable {
         this.oficina = oficina;
     }
 
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public Profesor userId(Long userId) {
+        this.setUserId(userId);
+        return this;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public TablaElementoCatalogo getTablaElementoCatalogo() {
+        return this.tablaElementoCatalogo;
+    }
+
+    public void setTablaElementoCatalogo(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.tablaElementoCatalogo = tablaElementoCatalogo;
+        this.tablaElementoCatalogoId = tablaElementoCatalogo != null ? tablaElementoCatalogo.getId() : null;
+    }
+
+    public Profesor tablaElementoCatalogo(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.setTablaElementoCatalogo(tablaElementoCatalogo);
+        return this;
+    }
+
+    public Facultad getFacultad() {
+        return this.facultad;
+    }
+
+    public void setFacultad(Facultad facultad) {
+        this.facultad = facultad;
+        this.facultadId = facultad != null ? facultad.getId() : null;
+    }
+
+    public Profesor facultad(Facultad facultad) {
+        this.setFacultad(facultad);
+        return this;
+    }
+
+    public Long getTablaElementoCatalogoId() {
+        return this.tablaElementoCatalogoId;
+    }
+
+    public void setTablaElementoCatalogoId(Long tablaElementoCatalogo) {
+        this.tablaElementoCatalogoId = tablaElementoCatalogo;
+    }
+
+    public Long getFacultadId() {
+        return this.facultadId;
+    }
+
+    public void setFacultadId(Long facultad) {
+        this.facultadId = facultad;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -179,6 +254,7 @@ public class Profesor implements Serializable {
             ", perfil='" + getPerfil() + "'" +
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", oficina='" + getOficina() + "'" +
+            ", userId=" + getUserId() +
             "}";
     }
 }

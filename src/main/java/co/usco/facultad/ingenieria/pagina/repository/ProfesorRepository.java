@@ -18,6 +18,27 @@ public interface ProfesorRepository extends ReactiveCrudRepository<Profesor, Lon
     Flux<Profesor> findAllBy(Pageable pageable);
 
     @Override
+    Mono<Profesor> findOneWithEagerRelationships(Long id);
+
+    @Override
+    Flux<Profesor> findAllWithEagerRelationships();
+
+    @Override
+    Flux<Profesor> findAllWithEagerRelationships(Pageable page);
+
+    @Query("SELECT * FROM profesor entity WHERE entity.tabla_elemento_catalogo_id = :id")
+    Flux<Profesor> findByTablaElementoCatalogo(Long id);
+
+    @Query("SELECT * FROM profesor entity WHERE entity.tabla_elemento_catalogo_id IS NULL")
+    Flux<Profesor> findAllWhereTablaElementoCatalogoIsNull();
+
+    @Query("SELECT * FROM profesor entity WHERE entity.facultad_id = :id")
+    Flux<Profesor> findByFacultad(Long id);
+
+    @Query("SELECT * FROM profesor entity WHERE entity.facultad_id IS NULL")
+    Flux<Profesor> findAllWhereFacultadIsNull();
+
+    @Override
     <S extends Profesor> Mono<S> save(S entity);
 
     @Override
@@ -41,4 +62,11 @@ interface ProfesorRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Profesor> findAllBy(Pageable pageable, Criteria criteria);
 
+    Mono<Profesor> findOneWithEagerRelationships(Long id);
+
+    Flux<Profesor> findAllWithEagerRelationships();
+
+    Flux<Profesor> findAllWithEagerRelationships(Pageable page);
+
+    Mono<Void> deleteById(Long id);
 }

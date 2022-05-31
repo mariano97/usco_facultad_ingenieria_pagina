@@ -3,11 +3,15 @@ package co.usco.facultad.ingenieria.pagina.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 import co.usco.facultad.ingenieria.pagina.IntegrationTest;
+import co.usco.facultad.ingenieria.pagina.domain.Facultad;
 import co.usco.facultad.ingenieria.pagina.domain.Profesor;
+import co.usco.facultad.ingenieria.pagina.domain.TablaElementoCatalogo;
 import co.usco.facultad.ingenieria.pagina.repository.EntityManager;
 import co.usco.facultad.ingenieria.pagina.repository.ProfesorRepository;
+import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.ProfesorMapper;
 import java.time.Duration;
@@ -22,14 +26,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link ProfesorResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class ProfesorResourceIT {
@@ -55,6 +64,9 @@ class ProfesorResourceIT {
     private static final String DEFAULT_OFICINA = "AAAAAAAAAA";
     private static final String UPDATED_OFICINA = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_USER_ID = 1L;
+    private static final Long UPDATED_USER_ID = 2L;
+
     private static final String ENTITY_API_URL = "/api/profesors";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -64,8 +76,14 @@ class ProfesorResourceIT {
     @Autowired
     private ProfesorRepository profesorRepository;
 
+    @Mock
+    private ProfesorRepository profesorRepositoryMock;
+
     @Autowired
     private ProfesorMapper profesorMapper;
+
+    @Mock
+    private ProfesorService profesorServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -89,7 +107,16 @@ class ProfesorResourceIT {
             .activo(DEFAULT_ACTIVO)
             .perfil(DEFAULT_PERFIL)
             .telefonoCelular(DEFAULT_TELEFONO_CELULAR)
-            .oficina(DEFAULT_OFICINA);
+            .oficina(DEFAULT_OFICINA)
+            .userId(DEFAULT_USER_ID);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createEntity(em)).block();
+        profesor.setTablaElementoCatalogo(tablaElementoCatalogo);
+        // Add required entity
+        Facultad facultad;
+        facultad = em.insert(FacultadResourceIT.createEntity(em)).block();
+        profesor.setFacultad(facultad);
         return profesor;
     }
 
@@ -107,7 +134,16 @@ class ProfesorResourceIT {
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
-            .oficina(UPDATED_OFICINA);
+            .oficina(UPDATED_OFICINA)
+            .userId(UPDATED_USER_ID);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createUpdatedEntity(em)).block();
+        profesor.setTablaElementoCatalogo(tablaElementoCatalogo);
+        // Add required entity
+        Facultad facultad;
+        facultad = em.insert(FacultadResourceIT.createUpdatedEntity(em)).block();
+        profesor.setFacultad(facultad);
         return profesor;
     }
 
@@ -117,6 +153,8 @@ class ProfesorResourceIT {
         } catch (Exception e) {
             // It can fail, if other entities are still referring this - it will be removed later.
         }
+        TablaElementoCatalogoResourceIT.deleteEntities(em);
+        FacultadResourceIT.deleteEntities(em);
     }
 
     @AfterEach
@@ -155,6 +193,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getPerfil()).isEqualTo(DEFAULT_PERFIL);
         assertThat(testProfesor.getTelefonoCelular()).isEqualTo(DEFAULT_TELEFONO_CELULAR);
         assertThat(testProfesor.getOficina()).isEqualTo(DEFAULT_OFICINA);
+        assertThat(testProfesor.getUserId()).isEqualTo(DEFAULT_USER_ID);
     }
 
     @Test
@@ -225,6 +264,28 @@ class ProfesorResourceIT {
     }
 
     @Test
+    void checkUserIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = profesorRepository.findAll().collectList().block().size();
+        // set the field null
+        profesor.setUserId(null);
+
+        // Create the Profesor, which fails.
+        ProfesorDTO profesorDTO = profesorMapper.toDto(profesor);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(profesorDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<Profesor> profesorList = profesorRepository.findAll().collectList().block();
+        assertThat(profesorList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllProfesors() {
         // Initialize the database
         profesorRepository.save(profesor).block();
@@ -255,7 +316,27 @@ class ProfesorResourceIT {
             .jsonPath("$.[*].telefonoCelular")
             .value(hasItem(DEFAULT_TELEFONO_CELULAR))
             .jsonPath("$.[*].oficina")
-            .value(hasItem(DEFAULT_OFICINA));
+            .value(hasItem(DEFAULT_OFICINA))
+            .jsonPath("$.[*].userId")
+            .value(hasItem(DEFAULT_USER_ID.intValue()));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllProfesorsWithEagerRelationshipsIsEnabled() {
+        when(profesorServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(profesorServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllProfesorsWithEagerRelationshipsIsNotEnabled() {
+        when(profesorServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(profesorServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test
@@ -289,7 +370,9 @@ class ProfesorResourceIT {
             .jsonPath("$.telefonoCelular")
             .value(is(DEFAULT_TELEFONO_CELULAR))
             .jsonPath("$.oficina")
-            .value(is(DEFAULT_OFICINA));
+            .value(is(DEFAULT_OFICINA))
+            .jsonPath("$.userId")
+            .value(is(DEFAULT_USER_ID.intValue()));
     }
 
     @Test
@@ -320,7 +403,8 @@ class ProfesorResourceIT {
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
-            .oficina(UPDATED_OFICINA);
+            .oficina(UPDATED_OFICINA)
+            .userId(UPDATED_USER_ID);
         ProfesorDTO profesorDTO = profesorMapper.toDto(updatedProfesor);
 
         webTestClient
@@ -343,6 +427,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getPerfil()).isEqualTo(UPDATED_PERFIL);
         assertThat(testProfesor.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
         assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
+        assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test
@@ -431,7 +516,8 @@ class ProfesorResourceIT {
             .emailAlternativo(UPDATED_EMAIL_ALTERNATIVO)
             .activo(UPDATED_ACTIVO)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
-            .oficina(UPDATED_OFICINA);
+            .oficina(UPDATED_OFICINA)
+            .userId(UPDATED_USER_ID);
 
         webTestClient
             .patch()
@@ -453,6 +539,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getPerfil()).isEqualTo(DEFAULT_PERFIL);
         assertThat(testProfesor.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
         assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
+        assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test
@@ -473,7 +560,8 @@ class ProfesorResourceIT {
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
-            .oficina(UPDATED_OFICINA);
+            .oficina(UPDATED_OFICINA)
+            .userId(UPDATED_USER_ID);
 
         webTestClient
             .patch()
@@ -495,6 +583,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getPerfil()).isEqualTo(UPDATED_PERFIL);
         assertThat(testProfesor.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
         assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
+        assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test

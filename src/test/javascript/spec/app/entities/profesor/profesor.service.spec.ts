@@ -29,7 +29,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       service = new ProfesorService();
-      elemDefault = new Profesor(123, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Profesor(123, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -88,6 +88,7 @@ describe('Service Tests', () => {
             perfil: 'BBBBBB',
             telefonoCelular: 'BBBBBB',
             oficina: 'BBBBBB',
+            userId: 1,
           },
           elemDefault
         );
@@ -116,6 +117,7 @@ describe('Service Tests', () => {
           {
             segundoNombre: 'BBBBBB',
             emailAlternativo: 'BBBBBB',
+            userId: 1,
           },
           new Profesor()
         );
@@ -150,6 +152,7 @@ describe('Service Tests', () => {
             perfil: 'BBBBBB',
             telefonoCelular: 'BBBBBB',
             oficina: 'BBBBBB',
+            userId: 1,
           },
           elemDefault
         );

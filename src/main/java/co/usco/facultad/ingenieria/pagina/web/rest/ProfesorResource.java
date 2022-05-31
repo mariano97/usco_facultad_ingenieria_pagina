@@ -173,12 +173,14 @@ public class ProfesorResource {
      *
      * @param pageable the pagination information.
      * @param request a {@link ServerHttpRequest} request.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of profesors in body.
      */
     @GetMapping("/profesors")
     public Mono<ResponseEntity<List<ProfesorDTO>>> getAllProfesors(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        ServerHttpRequest request
+        ServerHttpRequest request,
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Profesors");
         return profesorService

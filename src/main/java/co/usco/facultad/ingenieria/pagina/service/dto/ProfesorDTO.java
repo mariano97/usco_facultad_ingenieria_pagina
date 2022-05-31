@@ -27,6 +27,13 @@ public class ProfesorDTO implements Serializable {
 
     private String oficina;
 
+    @NotNull(message = "must not be null")
+    private Long userId;
+
+    private TablaElementoCatalogoDTO tablaElementoCatalogo;
+
+    private FacultadDTO facultad;
+
     public Long getId() {
         return id;
     }
@@ -91,6 +98,30 @@ public class ProfesorDTO implements Serializable {
         this.oficina = oficina;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public TablaElementoCatalogoDTO getTablaElementoCatalogo() {
+        return tablaElementoCatalogo;
+    }
+
+    public void setTablaElementoCatalogo(TablaElementoCatalogoDTO tablaElementoCatalogo) {
+        this.tablaElementoCatalogo = tablaElementoCatalogo;
+    }
+
+    public FacultadDTO getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(FacultadDTO facultad) {
+        this.facultad = facultad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -124,6 +155,9 @@ public class ProfesorDTO implements Serializable {
             ", perfil='" + getPerfil() + "'" +
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", oficina='" + getOficina() + "'" +
+            ", userId=" + getUserId() +
+            ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
+            ", facultad=" + getFacultad() +
             "}";
     }
 }

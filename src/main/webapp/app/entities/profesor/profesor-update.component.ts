@@ -1,8 +1,14 @@
 import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import { required } from 'vuelidate/lib/validators';
+import { required, numeric } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
+
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+
+import FacultadService from '@/entities/facultad/facultad.service';
+import { IFacultad } from '@/shared/model/facultad.model';
 
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import ProfesorService from './profesor.service';
@@ -20,6 +26,16 @@ const validations: any = {
     },
     telefonoCelular: {},
     oficina: {},
+    userId: {
+      required,
+      numeric,
+    },
+    tablaElementoCatalogo: {
+      required,
+    },
+    facultad: {
+      required,
+    },
   },
 };
 
@@ -31,6 +47,14 @@ export default class ProfesorUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
 
   public profesor: IProfesor = new Profesor();
+
+  @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
+
+  public tablaElementoCatalogos: ITablaElementoCatalogo[] = [];
+
+  @Inject('facultadService') private facultadService: () => FacultadService;
+
+  public facultads: IFacultad[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -39,6 +63,7 @@ export default class ProfesorUpdate extends Vue {
       if (to.params.profesorId) {
         vm.retrieveProfesor(to.params.profesorId);
       }
+      vm.initRelationships();
     });
   }
 
@@ -110,5 +135,16 @@ export default class ProfesorUpdate extends Vue {
     this.$router.go(-1);
   }
 
-  public initRelationships(): void {}
+  public initRelationships(): void {
+    this.tablaElementoCatalogoService()
+      .retrieve()
+      .then(res => {
+        this.tablaElementoCatalogos = res.data;
+      });
+    this.facultadService()
+      .retrieve()
+      .then(res => {
+        this.facultads = res.data;
+      });
+  }
 }

@@ -136,6 +136,87 @@
               v-model="$v.profesor.oficina.$model"
             />
           </div>
+          <div class="form-group">
+            <label class="form-control-label" v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.userId')" for="profesor-userId"
+              >User Id</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              name="userId"
+              id="profesor-userId"
+              data-cy="userId"
+              :class="{ valid: !$v.profesor.userId.$invalid, invalid: $v.profesor.userId.$invalid }"
+              v-model.number="$v.profesor.userId.$model"
+              required
+            />
+            <div v-if="$v.profesor.userId.$anyDirty && $v.profesor.userId.$invalid">
+              <small class="form-text text-danger" v-if="!$v.profesor.userId.required" v-text="$t('entity.validation.required')">
+                This field is required.
+              </small>
+              <small class="form-text text-danger" v-if="!$v.profesor.userId.numeric" v-text="$t('entity.validation.number')">
+                This field should be a number.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')"
+              for="profesor-tablaElementoCatalogo"
+              >Tabla Elemento Catalogo</label
+            >
+            <select
+              class="form-control"
+              id="profesor-tablaElementoCatalogo"
+              data-cy="tablaElementoCatalogo"
+              name="tablaElementoCatalogo"
+              v-model="profesor.tablaElementoCatalogo"
+              required
+            >
+              <option v-if="!profesor.tablaElementoCatalogo" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="
+                  profesor.tablaElementoCatalogo && tablaElementoCatalogoOption.id === profesor.tablaElementoCatalogo.id
+                    ? profesor.tablaElementoCatalogo
+                    : tablaElementoCatalogoOption
+                "
+                v-for="tablaElementoCatalogoOption in tablaElementoCatalogos"
+                :key="tablaElementoCatalogoOption.id"
+              >
+                {{ tablaElementoCatalogoOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.profesor.tablaElementoCatalogo.$anyDirty && $v.profesor.tablaElementoCatalogo.$invalid">
+            <small
+              class="form-text text-danger"
+              v-if="!$v.profesor.tablaElementoCatalogo.required"
+              v-text="$t('entity.validation.required')"
+            >
+              This field is required.
+            </small>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.facultad')" for="profesor-facultad"
+              >Facultad</label
+            >
+            <select class="form-control" id="profesor-facultad" data-cy="facultad" name="facultad" v-model="profesor.facultad" required>
+              <option v-if="!profesor.facultad" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="profesor.facultad && facultadOption.id === profesor.facultad.id ? profesor.facultad : facultadOption"
+                v-for="facultadOption in facultads"
+                :key="facultadOption.id"
+              >
+                {{ facultadOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.profesor.facultad.$anyDirty && $v.profesor.facultad.$invalid">
+            <small class="form-text text-danger" v-if="!$v.profesor.facultad.required" v-text="$t('entity.validation.required')">
+              This field is required.
+            </small>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

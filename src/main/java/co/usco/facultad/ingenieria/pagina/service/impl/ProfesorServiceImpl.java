@@ -65,6 +65,10 @@ public class ProfesorServiceImpl implements ProfesorService {
         return profesorRepository.findAllBy(pageable).map(profesorMapper::toDto);
     }
 
+    public Flux<ProfesorDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return profesorRepository.findAllWithEagerRelationships(pageable).map(profesorMapper::toDto);
+    }
+
     public Mono<Long> countAll() {
         return profesorRepository.count();
     }
@@ -73,7 +77,7 @@ public class ProfesorServiceImpl implements ProfesorService {
     @Transactional(readOnly = true)
     public Mono<ProfesorDTO> findOne(Long id) {
         log.debug("Request to get Profesor : {}", id);
-        return profesorRepository.findById(id).map(profesorMapper::toDto);
+        return profesorRepository.findOneWithEagerRelationships(id).map(profesorMapper::toDto);
     }
 
     @Override

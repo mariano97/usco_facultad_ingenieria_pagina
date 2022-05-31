@@ -48,6 +48,33 @@
           <dd>
             <span>{{ profesor.oficina }}</span>
           </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.userId')">User Id</span>
+          </dt>
+          <dd>
+            <span>{{ profesor.userId }}</span>
+          </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
+          </dt>
+          <dd>
+            <div v-if="profesor.tablaElementoCatalogo">
+              <router-link
+                :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: profesor.tablaElementoCatalogo.id } }"
+                >{{ profesor.tablaElementoCatalogo.nombre }}</router-link
+              >
+            </div>
+          </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.facultad')">Facultad</span>
+          </dt>
+          <dd>
+            <div v-if="profesor.facultad">
+              <router-link :to="{ name: 'FacultadView', params: { facultadId: profesor.facultad.id } }">{{
+                profesor.facultad.nombre
+              }}</router-link>
+            </div>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>
