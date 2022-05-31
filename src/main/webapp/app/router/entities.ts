@@ -35,6 +35,12 @@ const Sede = () => import('@/entities/sede/sede.vue');
 const SedeUpdate = () => import('@/entities/sede/sede-update.vue');
 // prettier-ignore
 const SedeDetails = () => import('@/entities/sede/sede-details.vue');
+// prettier-ignore
+const Profesor = () => import('@/entities/profesor/profesor.vue');
+// prettier-ignore
+const ProfesorUpdate = () => import('@/entities/profesor/profesor-update.vue');
+// prettier-ignore
+const ProfesorDetails = () => import('@/entities/profesor/profesor-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -161,6 +167,30 @@ export default {
       path: 'sede/:sedeId/view',
       name: 'SedeView',
       component: SedeDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'profesor',
+      name: 'Profesor',
+      component: Profesor,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'profesor/new',
+      name: 'ProfesorCreate',
+      component: ProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'profesor/:profesorId/edit',
+      name: 'ProfesorEdit',
+      component: ProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'profesor/:profesorId/view',
+      name: 'ProfesorView',
+      component: ProfesorDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

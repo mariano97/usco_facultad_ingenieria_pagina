@@ -6,6 +6,7 @@ import TablaTiposCatalogoService from './tabla-tipos-catalogo/tabla-tipos-catalo
 import TablaElementoCatalogoService from './tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import ProgramaService from './programa/programa.service';
 import SedeService from './sede/sede.service';
+import ProfesorService from './profesor/profesor.service';
 // jhipster-needle-add-entity-service-to-entities-component-import - JHipster will import entities services here
 
 @Component
@@ -16,5 +17,6 @@ export default class Entities extends Vue {
   @Provide('tablaElementoCatalogoService') private tablaElementoCatalogoService = () => new TablaElementoCatalogoService();
   @Provide('programaService') private programaService = () => new ProgramaService();
   @Provide('sedeService') private sedeService = () => new SedeService();
+  @Provide('profesorService') private profesorService = () => new ProfesorService();
   // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
 }

@@ -16,6 +16,7 @@
         "tablaElementoCatalogo": "Tabla Elemento Catalogo",
         "programa": "Programa",
         "sede": "Sede",
+        "profesor": "Profesor",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
