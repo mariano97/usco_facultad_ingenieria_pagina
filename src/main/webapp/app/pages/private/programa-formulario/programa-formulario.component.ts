@@ -132,7 +132,7 @@ export default class ProgramaFormulario extends Vue {
         .then(res => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: param.id });
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: res.id });
           return this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Info',
@@ -154,7 +154,7 @@ export default class ProgramaFormulario extends Vue {
         .then(res => {
           this.isSaving = false;
           this.$router.go(-1);
-          const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.created', { param: param.id });
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.created', { param: res.id });
           this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Success',

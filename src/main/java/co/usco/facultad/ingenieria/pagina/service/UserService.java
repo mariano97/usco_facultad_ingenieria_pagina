@@ -26,6 +26,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import tech.jhipster.security.RandomUtil;
 
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+
 /**
  * Service class for managing users.
  */
@@ -314,7 +316,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Mono<User> getUserWithAuthorities() {
-        return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+        return ReactiveSecurityContextHolder.getContext().flatMap(authentication -> {
+            String principal = SecurityUtils.extractPrincipal(authentication.getAuthentication());
+            return userRepository.findOneWithAuthoritiesByLogin(principal);
+        });
+        // original solucion
+        /* return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin); */
     }
 
     /**

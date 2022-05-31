@@ -22,8 +22,6 @@ export default class Login extends Vue {
     axios
       .post('api/authenticate', this.userLoginAccount)
       .then(result => {
-        console.log("resultado autenticacion");
-        console.log(result);
         const bearerToken = result.headers.authorization;
         if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
           const jwt = bearerToken.slice(7, bearerToken.length);
@@ -42,11 +40,9 @@ export default class Login extends Vue {
           .then(res => {
             if (res) {
               const authoritiesString = this.accountService().userAuthorities as Array<string>;
-              console.log("auths");
-              console.log(authoritiesString);
               this.redirectSegunAuthorities(authoritiesString);
             }
-        });
+          });
       })
       .catch(() => {
         this.authenticationError = true;

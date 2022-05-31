@@ -90,7 +90,7 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
 
     @Override
     public Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo) {
-        Comparison whereClause = Conditions.isEqual(entityTable.column("codigo_indicativo"), Conditions.just(codigoIdicativo));
+        Comparison whereClause = Conditions.isEqual(entityTable.column("codigo_indicativo"), Conditions.just("'".concat(codigoIdicativo.toString()).concat("'")));
         return createQuery(null, whereClause).one();
     }
 

@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody>
-            <router-link v-for="sede in sedes" :key="sede.id" data-cy="sede" tag="tr" :to="{ name: 'usuario_sedes_descripcion', params: { sedeId: sede.id, accion: constantEditarPrograma } }">
+            <router-link v-for="sede in sedes" :key="sede.id" data-cy="sede" tag="tr" :to="{ name: 'usuario_sedes_descripcion', params: { sedeId: sede.codigoIndicativo, accion: constantEditarPrograma } }">
               <td>{{ sede.nombre }}</td>
               <td>{{ sede.direccion }}</td>
               <td>{{ sede.telefonoFijo | formatTelefonoFijo }}</td>

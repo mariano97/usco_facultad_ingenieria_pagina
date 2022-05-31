@@ -14,11 +14,20 @@
         </div>
       </div>
       <div class="col-sm-auto">
-
+        <button
+          v-if="isModeEdit && !enableEdit"
+          class="btn btn_editar d-flex align-items-center justify-content-center"
+          type="button"
+          id="btn_editar"
+          v-text="$t('entity.action.edit')"
+          v-on:click="enableFormularioEditar()"
+        >
+          Editar
+        </button>
       </div>
     </section>
     <section class="sede_formulario">
-      <form name="editForm" role="form" >
+      <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
         <div class="">
           <div class="">
             <div class="row">
@@ -31,11 +40,19 @@
                   class="form-control"
                   placeholder="Eg. Sede Neiva"
                   v-model="$v.sede.nombre.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.nombre.$anyDirty && $v.sede.nombre.$invalid">
                   <small class="form-text text-danger" v-if="!$v.sede.nombre.required" v-text="$t('entity.validation.required')">
                     This field is required.
+                  </small>
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.sede.nombre.maxLength"
+                    v-text="$t('entity.validation.maxlength', { max: 250 })"
+                  >
+                    This field cannot be longer than 10 characters.
                   </small>
                 </div>
               </div>
@@ -48,11 +65,19 @@
                   class="form-control"
                   placeholder="Eg. SDNV001"
                   v-model="$v.sede.codigoIndicativo.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.codigoIndicativo.$anyDirty && $v.sede.codigoIndicativo.$invalid">
                   <small class="form-text text-danger" v-if="!$v.sede.codigoIndicativo.required" v-text="$t('entity.validation.required')">
                     This field is required.
+                  </small>
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.sede.codigoIndicativo.maxLength"
+                    v-text="$t('entity.validation.maxlength', { max: 20 })"
+                  >
+                    This field cannot be longer than 10 characters.
                   </small>
                 </div>
               </div>
@@ -67,11 +92,19 @@
                   class="form-control"
                   placeholder="Eg. Carrera 1H ..."
                   v-model="$v.sede.direccion.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.direccion.$anyDirty && $v.sede.direccion.$invalid">
                   <small class="form-text text-danger" v-if="!$v.sede.direccion.required" v-text="$t('entity.validation.required')">
                     This field is required.
+                  </small>
+                  <small
+                    class="form-text text-danger"
+                    v-if="!$v.sede.direccion.maxLength"
+                    v-text="$t('entity.validation.maxlength', { max: 250 })"
+                  >
+                    This field cannot be longer than 10 characters.
                   </small>
                 </div>
               </div>
@@ -84,6 +117,7 @@
                   id="sede_latitud"
                   placeholder="Eg. -12.3444"
                   v-model.number="$v.sede.latitud.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.latitud.$anyDirty && $v.sede.latitud.$invalid">
@@ -104,6 +138,7 @@
                   id="sede_longitud"
                   placeholder="Eg. 75.33333"
                   v-model.number="$v.sede.longitud.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.longitud.$anyDirty && $v.sede.longitud.$invalid">
@@ -126,6 +161,7 @@
                   id="sede_telefono_fijo"
                   placeholder="Eg. 8765478"
                   v-model="$v.sede.telefonoFijo.$model"
+                  :disabled="checkHabilitacionCampos()"
                 />
                 <div v-if="$v.sede.telefonoFijo.$anyDirty && $v.sede.telefonoFijo.$invalid">
                   <small
@@ -146,6 +182,7 @@
                   id="sede_telefono_celular"
                   placeholder="Eg. 3104449345"
                   v-model="$v.sede.telefonoCelular.$model"
+                  :disabled="checkHabilitacionCampos()"
                 />
                 <div v-if="$v.sede.telefonoCelular.$anyDirty && $v.sede.telefonoCelular.$invalid">
                   <small
@@ -166,16 +203,48 @@
                   id="sede_email"
                   placeholder="Eg. prueba@correo.com"
                   v-model="$v.sede.correoElectronico.$model"
+                  :disabled="checkHabilitacionCampos()"
                   required
                 />
                 <div v-if="$v.sede.correoElectronico.$anyDirty && $v.sede.correoElectronico.$invalid">
                   <small class="form-text text-danger" v-if="!$v.sede.correoElectronico.required" v-text="$t('entity.validation.required')">
                     This field is required.
                   </small>
+                  <small class="form-text text-danger" v-if="!$v.sede.correoElectronico.validEmail" v-text="$t('entity.validation.email')">
+                    This field is required.
+                  </small>
                 </div>
               </div>
             </div>
           </div>
+          <section class="buttons_formulario">
+            <div class="row mx-0">
+              <div class="col-sm-auto">
+                <button
+                  v-if="enableEdit"
+                  class="btn btn_cancel d-flex align-items-center justify-content-center"
+                  type="button"
+                  id="btn_cancel"
+                  v-text="$t('entity.action.cancel')"
+                  v-on:click="cancelarAccion()"
+                >
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-sm-auto">
+                <button
+                  v-if="enableEdit"
+                  class="btn btn_guardar d-flex align-items-center justify-content-center"
+                  type="submit"
+                  id="btn_guardar"
+                  v-text="$t('entity.action.save')"
+                  :disabled="$v.sede.$invalid || isSaving"
+                >
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </section>
         </div>
       </form>
     </section>

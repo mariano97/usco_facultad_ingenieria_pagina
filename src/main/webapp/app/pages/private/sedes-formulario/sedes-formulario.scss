@@ -23,6 +23,43 @@
     }
 
   }
+  section.buttons_formulario {
+    button {
+      width: 150px;
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+      &.btn_cancel {
+        background: transparent;
+        border: 1px solid $color-red;
+        color: $color-red;
+        &:hover {
+          background: $color-red;
+          color: $color-amarillo;
+        }
+      }
+      &.btn_guardar {
+        background: $color-red;
+        color: $color-amarillo;
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+  }
+  .btn_editar {
+    width: 150px;
+    height: 50px;
+    border-radius: 16px;
+    font-size: 20px;
+    background: $color-red;
+    color: $color-amarillo;
+    &:hover {
+      background: $primary-color;
+      color: $color-gris-light;
+    }
+  }
   input, select, textarea {
     border: none;
     border-color: $color-red;
