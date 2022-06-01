@@ -19,11 +19,11 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.security.GeneralSecurityException;
 
 @Service
@@ -75,5 +75,36 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
         log.debug("  ");
 
 
+    }
+
+    @Override
+    public Mono<String> dataUpload(FilePart file) throws Exception {
+        File file1 = new File("filePrueba.png");
+        return file.content()
+            .last()
+            .map(dataBuffer -> {
+            log.debug("line 1");
+            // FileOutputStream fileOutputStream = (FileOutputStream) dataBuffer.asOutputStream();
+            byte[] bytes = dataBuffer.asByteBuffer().array();
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream("pruebaFile.png");
+                fileOutputStream.write(bytes);
+                fileOutputStream.close();
+            } catch (FileNotFoundException e) {
+                log.error("error en fileOutputstream 1");
+                e.printStackTrace();
+            } catch (IOException e) {
+                log.error("error en fileOutputstream 2");
+                e.printStackTrace();
+            }
+            return "archivo";
+        }).flatMap(s -> Mono.just(s));
+        /* return file.transferTo(file1).flatMap(unused -> {
+            log.debug("file: 1: {}", file1.getTotalSpace());
+            return Mono.just(String.valueOf(file1.getTotalSpace()));
+        }); */
+
+
+        // return null;
     }
 }
