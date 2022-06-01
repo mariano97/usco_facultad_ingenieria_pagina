@@ -23,9 +23,16 @@ public class GoogleDriveResource {
     }
 
     @PostMapping("/open/google-drive/resourse")
-    public Mono<ResponseEntity<String>> upload(@RequestPart("file")FilePart file) {
+    public Mono<ResponseEntity<String>> upload(@RequestPart("file")FilePart file) throws Exception {
 
-            return Mono.from(a -> {
+        return googleDriveService.dataUpload(file).map(res -> {
+            return ResponseEntity
+                .ok()
+                .headers(HeaderUtil.createEntityDeletionAlert("as", true, "asdsd", "google"))
+                .body(res);
+        });
+
+            /* return Mono.from(a -> {
                 try {
                     ResponseEntity
                         .ok()
@@ -38,7 +45,7 @@ public class GoogleDriveResource {
                         .headers(HeaderUtil.createEntityDeletionAlert("as", true, "asdsd", "google"))
                         .body("aassdsda");
                 }
-            });
+            }); */
 
         /* return Mono.from(a -> ResponseEntity
             .ok()

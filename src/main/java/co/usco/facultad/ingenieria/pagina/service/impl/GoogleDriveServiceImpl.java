@@ -19,8 +19,10 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.*;
@@ -79,8 +81,20 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
 
     @Override
     public Mono<String> dataUpload(FilePart file) throws Exception {
-        File file1 = new File("filePrueba.png");
-        return file.content()
+        log.debug("dentro de dataUpload");
+        File file1 = new File(file.filename());
+        return file.transferTo(file1).doOnSuccess(i->log.debug("log success: {}", file1.getTotalSpace()))
+            .then(Mono.just(file1))
+            // .then(Mono.just(file1))
+            .flatMap(newFile -> {
+                log.debug("newFile: {}", newFile.getTotalSpace());
+                Mono<String> resWebClient = WebClient.create("https://www.googleapis.com/upload/drive/v3/files?key=AIzaSyB-QUsC9D-DCd_RTEfAGDaigFOcxHkH1Os&uploadType=media")
+                    .post().contentType(MediaType.IMAGE_PNG).bodyValue(file).retrieve().bodyToMono(String.class);
+                resWebClient.subscribe(s -> log.debug("respuesta -> {}", s));
+                return Mono.just(String.valueOf(newFile.getTotalSpace()));
+            });
+
+        /* return file.content()
             .last()
             .map(dataBuffer -> {
             log.debug("line 1");
@@ -98,7 +112,7 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
                 e.printStackTrace();
             }
             return "archivo";
-        }).flatMap(s -> Mono.just(s));
+        }).flatMap(s -> Mono.just(s)); */
         /* return file.transferTo(file1).flatMap(unused -> {
             log.debug("file: 1: {}", file1.getTotalSpace());
             return Mono.just(String.valueOf(file1.getTotalSpace()));
