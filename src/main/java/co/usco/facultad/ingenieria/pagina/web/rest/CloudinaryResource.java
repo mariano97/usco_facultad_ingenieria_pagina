@@ -39,6 +39,7 @@ public class CloudinaryResource {
         return ResponseEntity.ok().body("a");
     }
 
+
     @PostMapping(value = {"/open/cloudinary"}
     )
     public Mono<ResponseEntity<String>> getCloudinary(
@@ -54,12 +55,13 @@ public class CloudinaryResource {
             log.debug("{}", f.filename());
             return null;
         }); */
-        return cloudinaryService.uploadImageVideo("prueba", file)
+        return cloudinaryService.uploadImageVideo( file)
             .map(res -> {
                 if (res != null) {
                     return ResponseEntity.ok()
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, (String) res.get("public_id")))
-                        .body((String) res.get("url"));
+                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, res))
+                        // .body((String) res.get("url"));
+                        .body(res);
                 } else {
                     return ResponseEntity.ok()
                         .headers(HeaderUtil.createAlert(applicationName, ENTITY_NAME, "error"))

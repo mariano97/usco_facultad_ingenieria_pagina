@@ -48,13 +48,18 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     @Override
     public Mono<Map> uploadImageVideo(String folder, FilePart filePart) {
 
-        return convertFilePartToFile(filePart)
+        return convertFilePartToFile2(filePart)
+            .map(s -> {
+                log.debug("data return: {}", s);
+                return "";
+            }).flatMap(a -> {
+                Map as = null;
+                return Mono.just(as);
+            });
+        /* return convertFilePartToFile(filePart)
             .map(file -> {
                 Map cloudinaryResponse = null;
                 log.debug("uploadafile");
-                /* log.debug("{}", file.getAbsolutePath());
-                log.debug("{}", file.isFile());
-                log.debug("{}", file.getTotalSpace()); */
                 log.debug("{}", file.length);
                 try {
                     cloudinaryResponse = cloudinaryConfig.uploader().upload(filePart, ObjectUtils.emptyMap());
@@ -64,7 +69,33 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 }
                 // file.delete();
                 return cloudinaryResponse;
+            }); */
+    }
+
+    // funciona metodo subida
+    @Override
+    public Mono<String> uploadImageVideo(FilePart filePart) {
+        File file = new File(filePart.filename());
+        return filePart.transferTo(file).doOnSuccess(i -> log.debug("log success: {}", file.getTotalSpace())).then(Mono.just(file))
+            .then(Mono.just(file))
+            .flatMap(newFile -> {
+                log.debug("newFile: {}", newFile.getTotalSpace());
+                try {
+                    Map cloudinaryResponse = cloudinaryConfig.uploader().upload(file, ObjectUtils.emptyMap());
+                    log.debug("cloudinary: {}", cloudinaryResponse.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                file.delete();
+                return Mono.just(String.valueOf(newFile.getTotalSpace()));
             });
+         /* return Mono.just(filePart)
+            .map(f -> f.transferTo(file))
+             .doOnSuccess(i -> log.debug("log success: {}", file.getTotalSpace())).then(Mono.just(file))
+            .flatMap(newFile -> {
+                log.debug("newFile: {}", newFile.getTotalSpace());
+                return Mono.just(String.valueOf(newFile.getTotalSpace()));
+            }); */
     }
 
     @Override
@@ -81,6 +112,34 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     private Mono<byte[]> convertPrueba(FilePart filePart) {
         return DataBufferUtils.join(filePart.content())
             .map(dataBuffer -> dataBuffer.asByteBuffer().array());
+    }
+
+    private Mono<String> convertFilePartToFile2(FilePart filePart) {
+        File file = new File(filePart.filename());
+        /*return filePart.content().next().map(dataBuffer -> {
+            log.debug("{}", dataBuffer.readableByteCount());
+            byte[] bytes = dataBuffer.asByteBuffer().array();
+            log.debug("{}", bytes.length);
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                fileOutputStream.write(bytes);
+                fileOutputStream.close();
+                log.debug("bytes: {}", bytes[1]);
+            } catch (FileNotFoundException e) {
+                log.error("error en fileOutputstream 1");
+                e.printStackTrace();
+            } catch (IOException e) {
+                log.error("error en fileOutputstream 2");
+                e.printStackTrace();
+            }
+            return "sdas";
+        }).flatMap(a -> Mono.just(file.getName())); */
+        // filePart.transferTo(file);
+        return filePart.transferTo(file).then().flatMap(s -> {
+            log.debug("data: {}", file.getTotalSpace());
+           return Mono.just(String.valueOf(file.getTotalSpace()));
+        });
+        // return Mono.just(String.valueOf(file.getTotalSpace()));
     }
 
     private Mono<byte[]> convertFilePartToFile(FilePart filePart) {

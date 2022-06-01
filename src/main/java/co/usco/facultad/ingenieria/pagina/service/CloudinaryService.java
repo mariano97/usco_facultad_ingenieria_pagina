@@ -14,6 +14,8 @@ public interface CloudinaryService {
 
     public Mono<Map> uploadImageVideo(String folder, FilePart filePart);
 
+    public Mono<String> uploadImageVideo(FilePart filePart);
+
     public Mono<String> uploadImageVideo(String base64);
 
 }
