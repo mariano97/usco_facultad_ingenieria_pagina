@@ -87,7 +87,8 @@
       "nivelFormacion": "Nivel Formacion",
       "tipoFormacion": "Tipo Formacion",
       "facultad": "Facultad",
-      "sede": "Sede"
+      "sede": "Sede",
+      "profesor": "Profesor"
     }
   }
 }

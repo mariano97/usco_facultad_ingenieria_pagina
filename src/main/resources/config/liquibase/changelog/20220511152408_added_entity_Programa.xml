@@ -91,6 +91,17 @@
         </createTable>
 
         <addPrimaryKey columnNames="programa_id, sede_id" tableName="rel_programa__sede"/>
+
+        <createTable tableName="rel_programa__profesor">
+            <column name="profesor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="programa_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="programa_id, profesor_id" tableName="rel_programa__profesor"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

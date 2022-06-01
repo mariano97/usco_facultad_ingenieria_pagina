@@ -1,6 +1,7 @@
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 import { IFacultad } from '@/shared/model/facultad.model';
 import { ISede } from '@/shared/model/sede.model';
+import { IProfesor } from '@/shared/model/profesor.model';
 
 export interface IPrograma {
   id?: number;
@@ -25,6 +26,7 @@ export interface IPrograma {
   tipoFormacion?: ITablaElementoCatalogo;
   facultad?: IFacultad;
   sedes?: ISede[] | null;
+  profesors?: IProfesor[] | null;
 }
 
 export class Programa implements IPrograma {
@@ -50,7 +52,8 @@ export class Programa implements IPrograma {
     public nivelFormacion?: ITablaElementoCatalogo,
     public tipoFormacion?: ITablaElementoCatalogo,
     public facultad?: IFacultad,
-    public sedes?: ISede[] | null
+    public sedes?: ISede[] | null,
+    public profesors?: IProfesor[] | null
   ) {
     this.estado = this.estado ?? false;
   }

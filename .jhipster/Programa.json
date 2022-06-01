@@ -117,6 +117,15 @@
       "ownerSide": true,
       "relationshipName": "sede",
       "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "profesor",
+      "otherEntityRelationshipName": "programa",
+      "ownerSide": true,
+      "relationshipName": "profesor",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": []
     }
   ],
   "service": "serviceImpl"

@@ -15,6 +15,9 @@ import { IFacultad } from '@/shared/model/facultad.model';
 import SedeService from '@/entities/sede/sede.service';
 import { ISede } from '@/shared/model/sede.model';
 
+import ProfesorService from '@/entities/profesor/profesor.service';
+import { IProfesor } from '@/shared/model/profesor.model';
+
 import { IPrograma, Programa } from '@/shared/model/programa.model';
 import ProgramaService from './programa.service';
 
@@ -97,6 +100,10 @@ export default class ProgramaUpdate extends Vue {
   @Inject('sedeService') private sedeService: () => SedeService;
 
   public sedes: ISede[] = [];
+
+  @Inject('profesorService') private profesorService: () => ProfesorService;
+
+  public profesors: IProfesor[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -118,6 +125,7 @@ export default class ProgramaUpdate extends Vue {
       }
     );
     this.programa.sedes = [];
+    this.programa.profesors = [];
   }
 
   public save(): void {
@@ -217,6 +225,11 @@ export default class ProgramaUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.sedes = res.data;
+      });
+    this.profesorService()
+      .retrieve()
+      .then(res => {
+        this.profesors = res.data;
       });
   }
 

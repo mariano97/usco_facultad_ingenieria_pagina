@@ -203,6 +203,7 @@ class ProgramaResourceIT {
     public static void deleteEntities(EntityManager em) {
         try {
             em.deleteAll("rel_programa__sede").block();
+            em.deleteAll("rel_programa__profesor").block();
             em.deleteAll(Programa.class).block();
         } catch (Exception e) {
             // It can fail, if other entities are still referring this - it will be removed later.

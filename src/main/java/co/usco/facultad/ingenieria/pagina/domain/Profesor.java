@@ -2,6 +2,8 @@ package co.usco.facultad.ingenieria.pagina.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -53,6 +55,10 @@ public class Profesor implements Serializable {
 
     @Transient
     private Facultad facultad;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
+    private Set<Programa> programas = new HashSet<>();
 
     @Column("tabla_elemento_catalogo_id")
     private Long tablaElementoCatalogoId;
@@ -204,6 +210,37 @@ public class Profesor implements Serializable {
 
     public Profesor facultad(Facultad facultad) {
         this.setFacultad(facultad);
+        return this;
+    }
+
+    public Set<Programa> getProgramas() {
+        return this.programas;
+    }
+
+    public void setProgramas(Set<Programa> programas) {
+        if (this.programas != null) {
+            this.programas.forEach(i -> i.removeProfesor(this));
+        }
+        if (programas != null) {
+            programas.forEach(i -> i.addProfesor(this));
+        }
+        this.programas = programas;
+    }
+
+    public Profesor programas(Set<Programa> programas) {
+        this.setProgramas(programas);
+        return this;
+    }
+
+    public Profesor addPrograma(Programa programa) {
+        this.programas.add(programa);
+        programa.getProfesors().add(this);
+        return this;
+    }
+
+    public Profesor removePrograma(Programa programa) {
+        this.programas.remove(programa);
+        programa.getProfesors().remove(this);
         return this;
     }
 

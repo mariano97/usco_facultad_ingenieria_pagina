@@ -27,7 +27,8 @@
       "oficina": "Oficina",
       "userId": "User Id",
       "tablaElementoCatalogo": "Tabla Elemento Catalogo",
-      "facultad": "Facultad"
+      "facultad": "Facultad",
+      "programa": "Programa"
     }
   }
 }

@@ -52,6 +52,11 @@ public interface ProgramaRepository extends ReactiveCrudRepository<Programa, Lon
     )
     Flux<Programa> findBySede(Long id);
 
+    @Query(
+        "SELECT entity.* FROM programa entity JOIN rel_programa__profesor joinTable ON entity.id = joinTable.profesor_id WHERE joinTable.profesor_id = :id"
+    )
+    Flux<Programa> findByProfesor(Long id);
+
     @Override
     <S extends Programa> Mono<S> save(S entity);
 

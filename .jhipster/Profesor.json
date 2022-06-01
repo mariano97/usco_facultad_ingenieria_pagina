@@ -58,6 +58,13 @@
       "relationshipName": "facultad",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityName": "programa",
+      "otherEntityRelationshipName": "profesor",
+      "ownerSide": false,
+      "relationshipName": "programa",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

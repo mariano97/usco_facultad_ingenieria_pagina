@@ -69,6 +69,8 @@ public class ProgramaDTO implements Serializable {
 
     private Set<SedeDTO> sedes = new HashSet<>();
 
+    private Set<ProfesorDTO> profesors = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -245,6 +247,14 @@ public class ProgramaDTO implements Serializable {
         this.sedes = sedes;
     }
 
+    public Set<ProfesorDTO> getProfesors() {
+        return profesors;
+    }
+
+    public void setProfesors(Set<ProfesorDTO> profesors) {
+        this.profesors = profesors;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -292,6 +302,7 @@ public class ProgramaDTO implements Serializable {
             ", tipoFormacion=" + getTipoFormacion() +
             ", facultad=" + getFacultad() +
             ", sedes=" + getSedes() +
+            ", profesors=" + getProfesors() +
             "}";
     }
 }

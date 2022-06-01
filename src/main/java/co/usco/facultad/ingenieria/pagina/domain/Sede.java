@@ -59,7 +59,7 @@ public class Sede implements Serializable {
     private String codigoIndicativo;
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
     private Set<Programa> programas = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -147,6 +147,15 @@
               <router-link :to="{ name: 'SedeView', params: { sedeId: sede.id } }">{{ sede.nombre }}</router-link>
             </span>
           </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.profesor')">Profesor</span>
+          </dt>
+          <dd>
+            <span v-for="(profesor, i) in programa.profesors" :key="profesor.id"
+              >{{ i > 0 ? ', ' : '' }}
+              <router-link :to="{ name: 'ProfesorView', params: { profesorId: profesor.id } }">{{ profesor.id }}</router-link>
+            </span>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>

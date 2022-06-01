@@ -509,6 +509,26 @@
               </option>
             </select>
           </div>
+          <div class="form-group">
+            <label v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.profesor')" for="programa-profesor">Profesor</label>
+            <select
+              class="form-control"
+              id="programa-profesors"
+              data-cy="profesor"
+              multiple
+              name="profesor"
+              v-if="programa.profesors !== undefined"
+              v-model="programa.profesors"
+            >
+              <option
+                v-bind:value="getSelected(programa.profesors, profesorOption)"
+                v-for="profesorOption in profesors"
+                :key="profesorOption.id"
+              >
+                {{ profesorOption.id }}
+              </option>
+            </select>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

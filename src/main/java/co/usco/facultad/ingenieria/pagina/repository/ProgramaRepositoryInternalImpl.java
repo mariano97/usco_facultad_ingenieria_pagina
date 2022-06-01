@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.repository;
 import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
 
+import co.usco.facultad.ingenieria.pagina.domain.Profesor;
 import co.usco.facultad.ingenieria.pagina.domain.Programa;
 import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.FacultadRowMapper;
@@ -58,6 +59,11 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
     private static final Table facultadTable = Table.aliased("facultad", "facultad");
 
     private static final EntityManager.LinkTable sedeLink = new EntityManager.LinkTable("rel_programa__sede", "programa_id", "sede_id");
+    private static final EntityManager.LinkTable profesorLink = new EntityManager.LinkTable(
+        "rel_programa__profesor",
+        "programa_id",
+        "profesor_id"
+    );
 
     public ProgramaRepositoryInternalImpl(
         R2dbcEntityTemplate template,
@@ -156,6 +162,8 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
 
     protected <S extends Programa> Mono<S> updateRelations(S entity) {
         Mono<Void> result = entityManager.updateLinkTable(sedeLink, entity.getId(), entity.getSedes().stream().map(Sede::getId)).then();
+        result =
+            result.and(entityManager.updateLinkTable(profesorLink, entity.getId(), entity.getProfesors().stream().map(Profesor::getId)));
         return result.thenReturn(entity);
     }
 
@@ -165,6 +173,6 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
     }
 
     protected Mono<Void> deleteRelations(Long entityId) {
-        return entityManager.deleteFromLinkTable(sedeLink, entityId);
+        return entityManager.deleteFromLinkTable(sedeLink, entityId).and(entityManager.deleteFromLinkTable(profesorLink, entityId));
     }
 }

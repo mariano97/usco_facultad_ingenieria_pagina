@@ -10,6 +10,9 @@ import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.m
 import FacultadService from '@/entities/facultad/facultad.service';
 import { IFacultad } from '@/shared/model/facultad.model';
 
+import ProgramaService from '@/entities/programa/programa.service';
+import { IPrograma } from '@/shared/model/programa.model';
+
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import ProfesorService from './profesor.service';
 
@@ -55,6 +58,10 @@ export default class ProfesorUpdate extends Vue {
   @Inject('facultadService') private facultadService: () => FacultadService;
 
   public facultads: IFacultad[] = [];
+
+  @Inject('programaService') private programaService: () => ProgramaService;
+
+  public programas: IPrograma[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -145,6 +152,11 @@ export default class ProfesorUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.facultads = res.data;
+      });
+    this.programaService()
+      .retrieve()
+      .then(res => {
+        this.programas = res.data;
       });
   }
 }
