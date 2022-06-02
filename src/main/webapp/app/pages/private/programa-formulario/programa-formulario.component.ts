@@ -90,6 +90,34 @@ export default class ProgramaFormulario extends Vue {
     this.consultarTipoFormacion();
   } */
 
+  private googleApiConfig = {
+    apiKey: 'AIzaSyB-QUsC9D-DCd_RTEfAGDaigFOcxHkH1Os',
+    clientId: '575700602120-me36ol3ijg64gio3rv8c6o4s0sio3gvo.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.readonly',
+    discoveryDocs: [ 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest' ]
+  }
+
+  public mounted() {
+    this.$gapi._libraryLoad('auth2')
+      .then(res => {
+        console.log("response");
+        console.log(res);
+        res.init({
+          client_id: this.googleApiConfig.clientId,
+          scope: this.googleApiConfig.scope,
+        }).then(() => {
+          console.log('dentro de aut');
+          const GoogleAuth = res.getAuthInstance();
+          const GoogleUser = GoogleAuth.currentUser.get();
+          const oauthToken = GoogleUser.Zi.access_token;
+          console.log('info');
+          console.log(GoogleAuth);
+          console.log(GoogleUser);
+          console.log(oauthToken);
+        });
+      });
+  }
+
   public beforeRouteEnter (to, from, next) {
     next(vm => {
       if (to.params.codigoSnies) {

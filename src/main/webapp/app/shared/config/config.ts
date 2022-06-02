@@ -105,18 +105,18 @@ const dateTimeFormats: DateTimeFormats = {
   // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
 };
 
-/* const googleApiConfig = {
+const googleApiConfig = {
   apiKey: 'AIzaSyB-QUsC9D-DCd_RTEfAGDaigFOcxHkH1Os',
   clientId: '575700602120-me36ol3ijg64gio3rv8c6o4s0sio3gvo.apps.googleusercontent.com',
-  scope: 'space_separated_scopes',
-  discoveryDocs: [ list_of_discoverydocs_urls ]
-} */
+  scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.readonly',
+  discoveryDocs: [ 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest' ]
+}
 
 export function initVueApp(vue) {
   vue.use(VueCookie);
   vue.use(Vuelidate);
   vue.use(Vue2Filters);
-  //vue.use();
+  vue.use(VueGoogleApi, googleApiConfig);
   filters.initFilters();
 }
 
