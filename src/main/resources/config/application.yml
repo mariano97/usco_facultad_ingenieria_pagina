@@ -236,7 +236,7 @@ graphql:
   graphiql:
     mapping: /api/graphiql
     endpoint:
-      graphql: /api/graphql
+      graphql: /graphql
       subscriptions: /subscriptions
     subscriptions:
       timeout: 30

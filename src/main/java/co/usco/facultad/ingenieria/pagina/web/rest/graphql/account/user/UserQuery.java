@@ -1,11 +1,13 @@
 package co.usco.facultad.ingenieria.pagina.web.rest.graphql.account.user;
 
 
+import co.usco.facultad.ingenieria.pagina.security.jwt.TokenProvider;
 import co.usco.facultad.ingenieria.pagina.service.UserService;
 import co.usco.facultad.ingenieria.pagina.service.dto.UserDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.graphql.account.AccountQuery;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +19,13 @@ public class UserQuery implements GraphQLQueryResolver {
             super(message);
         }
     }
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+    @Autowired
+    private ReactiveAuthenticationManager authenticationManager;
+
     @Autowired
     private  UserService userService;
 

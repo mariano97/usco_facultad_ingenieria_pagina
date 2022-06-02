@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,9 @@ public class AccountMutation implements GraphQLMutationResolver {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ReactiveAuthenticationManager authenticationManager;
+
     public UserDTO register(@Valid ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
@@ -53,8 +57,14 @@ public class AccountMutation implements GraphQLMutationResolver {
         //mailService.sendActivationEmail(user);
     }
 
-    public Token authenticate(LoginVM loginVM) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
+    public Mono<Token> authenticate(LoginVM loginVM) {
+        return Mono.just(loginVM).flatMap(login -> {
+            return authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
+                .flatMap(auth -> Mono.fromCallable(() -> tokenProvider.createToken(auth, login.isRememberMe())));
+        })
+            .flatMap(jwt -> Mono.just(new Token(jwt)));
+        /* UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
         try {
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -70,7 +80,7 @@ public class AccountMutation implements GraphQLMutationResolver {
                     return super.getMessage();
                 }
             };
-        }
+        } */
     }
 
     private static boolean checkPasswordLength(String password) {
