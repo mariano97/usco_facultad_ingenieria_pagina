@@ -49,6 +49,8 @@ import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { translationStore } from '@/shared/config/store/translation-store';
 
+import VueGoogleApi from 'vue-google-api';
+
 const dateTimeFormats: DateTimeFormats = {
   es: {
     short: {
@@ -103,10 +105,18 @@ const dateTimeFormats: DateTimeFormats = {
   // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
 };
 
+/* const googleApiConfig = {
+  apiKey: 'AIzaSyB-QUsC9D-DCd_RTEfAGDaigFOcxHkH1Os',
+  clientId: '575700602120-me36ol3ijg64gio3rv8c6o4s0sio3gvo.apps.googleusercontent.com',
+  scope: 'space_separated_scopes',
+  discoveryDocs: [ list_of_discoverydocs_urls ]
+} */
+
 export function initVueApp(vue) {
   vue.use(VueCookie);
   vue.use(Vuelidate);
   vue.use(Vue2Filters);
+  //vue.use();
   filters.initFilters();
 }
 
