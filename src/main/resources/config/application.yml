@@ -214,3 +214,6 @@ jhipster:
 # ===================================================================
 
 # application:
+
+google-config:
+  bucket-name: arched-catwalk-352122.appspot.com
