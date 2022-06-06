@@ -10,7 +10,7 @@ public interface GoogleCloudStorageService {
 
     public Mono<String> uploadFileToStorage(String carpeta, FilePart filePart);
 
-    public Mono<ByteArrayResource> downloadFileFromStorage(String fileName, Long generation);
+    public Mono<String> downloadFileFromStorage(String fileName, Long generation);
 
 
 }

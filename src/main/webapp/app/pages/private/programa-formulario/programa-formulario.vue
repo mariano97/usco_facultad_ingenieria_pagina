@@ -29,10 +29,25 @@
     <section class="programa_formulario">
       <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
         <div class="">
-          <div class="container_upload_image"></div>
+          <div class="container_upload_image d-flex align-items-end " :class="{ 'flex-column': showImage }">
+            <img v-if="showImage" class="image_programa" alt="imagen_programa" :src="image"/>
+            <a id="hide" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
+              <label for="file-input" class="row mx-0 align-items-center justify-content-center">
+                <div class="col-sm-auto">
+                  <img class="image" alt="image-upload" src="/content/images/iconos/icon-upload.png"/>
+                </div>
+                <div class="">
+                  <h4 v-text="$t('programa.formulario.labels.subirImagen')">Subir imagen</h4>
+                </div>
+              </label>
+              <input id="file-input" type="file"
+                accept="image/png, image/jpeg, image/jpg"
+                @change="changeImage"/>
+            </a>
+          </div>
           <div class="">
             <div class="col form-group px-0">
-              <label class="form-control-label" v-text="$t('programa.formulario.labels.nombrePrograma')" for="nombre_programa"
+              <label class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.nombrePrograma')" for="nombre_programa"
                 >Nombre del programa</label
               >
               <input
@@ -53,7 +68,7 @@
             </div>
             <div class="row">
               <div class="form-group col-3">
-                <label for="codigo_snies" class="form-control-label" v-text="$t('programa.formulario.labels.codigoSnies')"
+                <label for="codigo_snies" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.codigoSnies')"
                   >Código SNIES</label
                 >
                 <input
@@ -78,7 +93,7 @@
               <div class="form-group col">
                 <label
                   for="codigo_registro_calificado"
-                  class="form-control-label"
+                  class="form-control-label campo_requerido"
                   v-text="$t('programa.formulario.labels.codigoRegistroCalificado')"
                   >Código registro calificado</label
                 >
@@ -112,7 +127,7 @@
               <div class="form-group col">
                 <label
                   for="fecha_registro_calificado"
-                  class="form-control-label"
+                  class="form-control-label campo_requerido"
                   v-text="$t('programa.formulario.labels.fechaRegistroCalificado')"
                   >Fecha registro calificado</label
                 >
@@ -135,7 +150,7 @@
             </div>
             <div class="row">
               <div class="form-group col-3">
-                <label for="creditos" class="form-control-label" v-text="$t('programa.formulario.labels.creditos')">Creditos</label>
+                <label for="creditos" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.creditos')">Creditos</label>
                 <input
                   type="number"
                   id="creditos"
@@ -181,7 +196,7 @@
                 </div>
               </div>
               <div class="form-group col">
-                <label for="titulo_otorgado" class="form-control-label" v-text="$t('programa.formulario.labels.titloOtorgado')"
+                <label for="titulo_otorgado" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.titloOtorgado')"
                   >Titulo otrogado</label
                 >
                 <input
@@ -205,7 +220,7 @@
                 </div>
               </div>
               <div class="form-group col-3">
-                <label for="costo_programa" class="form-control-label" v-text="$t('programa.formulario.labels.costoPrograma')"
+                <label for="costo_programa" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.costoPrograma')"
                   >Titulo otrogado</label
                 >
                 <input
@@ -230,7 +245,7 @@
             </div>
             <div class="row">
               <div class="form-group col">
-                <label for="tipo_metodologia" class="form-control-label" v-text="$t('programa.formulario.labels.tipoMetodologia')"
+                <label for="tipo_metodologia" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.tipoMetodologia')"
                   >Tipo de metodologia</label
                 >
                 <select
@@ -259,7 +274,7 @@
                 </div>
               </div>
               <div class="form-group col">
-                <label for="nivel_formacion" class="form-control-label" v-text="$t('programa.formulario.labels.nivelFormacion')"
+                <label for="nivel_formacion" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.nivelFormacion')"
                   >Nivel de formación</label
                 >
                 <select
@@ -305,7 +320,7 @@
                   <div class="col px-0 form-group">
                     <label
                       for="presentacion_programa"
-                      class="form-control-label"
+                      class="form-control-label campo_requerido"
                       v-text="$t('programa.formulario.labels.presentacionPrograma')"
                       >¿Cúal es la presentación del programa?</label
                     >
@@ -335,11 +350,18 @@
                       >
                         This field is required.
                       </small>
+                      <small
+                        class="form-text text-danger"
+                        v-if="!$v.sede.presentacionPrograma.maxLength"
+                        v-text="$t('entity.validation.maxlength', { max: 255 })"
+                      >
+                        This field cannot be longer than 10 characters.
+                      </small>
                     </div>
                   </div>
                   <div class="row">
                     <div class="form-group col">
-                      <label for="mision_programa" class="form-control-label" v-text="$t('programa.formulario.labels.misionPrograma')"
+                      <label for="mision_programa" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.misionPrograma')"
                         >Misión del programa</label
                       >
                       <div class="d-flex justify-content-end">
@@ -362,10 +384,17 @@
                         <small class="form-text text-danger" v-if="!$v.programa.mision.required" v-text="$t('entity.validation.required')">
                           This field is required.
                         </small>
+                        <small
+                          class="form-text text-danger"
+                          v-if="!$v.sede.mision.maxLength"
+                          v-text="$t('entity.validation.maxlength', { max: 255 })"
+                        >
+                          This field cannot be longer than 10 characters.
+                        </small>
                       </div>
                     </div>
                     <div class="form-group col">
-                      <label for="vision_programa" class="form-control-label" v-text="$t('programa.formulario.labels.visionPrograma')"
+                      <label for="vision_programa" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.visionPrograma')"
                         >Visión del programa</label
                       >
                       <div class="d-flex justify-content-end">
@@ -389,6 +418,13 @@
                       <div v-if="$v.programa.vision.$anyDirty && $v.programa.vision.$invalid">
                         <small class="form-text text-danger" v-if="!$v.programa.vision.required" v-text="$t('entity.validation.required')">
                           This field is required.
+                        </small>
+                        <small
+                          class="form-text text-danger"
+                          v-if="!$v.sede.vision.maxLength"
+                          v-text="$t('entity.validation.maxlength', { max: 255 })"
+                        >
+                          This field cannot be longer than 10 characters.
                         </small>
                       </div>
                     </div>
@@ -424,6 +460,15 @@
                       v-model="$v.programa.perfilEstudiante.$model"
                       :disabled="checkHabilitacionCampos()"
                     ></textarea>
+                    <div v-if="$v.programa.perfilEstudiante.$anyDirty && $v.programa.perfilEstudiante.$invalid">
+                      <small
+                        class="form-text text-danger"
+                        v-if="!$v.sede.perfilEstudiante.maxLength"
+                        v-text="$t('entity.validation.maxlength', { max: 255 })"
+                      >
+                        This field cannot be longer than 10 characters.
+                      </small>
+                    </div>
                   </div>
                   <div class="row">
                     <div class="form-group col">
@@ -447,9 +492,18 @@
                         v-model="$v.programa.perfilOcupacional.$model"
                         :disabled="checkHabilitacionCampos()"
                       ></textarea>
+                      <div v-if="$v.programa.perfilOcupacional.$anyDirty && $v.programa.perfilOcupacional.$invalid">
+                        <small
+                          class="form-text text-danger"
+                          v-if="!$v.sede.perfilOcupacional.maxLength"
+                          v-text="$t('entity.validation.maxlength', { max: 255 })"
+                        >
+                          This field cannot be longer than 10 characters.
+                        </small>
+                      </div>
                     </div>
                     <div class="form-group col">
-                      <label for="perfil_egresado" class="form-control-label" v-text="$t('programa.formulario.labels.pefilEgresado')"
+                      <label for="perfil_egresado" class="form-control-label campo_requerido" v-text="$t('programa.formulario.labels.pefilEgresado')"
                         >Visión del programa</label
                       >
                       <div class="d-flex justify-content-end">
@@ -470,6 +524,22 @@
                         :disabled="checkHabilitacionCampos()"
                         required
                       ></textarea>
+                      <div v-if="$v.programa.perfilEgresado.$anyDirty && $v.programa.perfilEgresado.$invalid">
+                        <small
+                          class="form-text text-danger"
+                          v-if="!$v.programa.perfilEgresado.required"
+                          v-text="$t('entity.validation.required')"
+                        >
+                          This field is required.
+                        </small>
+                        <small
+                          class="form-text text-danger"
+                          v-if="!$v.sede.perfilEgresado.maxLength"
+                          v-text="$t('entity.validation.maxlength', { max: 255 })"
+                        >
+                          This field cannot be longer than 10 characters.
+                        </small>
+                      </div>
                     </div>
                   </div>
                 </div>

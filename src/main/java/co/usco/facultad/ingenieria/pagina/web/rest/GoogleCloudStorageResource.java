@@ -23,15 +23,21 @@ public class GoogleCloudStorageResource {
         this.googleCloudStorageService = googleCloudStorageService;
     }
 
-    @PostMapping("/open/google-cloud-storage")
+    @PostMapping(value = {
+        "/open/google-cloud-storage",
+        "/google-cloud-storage/upload"
+    })
     public Mono<ResponseEntity<String>> uploadFile(@RequestPart("file")FilePart file,
                                                    @RequestParam("carpeta") String carpeta) {
         log.debug(">>>>>>>>>>>>>>>>Dentro de upload file");
         return googleCloudStorageService.uploadFileToStorage(carpeta, file).map(s -> ResponseEntity.ok().body(s));
     }
 
-    @GetMapping("/open/google-cloud-storage")
-    public Mono<ResponseEntity<ByteArrayResource>> downloadFile (@RequestParam("fileName") String fileName,
+    @GetMapping(value = {
+        "/open/google-cloud-storage",
+        "/google-cloud-storage/download"
+    })
+    public Mono<ResponseEntity<String>> downloadFile (@RequestParam("fileName") String fileName,
                                                                  @RequestParam("generation") Long generation) {
         return googleCloudStorageService.downloadFileFromStorage(fileName, generation).map(byteArrayOutputStream -> ResponseEntity
             .ok()

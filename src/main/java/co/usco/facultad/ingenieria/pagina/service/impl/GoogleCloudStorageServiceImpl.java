@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     }
 
     @Override
-    public Mono<ByteArrayResource> downloadFileFromStorage(String fileName, Long generation) {
+    public Mono<String> downloadFileFromStorage(String fileName, Long generation) {
         return Mono.just(storage).map(googleStorage -> {
             Blob blob = googleStorage.get(BlobId.of(bucketName, fileName, generation));
             return blob.reader();
@@ -76,16 +77,16 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
             byte[] content = {};
             // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(0);
             ByteArrayResource byteArrayResource = new ByteArrayResource(content);
-            /* try {
+            try {
                 content = IOUtils.toByteArray(inputStream);
-                byteArrayOutputStream = new ByteArrayOutputStream(content.length);
-                byteArrayOutputStream.write(content, 0, content.length);
+                /* byteArrayOutputStream = new ByteArrayOutputStream(content.length);
+                byteArrayOutputStream.write(content, 0, content.length); */
                 byteArrayResource = new ByteArrayResource(content);
             } catch (IOException e) {
                 e.printStackTrace();
-            } */
+            }
             byteArrayResource = new ByteArrayResource(content);
-            return Mono.just(byteArrayResource);
+            return Mono.just(Base64.getEncoder().encodeToString(content));
         });
     }
 

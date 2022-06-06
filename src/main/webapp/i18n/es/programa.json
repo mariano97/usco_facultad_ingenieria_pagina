@@ -24,6 +24,7 @@
     },
     "formulario": {
       "labels": {
+        "subirImagen": "Subir Imagén",
         "nombrePrograma": "Nombre del programa",
         "codigoSnies": "Código Snies",
         "codigoRegistroCalificado":"Código Registro Calificado",
