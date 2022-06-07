@@ -47,6 +47,17 @@
               }}</router-link>
             </div>
           </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
+          </dt>
+          <dd>
+            <div v-if="archivosPrograma.tablaElementoCatalogo">
+              <router-link
+                :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: archivosPrograma.tablaElementoCatalogo.id } }"
+                >{{ archivosPrograma.tablaElementoCatalogo.nombre }}</router-link
+              >
+            </div>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>

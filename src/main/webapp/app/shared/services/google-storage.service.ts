@@ -1,3 +1,4 @@
+import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import axios from 'axios';
 
 const baseApiUrlOpen = 'api/open/google-cloud-storage';
@@ -9,9 +10,49 @@ export default class GoogleStorageService {
       axios
         .get(`${baseApiUrlOpen}`, {
           params: {
-            fileName:
-              'programas/software/docs3/08807ffe-7cd5-47a7-afde-b60f49444133_Captura_de_Pantalla_2022-04-28_a_la_s__6.15.02_a._m..png',
-            generation: 1654461577871886,
+            fileName: fileName,
+            generation: generation,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadProgramaFile(programaId: number, elementoCatalogoId: number, nameCarpeta: string, file: File): Promise<IArchivosPrograma> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<IArchivosPrograma>((resolve, reject) => {
+      axios
+        .post(`${baseApiUrl}/programa-upload-files`, formdata, {
+          params: {
+            programaId: programaId,
+            elementoCatalogoId: elementoCatalogoId,
+            carpeta: nameCarpeta,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public updateFileArchivoPrograma(carpetaName: string, archivoProgramaId: number, file: File): Promise<IArchivosPrograma> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<IArchivosPrograma>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/programa-upload-files`, formdata, {
+          params: {
+            carpeta: carpetaName,
+            archivosProgramaId: archivoProgramaId,
           },
         })
         .then(res => {

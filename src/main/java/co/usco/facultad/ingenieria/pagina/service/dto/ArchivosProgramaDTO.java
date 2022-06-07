@@ -26,6 +26,8 @@ public class ArchivosProgramaDTO implements Serializable {
 
     private ProgramaDTO programa;
 
+    private TablaElementoCatalogoDTO tablaElementoCatalogo;
+
     public Long getId() {
         return id;
     }
@@ -82,6 +84,14 @@ public class ArchivosProgramaDTO implements Serializable {
         this.programa = programa;
     }
 
+    public TablaElementoCatalogoDTO getTablaElementoCatalogo() {
+        return tablaElementoCatalogo;
+    }
+
+    public void setTablaElementoCatalogo(TablaElementoCatalogoDTO tablaElementoCatalogo) {
+        this.tablaElementoCatalogo = tablaElementoCatalogo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -114,6 +124,7 @@ public class ArchivosProgramaDTO implements Serializable {
             ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", planEstudio='" + getPlanEstudio() + "'" +
             ", programa=" + getPrograma() +
+            ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
             "}";
     }
 }

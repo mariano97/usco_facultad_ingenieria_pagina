@@ -166,6 +166,44 @@
               This field is required.
             </small>
           </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.tablaElementoCatalogo')"
+              for="archivos-programa-tablaElementoCatalogo"
+              >Tabla Elemento Catalogo</label
+            >
+            <select
+              class="form-control"
+              id="archivos-programa-tablaElementoCatalogo"
+              data-cy="tablaElementoCatalogo"
+              name="tablaElementoCatalogo"
+              v-model="archivosPrograma.tablaElementoCatalogo"
+              required
+            >
+              <option v-if="!archivosPrograma.tablaElementoCatalogo" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="
+                  archivosPrograma.tablaElementoCatalogo && tablaElementoCatalogoOption.id === archivosPrograma.tablaElementoCatalogo.id
+                    ? archivosPrograma.tablaElementoCatalogo
+                    : tablaElementoCatalogoOption
+                "
+                v-for="tablaElementoCatalogoOption in tablaElementoCatalogos"
+                :key="tablaElementoCatalogoOption.id"
+              >
+                {{ tablaElementoCatalogoOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.archivosPrograma.tablaElementoCatalogo.$anyDirty && $v.archivosPrograma.tablaElementoCatalogo.$invalid">
+            <small
+              class="form-text text-danger"
+              v-if="!$v.archivosPrograma.tablaElementoCatalogo.required"
+              v-text="$t('entity.validation.required')"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

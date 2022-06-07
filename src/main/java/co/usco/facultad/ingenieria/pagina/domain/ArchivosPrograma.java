@@ -42,8 +42,15 @@ public class ArchivosPrograma implements Serializable {
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
     private Programa programa;
 
+    @Transient
+    @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
+    private TablaElementoCatalogo tablaElementoCatalogo;
+
     @Column("programa_id")
     private Long programaId;
+
+    @Column("tabla_elemento_catalogo_id")
+    private Long tablaElementoCatalogoId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -139,12 +146,34 @@ public class ArchivosPrograma implements Serializable {
         return this;
     }
 
+    public TablaElementoCatalogo getTablaElementoCatalogo() {
+        return this.tablaElementoCatalogo;
+    }
+
+    public void setTablaElementoCatalogo(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.tablaElementoCatalogo = tablaElementoCatalogo;
+        this.tablaElementoCatalogoId = tablaElementoCatalogo != null ? tablaElementoCatalogo.getId() : null;
+    }
+
+    public ArchivosPrograma tablaElementoCatalogo(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.setTablaElementoCatalogo(tablaElementoCatalogo);
+        return this;
+    }
+
     public Long getProgramaId() {
         return this.programaId;
     }
 
     public void setProgramaId(Long programa) {
         this.programaId = programa;
+    }
+
+    public Long getTablaElementoCatalogoId() {
+        return this.tablaElementoCatalogoId;
+    }
+
+    public void setTablaElementoCatalogoId(Long tablaElementoCatalogo) {
+        this.tablaElementoCatalogoId = tablaElementoCatalogo;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

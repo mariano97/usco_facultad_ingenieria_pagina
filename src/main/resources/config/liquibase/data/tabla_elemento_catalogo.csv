@@ -3,3 +3,6 @@ id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
 2;Postgrados;ESTPOST;true;1
 3;Virtual;FORMVTL;true;2
 4;Presencial;FORMPRSNL;true;2
+5;Imagén presentación;TIPDOCIMG;true;3
+6;Documentos;TIPDOCDOC;true;3
+7;Plan estudio;TIPDOCPLST;true;3

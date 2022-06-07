@@ -203,6 +203,19 @@ public class ArchivosProgramaResource {
             );
     }
 
+    @GetMapping(value = {
+        "/archivos-programas/by-programa-id/{id}"
+    })
+    public Mono<ResponseEntity<List<ArchivosProgramaDTO>>> getAllByProgramaId(
+        @PathVariable("id") Long programaId
+    ) {
+        return archivosProgramaService.findAllByPrograma(programaId).collectList()
+            .map(archivosProgramaDTOS ->
+                ResponseEntity.ok()
+                    .body(archivosProgramaDTOS)
+            );
+    }
+
     /**
      * {@code GET  /archivos-programas/:id} : get the "id" archivosPrograma.
      *

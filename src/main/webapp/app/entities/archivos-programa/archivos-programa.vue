@@ -60,6 +60,14 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.programa')">Programa</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'programa.nombre'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('tablaElementoCatalogo.nombre')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
+              <jhi-sort-indicator
+                :current-order="propOrder"
+                :reverse="reverse"
+                :field-name="'tablaElementoCatalogo.nombre'"
+              ></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -80,6 +88,17 @@
                 <router-link :to="{ name: 'ProgramaView', params: { programaId: archivosPrograma.programa.id } }">{{
                   archivosPrograma.programa.nombre
                 }}</router-link>
+              </div>
+            </td>
+            <td>
+              <div v-if="archivosPrograma.tablaElementoCatalogo">
+                <router-link
+                  :to="{
+                    name: 'TablaElementoCatalogoView',
+                    params: { tablaElementoCatalogoId: archivosPrograma.tablaElementoCatalogo.id },
+                  }"
+                  >{{ archivosPrograma.tablaElementoCatalogo.nombre }}</router-link
+                >
               </div>
             </td>
             <td class="text-right">

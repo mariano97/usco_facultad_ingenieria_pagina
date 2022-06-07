@@ -13,10 +13,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-auto">
+      <div class="col-sm-auto row mx-0">
         <button
           v-if="isModeEdit && !enableEdit"
-          class="btn btn_editar d-flex align-items-center justify-content-center"
+          class="btn btn_editar d-flex align-items-center justify-content-center col-sm-auto"
           type="button"
           id="btn_editar"
           v-text="$t('entity.action.edit')"
@@ -24,13 +24,23 @@
         >
           Editar
         </button>
+        <button
+          v-if="isModeEdit && !enableEdit"
+          class="btn btn_editar d-flex align-items-center justify-content-center col-sm-auto"
+          type="button"
+          id="btn_editar"
+          v-text="$t('entity.action.delete')"
+          v-on:click="enableFormularioEditar()"
+        >
+          Eliminar
+        </button>
       </div>
     </section>
     <section class="programa_formulario">
       <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
         <div class="">
           <div class="container_upload_image d-flex align-items-end " :class="{ 'flex-column': showImage }">
-            <img v-if="showImage" class="image_programa" alt="imagen_programa" :src="image"/>
+            <img v-if="showImage" class="image_programa" alt="imagen_programa" :src="imageProfilePrograma | headerFileBase64" />
             <a id="hide" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
               <label for="file-input" class="row mx-0 align-items-center justify-content-center">
                 <div class="col-sm-auto">
@@ -40,9 +50,7 @@
                   <h4 v-text="$t('programa.formulario.labels.subirImagen')">Subir imagen</h4>
                 </div>
               </label>
-              <input id="file-input" type="file"
-                accept="image/png, image/jpeg, image/jpg"
-                @change="changeImage"/>
+              <input id="file-input" type="file" accept="image/png, image/jpeg, image/jpg" @change="changeImage" />
             </a>
           </div>
           <div class="">

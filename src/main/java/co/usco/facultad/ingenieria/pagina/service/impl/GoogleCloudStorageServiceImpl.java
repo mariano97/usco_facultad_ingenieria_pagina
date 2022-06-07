@@ -5,6 +5,7 @@ import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
 import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.TablaElementoCatalogoDTO;
 import com.google.cloud.storage.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -71,7 +72,37 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     }
 
     @Override
-    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(Long programaId, String carpeta, FilePart filePart) {
+    public Mono<Map<String, Object>> uploadFileToStorageMap(String carpeta, FilePart filePart) {
+        File file = new File(filePart.filename());
+        return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
+            .then(Mono.just(file)).map(newFile -> {
+                byte[] bytes = {};
+                try {
+                    bytes = getArrayBytesFromFile(newFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newFile.delete();
+                return bytes;
+            })
+            .flatMap(bytes -> {
+                Map<String, Object> mapsProps = new HashMap<>();
+                if (bytes.length > 0) {
+                    final BlobId blobId = generateBlobId(bucketName, carpeta, filePart.filename());
+                    // BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(filePart.headers().getContentType().getType()).build();
+                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+                    Blob blob = storage.create(blobInfo, bytes);
+                    mapsProps.put(GoogleServiceProps.PROP_NAME_FILE_UPLOAD, blob.getName());
+                    mapsProps.put(GoogleServiceProps.PROP_MEDIA_LINK_FILE_UPLOAD, blob.getMediaLink());
+                    mapsProps.put(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD, blob.getGeneration());
+
+                }
+                return Mono.just(mapsProps);
+            });
+    }
+
+    @Override
+    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(Long programaId, Long elementoCatalogoId, String carpeta, FilePart filePart) {
         File file = new File(filePart.filename());
         return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
             .then(Mono.just(file)).map(newFile -> {
@@ -85,7 +116,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                 return bytes;
             })
             .map(bytes -> {
-                Map mapsProps = new HashMap();
+                Map<String, Object> mapsProps = new HashMap<>();
                 if (bytes.length > 0) {
                     final BlobId blobId = generateBlobId(bucketName, carpeta, filePart.filename());
                     // BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(filePart.headers().getContentType().getType()).build();
@@ -101,13 +132,30 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
             .flatMap(map -> {
                 ArchivosProgramaDTO archivosProgramaDTO = new ArchivosProgramaDTO();
                 ProgramaDTO programaDTO = new ProgramaDTO();
+                TablaElementoCatalogoDTO tablaElementoCatalogoDTO = new TablaElementoCatalogoDTO();
+                tablaElementoCatalogoDTO.setId(elementoCatalogoId);
                 programaDTO.setId(programaId);
                 archivosProgramaDTO.setPrograma(programaDTO);
                 archivosProgramaDTO.setGenerationStorage((Long) map.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
                 archivosProgramaDTO.setUrlName((String) map.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
-                archivosProgramaDTO.setPlanEstudio(false);
+                archivosProgramaDTO.setTablaElementoCatalogo(tablaElementoCatalogoDTO);
+                archivosProgramaDTO.setPlanEstudio(elementoCatalogoId == 7);
                 return archivosProgramaService.save(archivosProgramaDTO);
             });
+    }
+
+    @Override
+    public Mono<ArchivosProgramaDTO> updateFileProgramaToStorage(String carpeta, Long archivosProgramaId, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap -> {
+            return archivosProgramaService.findOne(archivosProgramaId).map(archivosProgramaDTO -> {
+                    deleteFileOfStorage(archivosProgramaDTO.getUrlName(), archivosProgramaDTO.getGenerationStorage())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>File Object delete")).subscribe(aBoolean -> log.debug("file eliminado"));
+                    archivosProgramaDTO.setGenerationStorage((Long) stringObjectMap.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
+                    archivosProgramaDTO.setUrlName((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                    return archivosProgramaDTO;
+                })
+                .flatMap(archivosProgramaService::update);
+        });
     }
 
     @Override
@@ -130,6 +178,17 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
             }
             byteArrayResource = new ByteArrayResource(content);
             return Mono.just(Base64.getEncoder().encodeToString(content));
+        });
+    }
+
+    @Override
+    public Mono<Boolean> deleteFileOfStorage(String fileName, Long generation) {
+        return Mono.just(storage).map(googleStorage -> {
+            BlobId blobId = BlobId.of(bucketName, fileName, generation);
+            return blobId;
+        }).flatMap(blobId -> {
+            boolean deleteStorageResult = storage.delete(blobId);
+            return Mono.just(deleteStorageResult);
         });
     }
 

@@ -46,4 +46,23 @@ export function initFilters() {
     }
     return '';
   });
+  Vue.filter('headerFileBase64', (value: string) => {
+    if (typeof value !== 'string') {
+      return value;
+    }
+    const headerBase64 = value.substring(0, 5);
+    let headerBase64Type = '';
+    switch (headerBase64.toUpperCase()) {
+      case 'IVBOR':
+        headerBase64Type = 'data:image/png;base64,';
+        break;
+      case '/9J/4':
+        headerBase64Type = 'data:image/jpg;base64,';
+        break;
+      default:
+        headerBase64Type = '';
+        break;
+    }
+    return headerBase64Type + value;
+  });
 }

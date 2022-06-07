@@ -1,16 +1,13 @@
 package co.usco.facultad.ingenieria.pagina.service.impl;
 
-import co.usco.facultad.ingenieria.pagina.constants.GoogleServiceProps;
 import co.usco.facultad.ingenieria.pagina.domain.ArchivosPrograma;
 import co.usco.facultad.ingenieria.pagina.repository.ArchivosProgramaRepository;
 import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
-import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.ArchivosProgramaMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -29,15 +26,12 @@ public class ArchivosProgramaServiceImpl implements ArchivosProgramaService {
 
     private final ArchivosProgramaMapper archivosProgramaMapper;
 
-    private final GoogleCloudStorageService googleCloudStorageService;
-
     public ArchivosProgramaServiceImpl(
         ArchivosProgramaRepository archivosProgramaRepository,
-        ArchivosProgramaMapper archivosProgramaMapper,
-        GoogleCloudStorageService googleCloudStorageService) {
+        ArchivosProgramaMapper archivosProgramaMapper
+    ) {
         this.archivosProgramaRepository = archivosProgramaRepository;
         this.archivosProgramaMapper = archivosProgramaMapper;
-        this.googleCloudStorageService = googleCloudStorageService;
     }
 
     @Override
@@ -72,6 +66,12 @@ public class ArchivosProgramaServiceImpl implements ArchivosProgramaService {
     public Flux<ArchivosProgramaDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ArchivosProgramas");
         return archivosProgramaRepository.findAllBy(pageable).map(archivosProgramaMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<ArchivosProgramaDTO> findAllByPrograma(Long programaId) {
+        return archivosProgramaRepository.findByProgramaId(programaId).map(archivosProgramaMapper::toDto);
     }
 
     public Flux<ArchivosProgramaDTO> findAllWithEagerRelationships(Pageable pageable) {

@@ -13,5 +13,11 @@
                                  constraintName="fk_archivos_programa__programa_id"
                                  referencedColumnNames="id"
                                  referencedTableName="programa"/>
+
+        <addForeignKeyConstraint baseColumnNames="tabla_elemento_catalogo_id"
+                                 baseTableName="archivos_programa"
+                                 constraintName="fk_archivos_programa__tabla_elemento_catalogo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_elemento_catalogo"/>
     </changeSet>
 </databaseChangeLog>

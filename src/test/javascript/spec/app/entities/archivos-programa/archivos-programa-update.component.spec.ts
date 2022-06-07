@@ -10,6 +10,8 @@ import ArchivosProgramaClass from '@/entities/archivos-programa/archivos-program
 import ArchivosProgramaService from '@/entities/archivos-programa/archivos-programa.service';
 
 import ProgramaService from '@/entities/programa/programa.service';
+
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -46,6 +48,11 @@ describe('Component Tests', () => {
 
           programaService: () =>
             sinon.createStubInstance<ProgramaService>(ProgramaService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          tablaElementoCatalogoService: () =>
+            sinon.createStubInstance<TablaElementoCatalogoService>(TablaElementoCatalogoService, {
               retrieve: sinon.stub().resolves({}),
             } as any),
         },

@@ -33,6 +33,19 @@ export default class ArchivosProgramaService {
     });
   }
 
+  public getAllByProgramaId(programaId: number): Promise<IArchivosPrograma[]> {
+    return new Promise<IArchivosPrograma[]>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/by-programa-id/${programaId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

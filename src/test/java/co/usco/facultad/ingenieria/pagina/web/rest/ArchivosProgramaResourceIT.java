@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 import co.usco.facultad.ingenieria.pagina.IntegrationTest;
 import co.usco.facultad.ingenieria.pagina.domain.ArchivosPrograma;
 import co.usco.facultad.ingenieria.pagina.domain.Programa;
+import co.usco.facultad.ingenieria.pagina.domain.TablaElementoCatalogo;
 import co.usco.facultad.ingenieria.pagina.repository.ArchivosProgramaRepository;
 import co.usco.facultad.ingenieria.pagina.repository.EntityManager;
 import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
@@ -100,6 +101,10 @@ class ArchivosProgramaResourceIT {
         Programa programa;
         programa = em.insert(ProgramaResourceIT.createEntity(em)).block();
         archivosPrograma.setPrograma(programa);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createEntity(em)).block();
+        archivosPrograma.setTablaElementoCatalogo(tablaElementoCatalogo);
         return archivosPrograma;
     }
 
@@ -120,6 +125,10 @@ class ArchivosProgramaResourceIT {
         Programa programa;
         programa = em.insert(ProgramaResourceIT.createUpdatedEntity(em)).block();
         archivosPrograma.setPrograma(programa);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createUpdatedEntity(em)).block();
+        archivosPrograma.setTablaElementoCatalogo(tablaElementoCatalogo);
         return archivosPrograma;
     }
 
@@ -130,6 +139,7 @@ class ArchivosProgramaResourceIT {
             // It can fail, if other entities are still referring this - it will be removed later.
         }
         ProgramaResourceIT.deleteEntities(em);
+        TablaElementoCatalogoResourceIT.deleteEntities(em);
     }
 
     @AfterEach

@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import { DATE_FORMAT, DATE_TIME_LONG_FORMAT } from '@/shared/date/filters';
 import carpetasarchivosConstants from '@/shared/constants/carpetasarchivos.constants';
 import GoogleStorageService from '@/shared/services/google-storage.service';
+import ArchivosProgramaService from '@/entities/archivos-programa/archivos-programa.service';
+import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 
 const validations: any = {
   programa: {
@@ -90,18 +92,21 @@ export default class ProgramaFormulario extends Vue {
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
+  @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
 
   public programa: IPrograma = new Programa();
 
   private listTiposPrograma: ITablaElementoCatalogo[] = [];
   private listTiposFormacion: ITablaElementoCatalogo[] = [];
+  private archivosProgramaList: IArchivosPrograma[] = [];
+  private archvivoProgramaImageProfile: IArchivosPrograma = {};
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
   public dateMax = dayjs().format(DATE_FORMAT);
   private carpetaImagen = '';
   private file: any = null;
-  public image: any;
+  public imageProfilePrograma: any;
   public showImage = false;
 
   /* public created(): void {
@@ -120,28 +125,6 @@ export default class ProgramaFormulario extends Vue {
       vm.consultarTipoFormacion();
       // vm.downloadFile();
     });
-  }
-
-  public getimage(): any {
-    console.log('imagen');
-    console.log(this.image);
-    return this.image;
-  }
-
-  private downloadFile(): void {
-    this.googleStorageService()
-      .downloadFile('sas', 9)
-      .then(res => {
-        console.log('res_imagen');
-        console.log(res);
-        this.image = 'data:image/png;base64,' + res;
-        console.log('imagen2');
-        console.log(this.image);
-        this.showImage = true;
-      })
-      .catch(err => {
-        console.log(err);
-      })
   }
 
   private consultarListaProgramas(): void {
@@ -175,9 +158,26 @@ export default class ProgramaFormulario extends Vue {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        this.image = fileReader.result;
+        this.imageProfilePrograma = fileReader.result;
         this.showImage = true;
       };
+      if (this.programa.id) {
+        this.showImage = false;
+        if (this.archvivoProgramaImageProfile.id) {
+          this.updateFileToStorage(
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+            this.archvivoProgramaImageProfile.id,
+            this.file
+          );
+        } else {
+          this.uploadFileToStorage(
+            this.programa.id,
+            5,
+            this.file,
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
+          );
+        }
+      }
     }
   }
 
@@ -192,9 +192,6 @@ export default class ProgramaFormulario extends Vue {
         .update(this.programa)
         .then(res => {
           this.isSaving = false;
-          if (this.file !== null && this.file !== null) {
-            this.uploadFileToStorage(this.file, this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre));
-          }
           this.$router.go(-1);
           const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: res.id });
           return this.$root.$bvToast.toast(message.toString(), {
@@ -217,8 +214,13 @@ export default class ProgramaFormulario extends Vue {
         .create(this.programa)
         .then(res => {
           this.isSaving = false;
-          if (this.file !== null && this.file !== null) {
-            this.uploadFileToStorage(this.file, this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre));
+          if (this.file !== null) {
+            this.uploadFileToStorage(
+              res.id,
+              5,
+              this.file,
+              this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
+            );
           }
           this.$router.push({ name: 'usuario_programas_lista' });
           // this.$router.go(-1);
@@ -238,9 +240,9 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
-  private uploadFileToStorage(file: File, nameCarpeta: string): void {
+  private uploadFileToStorage(programaId: number, elementoCatalogoId: number, file: File, nameCarpeta: string): void {
     this.googleStorageService()
-      .uploadFile(file, nameCarpeta)
+      .uploadProgramaFile(programaId, elementoCatalogoId, nameCarpeta, file)
       .then(res1 => {
         console.log(res1);
       })
@@ -249,7 +251,26 @@ export default class ProgramaFormulario extends Vue {
       });
   }
 
+  public updateFileToStorage(carpetaName: string, archivoProgramaId: number, file: File): void {
+    this.googleStorageService()
+      .updateFileArchivoPrograma(carpetaName, archivoProgramaId, file)
+      .then(res => {
+        this.archivosProgramaList.map(archivo => {
+          if (archivo.id === archivoProgramaId) {
+            archivo.generationStorage = res.generationStorage;
+            archivo.urlName = res.urlName;
+          }
+        });
+        this.consultarArchivosPrograma(this.programa.id);
+      })
+      .catch(err => {
+        console.error("error actualizando archivo");
+        console.error(err);
+      });
+  }
+
   private generateUrlFolderUpload(codigoSnies: string, namePrograma: string): string {
+    namePrograma = namePrograma.replace(' ', '-');
     return carpetasarchivosConstants.CARPETA_BASE_PROGRAMA_IMAGES.replace('{{snies}}', codigoSnies + '').replace(
       '{{name_programa}}',
       namePrograma
@@ -277,10 +298,42 @@ export default class ProgramaFormulario extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
+        this.consultarArchivosPrograma(this.programa.id);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
       });
+  }
+
+  public consultarArchivosPrograma(programaId: number): void {
+    this.archivosProgramaService()
+      .getAllByProgramaId(programaId)
+      .then(res => {
+        this.archivosProgramaList = res;
+        this.downloadImageProgramaPerfil();
+      })
+      .catch(err => {
+        console.error("Errore obteniendo archivos");
+        console.error(err);
+      });
+  }
+
+  private downloadImageProgramaPerfil(): void {
+    const archivoProgramaImage = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER
+    );
+    if (archivoProgramaImage.length > 0) {
+      this.archvivoProgramaImageProfile = archivoProgramaImage[0];
+      this.googleStorageService()
+        .downloadFile(archivoProgramaImage[0].urlName, archivoProgramaImage[0].generationStorage)
+        .then(res => {
+          this.imageProfilePrograma = res;
+          this.showImage = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 
   public checkHabilitacionCampos(): boolean {

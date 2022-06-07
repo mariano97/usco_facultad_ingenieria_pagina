@@ -23,7 +23,8 @@
       "storageContentType": "Storage Content Type",
       "tipoDocumento": "Tipo Documento",
       "planEstudio": "Plan Estudio",
-      "programa": "Programa"
+      "programa": "Programa",
+      "tablaElementoCatalogo": "Tabla Elemento Catalogo"
     }
   }
 }

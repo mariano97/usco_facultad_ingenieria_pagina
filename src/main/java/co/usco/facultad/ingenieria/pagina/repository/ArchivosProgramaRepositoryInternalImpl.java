@@ -5,6 +5,7 @@ import static org.springframework.data.relational.core.query.Criteria.where;
 import co.usco.facultad.ingenieria.pagina.domain.ArchivosPrograma;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.ArchivosProgramaRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.ProgramaRowMapper;
+import co.usco.facultad.ingenieria.pagina.repository.rowmapper.TablaElementoCatalogoRowMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import java.util.ArrayList;
@@ -46,15 +47,18 @@ class ArchivosProgramaRepositoryInternalImpl
     private final EntityManager entityManager;
 
     private final ProgramaRowMapper programaMapper;
+    private final TablaElementoCatalogoRowMapper tablaelementocatalogoMapper;
     private final ArchivosProgramaRowMapper archivosprogramaMapper;
 
     private static final Table entityTable = Table.aliased("archivos_programa", EntityManager.ENTITY_ALIAS);
     private static final Table programaTable = Table.aliased("programa", "programa");
+    private static final Table tablaElementoCatalogoTable = Table.aliased("tabla_elemento_catalogo", "tablaElementoCatalogo");
 
     public ArchivosProgramaRepositoryInternalImpl(
         R2dbcEntityTemplate template,
         EntityManager entityManager,
         ProgramaRowMapper programaMapper,
+        TablaElementoCatalogoRowMapper tablaelementocatalogoMapper,
         ArchivosProgramaRowMapper archivosprogramaMapper,
         R2dbcEntityOperations entityOperations,
         R2dbcConverter converter
@@ -68,6 +72,7 @@ class ArchivosProgramaRepositoryInternalImpl
         this.r2dbcEntityTemplate = template;
         this.entityManager = entityManager;
         this.programaMapper = programaMapper;
+        this.tablaelementocatalogoMapper = tablaelementocatalogoMapper;
         this.archivosprogramaMapper = archivosprogramaMapper;
     }
 
@@ -79,13 +84,17 @@ class ArchivosProgramaRepositoryInternalImpl
     RowsFetchSpec<ArchivosPrograma> createQuery(Pageable pageable, Condition whereClause) {
         List<Expression> columns = ArchivosProgramaSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
         columns.addAll(ProgramaSqlHelper.getColumns(programaTable, "programa"));
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(tablaElementoCatalogoTable, "tablaElementoCatalogo"));
         SelectFromAndJoinCondition selectFrom = Select
             .builder()
             .select(columns)
             .from(entityTable)
             .leftOuterJoin(programaTable)
             .on(Column.create("programa_id", entityTable))
-            .equals(Column.create("id", programaTable));
+            .equals(Column.create("id", programaTable))
+            .leftOuterJoin(tablaElementoCatalogoTable)
+            .on(Column.create("tabla_elemento_catalogo_id", entityTable))
+            .equals(Column.create("id", tablaElementoCatalogoTable));
         // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
         String select = entityManager.createSelect(selectFrom, ArchivosPrograma.class, pageable, whereClause);
         return db.sql(select).map(this::process);
@@ -117,9 +126,16 @@ class ArchivosProgramaRepositoryInternalImpl
         return findAllBy(page);
     }
 
+    @Override
+    public Flux<ArchivosPrograma> findByProgramaId(Long programaId) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("programa_id"), Conditions.just(programaId.toString()));
+        return createQuery(null, whereClause).all();
+    }
+
     private ArchivosPrograma process(Row row, RowMetadata metadata) {
         ArchivosPrograma entity = archivosprogramaMapper.apply(row, "e");
         entity.setPrograma(programaMapper.apply(row, "programa"));
+        entity.setTablaElementoCatalogo(tablaelementocatalogoMapper.apply(row, "tablaElementoCatalogo"));
         return entity;
     }
 

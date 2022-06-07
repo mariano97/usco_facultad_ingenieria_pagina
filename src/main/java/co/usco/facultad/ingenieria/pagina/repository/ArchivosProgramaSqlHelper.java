@@ -18,6 +18,7 @@ public class ArchivosProgramaSqlHelper {
         columns.add(Column.aliased("plan_estudio", table, columnPrefix + "_plan_estudio"));
 
         columns.add(Column.aliased("programa_id", table, columnPrefix + "_programa_id"));
+        columns.add(Column.aliased("tabla_elemento_catalogo_id", table, columnPrefix + "_tabla_elemento_catalogo_id"));
         return columns;
     }
 }

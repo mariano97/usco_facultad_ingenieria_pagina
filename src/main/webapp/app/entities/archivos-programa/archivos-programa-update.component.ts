@@ -7,6 +7,9 @@ import AlertService from '@/shared/alert/alert.service';
 import ProgramaService from '@/entities/programa/programa.service';
 import { IPrograma } from '@/shared/model/programa.model';
 
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+
 import { IArchivosPrograma, ArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import ArchivosProgramaService from './archivos-programa.service';
 
@@ -27,6 +30,9 @@ const validations: any = {
     programa: {
       required,
     },
+    tablaElementoCatalogo: {
+      required,
+    },
   },
 };
 
@@ -42,6 +48,10 @@ export default class ArchivosProgramaUpdate extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
 
   public programas: IPrograma[] = [];
+
+  @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
+
+  public tablaElementoCatalogos: ITablaElementoCatalogo[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -127,6 +137,11 @@ export default class ArchivosProgramaUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.programas = res.data;
+      });
+    this.tablaElementoCatalogoService()
+      .retrieve()
+      .then(res => {
+        this.tablaElementoCatalogos = res.data;
       });
   }
 }

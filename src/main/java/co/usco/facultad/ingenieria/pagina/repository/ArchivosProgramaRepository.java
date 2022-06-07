@@ -32,6 +32,12 @@ public interface ArchivosProgramaRepository extends ReactiveCrudRepository<Archi
     @Query("SELECT * FROM archivos_programa entity WHERE entity.programa_id IS NULL")
     Flux<ArchivosPrograma> findAllWhereProgramaIsNull();
 
+    @Query("SELECT * FROM archivos_programa entity WHERE entity.tabla_elemento_catalogo_id = :id")
+    Flux<ArchivosPrograma> findByTablaElementoCatalogo(Long id);
+
+    @Query("SELECT * FROM archivos_programa entity WHERE entity.tabla_elemento_catalogo_id IS NULL")
+    Flux<ArchivosPrograma> findAllWhereTablaElementoCatalogoIsNull();
+
     @Override
     <S extends ArchivosPrograma> Mono<S> save(S entity);
 
@@ -61,6 +67,8 @@ interface ArchivosProgramaRepositoryInternal {
     Flux<ArchivosPrograma> findAllWithEagerRelationships();
 
     Flux<ArchivosPrograma> findAllWithEagerRelationships(Pageable page);
+
+    Flux<ArchivosPrograma> findByProgramaId(Long programaId);
 
     Mono<Void> deleteById(Long id);
 }

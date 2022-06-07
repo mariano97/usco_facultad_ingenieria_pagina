@@ -2,7 +2,6 @@ package co.usco.facultad.ingenieria.pagina.service;
 
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,6 +40,8 @@ public interface ArchivosProgramaService {
      * @return the list of entities.
      */
     Flux<ArchivosProgramaDTO> findAll(Pageable pageable);
+
+    Flux<ArchivosProgramaDTO> findAllByPrograma(Long programaId);
 
     /**
      * Get all the archivosProgramas with eager load of many-to-many relationships.
