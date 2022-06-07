@@ -17,6 +17,7 @@
         "programa": "Programa",
         "sede": "Sede",
         "profesor": "Profesor",
+        "archivosPrograma": "Archivos Programa",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

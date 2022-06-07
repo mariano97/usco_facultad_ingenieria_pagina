@@ -8,6 +8,7 @@ import ProgramaService from './programa/programa.service';
 import SedeService from './sede/sede.service';
 import ProfesorService from './profesor/profesor.service';
 import GoogleStorageService from '@/shared/services/google-storage.service';
+import ArchivosProgramaService from './archivos-programa/archivos-programa.service';
 // jhipster-needle-add-entity-service-to-entities-component-import - JHipster will import entities services here
 
 @Component
@@ -19,6 +20,7 @@ export default class Entities extends Vue {
   @Provide('programaService') private programaService = () => new ProgramaService();
   @Provide('sedeService') private sedeService = () => new SedeService();
   @Provide('profesorService') private profesorService = () => new ProfesorService();
+  @Provide('archivosProgramaService') private archivosProgramaService = () => new ArchivosProgramaService();
   // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
   @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
 }

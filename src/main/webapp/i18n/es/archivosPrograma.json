@@ -1,0 +1,29 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "archivosPrograma": {
+      "home": {
+        "title": "Archivos Programas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Archivos Programa",
+        "createOrEditLabel": "Crear o editar Archivos Programa",
+        "notFound": "Ningún Archivos Programas encontrado"
+      },
+      "created": "Un nuevo Archivos Programa ha sido creado con el identificador {{ param }}",
+      "updated": "Un Archivos Programa ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Archivos Programa ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Archivos Programa {{ id }}?"
+      },
+      "detail": {
+        "title": "Archivos Programa"
+      },
+      "id": "ID",
+      "urlName": "Url Name",
+      "generationStorage": "Generation Storage",
+      "storageContentType": "Storage Content Type",
+      "tipoDocumento": "Tipo Documento",
+      "planEstudio": "Plan Estudio",
+      "programa": "Programa"
+    }
+  }
+}

@@ -41,6 +41,12 @@ const Profesor = () => import('@/entities/profesor/profesor.vue');
 const ProfesorUpdate = () => import('@/entities/profesor/profesor-update.vue');
 // prettier-ignore
 const ProfesorDetails = () => import('@/entities/profesor/profesor-details.vue');
+// prettier-ignore
+const ArchivosPrograma = () => import('@/entities/archivos-programa/archivos-programa.vue');
+// prettier-ignore
+const ArchivosProgramaUpdate = () => import('@/entities/archivos-programa/archivos-programa-update.vue');
+// prettier-ignore
+const ArchivosProgramaDetails = () => import('@/entities/archivos-programa/archivos-programa-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -191,6 +197,30 @@ export default {
       path: 'profesor/:profesorId/view',
       name: 'ProfesorView',
       component: ProfesorDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'archivos-programa',
+      name: 'ArchivosPrograma',
+      component: ArchivosPrograma,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'archivos-programa/new',
+      name: 'ArchivosProgramaCreate',
+      component: ArchivosProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'archivos-programa/:archivosProgramaId/edit',
+      name: 'ArchivosProgramaEdit',
+      component: ArchivosProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'archivos-programa/:archivosProgramaId/view',
+      name: 'ArchivosProgramaView',
+      component: ArchivosProgramaDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

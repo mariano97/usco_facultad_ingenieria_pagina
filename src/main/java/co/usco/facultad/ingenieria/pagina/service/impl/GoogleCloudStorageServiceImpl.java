@@ -1,28 +1,24 @@
 package co.usco.facultad.ingenieria.pagina.service.impl;
 
+import co.usco.facultad.ingenieria.pagina.constants.GoogleServiceProps;
+import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
 import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
+import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
 import com.google.cloud.storage.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Nullable;
 import java.io.*;
-import java.net.URL;
 import java.nio.channels.Channels;
-import java.util.Base64;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService {
@@ -38,6 +34,13 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     @Autowired
     private Storage storage;
+
+    private final ArchivosProgramaService archivosProgramaService;
+
+    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService) {
+        this.archivosProgramaService = archivosProgramaService;
+    }
+
 
     @Override
     public Mono<String> uploadFileToStorage(final String carpeta, FilePart filePart) {
@@ -64,6 +67,46 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                     urlMedia = blob.getMediaLink();
                 }
                 return Mono.just(urlMedia);
+            });
+    }
+
+    @Override
+    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(Long programaId, String carpeta, FilePart filePart) {
+        File file = new File(filePart.filename());
+        return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
+            .then(Mono.just(file)).map(newFile -> {
+                byte[] bytes = {};
+                try {
+                    bytes = getArrayBytesFromFile(newFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newFile.delete();
+                return bytes;
+            })
+            .map(bytes -> {
+                Map mapsProps = new HashMap();
+                if (bytes.length > 0) {
+                    final BlobId blobId = generateBlobId(bucketName, carpeta, filePart.filename());
+                    // BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(filePart.headers().getContentType().getType()).build();
+                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+                    Blob blob = storage.create(blobInfo, bytes);
+                    mapsProps.put(GoogleServiceProps.PROP_NAME_FILE_UPLOAD, blob.getName());
+                    mapsProps.put(GoogleServiceProps.PROP_MEDIA_LINK_FILE_UPLOAD, blob.getMediaLink());
+                    mapsProps.put(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD, blob.getGeneration());
+
+                }
+                return mapsProps;
+            })
+            .flatMap(map -> {
+                ArchivosProgramaDTO archivosProgramaDTO = new ArchivosProgramaDTO();
+                ProgramaDTO programaDTO = new ProgramaDTO();
+                programaDTO.setId(programaId);
+                archivosProgramaDTO.setPrograma(programaDTO);
+                archivosProgramaDTO.setGenerationStorage((Long) map.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
+                archivosProgramaDTO.setUrlName((String) map.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                archivosProgramaDTO.setPlanEstudio(false);
+                return archivosProgramaService.save(archivosProgramaDTO);
             });
     }
 
