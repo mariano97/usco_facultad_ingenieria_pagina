@@ -42,10 +42,24 @@
         "prefilesProgramaTitle": "Perfiles del programa",
         "perfilEstudiante":"Perfil del estudiante",
         "perfilOcupacional": "Perfil Ocupacional",
-        "pefilEgresado": "Perfil del egresado"
+        "pefilEgresado": "Perfil del egresado",
+        "documentosProgramaTitle": "Documentos del programa"
       },
       "textos": {
         "semestres": "Semestres"
+      }
+    },
+    "buttons": {
+      "agregarDocumento": "Agregar nuevo documento"
+    },
+    "popups": {
+      "labels": {
+        "nombreDoc": "Nombre del documento:",
+        "tipoDoc": "Tipo del documento:",
+        "sizeDoc": "Tamaño del documento:"
+      },
+      "buttons": {
+        "crearDocumentoNuevo": "Subir documento nuevo"
       }
     }
   },

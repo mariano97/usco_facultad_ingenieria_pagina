@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 
 const baseApiUrl = 'api/archivos-programas';
+const baseApiUrlOpen = 'api/open/archivos-programas';
 
 export default class ArchivosProgramaService {
   public find(id: number): Promise<IArchivosPrograma> {
@@ -33,10 +34,11 @@ export default class ArchivosProgramaService {
     });
   }
 
-  public getAllByProgramaId(programaId: number): Promise<IArchivosPrograma[]> {
+  public getAllByProgramaId(isAutenticate: boolean, programaId: number): Promise<IArchivosPrograma[]> {
+    const url = isAutenticate ? baseApiUrl : baseApiUrlOpen;
     return new Promise<IArchivosPrograma[]>((resolve, reject) => {
       axios
-        .get(`${baseApiUrl}/by-programa-id/${programaId}`)
+        .get(`${url}/by-programa-id/${programaId}`)
         .then(res => {
           resolve(res.data);
         })

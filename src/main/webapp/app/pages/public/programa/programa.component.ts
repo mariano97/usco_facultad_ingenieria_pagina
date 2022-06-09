@@ -8,6 +8,10 @@ import dayjs from 'dayjs';
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import 'swiper/swiper-bundle.css';
 import './programa.scss';
+import ArchivosProgramaService from '@/entities/archivos-programa/archivos-programa.service';
+import GoogleStorageService from '@/shared/services/google-storage.service';
+import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -22,10 +26,16 @@ export default class Programa extends Vue {
   private codigoSniesTemp = this.$route.params.codigo_snies;
 
   @Inject('programaService') private programaService: () => ProgramaService;
+  @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
+  @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
 
   public programa: IPrograma = {};
   public pesentacionBasico: IPresentacionBasico[] = [];
   public isPresentacionBasicaLoaded = false;
+  public archivosProgramaList: IArchivosPrograma[] = [];
+  private archvivoProgramaImageProfile: IArchivosPrograma = {};
+  public imageProfilePrograma: any;
+  public showImage = false;
 
   public created(): void {
     this.consultarPrograma();
@@ -38,11 +48,43 @@ export default class Programa extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
+        this.consultarArchivosPrograma(this.programa.id);
         this.llenarListaPresentacion(this.programa);
       })
       .catch(err => {
         console.error(err);
       });
+  }
+
+  public consultarArchivosPrograma(programaId: number): void {
+    this.archivosProgramaService()
+      .getAllByProgramaId(this.$store.getters.authenticated, programaId)
+      .then(res => {
+        this.archivosProgramaList = res;
+        this.downloadImageProgramaPerfil();
+      })
+      .catch(err => {
+        console.error("Errore obteniendo archivos");
+        console.error(err);
+      });
+  }
+
+  private downloadImageProgramaPerfil(): void {
+    const archivoProgramaImage = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER
+    );
+    if (archivoProgramaImage.length > 0) {
+      this.archvivoProgramaImageProfile = archivoProgramaImage[0];
+      this.googleStorageService()
+        .downloadFile(this.$store.getters.authenticated, archivoProgramaImage[0].urlName, archivoProgramaImage[0].generationStorage)
+        .then(res => {
+          this.imageProfilePrograma = res;
+          this.showImage = true;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 
   public convertDateTimeFromServer(date: Date): string {

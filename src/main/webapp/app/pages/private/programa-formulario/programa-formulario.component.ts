@@ -15,6 +15,8 @@ import carpetasarchivosConstants from '@/shared/constants/carpetasarchivos.const
 import GoogleStorageService from '@/shared/services/google-storage.service';
 import ArchivosProgramaService from '@/entities/archivos-programa/archivos-programa.service';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
+import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
+import UtilsService from '@/shared/services/utils.service';
 
 const validations: any = {
   programa: {
@@ -92,14 +94,21 @@ export default class ProgramaFormulario extends Vue {
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
+  @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
 
   public programa: IPrograma = new Programa();
+
+  public POPUP_DOCUMENTO_ACCION_CREAR = 'CREAR';
+  public POPUP_DOCUMENTO_ACCION_ACTUALIZAR = 'ACTUALIZAR';
 
   private listTiposPrograma: ITablaElementoCatalogo[] = [];
   private listTiposFormacion: ITablaElementoCatalogo[] = [];
   private archivosProgramaList: IArchivosPrograma[] = [];
   private archvivoProgramaImageProfile: IArchivosPrograma = {};
+  private archivoProgramaToUpdate: IArchivosPrograma = {};
+  private archivosProgramaDescargados: IFileDocumentoNuevo[] = [];
+  public programaDocumentoNuevo: IFileDocumentoNuevo = {};
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
@@ -108,6 +117,10 @@ export default class ProgramaFormulario extends Vue {
   private file: any = null;
   public imageProfilePrograma: any;
   public showImage = false;
+  public showSpinnerLoader = false;
+  public transaccionError = false;
+  public popupDocumentoAccion = '';
+  public mensajeError = '';
 
   /* public created(): void {
     this.consultarListaProgramas();
@@ -123,7 +136,6 @@ export default class ProgramaFormulario extends Vue {
       }
       vm.consultarListaProgramas();
       vm.consultarTipoFormacion();
-      // vm.downloadFile();
     });
   }
 
@@ -145,6 +157,43 @@ export default class ProgramaFormulario extends Vue {
       });
   }
 
+  private isValidoTipoDocumento(file: IFileDocumentoNuevo, tiposDocumentosValidos: string[]): boolean {
+    return tiposDocumentosValidos.includes(file.file.type);
+  }
+
+  public changeAgregarDocumentoNuevo(event): void {
+    this.programaDocumentoNuevo = {};
+    this.mensajeError = '';
+    if (event.target.files && event.target.files.length > 0) {
+      this.programaDocumentoNuevo = {
+        file: event.target.files[0],
+        nombre: event.target.files[0].name,
+        size: event.target.files[0].size,
+        tipoDocumento: event.target.files[0].type,
+        isValidDoc: false,
+      };
+      const allowedImageTypes = ['application/pdf'];
+      const sizeMaxFile = 15728640;
+      if (!this.isValidoTipoDocumento(this.programaDocumentoNuevo, allowedImageTypes)) {
+        console.log("tipo no permitido");
+        this.mensajeError = this.$t('archivosPrograma.errors.tipyFileInvalid', {
+          filesValid: allowedImageTypes.map(type => this.utilsService().changeTypeFileToString(type)).join(', '),
+        }).toString();
+        return;
+      }
+      if (this.programaDocumentoNuevo.file.size > sizeMaxFile) {
+        this.mensajeError = this.$t('archivosPrograma.errors.sizeMax', { sizeMax: this.utilsService().sizeToMB(sizeMaxFile) }).toString();
+        return;
+      }
+      this.programaDocumentoNuevo.isValidDoc = true;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(this.programaDocumentoNuevo.file);
+      fileReader.onload = () => {
+        this.programaDocumentoNuevo.fileBase64 = fileReader.result;
+      };
+    }
+  }
+
   public changeImage(event): void {
     console.log(event.target.files);
     if (event.target.files && event.target.files.length > 0) {
@@ -161,22 +210,48 @@ export default class ProgramaFormulario extends Vue {
         this.imageProfilePrograma = fileReader.result;
         this.showImage = true;
       };
+      console.log(this.file.type);
       if (this.programa.id) {
         this.showImage = false;
         if (this.archvivoProgramaImageProfile.id) {
           this.updateFileToStorage(
+            this.file.type,
             this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
             this.archvivoProgramaImageProfile.id,
             this.file
           );
         } else {
           this.uploadFileToStorage(
+            this.file.type,
             this.programa.id,
-            5,
+            identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
             this.file,
             this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
           );
         }
+      }
+    }
+  }
+
+  public subirDocumentoNuevo(): void {
+    if (this.programa.id) {
+      if (this.popupDocumentoAccion === this.POPUP_DOCUMENTO_ACCION_CREAR) {
+        this.uploadFileToStorage(
+          this.programaDocumentoNuevo.tipoDocumento,
+          this.programa.id,
+          identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER,
+          this.programaDocumentoNuevo.file,
+          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+          true
+        );
+      } else if (this.popupDocumentoAccion === this.POPUP_DOCUMENTO_ACCION_ACTUALIZAR && this.archivoProgramaToUpdate.id) {
+        this.updateFileToStorage(
+          this.programaDocumentoNuevo.tipoDocumento,
+          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+          this.archivoProgramaToUpdate.id,
+          this.programaDocumentoNuevo.file,
+          true
+        );
       }
     }
   }
@@ -216,8 +291,9 @@ export default class ProgramaFormulario extends Vue {
           this.isSaving = false;
           if (this.file !== null) {
             this.uploadFileToStorage(
+              this.file.type,
               res.id,
-              5,
+              identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
               this.file,
               this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
             );
@@ -240,20 +316,34 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
-  private uploadFileToStorage(programaId: number, elementoCatalogoId: number, file: File, nameCarpeta: string): void {
+  private uploadFileToStorage(contentType: string, programaId: number, elementoCatalogoId: number, file: File, nameCarpeta: string, isPopup?: boolean): void {
+    this.showSpinnerLoader = true;
     this.googleStorageService()
-      .uploadProgramaFile(programaId, elementoCatalogoId, nameCarpeta, file)
+      .uploadProgramaFile(contentType, programaId, elementoCatalogoId, nameCarpeta, file)
       .then(res1 => {
         console.log(res1);
+        this.archivosProgramaList.push(res1);
+        console.log('archivos');
+        console.log(this.archivosProgramaList);
+        this.showSpinnerLoader = false;
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
       })
       .catch(err => {
         console.error(err);
+        this.showSpinnerLoader = false;
+        this.transaccionError = true;
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
+        this.alertService().showHttpError(this, err.response);
       });
   }
 
-  public updateFileToStorage(carpetaName: string, archivoProgramaId: number, file: File): void {
+  public updateFileToStorage(contentType: string, carpetaName: string, archivoProgramaId: number, file: File, isPopup?: boolean): void {
     this.googleStorageService()
-      .updateFileArchivoPrograma(carpetaName, archivoProgramaId, file)
+      .updateFileArchivoPrograma(contentType, carpetaName, archivoProgramaId, file)
       .then(res => {
         this.archivosProgramaList.map(archivo => {
           if (archivo.id === archivoProgramaId) {
@@ -261,11 +351,18 @@ export default class ProgramaFormulario extends Vue {
             archivo.urlName = res.urlName;
           }
         });
-        this.consultarArchivosPrograma(this.programa.id);
+        this.consultarArchivosPrograma(this.programa.id, isPopup);
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
       })
       .catch(err => {
         console.error("error actualizando archivo");
         console.error(err);
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
+        this.alertService().showHttpError(this, err.response);
       });
   }
 
@@ -298,23 +395,27 @@ export default class ProgramaFormulario extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
-        this.consultarArchivosPrograma(this.programa.id);
+        this.consultarArchivosPrograma(this.programa.id, false);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
       });
   }
 
-  public consultarArchivosPrograma(programaId: number): void {
+  public consultarArchivosPrograma(programaId: number, isPopup: boolean): void {
     this.archivosProgramaService()
-      .getAllByProgramaId(programaId)
+      .getAllByProgramaId(this.$store.getters.authenticated, programaId)
       .then(res => {
+        this.archivoProgramaToUpdate = {};
         this.archivosProgramaList = res;
-        this.downloadImageProgramaPerfil();
+        if (!isPopup) {
+          this.downloadImageProgramaPerfil();
+        }
       })
       .catch(err => {
         console.error("Errore obteniendo archivos");
         console.error(err);
+        this.alertService().showHttpError(this, err.response);
       });
   }
 
@@ -325,7 +426,7 @@ export default class ProgramaFormulario extends Vue {
     if (archivoProgramaImage.length > 0) {
       this.archvivoProgramaImageProfile = archivoProgramaImage[0];
       this.googleStorageService()
-        .downloadFile(archivoProgramaImage[0].urlName, archivoProgramaImage[0].generationStorage)
+        .downloadFile(this.$store.getters.authenticated, archivoProgramaImage[0].urlName, archivoProgramaImage[0].generationStorage)
         .then(res => {
           this.imageProfilePrograma = res;
           this.showImage = true;
@@ -334,6 +435,19 @@ export default class ProgramaFormulario extends Vue {
           console.log(err);
         });
     }
+  }
+
+  public filtrarArchivosProgramaOnlyDocs(archivosProgramaList: IArchivosPrograma[]): IArchivosPrograma[] {
+    console.log('lista archivos');
+    console.log(archivosProgramaList);
+    return archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER
+    );
+  }
+
+  public cambiarArchivoPrograma(archivProgram: IArchivosPrograma): void {
+    this.archivoProgramaToUpdate = archivProgram;
+    this.openPopupCrearDocumentoNuevo(this.POPUP_DOCUMENTO_ACCION_ACTUALIZAR);
   }
 
   public checkHabilitacionCampos(): boolean {
@@ -350,5 +464,103 @@ export default class ProgramaFormulario extends Vue {
     } else {
       this.$router.go(-1);
     }
+  }
+
+  public eliminarArchivoPrograma(): void {
+    this.googleStorageService()
+      .deleteArchivoProgramaUploaded(this.programaDocumentoNuevo.archivoDocumentoPrograma.id)
+      .then(() => {
+        this.consultarArchivosPrograma(this.programa.id, true);
+        this.programaDocumentoNuevo = {};
+        this.closeAllPopups();
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+        this.programaDocumentoNuevo = {};
+        this.closeAllPopups();
+      });
+  }
+
+  private convertirFileDownloadedToBlobNewTab(fileBase64: string): void {
+    this.utilsService()
+      .addHeaderBase64(fileBase64)
+      .then(resHeaderBase64 => {
+        fetch(resHeaderBase64).then(res => {
+          res.blob().then(resBlob => {
+            const url = URL.createObjectURL(resBlob);
+            window.open(url, '_blank');
+          });
+        });
+      });
+  }
+
+  public verArchivoPrograma(archivoProgra: IArchivosPrograma): void {
+    if (archivoProgra.urlName) {
+      const archivoDescargadoFiltrado = this.archivosProgramaDescargados.filter(
+        archivo => archivo.archivoDocumentoPrograma.id === archivoProgra.id
+      );
+      if (archivoDescargadoFiltrado.length > 0) {
+        this.convertirFileDownloadedToBlobNewTab(archivoDescargadoFiltrado[0].fileBase64.toString());
+      } else {
+        this.googleStorageService()
+          .downloadFile(this.$store.getters.authenticated, archivoProgra.urlName, archivoProgra.generationStorage)
+          .then(res => {
+            this.archivosProgramaDescargados.push({
+              tipoDocumento: archivoProgra.tipoDocumento,
+              fileBase64: res,
+              archivoDocumentoPrograma: archivoProgra,
+            });
+            this.convertirFileDownloadedToBlobNewTab(res);
+          })
+          .catch(err => {
+            this.alertService().showHttpError(this, err.response);
+          });
+      }
+    }
+  }
+
+  public openPopupActualizarDocumento(accionDocumento: string, archivoProgramaToUpdate: IArchivosPrograma): void {
+    this.archivoProgramaToUpdate = archivoProgramaToUpdate;
+    this.openPopupCrearDocumentoNuevo(accionDocumento);
+  }
+
+  public openPopupEliminarDocumento(archivoPrograma: IArchivosPrograma): void {
+    this.programaDocumentoNuevo = {};
+    if (<any>this.$refs.modalPopupEliminarDocumentoPrograma) {
+      (<any>this.$refs.modalPopupEliminarDocumentoPrograma).show();
+      this.programaDocumentoNuevo = {
+        isValidDoc: true,
+        archivoDocumentoPrograma: archivoPrograma,
+        nombre: archivoPrograma.urlName,
+      };
+    }
+  }
+
+  public openPopupCrearDocumentoNuevo(accionDocumento: string): void {
+    this.popupDocumentoAccion = '';
+    if (<any>this.$refs.modalPopupCrearDocumentoPrograma) {
+      (<any>this.$refs.modalPopupCrearDocumentoPrograma).show();
+      this.programaDocumentoNuevo = {};
+      this.popupDocumentoAccion = accionDocumento;
+    }
+  }
+
+  public closePopupEliminarDocumentoPrograma(): void {
+    (<any>this.$refs.modalPopupEliminarDocumentoPrograma).hide();
+    this.archivoProgramaToUpdate = {};
+    this.programaDocumentoNuevo = {};
+  }
+
+  public closePopupCrearDocumentoNuevo(): void {
+    (<any>this.$refs.modalPopupCrearDocumentoPrograma).hide();
+    this.programaDocumentoNuevo = {};
+    this.archivoProgramaToUpdate = {};
+    this.popupDocumentoAccion = '';
+  }
+
+  public closeAllPopups(): void {
+    this.closePopupCrearDocumentoNuevo();
+    this.closePopupEliminarDocumentoPrograma();
+    this.mensajeError = '';
   }
 }

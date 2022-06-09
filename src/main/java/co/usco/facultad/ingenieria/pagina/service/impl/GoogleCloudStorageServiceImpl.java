@@ -102,33 +102,9 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     }
 
     @Override
-    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(Long programaId, Long elementoCatalogoId, String carpeta, FilePart filePart) {
-        File file = new File(filePart.filename());
-        return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
-            .then(Mono.just(file)).map(newFile -> {
-                byte[] bytes = {};
-                try {
-                    bytes = getArrayBytesFromFile(newFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                newFile.delete();
-                return bytes;
-            })
-            .map(bytes -> {
-                Map<String, Object> mapsProps = new HashMap<>();
-                if (bytes.length > 0) {
-                    final BlobId blobId = generateBlobId(bucketName, carpeta, filePart.filename());
-                    // BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(filePart.headers().getContentType().getType()).build();
-                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-                    Blob blob = storage.create(blobInfo, bytes);
-                    mapsProps.put(GoogleServiceProps.PROP_NAME_FILE_UPLOAD, blob.getName());
-                    mapsProps.put(GoogleServiceProps.PROP_MEDIA_LINK_FILE_UPLOAD, blob.getMediaLink());
-                    mapsProps.put(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD, blob.getGeneration());
+    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(String contentType, Long programaId, Long elementoCatalogoId, String carpeta, FilePart filePart) {
 
-                }
-                return mapsProps;
-            })
+        return uploadFileToStorageMap(carpeta, filePart)
             .flatMap(map -> {
                 ArchivosProgramaDTO archivosProgramaDTO = new ArchivosProgramaDTO();
                 ProgramaDTO programaDTO = new ProgramaDTO();
@@ -136,6 +112,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                 tablaElementoCatalogoDTO.setId(elementoCatalogoId);
                 programaDTO.setId(programaId);
                 archivosProgramaDTO.setPrograma(programaDTO);
+                archivosProgramaDTO.setTipoDocumento(contentType);
                 archivosProgramaDTO.setGenerationStorage((Long) map.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
                 archivosProgramaDTO.setUrlName((String) map.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
                 archivosProgramaDTO.setTablaElementoCatalogo(tablaElementoCatalogoDTO);
@@ -145,11 +122,12 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     }
 
     @Override
-    public Mono<ArchivosProgramaDTO> updateFileProgramaToStorage(String carpeta, Long archivosProgramaId, FilePart filePart) {
+    public Mono<ArchivosProgramaDTO> updateFileProgramaToStorage(String contentType, String carpeta, Long archivosProgramaId, FilePart filePart) {
         return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap -> {
             return archivosProgramaService.findOne(archivosProgramaId).map(archivosProgramaDTO -> {
                     deleteFileOfStorage(archivosProgramaDTO.getUrlName(), archivosProgramaDTO.getGenerationStorage())
                         .doOnSuccess(aBoolean -> log.debug(">>>>>File Object delete")).subscribe(aBoolean -> log.debug("file eliminado"));
+                    archivosProgramaDTO.setTipoDocumento(contentType);
                     archivosProgramaDTO.setGenerationStorage((Long) stringObjectMap.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
                     archivosProgramaDTO.setUrlName((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
                     return archivosProgramaDTO;
@@ -190,6 +168,13 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
             boolean deleteStorageResult = storage.delete(blobId);
             return Mono.just(deleteStorageResult);
         });
+    }
+
+    @Override
+    public Mono<Void> deleteArchivProgramaUploaded(Long archivoProgramaId) {
+        return archivosProgramaService.findOne(archivoProgramaId).flatMap(archivosProgramaDTO ->
+            deleteFileOfStorage(archivosProgramaDTO.getUrlName(), archivosProgramaDTO.getGenerationStorage()))
+            .flatMap(aBoolean -> archivosProgramaService.delete(archivoProgramaId));
     }
 
     private byte[] getArrayBytesFromFile(File file) throws IOException {

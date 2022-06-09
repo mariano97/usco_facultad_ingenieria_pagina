@@ -48,6 +48,7 @@ public class GoogleCloudStorageResource {
         "/google-cloud-storage/programa-upload-files"
     })
     public Mono<ResponseEntity<ArchivosProgramaDTO>> programaUploadFile(@RequestParam("carpeta") String carpeta,
+                                                                        @RequestParam("contentType") String contentType,
                                                                         @RequestParam("programaId") Long programaId,
                                                                         @RequestParam("elementoCatalogoId") Long elementoCatalogoId,
                                                                         @RequestPart("file") FilePart file) {
@@ -57,7 +58,7 @@ public class GoogleCloudStorageResource {
         if (elementoCatalogoId == null || elementoCatalogoId == 0L) {
             elementoCatalogoId = 6L;
         }
-        return googleCloudStorageService.uploadFileProgramaToStoragee(programaId, elementoCatalogoId, carpeta, file)
+        return googleCloudStorageService.uploadFileProgramaToStoragee(contentType, programaId, elementoCatalogoId, carpeta, file)
             .map(result -> {
                 try {
                     return ResponseEntity
@@ -75,19 +76,20 @@ public class GoogleCloudStorageResource {
         "google-cloud-storage/programa-upload-files"
     })
     public Mono<ResponseEntity<ArchivosProgramaDTO>> updateProgramaUploadFile(@RequestParam("carpeta") String carpeta,
+                                                                              @RequestParam("contentType") String contentType,
                                                                               @RequestParam("archivosProgramaId") Long archivosProgramaId,
                                                                               @RequestPart("file") FilePart filePart) {
         if (archivosProgramaId == null || archivosProgramaId == 0L) {
             throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
         }
-        return googleCloudStorageService.updateFileProgramaToStorage(carpeta, archivosProgramaId, filePart)
+        return googleCloudStorageService.updateFileProgramaToStorage(contentType, carpeta, archivosProgramaId, filePart)
             .map(result -> ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result));
     }
 
     @GetMapping(value = {
-        "/open/google-cloud-storage",
+        "/open/google-cloud-storage/download",
         "/google-cloud-storage/download"
     })
     public Mono<ResponseEntity<String>> downloadFile (@RequestParam("fileName") String fileName,
@@ -95,6 +97,19 @@ public class GoogleCloudStorageResource {
         return googleCloudStorageService.downloadFileFromStorage(fileName, generation).map(byteArrayOutputStream -> ResponseEntity
             .ok()
             .body(byteArrayOutputStream));
+    }
+
+    @DeleteMapping(value = {
+        "/google-cloud-storage"
+    })
+    public Mono<ResponseEntity<Void>> deleteArchivoProgramaUploaded(@RequestParam("archivoProgramaId") Long archivoProgramaId) {
+        if (archivoProgramaId == null || archivoProgramaId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.deleteArchivProgramaUploaded(archivoProgramaId).map(result -> ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, archivoProgramaId.toString()))
+            .build());
     }
 
 }

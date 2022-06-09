@@ -1,4 +1,13 @@
 {
+  "archivosPrograma": {
+    "errors": {
+      "tipyFileInvalid": "Tipo de archivo invalido, los archivos validos son {{ filesValid }}",
+      "sizeMax": "El tamaño del archivo es muy grande, el maximo es {{ sizeMax }}"
+    },
+    "labels": {
+      "seguroEliminarDoc": "¿Seguro que desea eliminar el documento {{ nameDoc }}?"
+    }
+  },
   "paginaFacultadIngenieriaProyectoApp": {
     "archivosPrograma": {
       "home": {

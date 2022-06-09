@@ -73,16 +73,9 @@
             </div>
           </div>
         </div>
-        <div class="col px-0">
-          <img
-            alt="imagen programa"
-            class="imagen_programa"
-            :src="
-              programa.urlFotoPrograma && programa.urlFotoPrograma !== ''
-                ? programa.urlFotoPrograma
-                : '/content/images/static/image-gris.jpg'
-            "
-          />
+        <div class="col px-0 d-flex align-items-center">
+          <img v-if="showImage" alt="imagen programa" class="imagen_programa" :src="imageProfilePrograma | headerFileBase64" />
+          <img v-if="!showImage" alt="imagen programa" class="imagen_programa" :src="'/content/images/static/image-gris.jpg'" />
         </div>
       </div>
     </section>

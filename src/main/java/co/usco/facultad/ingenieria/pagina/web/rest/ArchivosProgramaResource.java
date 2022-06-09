@@ -204,6 +204,7 @@ public class ArchivosProgramaResource {
     }
 
     @GetMapping(value = {
+        "/open/archivos-programas/by-programa-id/{id}",
         "/archivos-programas/by-programa-id/{id}"
     })
     public Mono<ResponseEntity<List<ArchivosProgramaDTO>>> getAllByProgramaId(

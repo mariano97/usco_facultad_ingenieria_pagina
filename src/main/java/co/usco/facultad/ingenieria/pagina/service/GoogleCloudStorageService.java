@@ -12,13 +12,13 @@ public interface GoogleCloudStorageService {
 
     public Mono<Map<String, Object>> uploadFileToStorageMap(String carpeta, FilePart filePart);
 
-    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(Long programaId, Long elementoCatalogoId, String carpeta, FilePart filePart);
+    public Mono<ArchivosProgramaDTO> uploadFileProgramaToStoragee(String contentType, Long programaId, Long elementoCatalogoId, String carpeta, FilePart filePart);
 
-    public Mono<ArchivosProgramaDTO> updateFileProgramaToStorage(String carpeta, Long archivosProgramaId, FilePart filePart);
+    public Mono<ArchivosProgramaDTO> updateFileProgramaToStorage(String contentType, String carpeta, Long archivosProgramaId, FilePart filePart);
 
     public Mono<String> downloadFileFromStorage(String fileName, Long generation);
 
     public Mono<Boolean> deleteFileOfStorage(String fileName, Long generation);
 
-
+    public Mono<Void> deleteArchivProgramaUploaded(Long archivoProgramaId);
 }
