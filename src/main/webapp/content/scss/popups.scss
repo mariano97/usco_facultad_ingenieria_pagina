@@ -51,6 +51,16 @@
       }
     }
   }
+  .modal-footer {
+    div:first-child {
+      display: flex;
+      .container_spinner {
+        span.text-danger {
+          color: $color-red !important;
+        }
+      }
+    }
+  }
 }
 
 #modalPopupCrearDocumentoPrograma,
@@ -66,7 +76,8 @@
     width: fit-content;
     border-radius: 16px;
     font-size: 20px;
-
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
     &.btn_cancelar_subida {
       background: transparent;
       border: 1px solid $color-red;
@@ -86,6 +97,13 @@
         background: $primary-color;
         color: $color-gris-light;
       }
+    }
+  }
+  .container_notas {
+    span {
+      color: $color-red;
+      font-size: 20px;
+      font-weight: 500;
     }
   }
 }

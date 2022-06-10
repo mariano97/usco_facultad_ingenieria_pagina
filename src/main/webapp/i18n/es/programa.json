@@ -50,7 +50,8 @@
       }
     },
     "buttons": {
-      "agregarDocumento": "Agregar nuevo documento"
+      "agregarDocumento": "Agregar nuevo documento",
+      "publicPlanEstudio": "Ver plan de estudio"
     },
     "popups": {
       "labels": {

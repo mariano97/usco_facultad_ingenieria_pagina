@@ -8,6 +8,7 @@ export interface IArchivosPrograma {
   storageContentType?: string | null;
   tipoDocumento?: string | null;
   planEstudio?: boolean;
+  nombreArchivo?: string;
   programa?: IPrograma;
   tablaElementoCatalogo?: ITablaElementoCatalogo;
 }
@@ -20,6 +21,7 @@ export class ArchivosPrograma implements IArchivosPrograma {
     public storageContentType?: string | null,
     public tipoDocumento?: string | null,
     public planEstudio?: boolean,
+    public nombreArchivo?: string,
     public programa?: IPrograma,
     public tablaElementoCatalogo?: ITablaElementoCatalogo
   ) {

@@ -6,6 +6,33 @@ export default class UtilsService {
     });
   }
 
+  public convertirFileDownloadedToBlobNewTab(fileBase64: string): void {
+    this.addHeaderBase64(fileBase64).then(resHeaderBase64 => {
+      fetch(resHeaderBase64).then(res => {
+        res.blob().then(resBlob => {
+          const url = URL.createObjectURL(resBlob);
+          window.open(url, '_blank');
+        });
+      });
+    });
+  }
+
+  public convertFileDowloadedBase64ToDownload(base64: string, nameFile: string): void {
+    this.addHeaderBase64(base64).then(resHeaderBase64 => {
+      fetch(resHeaderBase64).then(res => {
+        res.blob().then(resBlob => {
+          const urlObject = URL.createObjectURL(resBlob);
+          const donwloadLink = document.createElement('a');
+          donwloadLink.href = urlObject;
+          donwloadLink.setAttribute('download', nameFile);
+          document.body.appendChild(donwloadLink);
+          donwloadLink.click();
+          donwloadLink.parentNode!.removeChild(donwloadLink);
+        });
+      });
+    });
+  }
+
   public sizeToMB(value: number): string {
     const valuex = value / 1024 ** 2;
     const s = valuex.toString();

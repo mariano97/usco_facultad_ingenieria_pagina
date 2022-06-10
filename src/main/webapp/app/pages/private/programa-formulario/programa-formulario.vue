@@ -394,8 +394,10 @@
             <div class="contenido_listado_archivos">
               <div class="row mx-0 archivo_item"
                 v-for="archivo in filtrarArchivosProgramaOnlyDocs(archivosProgramaList)" :key="archivo.id">
-                <div class="col container_name">
-                  <h3>{{ archivo.urlName }}</h3>
+                <div class="col container_name d-flex">
+                  <h3>{{ archivo.nombreArchivo }}</h3> <span v-if="archivo.tablaElementoCatalogo.id === 7"
+                    style="font-size:18px; color: #8F141B;" class="pl-3" v-text="$t('archivosPrograma.labels.planEstudio')">Plan de
+                    estudio</span>
                 </div>
                 <div class="col-sm-auto row mx-0">
                   <div class="col-sm-auto opcion_archivo d-flex align-items-center justify-content-center">
@@ -435,6 +437,10 @@
         class="modalPopupCrearDocumentoPrograma">
         <div class="modal-body">
           <div class="">
+            <div class="mb-3 container_notas">
+              <span v-if="!hasArchivoProgramaPlanEstudio" v-text="$t('archivosPrograma.labels.favorSubirPlanEstudio')">Por favor subir el plan de
+                estudio</span>
+            </div>
             <a id="" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
               <label for="file-crear-documento-nuevo" class="row mx-0 align-items-center justify-content-center">
                 <div class="">
@@ -478,9 +484,12 @@
           </div>
         </div>
         <div slot="modal-footer">
-          <button v-if="programaDocumentoNuevo.isValidDoc" type="button" class="btn btn_subir_documento"
-            id="programaSubirDocumento" data-cy="entitySubirDocumentoButton" v-text="$t('entity.action.subir')"
-            v-on:click="subirDocumentoNuevo()">
+          <div class="container_spinner d-flex align-items-center justify-content-center px-3">
+            <b-spinner v-if="isArchivoDocumentoNuevoUploaded" type="grow" label="Cargando" variant="danger"></b-spinner>
+          </div>
+          <button v-if="programaDocumentoNuevo.isValidDoc && !isArchivoDocumentoNuevoUploaded" type="button"
+            class="btn btn_subir_documento" id="programaSubirDocumento" data-cy="entitySubirDocumentoButton"
+            v-text="$t('entity.action.subir')" v-on:click="subirDocumentoNuevo()">
             Subir
           </button>
           <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
@@ -490,15 +499,19 @@
       <b-modal id="modalPopupEliminarDocumentoPrograma" ref="modalPopupEliminarDocumentoPrograma">
         <div class="modal-body">
           <div class="modal_eliminar_documento">
-            <h4 v-text="$t('archivosPrograma.labels.seguroEliminarDoc', { nameDoc: programaDocumentoNuevo.nombre })">Esta
+            <h4 v-text="$t('archivosPrograma.labels.seguroEliminarDoc', { nameDoc: programaDocumentoNuevo.nombre })">
+              Esta
               seguro que desea eliminar el
               documento
             </h4>
           </div>
         </div>
         <div slot="modal-footer">
-          <button type="button" class="btn btn_subir_documento" id="programaEliminarDocumento"
-            data-cy="entityEliminarDocumentoButton" v-text="$t('entity.action.delete')"
+          <div class="container_spinner d-flex align-items-center justify-content-center px-3">
+            <b-spinner v-if="isArchivoDocumentoNuevoUploaded" type="grow" label="Cargando" variant="danger"></b-spinner>
+          </div>
+          <button v-if="!isArchivoDocumentoNuevoUploaded" type="button" class="btn btn_subir_documento"
+            id="programaEliminarDocumento" data-cy="entityEliminarDocumentoButton" v-text="$t('entity.action.delete')"
             v-on:click="eliminarArchivoPrograma()">
             Eliminar
           </button>

@@ -58,6 +58,9 @@ class ArchivosProgramaResourceIT {
     private static final Boolean DEFAULT_PLAN_ESTUDIO = false;
     private static final Boolean UPDATED_PLAN_ESTUDIO = true;
 
+    private static final String DEFAULT_NOMBRE_ARCHIVO = "AAAAAAAAAA";
+    private static final String UPDATED_NOMBRE_ARCHIVO = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/archivos-programas";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -96,7 +99,8 @@ class ArchivosProgramaResourceIT {
             .generationStorage(DEFAULT_GENERATION_STORAGE)
             .storageContentType(DEFAULT_STORAGE_CONTENT_TYPE)
             .tipoDocumento(DEFAULT_TIPO_DOCUMENTO)
-            .planEstudio(DEFAULT_PLAN_ESTUDIO);
+            .planEstudio(DEFAULT_PLAN_ESTUDIO)
+            .nombreArchivo(DEFAULT_NOMBRE_ARCHIVO);
         // Add required entity
         Programa programa;
         programa = em.insert(ProgramaResourceIT.createEntity(em)).block();
@@ -120,7 +124,8 @@ class ArchivosProgramaResourceIT {
             .generationStorage(UPDATED_GENERATION_STORAGE)
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
-            .planEstudio(UPDATED_PLAN_ESTUDIO);
+            .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
         // Add required entity
         Programa programa;
         programa = em.insert(ProgramaResourceIT.createUpdatedEntity(em)).block();
@@ -176,6 +181,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(DEFAULT_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(DEFAULT_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(DEFAULT_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(DEFAULT_NOMBRE_ARCHIVO);
     }
 
     @Test
@@ -268,6 +274,28 @@ class ArchivosProgramaResourceIT {
     }
 
     @Test
+    void checkNombreArchivoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = archivosProgramaRepository.findAll().collectList().block().size();
+        // set the field null
+        archivosPrograma.setNombreArchivo(null);
+
+        // Create the ArchivosPrograma, which fails.
+        ArchivosProgramaDTO archivosProgramaDTO = archivosProgramaMapper.toDto(archivosPrograma);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(archivosProgramaDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<ArchivosPrograma> archivosProgramaList = archivosProgramaRepository.findAll().collectList().block();
+        assertThat(archivosProgramaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllArchivosProgramas() {
         // Initialize the database
         archivosProgramaRepository.save(archivosPrograma).block();
@@ -294,7 +322,9 @@ class ArchivosProgramaResourceIT {
             .jsonPath("$.[*].tipoDocumento")
             .value(hasItem(DEFAULT_TIPO_DOCUMENTO))
             .jsonPath("$.[*].planEstudio")
-            .value(hasItem(DEFAULT_PLAN_ESTUDIO.booleanValue()));
+            .value(hasItem(DEFAULT_PLAN_ESTUDIO.booleanValue()))
+            .jsonPath("$.[*].nombreArchivo")
+            .value(hasItem(DEFAULT_NOMBRE_ARCHIVO));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -342,7 +372,9 @@ class ArchivosProgramaResourceIT {
             .jsonPath("$.tipoDocumento")
             .value(is(DEFAULT_TIPO_DOCUMENTO))
             .jsonPath("$.planEstudio")
-            .value(is(DEFAULT_PLAN_ESTUDIO.booleanValue()));
+            .value(is(DEFAULT_PLAN_ESTUDIO.booleanValue()))
+            .jsonPath("$.nombreArchivo")
+            .value(is(DEFAULT_NOMBRE_ARCHIVO));
     }
 
     @Test
@@ -371,7 +403,8 @@ class ArchivosProgramaResourceIT {
             .generationStorage(UPDATED_GENERATION_STORAGE)
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
-            .planEstudio(UPDATED_PLAN_ESTUDIO);
+            .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
         ArchivosProgramaDTO archivosProgramaDTO = archivosProgramaMapper.toDto(updatedArchivosPrograma);
 
         webTestClient
@@ -392,6 +425,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
     }
 
     @Test
@@ -479,7 +513,8 @@ class ArchivosProgramaResourceIT {
             .generationStorage(UPDATED_GENERATION_STORAGE)
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
-            .planEstudio(UPDATED_PLAN_ESTUDIO);
+            .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
 
         webTestClient
             .patch()
@@ -499,6 +534,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
     }
 
     @Test
@@ -517,7 +553,8 @@ class ArchivosProgramaResourceIT {
             .generationStorage(UPDATED_GENERATION_STORAGE)
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
-            .planEstudio(UPDATED_PLAN_ESTUDIO);
+            .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
 
         webTestClient
             .patch()
@@ -537,6 +574,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
     }
 
     @Test

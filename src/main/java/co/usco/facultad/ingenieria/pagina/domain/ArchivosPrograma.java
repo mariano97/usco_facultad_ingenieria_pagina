@@ -38,6 +38,10 @@ public class ArchivosPrograma implements Serializable {
     @Column("plan_estudio")
     private Boolean planEstudio;
 
+    @NotNull(message = "must not be null")
+    @Column("nombre_archivo")
+    private String nombreArchivo;
+
     @Transient
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
     private Programa programa;
@@ -132,6 +136,19 @@ public class ArchivosPrograma implements Serializable {
         this.planEstudio = planEstudio;
     }
 
+    public String getNombreArchivo() {
+        return this.nombreArchivo;
+    }
+
+    public ArchivosPrograma nombreArchivo(String nombreArchivo) {
+        this.setNombreArchivo(nombreArchivo);
+        return this;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
     public Programa getPrograma() {
         return this.programa;
     }
@@ -205,6 +222,7 @@ public class ArchivosPrograma implements Serializable {
             ", storageContentType='" + getStorageContentType() + "'" +
             ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", planEstudio='" + getPlanEstudio() + "'" +
+            ", nombreArchivo='" + getNombreArchivo() + "'" +
             "}";
     }
 }

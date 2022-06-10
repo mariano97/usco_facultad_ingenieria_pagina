@@ -29,7 +29,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       service = new ArchivosProgramaService();
-      elemDefault = new ArchivosPrograma(123, 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA', false);
+      elemDefault = new ArchivosPrograma(123, 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA', false, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -86,6 +86,7 @@ describe('Service Tests', () => {
             storageContentType: 'BBBBBB',
             tipoDocumento: 'BBBBBB',
             planEstudio: true,
+            nombreArchivo: 'BBBBBB',
           },
           elemDefault
         );
@@ -114,6 +115,7 @@ describe('Service Tests', () => {
           {
             urlName: 'BBBBBB',
             generationStorage: 1,
+            nombreArchivo: 'BBBBBB',
           },
           new ArchivosPrograma()
         );
@@ -146,6 +148,7 @@ describe('Service Tests', () => {
             storageContentType: 'BBBBBB',
             tipoDocumento: 'BBBBBB',
             planEstudio: true,
+            nombreArchivo: 'BBBBBB',
           },
           elemDefault
         );

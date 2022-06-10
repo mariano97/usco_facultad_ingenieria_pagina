@@ -112,6 +112,8 @@ export default class ProgramaFormulario extends Vue {
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
+  public isArchivoDocumentoNuevoUploaded = false;
+  public hasArchivoProgramaPlanEstudio = false;
   public dateMax = dayjs().format(DATE_FORMAT);
   private carpetaImagen = '';
   private file: any = null;
@@ -216,7 +218,7 @@ export default class ProgramaFormulario extends Vue {
         if (this.archvivoProgramaImageProfile.id) {
           this.updateFileToStorage(
             this.file.type,
-            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false),
             this.archvivoProgramaImageProfile.id,
             this.file
           );
@@ -226,7 +228,7 @@ export default class ProgramaFormulario extends Vue {
             this.programa.id,
             identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
             this.file,
-            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false)
           );
         }
       }
@@ -236,18 +238,21 @@ export default class ProgramaFormulario extends Vue {
   public subirDocumentoNuevo(): void {
     if (this.programa.id) {
       if (this.popupDocumentoAccion === this.POPUP_DOCUMENTO_ACCION_CREAR) {
+        this.checkHasArchivoProgramaPlanEstudio();
         this.uploadFileToStorage(
           this.programaDocumentoNuevo.tipoDocumento,
           this.programa.id,
-          identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER,
+          this.hasArchivoProgramaPlanEstudio
+            ? identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER
+            : identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER,
           this.programaDocumentoNuevo.file,
-          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, true),
           true
         );
       } else if (this.popupDocumentoAccion === this.POPUP_DOCUMENTO_ACCION_ACTUALIZAR && this.archivoProgramaToUpdate.id) {
         this.updateFileToStorage(
           this.programaDocumentoNuevo.tipoDocumento,
-          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre),
+          this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, true),
           this.archivoProgramaToUpdate.id,
           this.programaDocumentoNuevo.file,
           true
@@ -295,7 +300,7 @@ export default class ProgramaFormulario extends Vue {
               res.id,
               identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
               this.file,
-              this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre)
+              this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false)
             );
           }
           this.$router.push({ name: 'usuario_programas_lista' });
@@ -318,6 +323,7 @@ export default class ProgramaFormulario extends Vue {
 
   private uploadFileToStorage(contentType: string, programaId: number, elementoCatalogoId: number, file: File, nameCarpeta: string, isPopup?: boolean): void {
     this.showSpinnerLoader = true;
+    this.isArchivoDocumentoNuevoUploaded = true;
     this.googleStorageService()
       .uploadProgramaFile(contentType, programaId, elementoCatalogoId, nameCarpeta, file)
       .then(res1 => {
@@ -326,6 +332,7 @@ export default class ProgramaFormulario extends Vue {
         console.log('archivos');
         console.log(this.archivosProgramaList);
         this.showSpinnerLoader = false;
+        this.isArchivoDocumentoNuevoUploaded = false;
         if (isPopup && isPopup === true) {
           this.closeAllPopups();
         }
@@ -333,6 +340,7 @@ export default class ProgramaFormulario extends Vue {
       .catch(err => {
         console.error(err);
         this.showSpinnerLoader = false;
+        this.isArchivoDocumentoNuevoUploaded = false;
         this.transaccionError = true;
         if (isPopup && isPopup === true) {
           this.closeAllPopups();
@@ -366,12 +374,19 @@ export default class ProgramaFormulario extends Vue {
       });
   }
 
-  private generateUrlFolderUpload(codigoSnies: string, namePrograma: string): string {
+  private generateUrlFolderUpload(codigoSnies: string, namePrograma: string, isDocumento: boolean): string {
     namePrograma = namePrograma.replace(' ', '-');
-    return carpetasarchivosConstants.CARPETA_BASE_PROGRAMA_IMAGES.replace('{{snies}}', codigoSnies + '').replace(
-      '{{name_programa}}',
-      namePrograma
-    );
+    if (isDocumento) {
+      return carpetasarchivosConstants.CARPETA_BASE_PROGRAMA_DOCUMENTOS.replace('{{snies}}', codigoSnies + '').replace(
+        '{{name_programa}}',
+        namePrograma
+      );
+    } else {
+      return carpetasarchivosConstants.CARPETA_BASE_PROGRAMA_IMAGES.replace('{{snies}}', codigoSnies + '').replace(
+        '{{name_programa}}',
+        namePrograma
+      );
+    }
   }
 
   public convertDateTimeFromServer(date: Date): string {
@@ -408,6 +423,7 @@ export default class ProgramaFormulario extends Vue {
       .then(res => {
         this.archivoProgramaToUpdate = {};
         this.archivosProgramaList = res;
+        this.checkHasArchivoProgramaPlanEstudio();
         if (!isPopup) {
           this.downloadImageProgramaPerfil();
         }
@@ -417,6 +433,17 @@ export default class ProgramaFormulario extends Vue {
         console.error(err);
         this.alertService().showHttpError(this, err.response);
       });
+  }
+
+  public checkHasArchivoProgramaPlanEstudio(): void {
+    const planEstudio = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER
+    );
+    if (planEstudio.length > 0) {
+      this.hasArchivoProgramaPlanEstudio = true;
+    } else {
+      this.hasArchivoProgramaPlanEstudio = false;
+    }
   }
 
   private downloadImageProgramaPerfil(): void {
@@ -438,10 +465,10 @@ export default class ProgramaFormulario extends Vue {
   }
 
   public filtrarArchivosProgramaOnlyDocs(archivosProgramaList: IArchivosPrograma[]): IArchivosPrograma[] {
-    console.log('lista archivos');
-    console.log(archivosProgramaList);
     return archivosProgramaList.filter(
-      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER
+      archivo =>
+        archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER ||
+        archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER
     );
   }
 
@@ -467,16 +494,19 @@ export default class ProgramaFormulario extends Vue {
   }
 
   public eliminarArchivoPrograma(): void {
+    this.isArchivoDocumentoNuevoUploaded = true;
     this.googleStorageService()
       .deleteArchivoProgramaUploaded(this.programaDocumentoNuevo.archivoDocumentoPrograma.id)
       .then(() => {
         this.consultarArchivosPrograma(this.programa.id, true);
         this.programaDocumentoNuevo = {};
+        this.isArchivoDocumentoNuevoUploaded = false;
         this.closeAllPopups();
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
         this.programaDocumentoNuevo = {};
+        this.isArchivoDocumentoNuevoUploaded = false;
         this.closeAllPopups();
       });
   }
@@ -531,7 +561,7 @@ export default class ProgramaFormulario extends Vue {
       this.programaDocumentoNuevo = {
         isValidDoc: true,
         archivoDocumentoPrograma: archivoPrograma,
-        nombre: archivoPrograma.urlName,
+        nombre: archivoPrograma.nombreArchivo,
       };
     }
   }

@@ -135,6 +135,33 @@
           <div class="form-group">
             <label
               class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.nombreArchivo')"
+              for="archivos-programa-nombreArchivo"
+              >Nombre Archivo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="nombreArchivo"
+              id="archivos-programa-nombreArchivo"
+              data-cy="nombreArchivo"
+              :class="{ valid: !$v.archivosPrograma.nombreArchivo.$invalid, invalid: $v.archivosPrograma.nombreArchivo.$invalid }"
+              v-model="$v.archivosPrograma.nombreArchivo.$model"
+              required
+            />
+            <div v-if="$v.archivosPrograma.nombreArchivo.$anyDirty && $v.archivosPrograma.nombreArchivo.$invalid">
+              <small
+                class="form-text text-danger"
+                v-if="!$v.archivosPrograma.nombreArchivo.required"
+                v-text="$t('entity.validation.required')"
+              >
+                This field is required.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.programa')"
               for="archivos-programa-programa"
               >Programa</label

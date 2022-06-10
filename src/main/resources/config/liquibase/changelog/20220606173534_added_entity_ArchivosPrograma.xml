@@ -29,6 +29,9 @@
             <column name="plan_estudio" type="boolean">
                 <constraints nullable="false" />
             </column>
+            <column name="nombre_archivo" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="programa_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -61,6 +64,7 @@
             <column name="storage_content_type" type="string"/>
             <column name="tipo_documento" type="string"/>
             <column name="plan_estudio" type="boolean"/>
+            <column name="nombre_archivo" type="string"/>
             <column name="programa_id" type="numeric"/>
             <column name="tabla_elemento_catalogo_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

@@ -24,6 +24,9 @@ public class ArchivosProgramaDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Boolean planEstudio;
 
+    @NotNull(message = "must not be null")
+    private String nombreArchivo;
+
     private ProgramaDTO programa;
 
     private TablaElementoCatalogoDTO tablaElementoCatalogo;
@@ -76,6 +79,14 @@ public class ArchivosProgramaDTO implements Serializable {
         this.planEstudio = planEstudio;
     }
 
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
     public ProgramaDTO getPrograma() {
         return programa;
     }
@@ -123,6 +134,7 @@ public class ArchivosProgramaDTO implements Serializable {
             ", storageContentType='" + getStorageContentType() + "'" +
             ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", planEstudio='" + getPlanEstudio() + "'" +
+            ", nombreArchivo='" + getNombreArchivo() + "'" +
             ", programa=" + getPrograma() +
             ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
             "}";

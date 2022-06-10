@@ -5,7 +5,9 @@
       "sizeMax": "El tamaño del archivo es muy grande, el maximo es {{ sizeMax }}"
     },
     "labels": {
-      "seguroEliminarDoc": "¿Seguro que desea eliminar el documento {{ nameDoc }}?"
+      "seguroEliminarDoc": "¿Seguro que desea eliminar el documento {{ nameDoc }}?",
+      "favorSubirPlanEstudio": "Por favor subir el plan de estudio",
+      "planEstudio":"Plan de estudio"
     }
   },
   "paginaFacultadIngenieriaProyectoApp": {

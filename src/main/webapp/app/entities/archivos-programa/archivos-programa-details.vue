@@ -38,6 +38,12 @@
             <span>{{ archivosPrograma.planEstudio }}</span>
           </dd>
           <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.nombreArchivo')">Nombre Archivo</span>
+          </dt>
+          <dd>
+            <span>{{ archivosPrograma.nombreArchivo }}</span>
+          </dd>
+          <dt>
             <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.programa')">Programa</span>
           </dt>
           <dd>

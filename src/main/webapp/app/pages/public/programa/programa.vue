@@ -15,12 +15,14 @@
                 <h4 class="option">{{ programa.codigoSnies }}</h4>
               </div>
             </div>
-            <div class="container-opcion row mx-0" v-if="programa.codigoRegistroCalificado && programa.fechaRegistroCalificado">
+            <div class="container-opcion row mx-0"
+              v-if="programa.codigoRegistroCalificado && programa.fechaRegistroCalificado">
               <div class="col-sm-auto px-0">
                 <h4 class="title-opcion" v-text="$t('programa.titulos.registo-calificado')">registro calificado</h4>
               </div>
               <div class="col">
-                <h4 class="option">{{ programa.codigoRegistroCalificado + ' de ' + convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
+                <h4 class="option">{{ programa.codigoRegistroCalificado + ' de ' +
+                  convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
               </div>
             </div>
             <div class="container-opcion row mx-0" v-if="programa.tipoFormacion">
@@ -74,8 +76,10 @@
           </div>
         </div>
         <div class="col px-0 d-flex align-items-center">
-          <img v-if="showImage" alt="imagen programa" class="imagen_programa" :src="imageProfilePrograma | headerFileBase64" />
-          <img v-if="!showImage" alt="imagen programa" class="imagen_programa" :src="'/content/images/static/image-gris.jpg'" />
+          <img v-if="showImage" alt="imagen programa" class="imagen_programa"
+            :src="imageProfilePrograma | headerFileBase64" />
+          <img v-if="!showImage" alt="imagen programa" class="imagen_programa"
+            :src="'/content/images/static/image-gris.jpg'" />
         </div>
       </div>
     </section>
@@ -111,7 +115,8 @@
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
-                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/notebook-gray.png" />
+                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas"
+                        src="/content/images/iconos/notebook-gray.png" />
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                       <h2 class="title" v-text="$t('programa.titulos.perfil-estudiante')">Perfil del estudiante</h2>
@@ -133,7 +138,8 @@
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
-                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/sombrero-de-graduacion-gray.png" />
+                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas"
+                        src="/content/images/iconos/sombrero-de-graduacion-gray.png" />
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                       <h2 class="title" v-text="$t('programa.titulos.perfil-egresado')">Perfil del egresado</h2>
@@ -155,7 +161,8 @@
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
-                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/occupational-profile-gray.png" />
+                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas"
+                        src="/content/images/iconos/occupational-profile-gray.png" />
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                       <h2 class="title" v-text="$t('programa.titulos.perfil-ocupacional')">Perfil ocupacional</h2>
@@ -172,12 +179,13 @@
                 </div>
               </div>
             </div>
-            <div class="col d-flex justify-content-center align-items-center" v-if="programa.perfilEgresado">
+            <div class="col d-flex justify-content-center align-items-center" v-if="archivoProgramaPlanEstudio.id">
               <div class="card-custom d-flex justify-content-center align-items-center">
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
-                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas" src="/content/images/iconos/plan-de-negocios-gray.png" />
+                      <img alt="perfilEstudainte" class="imagen_card_caracteristicas"
+                        src="/content/images/iconos/plan-de-negocios-gray.png" />
                     </div>
                     <div class="d-flex justify-content-center align-items-center">
                       <h2 class="title" v-text="$t('programa.titulos.plan-estudio')">Plan de estudio</h2>
@@ -185,11 +193,21 @@
                   </div>
                 </div>
                 <div class="face face2">
-                  <div class="content">
+                  <div class="content h-50">
                     <h2 class="mb-4" v-text="$t('programa.titulos.plan-estudio')"></h2>
-                    <p class="m-0 texto_descripcion">
-                      {{ programa.perfilEgresado }}
-                    </p>
+                    <div class="m-0 h-100 texto_descripcion d-flex align-items-center justify-content-center">
+                      <div class="container_spinner d-flex align-items-center justify-content-center">
+                        <b-spinner v-if="showSpinnerPlanEstudio" style="width: 3rem; height: 3rem;" type="grow"
+                          label="Cargando" variant="danger">
+                        </b-spinner>
+                      </div>
+                      <button v-if="archivoProgramaPlanEstudio.id && !showSpinnerPlanEstudio" id="btn_show_plan_estudio"
+                        class="btn btn_show_plan_estudio d-flex align-items-center justify-content-center"
+                        v-text="$t('programa.buttons.publicPlanEstudio')" type="button"
+                        @click="verArchivoPrograma(archivoProgramaPlanEstudio)">
+                        Ver plan de estudio
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

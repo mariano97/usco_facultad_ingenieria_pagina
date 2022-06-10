@@ -111,6 +111,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                 TablaElementoCatalogoDTO tablaElementoCatalogoDTO = new TablaElementoCatalogoDTO();
                 tablaElementoCatalogoDTO.setId(elementoCatalogoId);
                 programaDTO.setId(programaId);
+                archivosProgramaDTO.setNombreArchivo(filePart.filename());
                 archivosProgramaDTO.setPrograma(programaDTO);
                 archivosProgramaDTO.setTipoDocumento(contentType);
                 archivosProgramaDTO.setGenerationStorage((Long) map.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
@@ -128,6 +129,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                     deleteFileOfStorage(archivosProgramaDTO.getUrlName(), archivosProgramaDTO.getGenerationStorage())
                         .doOnSuccess(aBoolean -> log.debug(">>>>>File Object delete")).subscribe(aBoolean -> log.debug("file eliminado"));
                     archivosProgramaDTO.setTipoDocumento(contentType);
+                    archivosProgramaDTO.setNombreArchivo(filePart.filename());
                     archivosProgramaDTO.setGenerationStorage((Long) stringObjectMap.get(GoogleServiceProps.PROP_GENERATION_FILE_UPLOAD));
                     archivosProgramaDTO.setUrlName((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
                     return archivosProgramaDTO;
@@ -189,10 +191,12 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
         log.debug(">>>>>>>>>< bucketNmae: {}", bucketName);
         String filenameNew = UUID.randomUUID().toString().concat("_")
             .concat(filename.replaceAll("\\s", "_").replaceAll("[^a-zA-Z0-9\\s.-]", "_"));
-
         log.debug(">>>>>>> filename: {}", filename);
         return Optional.ofNullable(directory)
-            .map(s -> BlobId.of(bucketName, directory + "/" + filenameNew))
+            .map(s -> {
+                String directoryTemp = directory.replaceAll("\\s", "-");
+                return BlobId.of(bucketName, directoryTemp + "/" + filenameNew);
+            })
             .orElse(BlobId.of(bucketName, filenameNew));
     }
 

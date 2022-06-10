@@ -56,6 +56,10 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.planEstudio')">Plan Estudio</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'planEstudio'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('nombreArchivo')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.nombreArchivo')">Nombre Archivo</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nombreArchivo'"></jhi-sort-indicator>
+            </th>
             <th scope="row" v-on:click="changeOrder('programa.nombre')">
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.programa')">Programa</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'programa.nombre'"></jhi-sort-indicator>
@@ -83,6 +87,7 @@
             <td>{{ archivosPrograma.storageContentType }}</td>
             <td>{{ archivosPrograma.tipoDocumento }}</td>
             <td>{{ archivosPrograma.planEstudio }}</td>
+            <td>{{ archivosPrograma.nombreArchivo }}</td>
             <td>
               <div v-if="archivosPrograma.programa">
                 <router-link :to="{ name: 'ProgramaView', params: { programaId: archivosPrograma.programa.id } }">{{

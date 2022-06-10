@@ -12,6 +12,9 @@ import ArchivosProgramaService from '@/entities/archivos-programa/archivos-progr
 import GoogleStorageService from '@/shared/services/google-storage.service';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import identificadoresConstants from '@/shared/constants/identificadores.constants';
+import UtilsService from '@/shared/services/utils.service';
+import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
+import AlertService from '@/shared/alert/alert.service';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -28,14 +31,19 @@ export default class Programa extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
+  @Inject('utilsService') private utilsService: () => UtilsService;
+  @Inject('alertService') private alertService: () => AlertService;
 
   public programa: IPrograma = {};
   public pesentacionBasico: IPresentacionBasico[] = [];
   public isPresentacionBasicaLoaded = false;
   public archivosProgramaList: IArchivosPrograma[] = [];
   private archvivoProgramaImageProfile: IArchivosPrograma = {};
+  public archivoProgramaPlanEstudio: IArchivosPrograma = {};
   public imageProfilePrograma: any;
   public showImage = false;
+  private archivosProgramaDescargados: IFileDocumentoNuevo[] = [];
+  public showSpinnerPlanEstudio = false;
 
   public created(): void {
     this.consultarPrograma();
@@ -62,11 +70,50 @@ export default class Programa extends Vue {
       .then(res => {
         this.archivosProgramaList = res;
         this.downloadImageProgramaPerfil();
+        this.filterProgramaPlanEstudio();
       })
       .catch(err => {
         console.error("Errore obteniendo archivos");
         console.error(err);
       });
+  }
+
+  private filterProgramaPlanEstudio(): void {
+    const archivosPlanEstudio = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER
+    );
+    if (archivosPlanEstudio.length > 0) {
+      this.archivoProgramaPlanEstudio = archivosPlanEstudio[0];
+    }
+  }
+
+  public verArchivoPrograma(archivoProgra: IArchivosPrograma): void {
+    if (archivoProgra.urlName) {
+      this.showSpinnerPlanEstudio = true;
+      const archivoDescargadoFiltrado = this.archivosProgramaDescargados.filter(
+        archivo => archivo.archivoDocumentoPrograma.id === archivoProgra.id
+      );
+      if (archivoDescargadoFiltrado.length > 0) {
+        this.utilsService().convertirFileDownloadedToBlobNewTab(archivoDescargadoFiltrado[0].fileBase64.toString());
+        this.showSpinnerPlanEstudio = false;
+      } else {
+        this.googleStorageService()
+          .downloadFile(this.$store.getters.authenticated, archivoProgra.urlName, archivoProgra.generationStorage)
+          .then(res => {
+            this.archivosProgramaDescargados.push({
+              tipoDocumento: archivoProgra.tipoDocumento,
+              fileBase64: res,
+              archivoDocumentoPrograma: archivoProgra,
+            });
+            this.utilsService().convertirFileDownloadedToBlobNewTab(res);
+            this.showSpinnerPlanEstudio = false;
+          })
+          .catch(err => {
+            this.alertService().showHttpError(this, err.response);
+            this.showSpinnerPlanEstudio = false;
+          });
+      }
+    }
   }
 
   private downloadImageProgramaPerfil(): void {

@@ -30,6 +30,7 @@ public class ArchivosProgramaRowMapper implements BiFunction<Row, String, Archiv
         entity.setStorageContentType(converter.fromRow(row, prefix + "_storage_content_type", String.class));
         entity.setTipoDocumento(converter.fromRow(row, prefix + "_tipo_documento", String.class));
         entity.setPlanEstudio(converter.fromRow(row, prefix + "_plan_estudio", Boolean.class));
+        entity.setNombreArchivo(converter.fromRow(row, prefix + "_nombre_archivo", String.class));
         entity.setProgramaId(converter.fromRow(row, prefix + "_programa_id", Long.class));
         entity.setTablaElementoCatalogoId(converter.fromRow(row, prefix + "_tabla_elemento_catalogo_id", Long.class));
         return entity;
