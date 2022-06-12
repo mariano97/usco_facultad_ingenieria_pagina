@@ -216,6 +216,37 @@
         </div>
       </div>
     </section>
+    <section class="sedes_mapa_programa">
+    </section>
+    <section class="documentos_programa container">
+      <div class="">
+        <div class="d-flex justify-content-center">
+          <div class="container-title_documentos horizontal-divides-red-2">
+            <h1 v-text="$t('programa.titulos.documentosPrograma')">Documentos</h1>
+          </div>
+        </div>
+        <div class="body_documentos_programa">
+          <div class="row mx-0 my-3 d-flex justify-content-start align-items-center"
+            v-for="(archivoProgramaArray, index) in listArrayArchivosProgramas" :key="index">
+            <div class="col col_container_archivo d-flex align-items-center justify-content-center"
+              v-for="(archivo, index2) in archivoProgramaArray" :key="index2">
+              <div class="container_documento_programa row mx-0" v-if="archivo.id">
+                <div class="col py-3">
+                  <h3 class="m-0 name_documento">{{archivo.nombreArchivo}}</h3>
+                </div>
+                <div class="col-sm-auto d-flex justify-content-center align-items-center px-0">
+                  <button class="btn btn_ver_archivo_documento d-flex justify-content-center align-items-center"
+                    type="button" v-text="$t('programa.buttons.ver')" @click="verArchivoPrograma(archivo)"
+                    :disabled="showSpinnerPlanEstudio">
+                    Ver
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

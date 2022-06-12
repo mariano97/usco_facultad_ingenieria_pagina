@@ -46,7 +46,6 @@ export default class ProgramasLista extends Vue {
   }
 
   private agruparProgramasInArray(programas: IPrograma[]): void {
-    console.log(programas);
     this.listArrayProgramas = [];
     for (let i = 0; i < programas.length; i += 2) {
       if (!(programas.length % 2) || programas.length - i != 1) {
@@ -55,7 +54,6 @@ export default class ProgramasLista extends Vue {
         this.listArrayProgramas.push([programas[i]]);
       }
     }
-    console.log(this.listArrayProgramas);
   }
 
   public limpiarCampos(): void {

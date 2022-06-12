@@ -38,6 +38,7 @@ export default class Programa extends Vue {
   public pesentacionBasico: IPresentacionBasico[] = [];
   public isPresentacionBasicaLoaded = false;
   public archivosProgramaList: IArchivosPrograma[] = [];
+  public listArrayArchivosProgramas: IArchivosPrograma[][] = [];
   private archvivoProgramaImageProfile: IArchivosPrograma = {};
   public archivoProgramaPlanEstudio: IArchivosPrograma = {};
   public imageProfilePrograma: any;
@@ -71,11 +72,30 @@ export default class Programa extends Vue {
         this.archivosProgramaList = res;
         this.downloadImageProgramaPerfil();
         this.filterProgramaPlanEstudio();
+        this.agruparArchivosPorgramas(this.archivosProgramaList);
       })
       .catch(err => {
         console.error("Errore obteniendo archivos");
         console.error(err);
       });
+  }
+
+  private agruparArchivosPorgramas(archivosPrograma: IArchivosPrograma[]): void {
+    this.listArrayArchivosProgramas = [];
+    const archivosOnly = this.filterOnlyArchivosPrograma(archivosPrograma);
+    for (let i = 0; i < archivosOnly.length; i += 2) {
+      if (!(archivosOnly.length % 2) || archivosOnly.length - i != 1) {
+        this.listArrayArchivosProgramas.push([archivosOnly[i], archivosOnly[i + 1]]);
+      } else {
+        this.listArrayArchivosProgramas.push([archivosOnly[i], {}]);
+      }
+    }
+  }
+
+  private filterOnlyArchivosPrograma(archivosProgra: IArchivosPrograma[]): IArchivosPrograma[] {
+    return archivosProgra.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER
+    );
   }
 
   private filterProgramaPlanEstudio(): void {

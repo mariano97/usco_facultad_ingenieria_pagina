@@ -160,6 +160,70 @@
       }
     }
   }
+  section.documentos_programa {
+    padding-top: 0.5rem;
+    padding-bottom: 4.5rem;
+    margin-bottom: 5rem;
+    .container-title_documentos {
+      max-width: 40%;
+      width: 40%;
+      margin-bottom: 3rem;
+
+      h1 {
+        color: $color-gris;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+    }
+    .body_documentos_programa {
+      margin-top: 3rem;
+      .col_container_archivo {
+        .container_documento_programa {
+          background: $color-gris-light;
+          max-width: calc(100% - 30px);
+          div{
+            &:first-child {
+              // max-width: calc(100% - 90px);
+              width: 80%;
+              h3 {
+                color: $color-gris;
+                font-size: 20x !important;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+                white-space: nowrap;
+                display: inline-block;
+
+              }
+            }
+            &:nth-child(2) {
+              width: 20%;
+            }
+          }
+          button {
+            &.btn_ver_archivo_documento {
+              width: 100%;
+              height: 100%;
+              color: $color-red;
+              font-size: 20px;
+              &:hover {
+                color: $color-gris-light;
+                background: $primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
+    @media (min-width: 992px) {
+      .body_documentos_programa {
+        .col_container_archivo {
+          width: 50%;
+        }
+      }
+    }
+  }
   .container_spinner {
     span.text-danger {
       color: $color-red  !important;
