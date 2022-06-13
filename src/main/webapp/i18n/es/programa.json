@@ -44,7 +44,8 @@
         "perfilEstudiante":"Perfil del estudiante",
         "perfilOcupacional": "Perfil Ocupacional",
         "pefilEgresado": "Perfil del egresado",
-        "documentosProgramaTitle": "Documentos del programa"
+        "documentosProgramaTitle": "Documentos del programa",
+        "redesPrograma": "Redes del programa"
       },
       "textos": {
         "semestres": "Semestres"
@@ -52,6 +53,7 @@
     },
     "buttons": {
       "agregarDocumento": "Agregar nuevo documento",
+      "agregarRedSocial": "Agregar red social",
       "publicPlanEstudio": "Ver plan de estudio",
       "ver": "Ver"
     },
@@ -59,7 +61,9 @@
       "labels": {
         "nombreDoc": "Nombre del documento:",
         "tipoDoc": "Tipo del documento:",
-        "sizeDoc": "Tamaño del documento:"
+        "sizeDoc": "Tamaño del documento:",
+        "urlRedSocial": "Url de la red social:",
+        "tipoResSocial": "Tipo de Red Social: "
       },
       "buttons": {
         "crearDocumentoNuevo": "Subir documento nuevo"

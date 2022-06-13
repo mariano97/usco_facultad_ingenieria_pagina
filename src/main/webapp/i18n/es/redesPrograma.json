@@ -1,0 +1,26 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "redesPrograma": {
+      "home": {
+        "title": "Redes Programas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Redes Programa",
+        "createOrEditLabel": "Crear o editar Redes Programa",
+        "notFound": "Ningún Redes Programas encontrado"
+      },
+      "created": "Un nuevo Redes Programa ha sido creado con el identificador {{ param }}",
+      "updated": "Un Redes Programa ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Redes Programa ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Redes Programa {{ id }}?"
+      },
+      "detail": {
+        "title": "Redes Programa"
+      },
+      "id": "ID",
+      "urlRedSocial": "Url Red Social",
+      "programa": "Programa",
+      "tablaElementoCatalogo": "Tabla Elemento Catalogo"
+    }
+  }
+}

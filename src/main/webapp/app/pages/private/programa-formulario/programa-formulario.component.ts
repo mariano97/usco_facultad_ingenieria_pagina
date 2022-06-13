@@ -17,6 +17,8 @@ import ArchivosProgramaService from '@/entities/archivos-programa/archivos-progr
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
 import UtilsService from '@/shared/services/utils.service';
+import { IRedesPrograma, RedesPrograma } from '@/shared/model/redes-programa.model';
+import RedesProgramaService from '@/entities/redes-programa/redes-programa.service';
 
 const validations: any = {
   programa: {
@@ -81,6 +83,14 @@ const validations: any = {
       required,
     },
   },
+  redesPrograma: {
+    urlRedSocial: {
+      required,
+    },
+    tablaElementoCatalogo: {
+      required,
+    },
+  },
 };
 
 @Component({
@@ -96,8 +106,10 @@ export default class ProgramaFormulario extends Vue {
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
+  @Inject('redesProgramaService') private redesProgramaService: () => RedesProgramaService;
 
   public programa: IPrograma = new Programa();
+  public redesPrograma: IRedesPrograma = new RedesPrograma();
 
   public POPUP_DOCUMENTO_ACCION_CREAR = 'CREAR';
   public POPUP_DOCUMENTO_ACCION_ACTUALIZAR = 'ACTUALIZAR';
@@ -109,10 +121,13 @@ export default class ProgramaFormulario extends Vue {
   private archivoProgramaToUpdate: IArchivosPrograma = {};
   private archivosProgramaDescargados: IFileDocumentoNuevo[] = [];
   public programaDocumentoNuevo: IFileDocumentoNuevo = {};
+  public tiposRedSocialElemento: ITablaElementoCatalogo[] = [];
+  public redesSocialesPrograma: IRedesPrograma[] = [];
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
   public isArchivoDocumentoNuevoUploaded = false;
+  public isRedSocialCreatedUptaded = false;
   public hasArchivoProgramaPlanEstudio = false;
   public dateMax = dayjs().format(DATE_FORMAT);
   private carpetaImagen = '';
@@ -138,6 +153,7 @@ export default class ProgramaFormulario extends Vue {
       }
       vm.consultarListaProgramas();
       vm.consultarTipoFormacion();
+      vm.consultarTiposRedSocial();
     });
   }
 
@@ -156,6 +172,15 @@ export default class ProgramaFormulario extends Vue {
       .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_FORMACION)
       .then(res => {
         this.listTiposFormacion = res;
+      });
+  }
+
+  private consultarTiposRedSocial(): void {
+    this.tiposRedSocialElemento = [];
+    this.tablaElementoCatalogoService()
+      .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_RED_SOCIAL)
+      .then(res => {
+        this.tiposRedSocialElemento = res;
       });
   }
 
@@ -411,6 +436,7 @@ export default class ProgramaFormulario extends Vue {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
         this.consultarArchivosPrograma(this.programa.id, false);
+        this.consultarRedesPrograma(this.programa.id);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
@@ -433,6 +459,55 @@ export default class ProgramaFormulario extends Vue {
         console.error(err);
         this.alertService().showHttpError(this, err.response);
       });
+  }
+
+  public consultarRedesPrograma(programaId: number): void {
+    this.redesProgramaService()
+      .findAllByProgramaId(this.$store.getters.authenticated, programaId)
+      .then(res => {
+        this.redesSocialesPrograma = res;
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  public agregarActualizarRedSocial(): void {
+    if (this.programa.id) {
+      this.isRedSocialCreatedUptaded = true;
+      if (this.redesPrograma.id) {
+        this.redesProgramaService()
+          .update(this.redesPrograma)
+          .then(res => {
+            this.redesPrograma = {};
+            this.isRedSocialCreatedUptaded = false;
+            this.consultarRedesPrograma(this.programa.id);
+            this.closeAllPopups();
+          })
+          .catch(err => {
+            this.isRedSocialCreatedUptaded = false;
+            this.alertService().showHttpError(this, err.response);
+            this.closeAllPopups();
+          });
+      } else {
+        this.redesPrograma.programa = {
+          id: this.programa.id,
+        };
+        this.redesProgramaService()
+          .create(this.redesPrograma)
+          .then(res => {
+            this.redesPrograma = {};
+            this.redesSocialesPrograma.push(res);
+            this.isRedSocialCreatedUptaded = false;
+            this.closeAllPopups();
+          })
+          .catch(err => {
+            this.isRedSocialCreatedUptaded = false;
+            this.alertService().showHttpError(this, err.response);
+            this.closeAllPopups();
+          });
+      }
+    }
   }
 
   public checkHasArchivoProgramaPlanEstudio(): void {
@@ -566,6 +641,18 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
+  public openPopupEditarRedSocial(redSocial: IRedesPrograma): void {
+    this.redesPrograma = redSocial;
+    this.openPopupAgregarNuevaRedSocial();
+  }
+
+  public openPopupAgregarNuevaRedSocial(): void {
+    this.isRedSocialCreatedUptaded = false;
+    if (<any>this.$refs.modalPopupAgregarRedSocial) {
+      (<any>this.$refs.modalPopupAgregarRedSocial).show();
+    }
+  }
+
   public openPopupCrearDocumentoNuevo(accionDocumento: string): void {
     this.popupDocumentoAccion = '';
     if (<any>this.$refs.modalPopupCrearDocumentoPrograma) {
@@ -581,6 +668,12 @@ export default class ProgramaFormulario extends Vue {
     this.programaDocumentoNuevo = {};
   }
 
+  public closePopupAgregarRedSocial(): void {
+    (<any>this.$refs.modalPopupAgregarRedSocial).hide();
+    this.redesPrograma = {};
+    this.isRedSocialCreatedUptaded = false;
+  }
+
   public closePopupCrearDocumentoNuevo(): void {
     (<any>this.$refs.modalPopupCrearDocumentoPrograma).hide();
     this.programaDocumentoNuevo = {};
@@ -591,6 +684,7 @@ export default class ProgramaFormulario extends Vue {
   public closeAllPopups(): void {
     this.closePopupCrearDocumentoNuevo();
     this.closePopupEliminarDocumentoPrograma();
+    this.closePopupAgregarRedSocial();
     this.mensajeError = '';
   }
 }

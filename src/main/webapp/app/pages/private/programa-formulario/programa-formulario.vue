@@ -34,7 +34,7 @@
     <section class="programa_formulario">
       <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
         <div class="">
-          <div class="container_upload_image d-flex align-items-end " :class="{ 'flex-column': showImage }">
+          <div class="container_upload_image d-flex align-items-end" :class="{ 'flex-column': showImage }">
             <img v-if="showImage" class="image_programa" alt="imagen_programa"
               :src="imageProfilePrograma | headerFileBase64" />
             <a id="hide" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
@@ -395,9 +395,9 @@
               <div class="row mx-0 archivo_item"
                 v-for="archivo in filtrarArchivosProgramaOnlyDocs(archivosProgramaList)" :key="archivo.id">
                 <div class="col container_name d-flex">
-                  <h3>{{ archivo.nombreArchivo }}</h3> <span v-if="archivo.tablaElementoCatalogo.id === 7"
-                    style="font-size:18px; color: #8F141B;" class="pl-3" v-text="$t('archivosPrograma.labels.planEstudio')">Plan de
-                    estudio</span>
+                  <h3>{{ archivo.nombreArchivo }}</h3>
+                  <span v-if="archivo.tablaElementoCatalogo.id === 7" style="font-size: 18px; color: #8f141b"
+                    class="pl-3" v-text="$t('archivosPrograma.labels.planEstudio')">Plan de estudio</span>
                 </div>
                 <div class="col-sm-auto row mx-0">
                   <div class="col-sm-auto opcion_archivo d-flex align-items-center justify-content-center">
@@ -432,14 +432,58 @@
         </div>
       </div>
     </section>
+    <section class="seccion_redes_programas">
+      <div class="tab">
+        <input type="checkbox" id="redes_programa" />
+        <label class="tab-label item_acordion" for="redes_programa"
+          v-text="$t('programa.formulario.labels.redesPrograma')">Redes Programa</label>
+        <div class="tab-content web_tabs">
+          <div class="">
+            <div class="contenido_listado_redes">
+              <div class="row mx-0 archivo_item" v-for="redSocial in redesSocialesPrograma" :key="redSocial.id">
+                <div class="col container_name row">
+                  <div class="col-sm-auto container_imagen_red_social d-flex align-items-center">
+                    <img v-if="redSocial.tablaElementoCatalogo.id === 8" alt="red_social-facebook"
+                      src="/content/images/iconos/facebook.png" />
+                    <img v-if="redSocial.tablaElementoCatalogo.id === 9" alt="red_social-instagram"
+                      src="/content/images/iconos/instagram.png" />
+                    <img v-if="redSocial.tablaElementoCatalogo.id === 10" alt="red_social-tiktok"
+                      src="/content/images/iconos/tik-tok.png" />
+                    <img v-if="redSocial.tablaElementoCatalogo.id === 11" alt="red_social-twitter"
+                      src="/content/images/iconos/twitter.png" />
+                    <img v-if="redSocial.tablaElementoCatalogo.id === 12" alt="red_social-you-tube"
+                      src="/content/images/iconos/youtube.png" />
+                  </div>
+                  <div class="col container_name d-flex align-items-center">
+                    <h3>{{ redSocial.urlRedSocial }}</h3>
+                  </div>
+                </div>
+                <div class="col-sm-auto">
+                  <a class="opcion_red_social editar_red" type="button" @click="openPopupEditarRedSocial(redSocial)">
+                    <img alt="editar_red_social" src="/content/images/iconos/pencil.png" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-3">
+              <button class="btn btn_agregar_red_social d-flex align-items-center justify-content-center"
+                id="btn_agregar_red_social" v-text="$t('programa.buttons.agregarRedSocial')"
+                v-on:click="openPopupAgregarNuevaRedSocial()">
+                Agregar red social
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section>
       <b-modal id="modalPopupCrearDocumentoPrograma" ref="modalPopupCrearDocumentoPrograma"
         class="modalPopupCrearDocumentoPrograma">
         <div class="modal-body">
           <div class="">
             <div class="mb-3 container_notas">
-              <span v-if="!hasArchivoProgramaPlanEstudio" v-text="$t('archivosPrograma.labels.favorSubirPlanEstudio')">Por favor subir el plan de
-                estudio</span>
+              <span v-if="!hasArchivoProgramaPlanEstudio"
+                v-text="$t('archivosPrograma.labels.favorSubirPlanEstudio')">Por favor subir el plan de estudio</span>
             </div>
             <a id="" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
               <label for="file-crear-documento-nuevo" class="row mx-0 align-items-center justify-content-center">
@@ -493,16 +537,16 @@
             Subir
           </button>
           <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
-            v-on:click="closePopupCrearDocumentoNuevo()">Cancel</button>
+            v-on:click="closePopupCrearDocumentoNuevo()">
+            Cancel
+          </button>
         </div>
       </b-modal>
       <b-modal id="modalPopupEliminarDocumentoPrograma" ref="modalPopupEliminarDocumentoPrograma">
         <div class="modal-body">
           <div class="modal_eliminar_documento">
             <h4 v-text="$t('archivosPrograma.labels.seguroEliminarDoc', { nameDoc: programaDocumentoNuevo.nombre })">
-              Esta
-              seguro que desea eliminar el
-              documento
+              Esta seguro que desea eliminar el documento
             </h4>
           </div>
         </div>
@@ -516,7 +560,65 @@
             Eliminar
           </button>
           <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
-            v-on:click="closePopupCrearDocumentoNuevo()">Cancel</button>
+            v-on:click="closePopupCrearDocumentoNuevo()">
+            Cancel
+          </button>
+        </div>
+      </b-modal>
+      <b-modal id="modalPopupAgregarRedSocial" ref="modalPopupAgregarRedSocial">
+        <div class="modal-body">
+          <form name="formRedSocial" role="form">
+            <div class="row mx-0">
+              <div class="col form-group">
+                <label class="form-control-label" v-text="$t('programa.popups.labels.tipoResSocial')">Tabla elemento
+                  catalogo</label>
+                <select class="form-control" id="tipo_red_social" name="tipo_red_social"
+                  v-model="redesPrograma.tablaElementoCatalogo" required>
+                  <option v-if="!redesPrograma.tablaElementoCatalogo" selected v-bind:value="null">Seleccione</option>
+                  <option v-for="tipoRedSocial in tiposRedSocialElemento" :key="tipoRedSocial.id" v-bind:value="
+                    redesPrograma.tablaElementoCatalogo && redesPrograma.tablaElementoCatalogo.id === tipoRedSocial.id
+                      ? redesPrograma.tablaElementoCatalogo
+                      : tipoRedSocial
+                  ">
+                    {{ tipoRedSocial.nombre }}
+                  </option>
+                </select>
+                <div
+                  v-if="$v.redesPrograma.tablaElementoCatalogo.$anyDirty && $v.redesPrograma.tablaElementoCatalogo.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.redesPrograma.tablaElementoCatalogo.required"
+                    v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+              <div class="col form-group">
+                <label class="form-control-label campo_requerido" for="url_red_social_programa"
+                  v-text="$t('programa.popups.labels.urlRedSocial')">Url de la red social</label>
+                <input type="text" id="url_red_social_programa" name="url_red_social_programa" class="form-control"
+                  placeholder="Eg. redSocial.com/pagina" v-model="$v.redesPrograma.urlRedSocial.$model" required />
+                <div v-if="$v.redesPrograma.urlRedSocial.$anyDirty && $v.redesPrograma.urlRedSocial.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.redesPrograma.urlRedSocial.required"
+                    v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div slot="modal-footer">
+          <div class="container_spinner d-flex align-items-center justify-content-center px-3">
+            <b-spinner v-if="isRedSocialCreatedUptaded" type="grow" label="Cargando" variant="danger"></b-spinner>
+          </div>
+          <button v-if="!isRedSocialCreatedUptaded" type="button" class="btn btn_subir_documento"
+            id="programaRedSocialAgregarActualizar" v-text="$t('entity.action.save')"
+            v-on:click="agregarActualizarRedSocial()" :disabled="$v.redesPrograma.$invalid">
+            Agregar / Actualizar
+          </button>
+          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
+            v-on:click="closePopupAgregarRedSocial()">
+            Cancel
+          </button>
         </div>
       </b-modal>
     </section>

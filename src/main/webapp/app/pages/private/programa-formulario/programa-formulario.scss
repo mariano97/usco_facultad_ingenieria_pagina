@@ -133,6 +133,60 @@
       }
     }
   }
+  section.seccion_redes_programas {
+    margin-top: 2.5rem;
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+    button {
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+      &.btn_agregar_red_social {
+        width: 320px;
+        background: $color-red;
+        color: $color-amarillo;
+
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+    .contenido_listado_redes {
+      .archivo_item {
+        margin-bottom: 1rem;
+        .container_name {
+          max-width: calc(100% - 75px) !important;
+          .container_imagen_red_social {
+            img {
+              width: 30px;
+              max-width: 30px;
+            }
+          }
+          h3 {
+            color: $color-dark;
+            font-size: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+            margin: 0px !important;
+          }
+        }
+        a.opcion_red_social {
+          padding: 0.5rem;
+          img {
+            max-width: 30px;
+          }
+          &:hover {
+            background-color: $color-red-light;
+          }
+        }
+      }
+    }
+  }
   .tab {
     margin-top: 1rem;
     margin-bottom: 1rem;

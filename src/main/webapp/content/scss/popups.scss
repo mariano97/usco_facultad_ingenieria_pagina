@@ -50,6 +50,14 @@
         font-size: 15px;
       }
     }
+    input,
+    select,
+    textarea {
+      border: none;
+      border-color: $color-red;
+      border-radius: 0px;
+      box-shadow: $color-box-shadow;
+    }
   }
   .modal-footer {
     div:first-child {
@@ -64,7 +72,8 @@
 }
 
 #modalPopupCrearDocumentoPrograma,
-#modalPopupEliminarDocumentoPrograma {
+#modalPopupEliminarDocumentoPrograma,
+#modalPopupAgregarRedSocial {
   @media (min-width: 992px) {
     .modal-dialog {
       max-width: 80vw !important;

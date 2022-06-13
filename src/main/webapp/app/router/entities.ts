@@ -47,6 +47,12 @@ const ArchivosPrograma = () => import('@/entities/archivos-programa/archivos-pro
 const ArchivosProgramaUpdate = () => import('@/entities/archivos-programa/archivos-programa-update.vue');
 // prettier-ignore
 const ArchivosProgramaDetails = () => import('@/entities/archivos-programa/archivos-programa-details.vue');
+// prettier-ignore
+const RedesPrograma = () => import('@/entities/redes-programa/redes-programa.vue');
+// prettier-ignore
+const RedesProgramaUpdate = () => import('@/entities/redes-programa/redes-programa-update.vue');
+// prettier-ignore
+const RedesProgramaDetails = () => import('@/entities/redes-programa/redes-programa-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -221,6 +227,30 @@ export default {
       path: 'archivos-programa/:archivosProgramaId/view',
       name: 'ArchivosProgramaView',
       component: ArchivosProgramaDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'redes-programa',
+      name: 'RedesPrograma',
+      component: RedesPrograma,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'redes-programa/new',
+      name: 'RedesProgramaCreate',
+      component: RedesProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'redes-programa/:redesProgramaId/edit',
+      name: 'RedesProgramaEdit',
+      component: RedesProgramaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'redes-programa/:redesProgramaId/view',
+      name: 'RedesProgramaView',
+      component: RedesProgramaDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
