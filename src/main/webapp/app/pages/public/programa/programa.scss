@@ -224,6 +224,34 @@
       }
     }
   }
+  section.redes_sociales_programa {
+    padding-top: 0.5rem;
+    padding-bottom: 4.5rem;
+    margin-bottom: 5rem;
+    .container-title_nuestras_redes {
+      h3 {
+        color: $color-gris;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 1rem;
+        margin: 0px;
+      }
+    }
+    div.dividor {
+      height: 120px;
+    }
+    .conatiner_redes_body {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      .container_red_social_item {
+        a {
+          img {
+            width: 60px;
+          }
+        }
+      }
+    }
+  }
   .container_spinner {
     span.text-danger {
       color: $color-red  !important;

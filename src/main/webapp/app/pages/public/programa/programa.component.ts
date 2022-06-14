@@ -1,3 +1,4 @@
+import { IRedesPrograma } from './../../../shared/model/redes-programa.model';
 import { IPresentacionBasico } from '@/shared/model/presentacion-basico.model';
 import ProgramaService from '@/entities/programa/programa.service';
 import { Navigation, Pagination, Autoplay } from 'swiper';
@@ -15,6 +16,7 @@ import identificadoresConstants from '@/shared/constants/identificadores.constan
 import UtilsService from '@/shared/services/utils.service';
 import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
 import AlertService from '@/shared/alert/alert.service';
+import RedesProgramaService from '@/entities/redes-programa/redes-programa.service';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -33,6 +35,7 @@ export default class Programa extends Vue {
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('alertService') private alertService: () => AlertService;
+  @Inject('redesProgramaService') private redesProgramaService: () => RedesProgramaService;
 
   public programa: IPrograma = {};
   public pesentacionBasico: IPresentacionBasico[] = [];
@@ -41,6 +44,7 @@ export default class Programa extends Vue {
   public listArrayArchivosProgramas: IArchivosPrograma[][] = [];
   private archvivoProgramaImageProfile: IArchivosPrograma = {};
   public archivoProgramaPlanEstudio: IArchivosPrograma = {};
+  public listRedesSocialesPrograma: IRedesPrograma[] = [];
   public imageProfilePrograma: any;
   public showImage = false;
   private archivosProgramaDescargados: IFileDocumentoNuevo[] = [];
@@ -59,6 +63,7 @@ export default class Programa extends Vue {
         this.programa = res;
         this.consultarArchivosPrograma(this.programa.id);
         this.llenarListaPresentacion(this.programa);
+        this.consultarRedesSocialesPrograma(this.programa.id);
       })
       .catch(err => {
         console.error(err);
@@ -76,6 +81,18 @@ export default class Programa extends Vue {
       })
       .catch(err => {
         console.error("Errore obteniendo archivos");
+        console.error(err);
+      });
+  }
+
+  public consultarRedesSocialesPrograma(programaId: number): void {
+    this.redesProgramaService()
+      .findAllByProgramaId(this.$store.getters.authenticated, programaId)
+      .then(res => {
+        this.listRedesSocialesPrograma = res;
+      })
+      .catch(err => {
+        console.error("Errore obteniendo redes");
         console.error(err);
       });
   }

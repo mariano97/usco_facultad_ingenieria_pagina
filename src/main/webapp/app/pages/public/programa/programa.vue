@@ -218,7 +218,7 @@
     </section>
     <section class="sedes_mapa_programa">
     </section>
-    <section class="documentos_programa container">
+    <section class="documentos_programa container" v-if="listArrayArchivosProgramas.length > 0">
       <div class="">
         <div class="d-flex justify-content-center">
           <div class="container-title_documentos horizontal-divides-red-2">
@@ -242,6 +242,33 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="redes_sociales_programa container" v-if="listRedesSocialesPrograma.length > 0">
+      <div class="">
+        <div class="row mx-0">
+          <div class="col-sm-auto container-title_nuestras_redes d-flex align-items-center">
+            <h3 v-text="$t('programa.titulos.nuestrasRedes')">Nuestras redes</h3>
+          </div>
+          <div class="dividor vertical-divider-red"></div>
+          <div class="row mx-0 justify-content-start conatiner_redes_body">
+            <div class="col container_red_social_item" v-for="redSocial in listRedesSocialesPrograma"
+              :key="redSocial.id">
+              <a target="_blan" :href="redSocial.urlRedSocial" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                <img v-if="redSocial.tablaElementoCatalogo.id === 8" alt="red_social-facebook"
+                  src="/content/images/iconos/facebook.png" />
+                <img v-if="redSocial.tablaElementoCatalogo.id === 9" alt="red_social-instagram"
+                  src="/content/images/iconos/instagram.png" />
+                <img v-if="redSocial.tablaElementoCatalogo.id === 10" alt="red_social-tiktok"
+                  src="/content/images/iconos/tik-tok.png" />
+                <img v-if="redSocial.tablaElementoCatalogo.id === 11" alt="red_social-twitter"
+                  src="/content/images/iconos/twitter.png" />
+                <img v-if="redSocial.tablaElementoCatalogo.id === 12" alt="red_social-you-tube"
+                  src="/content/images/iconos/youtube.png" />
+              </a>
             </div>
           </div>
         </div>
