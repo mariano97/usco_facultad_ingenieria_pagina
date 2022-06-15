@@ -53,6 +53,24 @@ const RedesPrograma = () => import('@/entities/redes-programa/redes-programa.vue
 const RedesProgramaUpdate = () => import('@/entities/redes-programa/redes-programa-update.vue');
 // prettier-ignore
 const RedesProgramaDetails = () => import('@/entities/redes-programa/redes-programa-details.vue');
+// prettier-ignore
+const Paises = () => import('@/entities/paises/paises.vue');
+// prettier-ignore
+const PaisesUpdate = () => import('@/entities/paises/paises-update.vue');
+// prettier-ignore
+const PaisesDetails = () => import('@/entities/paises/paises-details.vue');
+// prettier-ignore
+const Estados = () => import('@/entities/estados/estados.vue');
+// prettier-ignore
+const EstadosUpdate = () => import('@/entities/estados/estados-update.vue');
+// prettier-ignore
+const EstadosDetails = () => import('@/entities/estados/estados-details.vue');
+// prettier-ignore
+const Ciudad = () => import('@/entities/ciudad/ciudad.vue');
+// prettier-ignore
+const CiudadUpdate = () => import('@/entities/ciudad/ciudad-update.vue');
+// prettier-ignore
+const CiudadDetails = () => import('@/entities/ciudad/ciudad-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -251,6 +269,78 @@ export default {
       path: 'redes-programa/:redesProgramaId/view',
       name: 'RedesProgramaView',
       component: RedesProgramaDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'paises',
+      name: 'Paises',
+      component: Paises,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'paises/new',
+      name: 'PaisesCreate',
+      component: PaisesUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'paises/:paisesId/edit',
+      name: 'PaisesEdit',
+      component: PaisesUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'paises/:paisesId/view',
+      name: 'PaisesView',
+      component: PaisesDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'estados',
+      name: 'Estados',
+      component: Estados,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'estados/new',
+      name: 'EstadosCreate',
+      component: EstadosUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'estados/:estadosId/edit',
+      name: 'EstadosEdit',
+      component: EstadosUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'estados/:estadosId/view',
+      name: 'EstadosView',
+      component: EstadosDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'ciudad',
+      name: 'Ciudad',
+      component: Ciudad,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'ciudad/new',
+      name: 'CiudadCreate',
+      component: CiudadUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'ciudad/:ciudadId/edit',
+      name: 'CiudadEdit',
+      component: CiudadUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'ciudad/:ciudadId/view',
+      name: 'CiudadView',
+      component: CiudadDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

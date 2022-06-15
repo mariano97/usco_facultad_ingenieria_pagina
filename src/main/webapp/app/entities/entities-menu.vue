@@ -32,6 +32,18 @@
       <font-awesome-icon icon="asterisk" />
       <span v-text="$t('global.menu.entities.redesPrograma')">Redes Programa</span>
     </b-dropdown-item>
+    <b-dropdown-item to="/paises">
+      <font-awesome-icon icon="asterisk" />
+      <span v-text="$t('global.menu.entities.paises')">Paises</span>
+    </b-dropdown-item>
+    <b-dropdown-item to="/estados">
+      <font-awesome-icon icon="asterisk" />
+      <span v-text="$t('global.menu.entities.estados')">Estados</span>
+    </b-dropdown-item>
+    <b-dropdown-item to="/ciudad">
+      <font-awesome-icon icon="asterisk" />
+      <span v-text="$t('global.menu.entities.ciudad')">Ciudad</span>
+    </b-dropdown-item>
     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
   </div>
 </template>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Estados.
+    -->
+    <changeSet id="20220615021037-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="paises_id"
+                                 baseTableName="estados"
+                                 constraintName="fk_estados__paises_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="paises"/>
+    </changeSet>
+</databaseChangeLog>

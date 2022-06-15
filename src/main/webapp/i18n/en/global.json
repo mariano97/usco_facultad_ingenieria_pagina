@@ -16,6 +16,9 @@
         "profesor": "Profesor",
         "archivosPrograma": "Archivos Programa",
         "redesPrograma": "Redes Programa",
+        "paises": "Paises",
+        "estados": "Estados",
+        "ciudad": "Ciudad",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
