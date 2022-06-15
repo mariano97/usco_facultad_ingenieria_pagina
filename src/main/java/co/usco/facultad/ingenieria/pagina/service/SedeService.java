@@ -1,6 +1,5 @@
 package co.usco.facultad.ingenieria.pagina.service;
 
-import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.service.dto.SedeDTO;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
@@ -43,6 +42,14 @@ public interface SedeService {
     Flux<SedeDTO> findAll(Pageable pageable);
 
     Mono<SedeDTO> findByCodigoIndicativo(String codigoIndicativo);
+
+    /**
+     * Get all the sedes with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Flux<SedeDTO> findAllWithEagerRelationships(Pageable pageable);
 
     /**
      * Returns the number of sedes available.

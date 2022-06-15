@@ -173,35 +173,33 @@ public class SedeResource {
      *
      * @param pageable the pagination information.
      * @param request a {@link ServerHttpRequest} request.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sedes in body.
      */
     @GetMapping("/sedes")
     public Mono<ResponseEntity<List<SedeDTO>>> getAllSedes(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
-        ServerHttpRequest request
+        ServerHttpRequest request,
+        @RequestParam(required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Sedes");
         return sedeService
-            .countAll()
-            .zipWith(sedeService.findAll(pageable).collectList())
-            .map(countWithEntities ->
-                ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
-                        )
-                    )
-                    .body(countWithEntities.getT2())
-            );
+                .countAll()
+                .zipWith(sedeService.findAll(pageable).collectList())
+                .map(countWithEntities -> ResponseEntity
+                        .ok()
+                        .headers(
+                                PaginationUtil.generatePaginationHttpHeaders(
+                                        UriComponentsBuilder.fromHttpRequest(request),
+                                        new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())))
+                        .body(countWithEntities.getT2()));
     }
 
     @GetMapping("/sedes/find-by-codigo-indicativo")
     public Mono<ResponseEntity<SedeDTO>> getSedeByCodigoIndicativo(@RequestParam("codigo_indicativo") String codigoIndicativo) {
         log.debug("dentro de getSedeByCodigoIndicativo: {}", codigoIndicativo);
         return sedeService.findByCodigoIndicativo(codigoIndicativo)
-            .map(sede ->
+                .map(sede ->
                 ResponseEntity.ok()
                     .headers(
                         HeaderUtil.createAlert(applicationName, "getSedeByCodigoIndicativo", codigoIndicativo)

@@ -10,6 +10,8 @@ import SedeClass from '@/entities/sede/sede-update.component';
 import SedeService from '@/entities/sede/sede.service';
 
 import ProgramaService from '@/entities/programa/programa.service';
+
+import CiudadService from '@/entities/ciudad/ciudad.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -46,6 +48,11 @@ describe('Component Tests', () => {
 
           programaService: () =>
             sinon.createStubInstance<ProgramaService>(ProgramaService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          ciudadService: () =>
+            sinon.createStubInstance<CiudadService>(CiudadService, {
               retrieve: sinon.stub().resolves({}),
             } as any),
         },

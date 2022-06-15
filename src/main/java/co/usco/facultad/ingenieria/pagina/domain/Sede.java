@@ -62,6 +62,13 @@ public class Sede implements Serializable {
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
     private Set<Programa> programas = new HashSet<>();
 
+    @Transient
+    @JsonIgnoreProperties(value = { "estados" }, allowSetters = true)
+    private Ciudad ciudad;
+
+    @Column("ciudad_id")
+    private Long ciudadId;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -223,6 +230,28 @@ public class Sede implements Serializable {
         this.programas.remove(programa);
         programa.getSedes().remove(this);
         return this;
+    }
+
+    public Ciudad getCiudad() {
+        return this.ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+        this.ciudadId = ciudad != null ? ciudad.getId() : null;
+    }
+
+    public Sede ciudad(Ciudad ciudad) {
+        this.setCiudad(ciudad);
+        return this;
+    }
+
+    public Long getCiudadId() {
+        return this.ciudadId;
+    }
+
+    public void setCiudadId(Long ciudad) {
+        this.ciudadId = ciudad;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

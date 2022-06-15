@@ -1,4 +1,5 @@
 import { IPrograma } from '@/shared/model/programa.model';
+import { ICiudad } from '@/shared/model/ciudad.model';
 
 export interface ISede {
   id?: number;
@@ -12,6 +13,7 @@ export interface ISede {
   correoElectronico?: string;
   codigoIndicativo?: string;
   programas?: IPrograma[] | null;
+  ciudad?: ICiudad;
 }
 
 export class Sede implements ISede {
@@ -26,7 +28,8 @@ export class Sede implements ISede {
     public telefonoCelular?: string | null,
     public correoElectronico?: string,
     public codigoIndicativo?: string,
-    public programas?: IPrograma[] | null
+    public programas?: IPrograma[] | null,
+    public ciudad?: ICiudad
   ) {
     this.estado = this.estado ?? false;
   }

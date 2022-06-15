@@ -21,6 +21,7 @@ public class SedeSqlHelper {
         columns.add(Column.aliased("correo_electronico", table, columnPrefix + "_correo_electronico"));
         columns.add(Column.aliased("codigo_indicativo", table, columnPrefix + "_codigo_indicativo"));
 
+        columns.add(Column.aliased("ciudad_id", table, columnPrefix + "_ciudad_id"));
         return columns;
     }
 }

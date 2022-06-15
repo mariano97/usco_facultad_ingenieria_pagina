@@ -7,6 +7,9 @@ import AlertService from '@/shared/alert/alert.service';
 import ProgramaService from '@/entities/programa/programa.service';
 import { IPrograma } from '@/shared/model/programa.model';
 
+import CiudadService from '@/entities/ciudad/ciudad.service';
+import { ICiudad } from '@/shared/model/ciudad.model';
+
 import { ISede, Sede } from '@/shared/model/sede.model';
 import SedeService from './sede.service';
 
@@ -41,6 +44,9 @@ const validations: any = {
     codigoIndicativo: {
       required,
     },
+    ciudad: {
+      required,
+    },
   },
 };
 
@@ -56,6 +62,10 @@ export default class SedeUpdate extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
 
   public programas: IPrograma[] = [];
+
+  @Inject('ciudadService') private ciudadService: () => CiudadService;
+
+  public ciudads: ICiudad[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -141,6 +151,11 @@ export default class SedeUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.programas = res.data;
+      });
+    this.ciudadService()
+      .retrieve()
+      .then(res => {
+        this.ciudads = res.data;
       });
   }
 }

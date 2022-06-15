@@ -18,6 +18,21 @@ public interface SedeRepository extends ReactiveCrudRepository<Sede, Long>, Sede
     Flux<Sede> findAllBy(Pageable pageable);
 
     @Override
+    Mono<Sede> findOneWithEagerRelationships(Long id);
+
+    @Override
+    Flux<Sede> findAllWithEagerRelationships();
+
+    @Override
+    Flux<Sede> findAllWithEagerRelationships(Pageable page);
+
+    @Query("SELECT * FROM sede entity WHERE entity.ciudad_id = :id")
+    Flux<Sede> findByCiudad(Long id);
+
+    @Query("SELECT * FROM sede entity WHERE entity.ciudad_id IS NULL")
+    Flux<Sede> findAllWhereCiudadIsNull();
+
+    @Override
     <S extends Sede> Mono<S> save(S entity);
 
     @Override
@@ -43,4 +58,11 @@ interface SedeRepositoryInternal {
 
     Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo);
 
+    Mono<Sede> findOneWithEagerRelationships(Long id);
+
+    Flux<Sede> findAllWithEagerRelationships();
+
+    Flux<Sede> findAllWithEagerRelationships(Pageable page);
+
+    Mono<Void> deleteById(Long id);
 }

@@ -27,7 +27,8 @@
       "telefonoCelular": "Telefono Celular",
       "correoElectronico": "Correo Electronico",
       "codigoIndicativo": "Codigo Indicativo",
-      "programa": "Programa"
+      "programa": "Programa",
+      "ciudad": "Ciudad"
     }
   }
 }

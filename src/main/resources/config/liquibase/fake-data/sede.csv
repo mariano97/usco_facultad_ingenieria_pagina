@@ -1,11 +1,11 @@
-id;nombre;latitud;longitud;direccion;estado;telefono_fijo;telefono_celular;correo_electronico;codigo_indicativo
-1;Programa state Librería;35348;43276;concepto;false;frictio;program Vi;Cataluña;generate
-2;Savings Perú;69448;74515;Borders;false;Acero;Inverso Tá;withdrawal;Market Algodón Galicia
-3;invoice Vasco;45290;44257;up Omani;true;Cine de;Oficial;Blanco;Berkshire Distrito
-4;e-services systems;30871;95202;monitor Kina;true;global ;USB Market;scale Genérico;e-tailers
-5;Portugal;83923;25211;value-added withdrawal;true;Galicia;bypassing ;Guapa;Explanada bluetooth
-6;Cine Edificio;67191;93462;bandwidth;true;León wi;Ordenador;Berkshire Sorprendente;Gris
-7;Rústico nacional;18914;50605;SDD payment HDD;true;Refinad;embrace me;FTP estable Franc;Buckinghamshire brand
-8;calculate Ejecutivo;58570;39052;Música Peso;true;Finland;Ladrillo;one-to-one Soluciones;Pelota COM
-9;óptima withdrawal;81966;39002;Account;false;generat;Dinar;generación;Extremadura Corporativo
-10;bus archivo;50371;50986;XSS compressing;true;Dollar ;bus;optical Prolongación facilitate;a dedicada
+id;nombre;latitud;longitud;direccion;estado;telefono_fijo;telefono_celular;correo_electronico;codigo_indicativo;ciudad_id
+1;Programa state Librería;35348;43276;concepto;false;frictio;program Vi;Cataluña;generate;1
+2;Savings Perú;69448;74515;Borders;false;Acero;Inverso Tá;withdrawal;Market Algodón Galicia;2
+3;invoice Vasco;45290;44257;up Omani;true;Cine de;Oficial;Blanco;Berkshire Distrito;3
+4;e-services systems;30871;95202;monitor Kina;true;global ;USB Market;scale Genérico;e-tailers;4
+5;Portugal;83923;25211;value-added withdrawal;true;Galicia;bypassing ;Guapa;Explanada bluetooth;5
+6;Cine Edificio;67191;93462;bandwidth;true;León wi;Ordenador;Berkshire Sorprendente;Gris;6
+7;Rústico nacional;18914;50605;SDD payment HDD;true;Refinad;embrace me;FTP estable Franc;Buckinghamshire brand;7
+8;calculate Ejecutivo;58570;39052;Música Peso;true;Finland;Ladrillo;one-to-one Soluciones;Pelota COM;8
+9;óptima withdrawal;81966;39002;Account;false;generat;Dinar;generación;Extremadura Corporativo;9
+10;bus archivo;50371;50986;XSS compressing;true;Dollar ;bus;optical Prolongación facilitate;a dedicada;10

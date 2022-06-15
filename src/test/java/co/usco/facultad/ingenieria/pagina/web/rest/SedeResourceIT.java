@@ -3,11 +3,14 @@ package co.usco.facultad.ingenieria.pagina.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 import co.usco.facultad.ingenieria.pagina.IntegrationTest;
+import co.usco.facultad.ingenieria.pagina.domain.Ciudad;
 import co.usco.facultad.ingenieria.pagina.domain.Sede;
 import co.usco.facultad.ingenieria.pagina.repository.EntityManager;
 import co.usco.facultad.ingenieria.pagina.repository.SedeRepository;
+import co.usco.facultad.ingenieria.pagina.service.SedeService;
 import co.usco.facultad.ingenieria.pagina.service.dto.SedeDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.SedeMapper;
 import java.time.Duration;
@@ -22,14 +25,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link SedeResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class SedeResourceIT {
@@ -70,8 +78,14 @@ class SedeResourceIT {
     @Autowired
     private SedeRepository sedeRepository;
 
+    @Mock
+    private SedeRepository sedeRepositoryMock;
+
     @Autowired
     private SedeMapper sedeMapper;
+
+    @Mock
+    private SedeService sedeServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -98,6 +112,10 @@ class SedeResourceIT {
             .telefonoCelular(DEFAULT_TELEFONO_CELULAR)
             .correoElectronico(DEFAULT_CORREO_ELECTRONICO)
             .codigoIndicativo(DEFAULT_CODIGO_INDICATIVO);
+        // Add required entity
+        Ciudad ciudad;
+        ciudad = em.insert(CiudadResourceIT.createEntity(em)).block();
+        sede.setCiudad(ciudad);
         return sede;
     }
 
@@ -118,6 +136,10 @@ class SedeResourceIT {
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
             .correoElectronico(UPDATED_CORREO_ELECTRONICO)
             .codigoIndicativo(UPDATED_CODIGO_INDICATIVO);
+        // Add required entity
+        Ciudad ciudad;
+        ciudad = em.insert(CiudadResourceIT.createUpdatedEntity(em)).block();
+        sede.setCiudad(ciudad);
         return sede;
     }
 
@@ -127,6 +149,7 @@ class SedeResourceIT {
         } catch (Exception e) {
             // It can fail, if other entities are still referring this - it will be removed later.
         }
+        CiudadResourceIT.deleteEntities(em);
     }
 
     @AfterEach
@@ -382,6 +405,24 @@ class SedeResourceIT {
             .value(hasItem(DEFAULT_CORREO_ELECTRONICO))
             .jsonPath("$.[*].codigoIndicativo")
             .value(hasItem(DEFAULT_CODIGO_INDICATIVO));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSedesWithEagerRelationshipsIsEnabled() {
+        when(sedeServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(sedeServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllSedesWithEagerRelationshipsIsNotEnabled() {
+        when(sedeServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(sedeServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

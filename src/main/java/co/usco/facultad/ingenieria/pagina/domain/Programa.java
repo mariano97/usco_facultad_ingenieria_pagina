@@ -99,7 +99,7 @@ public class Programa implements Serializable {
     private Facultad facultad;
 
     @Transient
-    @JsonIgnoreProperties(value = { "programas" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "programas", "ciudad" }, allowSetters = true)
     private Set<Sede> sedes = new HashSet<>();
 
     @Transient

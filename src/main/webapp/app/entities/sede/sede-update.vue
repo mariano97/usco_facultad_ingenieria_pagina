@@ -215,6 +215,26 @@
               </small>
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-control-label" v-text="$t('paginaFacultadIngenieriaProyectoApp.sede.ciudad')" for="sede-ciudad"
+              >Ciudad</label
+            >
+            <select class="form-control" id="sede-ciudad" data-cy="ciudad" name="ciudad" v-model="sede.ciudad" required>
+              <option v-if="!sede.ciudad" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="sede.ciudad && ciudadOption.id === sede.ciudad.id ? sede.ciudad : ciudadOption"
+                v-for="ciudadOption in ciudads"
+                :key="ciudadOption.id"
+              >
+                {{ ciudadOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.sede.ciudad.$anyDirty && $v.sede.ciudad.$invalid">
+            <small class="form-text text-danger" v-if="!$v.sede.ciudad.required" v-text="$t('entity.validation.required')">
+              This field is required.
+            </small>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

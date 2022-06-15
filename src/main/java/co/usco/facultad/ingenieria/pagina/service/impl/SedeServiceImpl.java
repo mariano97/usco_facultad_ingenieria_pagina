@@ -71,6 +71,10 @@ public class SedeServiceImpl implements SedeService {
         return sedeRepository.fundByCodigoIndicativo(codigoIndicativo).map(sedeMapper::toDto);
     }
 
+    public Flux<SedeDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return sedeRepository.findAllWithEagerRelationships(pageable).map(sedeMapper::toDto);
+    }
+
     public Mono<Long> countAll() {
         return sedeRepository.count();
     }
@@ -79,7 +83,7 @@ public class SedeServiceImpl implements SedeService {
     @Transactional(readOnly = true)
     public Mono<SedeDTO> findOne(Long id) {
         log.debug("Request to get Sede : {}", id);
-        return sedeRepository.findById(id).map(sedeMapper::toDto);
+        return sedeRepository.findOneWithEagerRelationships(id).map(sedeMapper::toDto);
     }
 
     @Override

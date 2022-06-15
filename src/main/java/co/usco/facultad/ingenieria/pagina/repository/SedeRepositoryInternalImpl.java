@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.repository;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import co.usco.facultad.ingenieria.pagina.domain.Sede;
+import co.usco.facultad.ingenieria.pagina.repository.rowmapper.CiudadRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.SedeRowMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
@@ -24,7 +25,7 @@ import org.springframework.data.relational.core.sql.Condition;
 import org.springframework.data.relational.core.sql.Conditions;
 import org.springframework.data.relational.core.sql.Expression;
 import org.springframework.data.relational.core.sql.Select;
-import org.springframework.data.relational.core.sql.SelectBuilder.SelectFromAndJoin;
+import org.springframework.data.relational.core.sql.SelectBuilder.SelectFromAndJoinCondition;
 import org.springframework.data.relational.core.sql.Table;
 import org.springframework.data.relational.repository.support.MappingRelationalEntityInformation;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -42,13 +43,16 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
     private final EntityManager entityManager;
 
+    private final CiudadRowMapper ciudadMapper;
     private final SedeRowMapper sedeMapper;
 
     private static final Table entityTable = Table.aliased("sede", EntityManager.ENTITY_ALIAS);
+    private static final Table ciudadTable = Table.aliased("ciudad", "ciudad");
 
     public SedeRepositoryInternalImpl(
         R2dbcEntityTemplate template,
         EntityManager entityManager,
+        CiudadRowMapper ciudadMapper,
         SedeRowMapper sedeMapper,
         R2dbcEntityOperations entityOperations,
         R2dbcConverter converter
@@ -61,6 +65,7 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
         this.db = template.getDatabaseClient();
         this.r2dbcEntityTemplate = template;
         this.entityManager = entityManager;
+        this.ciudadMapper = ciudadMapper;
         this.sedeMapper = sedeMapper;
     }
 
@@ -71,7 +76,14 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
 
     RowsFetchSpec<Sede> createQuery(Pageable pageable, Condition whereClause) {
         List<Expression> columns = SedeSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
-        SelectFromAndJoin selectFrom = Select.builder().select(columns).from(entityTable);
+        columns.addAll(CiudadSqlHelper.getColumns(ciudadTable, "ciudad"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(ciudadTable)
+            .on(Column.create("ciudad_id", entityTable))
+            .equals(Column.create("id", ciudadTable));
         // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
         String select = entityManager.createSelect(selectFrom, Sede.class, pageable, whereClause);
         return db.sql(select).map(this::process);
@@ -94,8 +106,24 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
         return createQuery(null, whereClause).one();
     }
 
+    @Override
+    public Mono<Sede> findOneWithEagerRelationships(Long id) {
+        return findById(id);
+    }
+
+    @Override
+    public Flux<Sede> findAllWithEagerRelationships() {
+        return findAll();
+    }
+
+    @Override
+    public Flux<Sede> findAllWithEagerRelationships(Pageable page) {
+        return findAllBy(page);
+    }
+
     private Sede process(Row row, RowMetadata metadata) {
         Sede entity = sedeMapper.apply(row, "e");
+        entity.setCiudad(ciudadMapper.apply(row, "ciudad"));
         return entity;
     }
 

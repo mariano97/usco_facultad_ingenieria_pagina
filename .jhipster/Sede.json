@@ -62,6 +62,13 @@
       "ownerSide": false,
       "relationshipName": "programa",
       "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "ciudad",
+      "relationshipName": "ciudad",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
     }
   ],
   "service": "serviceImpl"

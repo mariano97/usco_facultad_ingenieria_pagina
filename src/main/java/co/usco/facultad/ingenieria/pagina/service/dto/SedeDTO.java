@@ -38,6 +38,8 @@ public class SedeDTO implements Serializable {
     @NotNull(message = "must not be null")
     private String codigoIndicativo;
 
+    private CiudadDTO ciudad;
+
     public Long getId() {
         return id;
     }
@@ -118,6 +120,14 @@ public class SedeDTO implements Serializable {
         this.codigoIndicativo = codigoIndicativo;
     }
 
+    public CiudadDTO getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(CiudadDTO ciudad) {
+        this.ciudad = ciudad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -153,6 +163,7 @@ public class SedeDTO implements Serializable {
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", correoElectronico='" + getCorreoElectronico() + "'" +
             ", codigoIndicativo='" + getCodigoIndicativo() + "'" +
+            ", ciudad=" + getCiudad() +
             "}";
     }
 }
