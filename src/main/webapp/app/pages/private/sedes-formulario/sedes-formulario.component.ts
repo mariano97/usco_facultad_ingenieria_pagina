@@ -5,6 +5,8 @@ import { Vue, Component, Inject } from 'vue-property-decorator';
 import './sedes-formulario.scss';
 import AlertService from '@/shared/alert/alert.service';
 import * as validators from '@/shared/validators/validators.component';
+import { LMap, LTileLayer, LMarker  } from "vue2-leaflet";
+import 'leaflet/dist/leaflet.css';
 
 const validations: any = {
   sede: {
@@ -46,12 +48,27 @@ const validations: any = {
 
 @Component({
   validations,
+  components: {
+    LMap,
+    LTileLayer,
+  },
 })
 export default class SedesFormulario extends Vue {
   @Inject('sedeService') private sedeService: () => SedeService;
   @Inject('alertService') private alertService: () => AlertService;
 
+  public copyrightMap = '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+  public urlMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
   public sede: ISede = new Sede();
+
+  public coordenadas = {
+    lat: 5.41322,
+    lon: -70.219482,
+  };
+
+  public zoomMap = 6;
+  public showMap = true;
 
   public isSaving = false;
   public isModeEdit = false;
@@ -134,5 +151,41 @@ export default class SedesFormulario extends Vue {
     } else {
       this.$router.go(-1);
     }
+  }
+
+  public clickMap(event): void {
+    console.log('dentro de clickMap');
+    console.log(event);
+  }
+
+  public changeCoordenadas(event): void {
+    this.showMap = false;
+    console.log(event);
+    /* this.coordenadas = {
+      lat: 0,
+      lon: 0,
+    }; */
+    if (Number(event.target.value) === 2) {
+      /*this.coordenadas = {
+        lat: 2.38942,
+        lon: -75.8926236,
+      };*/
+      <any>this.$refs.map.setCenter({ lat: 2.38942, lng: -75.8926236 }, {lat: 0, lng:0});
+    } else if (Number(event.target.value) === 1) {
+      /* this.coordenadas = {
+        lat: 3.3758991,
+        lon: -74.8019303,
+      }; */
+      <any>this.$refs.map.setCenter({ lat: 3.3758991, lng: -74.8019303 }, {lat: 0, lng:0});
+    } else {
+      /* this.coordenadas = {
+        lat: 0,
+        lon: 0,
+      }; */
+      <any>this.$refs.map.setCenter({lat: 0, lng:0}, {lat: 0, lng:0});
+    }
+    this.zoomMap = 16;
+    this.showMap = true;
+    console.log(<any>this.$refs.map);
   }
 }
