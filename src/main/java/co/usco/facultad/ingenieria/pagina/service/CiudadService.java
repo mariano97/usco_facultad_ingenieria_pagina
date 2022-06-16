@@ -41,6 +41,8 @@ public interface CiudadService {
      */
     Flux<CiudadDTO> findAll(Pageable pageable);
 
+    Flux<CiudadDTO> findAllByEstadoId(Long estadoId);
+
     /**
      * Get all the ciudads with eager load of many-to-many relationships.
      *

@@ -9,7 +9,9 @@
         "telefonoFijo":"Telefono Fijo",
         "telefonoCelular":"Telefono Celular",
         "email": "Correo electronico",
-        "codigoIndicativo":"Código Indicativo"
+        "codigoIndicativo":"Código Indicativo",
+        "ciudad": "Ciudad",
+        "usoMapa": "Por favor, use el mapa para ubicar la sede, \n 1. Seleccione la ciudad en que se encuentra la sede. \n 2. Ubique la sede en el mapa. \n 3. De click en el mapa donde se encuentra la sede, los campos se llenan"
       }
     }
   },

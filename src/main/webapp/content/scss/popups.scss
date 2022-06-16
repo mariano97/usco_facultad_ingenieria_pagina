@@ -73,7 +73,8 @@
 
 #modalPopupCrearDocumentoPrograma,
 #modalPopupEliminarDocumentoPrograma,
-#modalPopupAgregarRedSocial {
+#modalPopupAgregarRedSocial,
+#modalPopupAgregarSede {
   @media (min-width: 992px) {
     .modal-dialog {
       max-width: 80vw !important;
@@ -113,6 +114,36 @@
       color: $color-red;
       font-size: 20px;
       font-weight: 500;
+    }
+  }
+}
+
+#modalPopupAgregarSede {
+  .modal-body {
+    .container_item_sede {
+      .col-sm-auto:first-child {
+        max-width: 200px;
+      }
+      .col {
+        width: calc(100% - 550px);
+      }
+      h3 {
+        white-space: nowrap;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        margin: 0px;
+      }
+      a {
+
+        img {
+          width: 30px;
+        }
+        &:hover {
+          background: $color-red-light;
+        }
+      }
     }
   }
 }

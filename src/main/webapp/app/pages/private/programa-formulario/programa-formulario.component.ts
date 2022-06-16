@@ -19,6 +19,8 @@ import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
 import UtilsService from '@/shared/services/utils.service';
 import { IRedesPrograma, RedesPrograma } from '@/shared/model/redes-programa.model';
 import RedesProgramaService from '@/entities/redes-programa/redes-programa.service';
+import SedeService from '@/entities/sede/sede.service';
+import { ISede } from '@/shared/model/sede.model';
 
 const validations: any = {
   programa: {
@@ -107,6 +109,7 @@ export default class ProgramaFormulario extends Vue {
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
   @Inject('redesProgramaService') private redesProgramaService: () => RedesProgramaService;
+  @Inject('sedeService') private sedeService: () => SedeService;
 
   public programa: IPrograma = new Programa();
   public redesPrograma: IRedesPrograma = new RedesPrograma();
@@ -123,6 +126,7 @@ export default class ProgramaFormulario extends Vue {
   public programaDocumentoNuevo: IFileDocumentoNuevo = {};
   public tiposRedSocialElemento: ITablaElementoCatalogo[] = [];
   public redesSocialesPrograma: IRedesPrograma[] = [];
+  public listaSedes: ISede[] = [];
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
@@ -152,6 +156,7 @@ export default class ProgramaFormulario extends Vue {
         vm.enableEdit = false;
       }
       vm.consultarListaProgramas();
+      vm.consultarSedes();
       vm.consultarTipoFormacion();
       vm.consultarTiposRedSocial();
     });
@@ -182,6 +187,30 @@ export default class ProgramaFormulario extends Vue {
       .then(res => {
         this.tiposRedSocialElemento = res;
       });
+  }
+
+  private consultarSedes(): void {
+    this.listaSedes = [];
+    this.sedeService()
+      .retrieve()
+      .then(res => {
+        this.listaSedes = res.data;
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  public filtrarSedesConPrograma(): ISede[] {
+    let sedes: ISede[] = [];
+    if (this.programa.sedes && this.programa.sedes.length > 0) {
+      sedes = this.listaSedes.filter(
+        sedeTemp => this.programa.sedes.filter(sedeProgramaTemp => sedeProgramaTemp.id === sedeTemp.id).length < 1
+      );
+    } else {
+      sedes = this.listaSedes;
+    }
+    return sedes;
   }
 
   private isValidoTipoDocumento(file: IFileDocumentoNuevo, tiposDocumentosValidos: string[]): boolean {
@@ -297,6 +326,7 @@ export default class ProgramaFormulario extends Vue {
         .update(this.programa)
         .then(res => {
           this.isSaving = false;
+          this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: res.id });
           return this.$root.$bvToast.toast(message.toString(), {
@@ -309,6 +339,7 @@ export default class ProgramaFormulario extends Vue {
         })
         .catch(error => {
           this.isSaving = false;
+          this.enableFormularioEditar();
           this.alertService().showHttpError(this, error.response);
         });
     } else {
@@ -653,6 +684,12 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
+  public openPopupAgregarSede(): void {
+    if (<any>this.$refs.modalPopupAgregarSede) {
+      (<any>this.$refs.modalPopupAgregarSede).show();
+    }
+  }
+
   public openPopupCrearDocumentoNuevo(accionDocumento: string): void {
     this.popupDocumentoAccion = '';
     if (<any>this.$refs.modalPopupCrearDocumentoPrograma) {
@@ -660,6 +697,10 @@ export default class ProgramaFormulario extends Vue {
       this.programaDocumentoNuevo = {};
       this.popupDocumentoAccion = accionDocumento;
     }
+  }
+
+  public closePopupAgregarSede(): void {
+    (<any>this.$refs.modalPopupAgregarSede).hide();
   }
 
   public closePopupEliminarDocumentoPrograma(): void {

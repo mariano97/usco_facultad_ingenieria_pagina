@@ -5,8 +5,23 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ICiudad } from '@/shared/model/ciudad.model';
 
 const baseApiUrl = 'api/ciudads';
+const openBaseApiUrl = 'api/open/ciudads';
 
 export default class CiudadService {
+  public findAllByEstadoId(isAutenticate: boolean, estadoId: number): Promise<ICiudad[]> {
+    const url = isAutenticate ? baseApiUrl : openBaseApiUrl;
+    return new Promise<ICiudad[]>((resolve, reject) => {
+      axios
+        .get(`${url}/by-estado-id/${estadoId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public find(id: number): Promise<ICiudad> {
     return new Promise<ICiudad>((resolve, reject) => {
       axios

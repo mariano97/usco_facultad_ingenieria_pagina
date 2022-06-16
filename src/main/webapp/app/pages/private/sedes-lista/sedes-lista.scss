@@ -59,6 +59,13 @@
             max-width: 400px;
             text-overflow: ellipsis;
             vertical-align: middle !important;
+            border-top: 0px solid $color-dark !important;
+            &.col_direccion {
+              white-space: nowrap;
+              display: inline-block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
         }
       }

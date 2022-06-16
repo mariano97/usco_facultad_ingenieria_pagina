@@ -5,8 +5,12 @@ import { Vue, Component, Inject } from 'vue-property-decorator';
 import './sedes-formulario.scss';
 import AlertService from '@/shared/alert/alert.service';
 import * as validators from '@/shared/validators/validators.component';
-import { LMap, LTileLayer, LMarker  } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import 'leaflet/dist/leaflet.css';
+import CiudadService from '@/entities/ciudad/ciudad.service';
+import { ICiudad } from '@/shared/model/ciudad.model';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
+import OpenStreetMapService from '@/shared/services/open-street-map.service';
 
 const validations: any = {
   sede: {
@@ -43,6 +47,9 @@ const validations: any = {
       required,
       maxLength: maxLength(20),
     },
+    ciudad: {
+      required,
+    },
   },
 };
 
@@ -51,24 +58,24 @@ const validations: any = {
   components: {
     LMap,
     LTileLayer,
+    LMarker,
   },
 })
 export default class SedesFormulario extends Vue {
   @Inject('sedeService') private sedeService: () => SedeService;
   @Inject('alertService') private alertService: () => AlertService;
+  @Inject('ciudadService') private ciudadService: () => CiudadService;
+  @Inject('openStreetMapService') private openStreetMapService: () => OpenStreetMapService;
 
   public copyrightMap = '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
   public urlMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
   public sede: ISede = new Sede();
 
-  public coordenadas = {
-    lat: 5.41322,
-    lon: -70.219482,
-  };
-
+  public ciudadesLista: ICiudad[] = [];
+  public markerLatLng: number[] = [6.00304, -74.48776];
   public zoomMap = 6;
-  public showMap = true;
+  public showMapMarker = true;
 
   public isSaving = false;
   public isModeEdit = false;
@@ -81,6 +88,7 @@ export default class SedesFormulario extends Vue {
         vm.isModeEdit = true;
         vm.enableEdit = false;
       }
+      vm.consultarCiudades();
     });
   }
 
@@ -90,7 +98,38 @@ export default class SedesFormulario extends Vue {
       .findByCodigoIndicativo(codigoIndicativo)
       .then(res => {
         this.sede = res;
+        setTimeout(() => {
+          this.posicionarMap(null);
+        }, 5000);
+
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
       });
+  }
+
+  private consultarCiudades(): void {
+    this.ciudadesLista = [];
+    this.ciudadService()
+      .findAllByEstadoId(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_ID_ESTADO_HUILA_COLOMBIA)
+      .then(res => {
+        this.ciudadesLista = res;
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  public posicionarMap(event): void {
+    console.log('dento de posicionarMap');
+    console.log(event);
+    if (<any>this.$refs.map) {
+      console.log(this.sede);
+      (<any>this.$refs.map).setZoom(17);
+      (<any>this.$refs.map).setCenter({ lat: this.sede.latitud, lng: this.sede.longitud }, { lat: 0, lng: 0 });
+      this.markerLatLng = [this.sede.latitud, this.sede.longitud];
+      this.showMapMarker = true;
+    }
   }
 
   public guardar(): void {
@@ -100,6 +139,7 @@ export default class SedesFormulario extends Vue {
         .update(this.sede)
         .then(res => {
           this.isSaving = false;
+          this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: res.id });
           return this.$root.$bvToast.toast(message.toString(), {
@@ -112,6 +152,7 @@ export default class SedesFormulario extends Vue {
         })
         .catch(error => {
           this.isSaving = false;
+          this.enableFormularioEditar();
           this.alertService().showHttpError(this, error.response);
         });
     } else {
@@ -154,12 +195,33 @@ export default class SedesFormulario extends Vue {
   }
 
   public clickMap(event): void {
-    console.log('dentro de clickMap');
-    console.log(event);
+    if (event.latlng && this.enableEdit) {
+      this.markerLatLng = [event.latlng.lat, event.latlng.lng];
+      this.showMapMarker = true;
+      this.sede.latitud = this.markerLatLng[0];
+      this.sede.longitud = this.markerLatLng[1];
+      this.openStreetMapService()
+        .consultarReverseData('jsonv2', event.latlng.lat, event.latlng.lng)
+        .then(res => {
+          this.sede.direccion = res.display_name;
+        })
+        .catch(err => {
+          console.error('error openstreetmap');
+          console.error(err);
+        });
+    }
+  }
+
+  public changeSelectCiudad(event): void {
+    this.showMapMarker = true;
+    if (<any>this.$refs.map) {
+      (<any>this.$refs.map).setZoom(15);
+      (<any>this.$refs.map).setCenter({ lat: this.sede.ciudad.latitud, lng: this.sede.ciudad.longitud }, { lat: 0, lng: 0 });
+    }
   }
 
   public changeCoordenadas(event): void {
-    this.showMap = false;
+    this.showMapMarker = false;
     console.log(event);
     /* this.coordenadas = {
       lat: 0,

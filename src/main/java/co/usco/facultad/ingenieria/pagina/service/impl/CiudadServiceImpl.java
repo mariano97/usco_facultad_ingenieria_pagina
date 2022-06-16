@@ -65,6 +65,11 @@ public class CiudadServiceImpl implements CiudadService {
         return ciudadRepository.findAllBy(pageable).map(ciudadMapper::toDto);
     }
 
+    @Override
+    public Flux<CiudadDTO> findAllByEstadoId(Long estadoId) {
+        return ciudadRepository.findByEstados(estadoId).map(ciudadMapper::toDto);
+    }
+
     public Flux<CiudadDTO> findAllWithEagerRelationships(Pageable pageable) {
         return ciudadRepository.findAllWithEagerRelationships(pageable).map(ciudadMapper::toDto);
     }

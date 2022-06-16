@@ -199,6 +199,17 @@ public class CiudadResource {
             );
     }
 
+    @GetMapping(value = {
+        "/ciudads/by-estado-id/{id}",
+        "/open/ciudads/by-estado-id/{id}"
+    })
+    public Mono<ResponseEntity<List<CiudadDTO>>> getAllByEstadoId(@PathVariable("id") Long estadoId) {
+        return ciudadService.findAllByEstadoId(estadoId).collectList()
+            .map(ciudadDTOS ->
+                ResponseEntity.ok()
+                    .body(ciudadDTOS));
+    }
+
     /**
      * {@code GET  /ciudads/:id} : get the "id" ciudad.
      *

@@ -49,6 +49,8 @@ import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { translationStore } from '@/shared/config/store/translation-store';
 
+import { Icon } from 'leaflet';
+
 const dateTimeFormats: DateTimeFormats = {
   es: {
     short: {
@@ -170,3 +172,10 @@ export function initVueXStore(vue) {
     },
   });
 }
+
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});

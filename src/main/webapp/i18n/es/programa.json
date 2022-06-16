@@ -46,7 +46,8 @@
         "perfilOcupacional": "Perfil Ocupacional",
         "pefilEgresado": "Perfil del egresado",
         "documentosProgramaTitle": "Documentos del programa",
-        "redesPrograma": "Redes del programa"
+        "redesPrograma": "Redes del programa",
+        "sedesPrograma": "Sedes del programa"
       },
       "textos": {
         "semestres": "Semestres"
@@ -56,7 +57,8 @@
       "agregarDocumento": "Agregar nuevo documento",
       "agregarRedSocial": "Agregar red social",
       "publicPlanEstudio": "Ver plan de estudio",
-      "ver": "Ver"
+      "ver": "Ver",
+      "agregarSedes": "Agregar sede"
     },
     "popups": {
       "labels": {
