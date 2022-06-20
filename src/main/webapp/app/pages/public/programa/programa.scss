@@ -266,6 +266,48 @@
       }
     }
   }
+  section.opciones_informacion_adicional {
+    margin-bottom: 4rem;
+
+    .card-container-opciones-adicionales {
+      max-width: 25vw;
+      height: 380px;
+      .content_image {
+        img {
+          width: 100%;
+          height: 15vw;
+          object-fit: cover;
+        }
+      }
+      .body {
+        background: $color-gris-light;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+        a {
+          &:hover {
+            text-decoration: none;
+          }
+        }
+        .title_opcion {
+          h3 {
+            color: $color-dark;
+            font-size: 22px;
+            margin: 0px;
+          }
+        }
+        .texto {
+          p {
+            color: $color-gris;
+            font-size: 18px;
+            margin: 0px;
+            font-weight: normal !important;
+          }
+        }
+      }
+    }
+  }
   .container_spinner {
     span.text-danger {
       color: $color-red  !important;

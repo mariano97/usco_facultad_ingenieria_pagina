@@ -22,7 +22,7 @@
               </div>
               <div class="col">
                 <h4 class="option">{{ programa.codigoRegistroCalificado + ' de ' +
-                  convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
+                convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
               </div>
             </div>
             <div class="container-opcion row mx-0" v-if="programa.tipoFormacion">
@@ -296,6 +296,71 @@
                 <img v-if="redSocial.tablaElementoCatalogo.id === 12" alt="red_social-you-tube"
                   src="/content/images/iconos/youtube.png" />
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="opciones_informacion_adicional">
+      <div class="">
+        <div class="row mx-0">
+          <div class="col card-container-opciones-adicionales">
+            <div class="content_image">
+              <img alt="requisitos" src="/content/images/static/checklist.png" />
+            </div>
+            <div class="body">
+              <a target="_blank" href="https://www.usco.edu.co/es/ingreso-a-la-usco/">
+                <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
+                  <h3 v-text="$t('programa.titulos.requisitos')">Requisitos</h3>
+                </div>
+                <div class="mt-3 texto">
+                  <p class="m-0" v-text="$t('programa.opcionesDescripcion.requisitos')"></p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col card-container-opciones-adicionales">
+            <div class="content_image">
+              <img alt="requisitos" src="/content/images/static/online-education.jpeg" />
+            </div>
+            <div class="body">
+              <a target="_blank"
+                href="https://www.usco.edu.co/contenido/SGC-USCO/documentos/06.MI-FOR-FORMACION/MI-FOR-PR-22%20HOMOLOGACIONES.pdf">
+                <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
+                  <h3 v-text="$t('programa.titulos.homologacion')">homologacion</h3>
+                </div>
+                <div class="mt-3 texto">
+                  <p class="m-0" v-text="$t('programa.opcionesDescripcion.homologacion')"></p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col card-container-opciones-adicionales">
+            <div class="content_image">
+              <img alt="requisitos" src="/content/images/static/graduation.jpeg" />
+            </div>
+            <div class="body">
+              <a target="_blank" href="">
+                <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
+                  <h3 v-text="$t('programa.titulos.opcionesGrado')">opcionesGrado</h3>
+                </div>
+                <div class="mt-3 texto">
+                  <p class="m-0" v-text="$t('programa.opcionesDescripcion.opcionesGrado')"></p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="col card-container-opciones-adicionales">
+            <div class="content_image">
+              <img alt="requisitos" src="/content/images/static/book-teach.jpg" />
+            </div>
+            <div class="body">
+              <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
+                <h3 v-text="$t('programa.titulos.profesores')">opcionesGrado</h3>
+              </div>
+              <div class="mt-3 texto">
+                <p class="m-0" v-text="$t('programa.opcionesDescripcion.profesores')"></p>
+              </div>
             </div>
           </div>
         </div>

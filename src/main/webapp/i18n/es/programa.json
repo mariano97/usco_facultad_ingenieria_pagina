@@ -17,7 +17,17 @@
       "sedesMapa": "Sedes",
       "documentosPrograma": "Documentos",
       "nuestrasRedes": "Nuestras Redes",
-      "lugarOferta": "Lugares donde se oferta"
+      "lugarOferta": "Lugares donde se oferta",
+      "requisitos": "Requisitos",
+      "homologacion": "Homologación",
+      "opcionesGrado": "Opciones de grado",
+      "profesores": "Profesores"
+    },
+    "opcionesDescripcion": {
+      "requisitos": "Aqui encontraras los requisitos para ingresar",
+      "homologacion": "Aqui encontraras los pasos para homologar",
+      "opcionesGrado": "Aqui encontraras las opciones de grado",
+      "profesores": "Aqui encontraras a los profesores"
     },
     "otros": {
       "que-ofrecemos": "¿Que ofrecemos?",
