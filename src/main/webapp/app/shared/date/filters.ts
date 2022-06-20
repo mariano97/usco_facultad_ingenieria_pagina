@@ -108,4 +108,11 @@ export function initFilters() {
     }
     return headerBase64Type + value;
   });
+  Vue.filter('subString', (value, tamano, clamp) => {
+    clamp = clamp || '...';
+    if (value && value.length > tamano) {
+      value = value.slice(0, tamano) + clamp;
+    }
+    return value;
+  });
 }

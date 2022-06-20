@@ -160,6 +160,19 @@
       }
     }
   }
+  section.sedes_mapa_programa{
+    .container-title_sede {
+      max-width: 40%;
+      width: 40%;
+      margin-bottom: 3rem;
+      h1 {
+        color: $color-gris;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+    }
+  }
   section.documentos_programa {
     padding-top: 0.5rem;
     padding-bottom: 4.5rem;
@@ -181,7 +194,8 @@
       .col_container_archivo {
         .container_documento_programa {
           background: $color-gris-light;
-          max-width: calc(100% - 30px);
+          max-width: calc(100% - 15px);
+          width: calc(100% - 15px);
           div{
             &:first-child {
               // max-width: calc(100% - 90px);
@@ -219,7 +233,7 @@
     @media (min-width: 992px) {
       .body_documentos_programa {
         .col_container_archivo {
-          width: 50%;
+          width: 60%;
         }
       }
     }

@@ -207,6 +207,17 @@ public class SedeResource {
                     .body(sede));
     }
 
+    @GetMapping(value = {
+        "/sedes/find-by-programa-id/{id}",
+        "/open/sedes/find-by-programa-id/{id}"
+    })
+    public Mono<ResponseEntity<List<SedeDTO>>> getAllSedesByProgramaId(@PathVariable("id") Long programaId) {
+        return sedeService.findAllByProgramaRelation(programaId).collectList()
+            .map(sedeDTOS ->
+                ResponseEntity.ok()
+                    .body(sedeDTOS));
+    }
+
     /**
      * {@code GET  /sedes/:id} : get the "id" sede.
      *

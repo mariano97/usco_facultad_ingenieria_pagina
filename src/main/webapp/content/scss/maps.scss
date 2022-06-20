@@ -1,0 +1,10 @@
+@import 'custom-variables';
+
+.vue2leaflet-map {
+  .leaflet-popup {
+    a.leaflet-popup-close-button {
+      display: none;
+    }
+  }
+}
+

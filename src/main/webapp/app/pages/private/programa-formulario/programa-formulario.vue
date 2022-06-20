@@ -370,9 +370,18 @@
               <div class="tab-content web_tabs">
                 <div class="">
                   <div class="contenido_listado_sede">
-                    <div class="row mx-0 sede_item">
-                      <div class="col container_nombre">
-
+                    <div class="row mx-0 sede_item mb-3" v-for="sedeTemp in programa.sedes" :key="sedeTemp.id">
+                      <div class="col-sm-auto container_nombre">
+                        <h3>{{ sedeTemp.nombre }}</h3>
+                      </div>
+                      <div class="col ">
+                        <h3>{{ sedeTemp.direccion | subString(65, '...') }}</h3>
+                      </div>
+                      <div class="col-sm-auto d-flex align-items-center container_option_list">
+                        <a type="button" class="btn btn_opcion_item d-flex justify-content-center align-items-center"
+                          v-on:click="eliminarSedeToPrograma(sedeTemp)">
+                          <img alt="eliminar_sede_programa" src="/content/images/iconos/minus.png" />
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -656,8 +665,13 @@
                 <h3>{{ sedeTemp.direccion }}</h3>
               </div>
               <div class="col-sm-auto row mx-0">
+                <div class="container_spinner d-flex align-items-center justify-content-center px-3 col">
+                  <b-spinner v-if="sedeAgregadaId == sedeTemp.id" type="grow" label="Cargando" variant="danger">
+                  </b-spinner>
+                </div>
                 <div class="col p-0 ">
-                  <a type="button" class="opcion_agregar_sede p-3 d-flex justify-content-center align-items-center">
+                  <a type="button" class="opcion_agregar_sede p-3 d-flex justify-content-center align-items-center"
+                    v-on:click="agregarSedeToPrograma(sedeTemp)" v-if="sedeAgregadaId != sedeTemp.id">
                     <img alt="imagen_agregar_sede" src="/content/images/iconos/add.png" />
                   </a>
                 </div>
@@ -671,7 +685,7 @@
             v-on:click="agregarActualizarRedSocial()">
             Agregar / Actualizar
           </button>-->
-          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
+          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.close')"
             v-on:click="closePopupAgregarSede()">
             Cancel
           </button>

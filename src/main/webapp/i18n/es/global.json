@@ -114,7 +114,8 @@
       "open": "Abrir",
       "save": "Guardar",
       "view": "Vista",
-      "subir": "Subir"
+      "subir": "Subir",
+      "close": "Cerrar"
     },
     "detail": {
       "field": "Campo",

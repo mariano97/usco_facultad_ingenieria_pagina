@@ -6,6 +6,8 @@ import { ISede } from '@/shared/model/sede.model';
 
 const baseApiUrl = 'api/sedes';
 
+const openBaseApiUrl = 'api/open/sedes';
+
 export default class SedeService {
   public find(id: number): Promise<ISede> {
     return new Promise<ISede>((resolve, reject) => {
@@ -28,6 +30,20 @@ export default class SedeService {
             codigo_indicativo: codigoIndicativo,
           },
         })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public findAllByProgramaId(isAutenticate: boolean, programaId: number): Promise<ISede[]> {
+    const url = isAutenticate ? `${baseApiUrl}` : `${openBaseApiUrl}`;
+    return new Promise<ISede[]>((resolve, reject) => {
+      axios
+        .get(`${url}/find-by-programa-id/${programaId}`)
         .then(res => {
           resolve(res.data);
         })

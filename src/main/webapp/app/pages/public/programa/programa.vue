@@ -73,6 +73,14 @@
                 <h4 class="option">{{ programa.costoPrograma | toCOPCurrency }}</h4>
               </div>
             </div>
+            <div class="container-opcion row mx-0" v-if="programa.sedes && programa.sedes.length > 0">
+              <div class="col-sm-auto px-0">
+                <h4 class="title-opcion" v-text="$t('programa.titulos.lugarOferta')">numero creditos</h4>
+              </div>
+              <div class="col">
+                <h4 class="option">{{ generateTextLugarOferta() }}</h4>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col px-0 d-flex align-items-center">
@@ -217,6 +225,24 @@
       </div>
     </section>
     <section class="sedes_mapa_programa">
+      <div class="">
+        <div class="d-flex justify-content-center">
+          <div class="container-title_sede horizontal-divides-red-2">
+            <h1 v-text="$t('programa.titulos.sedesMapa')">Sedes</h1>
+          </div>
+        </div>
+        <div class="body_mapa_sedes mb-3">
+          <div class="">
+            <l-map ref="map" style="height: 500px; width: 100%">
+              <l-tile-layer :url="urlMap" :attribution="copyrightMap" />
+              <l-marker v-for="markSede in marksSedes" :key="markSede.name" :lat-lng="[markSede.lat, markSede.lon]"
+                @click="clickIntoMarks">
+                <l-popup>{{ markSede.name }}</l-popup>
+              </l-marker>
+            </l-map>
+          </div>
+        </div>
+      </div>
     </section>
     <section class="documentos_programa container" v-if="listArrayArchivosProgramas.length > 0">
       <div class="">
@@ -257,7 +283,8 @@
           <div class="row mx-0 justify-content-start conatiner_redes_body">
             <div class="col container_red_social_item" v-for="redSocial in listRedesSocialesPrograma"
               :key="redSocial.id">
-              <a target="_blan" :href="redSocial.urlRedSocial" class="w-100 h-100 d-flex align-items-center justify-content-center">
+              <a target="_blan" :href="redSocial.urlRedSocial"
+                class="w-100 h-100 d-flex align-items-center justify-content-center">
                 <img v-if="redSocial.tablaElementoCatalogo.id === 8" alt="red_social-facebook"
                   src="/content/images/iconos/facebook.png" />
                 <img v-if="redSocial.tablaElementoCatalogo.id === 9" alt="red_social-instagram"

@@ -77,6 +77,34 @@
         }
       }
     }
+    .contenido_listado_sede {
+      // width: calc(100% - 400px);
+      .sede_item {
+        .col-sm-auto {
+          max-width: 150px;
+        }
+        .col {
+          max-width: calc(100% - 250px);
+        }
+        .col, .col-sm-auto {
+          h3 {
+            color: $color-dark;
+            font-size: 18px;
+            white-space: nowrap;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            margin: 0px;
+          }
+        }
+        a.btn_opcion_item {
+          img {
+            max-width: 30px;
+          }
+        }
+      }
+    }
   }
   section.buttons_formulario {
     button {

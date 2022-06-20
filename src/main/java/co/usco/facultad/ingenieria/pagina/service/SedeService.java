@@ -43,6 +43,8 @@ public interface SedeService {
 
     Mono<SedeDTO> findByCodigoIndicativo(String codigoIndicativo);
 
+    Flux<SedeDTO> findAllByProgramaRelation(Long programaId);
+
     /**
      * Get all the sedes with eager load of many-to-many relationships.
      *

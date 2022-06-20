@@ -89,6 +89,24 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
         return db.sql(select).map(this::process);
     }
 
+    RowsFetchSpec<Sede> createQueryToProgramaManyToMany(Pageable pageable, Condition whereClause) {
+        List<Expression> columns = SedeSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
+        columns.addAll(CiudadSqlHelper.getColumns(ciudadTable, "ciudad"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(ciudadTable)
+            .on(Column.create("ciudad_id", entityTable))
+            .equals(Column.create("id", ciudadTable))
+            .leftOuterJoin(EntityRelationshipManager.programaSedeRelationManyToMany)
+            .on(Column.create("id", entityTable))
+            .equals(Column.create("sede_id", EntityRelationshipManager.programaSedeRelationManyToMany));
+        // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
+        String select = entityManager.createSelect(selectFrom, Sede.class, pageable, whereClause);
+        return db.sql(select).map(this::process);
+    }
+
     @Override
     public Flux<Sede> findAll() {
         return findAllBy(null);
@@ -104,6 +122,12 @@ class SedeRepositoryInternalImpl extends SimpleR2dbcRepository<Sede, Long> imple
     public Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo) {
         Comparison whereClause = Conditions.isEqual(entityTable.column("codigo_indicativo"), Conditions.just("'".concat(codigoIdicativo.toString()).concat("'")));
         return createQuery(null, whereClause).one();
+    }
+
+    @Override
+    public Flux<Sede> findAllByProgramaRelation(Long programaId) {
+        Comparison whereClause = Conditions.isEqual(EntityRelationshipManager.programaSedeRelationManyToMany.column("programa_id"), Conditions.just(programaId.toString()));
+        return createQueryToProgramaManyToMany(null, whereClause).all();
     }
 
     @Override

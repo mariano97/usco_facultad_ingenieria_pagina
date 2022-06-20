@@ -127,6 +127,7 @@ export default class ProgramaFormulario extends Vue {
   public tiposRedSocialElemento: ITablaElementoCatalogo[] = [];
   public redesSocialesPrograma: IRedesPrograma[] = [];
   public listaSedes: ISede[] = [];
+  public sedeAgregadaId = 0;
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
@@ -466,11 +467,23 @@ export default class ProgramaFormulario extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
+        this.consultarSedesPrograma(this.programa.id);
         this.consultarArchivosPrograma(this.programa.id, false);
         this.consultarRedesPrograma(this.programa.id);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
+      });
+  }
+
+  public consultarSedesPrograma(programaId: number): void {
+    this.sedeService()
+      .findAllByProgramaId(this.$store.getters.authenticated, programaId)
+      .then(res => {
+        this.programa.sedes = res;
+      })
+      .catch(err => {
+        this.programa.sedes = [];
       });
   }
 
@@ -596,6 +609,61 @@ export default class ProgramaFormulario extends Vue {
       this.enableEdit = !this.enableEdit;
     } else {
       this.$router.go(-1);
+    }
+  }
+
+  public eliminarSedeToPrograma(sede: ISede): void {
+    this.sedeAgregadaId = sede.id;
+    if (this.programa.id) {
+      const indexSedePrograma = this.programa.sedes.indexOf(sede);
+      this.programa.sedes.splice(indexSedePrograma, 1);
+      this.programaService()
+        .update(this.programa)
+        .then(res => {
+          this.programa = res;
+          this.sedeAgregadaId = 0;
+          this.consultarSedesPrograma(this.programa.id);
+        })
+        .catch(() => {
+          this.programa.sedes.push(sede);
+          this.sedeAgregadaId = 0;
+        });
+    } else {
+      if (this.programa.sedes) {
+        const indexSedePrograma = this.programa.sedes.indexOf(sede);
+        this.programa.sedes.splice(indexSedePrograma, 1);
+        this.sedeAgregadaId = 0;
+      } else {
+        this.sedeAgregadaId = 0;
+      }
+    }
+  }
+
+  public agregarSedeToPrograma(sede: ISede): void {
+    console.log(sede);
+    this.sedeAgregadaId = sede.id;
+    if (this.programa.id) {
+      this.programa.sedes.push(sede);
+      this.programaService()
+        .update(this.programa)
+        .then(res => {
+          this.programa = res;
+          this.sedeAgregadaId = 0;
+          this.consultarSedesPrograma(this.programa.id);
+        })
+        .catch(() => {
+          this.sedeAgregadaId = 0;
+          const indexSedeTemp = this.programa.sedes.indexOf(sede);
+          this.programa.sedes.splice(indexSedeTemp, 1);
+        });
+    } else {
+      if (this.programa.sedes) {
+        this.programa.sedes.push(sede);
+        this.sedeAgregadaId = 0;
+      } else {
+        this.programa.sedes = [sede];
+        this.sedeAgregadaId = 0;
+      }
     }
   }
 

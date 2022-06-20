@@ -71,6 +71,12 @@ public class SedeServiceImpl implements SedeService {
         return sedeRepository.fundByCodigoIndicativo(codigoIndicativo).map(sedeMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<SedeDTO> findAllByProgramaRelation(Long programaId) {
+        return sedeRepository.findAllByProgramaRelation(programaId).map(sedeMapper::toDto);
+    }
+
     public Flux<SedeDTO> findAllWithEagerRelationships(Pageable pageable) {
         return sedeRepository.findAllWithEagerRelationships(pageable).map(sedeMapper::toDto);
     }

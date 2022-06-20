@@ -58,6 +58,8 @@ interface SedeRepositoryInternal {
 
     Mono<Sede> fundByCodigoIndicativo(String codigoIdicativo);
 
+    Flux<Sede> findAllByProgramaRelation(Long programaId);
+
     Mono<Sede> findOneWithEagerRelationships(Long id);
 
     Flux<Sede> findAllWithEagerRelationships();

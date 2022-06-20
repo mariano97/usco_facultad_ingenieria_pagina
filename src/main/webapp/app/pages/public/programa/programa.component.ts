@@ -17,6 +17,10 @@ import UtilsService from '@/shared/services/utils.service';
 import { IFileDocumentoNuevo } from '@/shared/model/file-documento-nuevo.model';
 import AlertService from '@/shared/alert/alert.service';
 import RedesProgramaService from '@/entities/redes-programa/redes-programa.service';
+import SedeService from '@/entities/sede/sede.service';
+import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
+import 'leaflet/dist/leaflet.css';
+import { IOpenStreetMap } from '@/shared/model/open-street-map.model';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -24,6 +28,10 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
   components: {
     Swiper,
     SwiperSlide,
+    LMap,
+    LTileLayer,
+    LMarker,
+    LPopup,
   },
 })
 export default class Programa extends Vue {
@@ -36,6 +44,11 @@ export default class Programa extends Vue {
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('redesProgramaService') private redesProgramaService: () => RedesProgramaService;
+  @Inject('sedeService') private sedeService: () => SedeService;
+
+  public copyrightMap = '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+  public urlMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  public marksSedes: IOpenStreetMap[] = [{ lat: '6.00304', lon: '-74.48776', name: 'Colombia' }];
 
   public programa: IPrograma = {};
   public pesentacionBasico: IPresentacionBasico[] = [];
@@ -61,12 +74,33 @@ export default class Programa extends Vue {
       .then(res => {
         res.fechaRegistroCalificado = new Date(res.fechaRegistroCalificado);
         this.programa = res;
+        this.consultarSedesPrograma(this.programa.id);
         this.consultarArchivosPrograma(this.programa.id);
         this.llenarListaPresentacion(this.programa);
         this.consultarRedesSocialesPrograma(this.programa.id);
       })
       .catch(err => {
         console.error(err);
+      });
+  }
+
+  private consultarSedesPrograma(programaId: number): void {
+    this.sedeService()
+      .findAllByProgramaId(this.$store.getters.authenticated, programaId)
+      .then(res => {
+        this.programa.sedes = res;
+        this.agruparCoordenadasSedes();
+        if (this.mapaExsite()) {
+          if (this.programa.sedes.length < 1) {
+            (<any>this.$refs.map).setZoom(15);
+          } else {
+            (<any>this.$refs.map).setZoom(8);
+          }
+          (<any>this.$refs.map).setCenter({ lat: 2.4738993, lng: -75.5900113 }, { lat: 0, lng: 0 });
+        }
+      })
+      .catch(err => {
+        this.programa.sedes = [];
       });
   }
 
@@ -205,11 +239,42 @@ export default class Programa extends Vue {
         descripcion: programa.dirigidoAQuien,
       });
     }
-    console.log(this.pesentacionBasico);
     this.isPresentacionBasicaLoaded = true;
   }
 
-  public getImageUrl (imageId) {
-    return `https://picsum.photos/600/400/?image=${imageId}`;
+  public mapaExsite(): boolean {
+    if (<any>this.$refs.map) {
+      return true;
+    }
+    return false;
+  }
+
+  public generateTextLugarOferta(): string {
+    let strLugar = '';
+    if (this.programa.sedes && this.programa.sedes.length > 0) {
+      this.programa.sedes.map((sede, index) => {
+        strLugar = strLugar.concat(sede.ciudad.nombre);
+        if (index + 1 < this.programa.sedes.length) {
+          strLugar = strLugar.concat(', ');
+        }
+      });
+    }
+    return strLugar;
+  }
+
+  private agruparCoordenadasSedes(): void {
+    if (this.programa.id) {
+      this.programa.sedes.map(sede => {
+        this.marksSedes.push({ lat: sede.latitud + '', lon: sede.longitud + '', name: sede.nombre });
+      });
+    }
+  }
+
+  public clickIntoMarks(event): void {
+    console.log(event);
+    if (this.mapaExsite()) {
+      (<any>this.$refs.map).setZoom(15);
+      (<any>this.$refs.map).setCenter({ lat: event.latlng.lat, lng: event.latlng.lng }, { lat: 0, lng: 0 });
+    }
   }
 }
