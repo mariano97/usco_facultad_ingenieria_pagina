@@ -225,6 +225,9 @@
           "telefono-sede": "Teléfono",
           "email": "Correo electronico"
         }
+      },
+      "profesores-lista": {
+        "title-page": "Lista de profesores"
       }
     }
   }

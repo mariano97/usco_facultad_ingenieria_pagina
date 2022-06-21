@@ -4,7 +4,8 @@
       <section class="conatiner-encabezado d-flex align-items-center justify-content-start">
         <div class="horizontal-divides-red row mx-0 w-100">
           <div class="col-sm-auto">
-            <img alt="imagen_perfil_usuario" class="imagen_usuario rounded-circle" src="/content/images/jhipster_family_member_1_head-512.png" />
+            <img alt="imagen_perfil_usuario" class="imagen_usuario rounded-circle"
+              src="/content/images/jhipster_family_member_1_head-512.png" />
           </div>
           <div class="col">
             <h3 class="nombre_usuario">ghgjghgj</h3>
@@ -26,7 +27,8 @@
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
                   <div class="col-sm-auto">
-                    <img alt="programa" class="mini_imagen_icon_option" src="/content/images/iconos/brainstorm_red.png" />
+                    <img alt="programa" class="mini_imagen_icon_option"
+                      src="/content/images/iconos/brainstorm_red.png" />
                   </div>
                   <div class="col d-flex align-items-center">
                     <h4 class="texto-opcion" v-text="$t('paginas.privado.sidbar.opciones.programas')">Programas</h4>
@@ -36,7 +38,7 @@
             </router-link>
           </div>
           <div class="">
-            <router-link :to="{ name: 'inicio_usuario' }" class="opcion-sidbar">
+            <router-link :to="{ name: 'usuario_profesores_lista' }" class="opcion-sidbar">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
                   <div class="col-sm-auto">

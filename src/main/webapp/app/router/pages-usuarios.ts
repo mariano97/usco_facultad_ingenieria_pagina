@@ -6,6 +6,7 @@ const ProgramasLista = () => import('@/pages/private/programas-lista/programas-l
 const ProgramaFormulario = () => import('@/pages/private/programa-formulario/programa-formulario.vue');
 const SedesLista = () => import('@/pages/private/sedes-lista/sedes-lista.vue');
 const SedesFormulario = () => import('@/pages/private/sedes-formulario/sedes-formulario.vue');
+const ProfesoresLista = () => import('@/pages/private/profesores-lista/profesores-lista.vue');
 
 export default {
   path: 'ingreso',
@@ -51,6 +52,12 @@ export default {
       path: 'sedes-descripcion/:accion',
       name: 'usuario_crear_sede',
       component: SedesFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'profesores-lista',
+      name: 'usuario_profesores_lista',
+      component: ProfesoresLista,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
   ],
