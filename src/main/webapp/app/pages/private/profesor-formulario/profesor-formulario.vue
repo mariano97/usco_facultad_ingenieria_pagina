@@ -146,6 +146,44 @@
               </div>
             </div>
             <div class="row mx-0">
+              <div class="col form-group">
+                <label class="form-control-label" for="oficina"
+                  v-text="$t('profesor.formulario.labels.oficina')"></label>
+                <input type="text" id="oficina" name="oficina" class="form-control" placeholder="Eg. Piso 3 bloque B"
+                  v-model="$v.profesor.oficina.$model" :disabled="checkHabilitacionCampos()" />
+                <div class="" v-if="$v.profesor.oficina.$anyDirty && $v.profesor.oficina.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.profesor.oficina.maxLength"
+                    v-text="$t('entity.validation.maxlength', { max: 255 })">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                </div>
+              </div>
+              <div class="col form-group">
+                <label class="form-control-label campo_requerido" for="tablaElementoCatalogo"
+                  v-text="$t('profesor.formulario.labels.tipoProfesor')"></label>
+                <select class="form-control" id="tablaElementoCatalogo" data-cy="tablaElementoCatalogo"
+                  name="tablaElementoCatalogo" v-model="profesor.tablaElementoCatalogo"
+                  :disabled="checkHabilitacionCampos()" required>
+                  <option v-if="!profesor.tablaElementoCatalogo" v-bind:value="null" selected></option>
+                  <option v-bind:value="
+                    profesor.tablaElementoCatalogo && tablaElementoCatalogoOption.id === profesor.tablaElementoCatalogo.id
+                      ? profesor.tablaElementoCatalogo
+                      : tablaElementoCatalogoOption
+                  " v-for="tablaElementoCatalogoOption in tiposProfesoresElemento"
+                    :key="tablaElementoCatalogoOption.id">
+                    {{ tablaElementoCatalogoOption.nombre }}
+                  </option>
+                </select>
+                <div class=""
+                  v-if="$v.profesor.tablaElementoCatalogo.$anyDirty && $v.profesor.tablaElementoCatalogo.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.profesor.tablaElementoCatalogo.required"
+                    v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row mx-0">
               <div class="col form-group px-0">
                 <label class="form-control-label campo_requerido" for="perfil"
                   v-text="$t('profesor.formulario.labels.perfil')"></label>

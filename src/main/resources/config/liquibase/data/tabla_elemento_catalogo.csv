@@ -11,3 +11,5 @@ id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
 10;TikTok;RDSCALTKTOK;true;4
 11;Twitter;RDSCALTWTTR;true;4
 12;YouTube;RDSCALYUTBE;true;4
+13;Profesor de Planta;PRFRPLT;true;5
+14;Profesor de Suplente;PRFRSPLT;true;5

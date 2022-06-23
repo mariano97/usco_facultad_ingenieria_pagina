@@ -464,7 +464,7 @@
         </div>
       </div>
     </section>
-    <section class="seccion_redes_programas">
+    <section class="seccion_redes_programas" v-if="programa.id">
       <div class="tab">
         <input type="checkbox" id="redes_programa" />
         <label class="tab-label item_acordion" for="redes_programa"

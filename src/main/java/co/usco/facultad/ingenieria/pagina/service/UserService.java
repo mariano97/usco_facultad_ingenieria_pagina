@@ -317,8 +317,67 @@ public class UserService {
     }
 
     @Transactional
-    public Mono<AdminUserDTO> createUserProfesor(AdminUserDTO adminUserDTO) {
+    public Mono<AdminUserDTO> createUserProfesor(AdminUserDTO userDTO, String password) {
+        // return registerUser(adminUserDTO, password).map(AdminUserDTO::new);
         return userRepository
+            .findOneByLogin(userDTO.getLogin().toLowerCase())
+            .flatMap(existingUser -> {
+                if (!existingUser.isActivated()) {
+                    return userRepository.delete(existingUser);
+                } else {
+                    return Mono.error(new UsernameAlreadyUsedException());
+                }
+            })
+            .then(userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()))
+            .flatMap(existingUser -> {
+                if (!existingUser.isActivated()) {
+                    return userRepository.delete(existingUser);
+                } else {
+                    return Mono.error(new EmailAlreadyUsedException());
+                }
+            })
+            .publishOn(Schedulers.boundedElastic())
+            .then(
+                Mono.fromCallable(() -> {
+                    User newUser = new User();
+                    String encryptedPassword = passwordEncoder.encode(password);
+                    newUser.setLogin(userDTO.getLogin().toLowerCase());
+                    // new user gets initially a generated password
+                    newUser.setPassword(encryptedPassword);
+                    newUser.setFirstName(userDTO.getFirstName());
+                    newUser.setLastName(userDTO.getLastName());
+                    newUser.setSecondName(userDTO.getSecondName());
+                    newUser.setNameComplete(generateNameComplete(userDTO.getFirstName(), userDTO.getSecondName(), userDTO.getLastName()));
+                    if (userDTO.getEmail() != null) {
+                        newUser.setEmail(userDTO.getEmail().toLowerCase());
+                    }
+                    newUser.setImageUrl(userDTO.getImageUrl());
+                    newUser.setLangKey(userDTO.getLangKey());
+                    // new user is not active
+                    newUser.setActivated(true);
+                    // new user gets registration key
+                    // newUser.setActivationKey(RandomUtil.generateActivationKey());
+                    newUser.setActivationKey(null);
+                    return newUser;
+                })
+            )
+            .flatMap(newUser -> {
+                Set<Authority> authorities = new HashSet<>();
+                return authorityRepository.findAll().flatMap(authority -> {
+                    for (String auth : userDTO.getAuthorities()) {
+                        if (auth.equalsIgnoreCase(authority.getName())) {
+                            authorities.add(authority);
+                        }
+                    }
+                    return Mono.just(authorities);
+                })
+                .then(Mono.just(newUser))
+                .doOnNext(user -> user.setAuthorities(authorities))
+                .flatMap(this::saveUser)
+                .doOnNext(user -> log.debug("Created Information for User: {}", user));
+            }).map(AdminUserDTO::new);
+
+        /* userRepository
             .findOneByLogin(adminUserDTO.getLogin())
             .hasElement()
             .flatMap(loginExists -> {
@@ -333,7 +392,7 @@ public class UserService {
                     return Mono.error(new co.usco.facultad.ingenieria.pagina.web.rest.errors.EmailAlreadyUsedException());
                 }
                 return createUser(adminUserDTO);
-            }).map(AdminUserDTO::new);
+            }).map(AdminUserDTO::new); */
     }
 
     @Transactional

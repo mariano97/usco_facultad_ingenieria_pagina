@@ -8,7 +8,9 @@
         "email": "Correo electronico",
         "emailAlternativo":"Correo Electronico Alternativo",
         "telCelular": "Celular",
-        "perfil": "Perfil"
+        "perfil": "Perfil",
+        "oficina": "Oficina",
+        "tipoProfesor": "Tipo de profesor"
       }
     }
   },

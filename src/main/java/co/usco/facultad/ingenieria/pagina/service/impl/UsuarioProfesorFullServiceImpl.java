@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,8 +43,8 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
     @Override
     @Transactional
     public Mono<UsuarioProfesorFullDTO> crearUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
-
-        return userService.createUserProfesor(usuarioProfesorFullDTO.getAdminUserDTO())
+        String password = generatePassword();
+        return userService.createUserProfesor(usuarioProfesorFullDTO.getAdminUserDTO(), password)
             .flatMap(adminUserDTO -> {
                 usuarioProfesorFullDTO.getProfesorDTO().setUserId(adminUserDTO.getId());
                 return profesorService.save(usuarioProfesorFullDTO.getProfesorDTO())
@@ -72,5 +74,9 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
                     .map(profesorDTO -> new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO))
                     .flatMap(Mono::just)
             );
+    }
+
+    private String generatePassword() {
+        return "usco_ingenieria";
     }
 }

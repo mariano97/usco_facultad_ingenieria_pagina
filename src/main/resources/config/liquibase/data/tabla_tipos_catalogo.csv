@@ -3,3 +3,4 @@ id;nombre;estado;key_identificador
 2;Tipo de formación;true;TIPSFRMN
 3;Tipos documentos;true;TIPDOCS01
 4;Tipos de redes sociales;true;TIPRDSCAL
+5;Tipos de profesores;true;TIPPFR

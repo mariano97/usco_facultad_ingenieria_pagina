@@ -1,5 +1,10 @@
+import { uuid } from 'vue-uuid';
 
 export default class UtilsService {
+  public generateUUIDIdentifcator(): string {
+    return uuid.v4();
+  }
+
   public addHeaderBase64(base64: string): Promise<string> {
     return new Promise<string>(resolve => {
       resolve(this.headerBase64(base64));

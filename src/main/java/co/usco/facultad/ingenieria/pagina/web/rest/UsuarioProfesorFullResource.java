@@ -52,7 +52,9 @@ public class UsuarioProfesorFullResource {
         "/usuario-profesor-full",
         "/open/usuario-profesor-full"
     })
-    public Mono<ResponseEntity<UsuarioProfesorFullDTO>> createUsuarioProfesor(@RequestBody UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
+    public Mono<ResponseEntity<UsuarioProfesorFullDTO>> createUsuarioProfesor(
+        @RequestBody UsuarioProfesorFullDTO usuarioProfesorFullDTO
+    ) {
         if (usuarioProfesorFullDTO.getAdminUserDTO().getId() != null || usuarioProfesorFullDTO.getProfesorDTO().getId() != null) {
             throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
         }

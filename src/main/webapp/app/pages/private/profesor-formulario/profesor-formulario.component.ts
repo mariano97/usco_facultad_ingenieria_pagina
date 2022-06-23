@@ -1,9 +1,13 @@
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import AlertService from '@/shared/alert/alert.service';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 import { IUser, User } from '@/shared/model/user.model';
 import { IUsuarioProfesorFull, UsuarioProfesorFull } from '@/shared/model/usuario-profesor.model';
 import { Authority } from '@/shared/security/authority';
 import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
+import UtilsService from '@/shared/services/utils.service';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import { maxLength, minLength, required, email } from 'vuelidate/lib/validators';
 import './profesor-formulario.scss';
@@ -43,6 +47,12 @@ const validations: any = {
     telefonoCelular: {
       maxLength: maxLength(10),
     },
+    tablaElementoCatalogo: {
+      required,
+    },
+    oficina: {
+      maxLength: maxLength(255),
+    },
   },
 };
 
@@ -51,7 +61,9 @@ const validations: any = {
 })
 export default class ProfesorFormulario extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
+  @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('alertService') private alertService: () => AlertService;
+  @Inject('utilsService') private utilsService: () => UtilsService;
 
   public usuarioProfesor: IUsuarioProfesorFull = new UsuarioProfesorFull();
   public userAccount: IUser = new User();
@@ -61,6 +73,8 @@ export default class ProfesorFormulario extends Vue {
   public isModeEdit = false;
   public enableEdit = true;
 
+  public tiposProfesoresElemento: ITablaElementoCatalogo[] = [];
+
   public beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.userLogin) {
@@ -68,6 +82,7 @@ export default class ProfesorFormulario extends Vue {
         vm.isModeEdit = true;
         vm.enableEdit = false;
       }
+      vm.consultarTiposProfesores();
     });
   }
 
@@ -80,6 +95,14 @@ export default class ProfesorFormulario extends Vue {
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  private consultarTiposProfesores(): void {
+    this.tablaElementoCatalogoService()
+      .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_PROFESOR)
+      .then(res => {
+        this.tiposProfesoresElemento = res;
       });
   }
 
@@ -112,6 +135,7 @@ export default class ProfesorFormulario extends Vue {
           this.alertService().showHttpError(this, err.response);
         });
     } else {
+      this.userAccount.login = this.utilsService().generateUUIDIdentifcator();
       this.userAccount.authorities = [Authority.JEFE_PROGRAMA, Authority.PROFESOR, Authority.USER];
       this.profesor.facultad = {
         id: 1,
