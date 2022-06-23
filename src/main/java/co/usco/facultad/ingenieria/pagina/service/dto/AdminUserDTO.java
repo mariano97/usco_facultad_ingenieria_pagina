@@ -24,7 +24,13 @@ public class AdminUserDTO {
     private String firstName;
 
     @Size(max = 50)
+    private String secondName;
+
+    @Size(max = 50)
     private String lastName;
+
+    @Size(max = 200)
+    private String nameComplete;
 
     @Email
     @Size(min = 5, max = 254)
@@ -56,7 +62,9 @@ public class AdminUserDTO {
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
+        this.secondName = user.getSecondName();
         this.lastName = user.getLastName();
+        this.nameComplete = user.getNameComplete();
         this.email = user.getEmail();
         this.activated = user.isActivated();
         this.imageUrl = user.getImageUrl();
@@ -92,12 +100,28 @@ public class AdminUserDTO {
         this.firstName = firstName;
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getNameComplete() {
+        return nameComplete;
+    }
+
+    public void setNameComplete(String nameComplete) {
+        this.nameComplete = nameComplete;
     }
 
     public String getEmail() {
@@ -176,9 +200,12 @@ public class AdminUserDTO {
     @Override
     public String toString() {
         return "AdminUserDTO{" +
-            "login='" + login + '\'' +
+            "id=" + id +
+            ", login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
+            ", secondName='" + secondName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", nameComplete='" + nameComplete + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +

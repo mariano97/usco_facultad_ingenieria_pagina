@@ -10,6 +10,9 @@ const validations = {
       minLength: minLength(1),
       maxLength: maxLength(50),
     },
+    secondName: {
+      maxLength: maxLength(50),
+    },
     lastName: {
       required,
       minLength: minLength(1),

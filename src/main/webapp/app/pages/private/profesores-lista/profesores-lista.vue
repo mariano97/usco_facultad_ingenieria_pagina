@@ -6,7 +6,7 @@
           <h2 class="title-page" v-text="$t('paginas.privado.profesores-lista.title-page')"></h2>
         </div>
         <div class="">
-          <router-link>
+          <router-link :to="{ name: 'usuario_profesores_crear'  }">
             <button class="btn btn-crear-profesor d-flex align-items-center justify-content-center"
               v-text="$t('paginas.privado.sedes-lista.buttons.button-crear')"></button>
           </router-link>
@@ -23,9 +23,9 @@
                 <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'email'">
                 </jhi-sort-indicator>
               </th>
-              <th scope="col" v-on:click="changeOrder('firstName')">
-                <span v-text="$t('userManagement.firstName')">Email</span>
-                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'firstName'">
+              <th scope="col" v-on:click="changeOrder('nameComplete')">
+                <span v-text="$t('userManagement.nameComplete')">Email</span>
+                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nameComplete'">
                 </jhi-sort-indicator>
               </th>
               <th scope="col" v-on:click="changeOrder('lastName')">
@@ -36,11 +36,11 @@
             </tr>
           </thead>
           <tbody>
-            <router-link v-for="usuario in usuarios" :key="usuario.id" :to="{ name: 'usuario_profesores_lista' }"
-              tag="tr">
+            <router-link v-for="usuario in usuarios" :key="usuario.id"
+              :to="{ name: 'usuario_profesores_descripcion', params: { userLogin: usuario.login } }" tag="tr">
               <td>{{ usuario.email }}</td>
-              <td>{{ usuario.firstName }}</td>
-              <td>{{ usuario.lastName }}</td>
+              <td>{{ usuario.nameComplete }}</td>
+              <td>{{ generateRolesString(usuario.authorities) }}</td>
             </router-link>
           </tbody>
         </table>

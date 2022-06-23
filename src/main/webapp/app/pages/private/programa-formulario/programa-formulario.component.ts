@@ -330,7 +330,7 @@ export default class ProgramaFormulario extends Vue {
           this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.updated', { param: res.id });
-          return this.$root.$bvToast.toast(message.toString(), {
+          this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Info',
             variant: 'info',

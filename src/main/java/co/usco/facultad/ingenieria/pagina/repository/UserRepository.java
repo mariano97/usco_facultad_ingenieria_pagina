@@ -8,8 +8,11 @@ import co.usco.facultad.ingenieria.pagina.domain.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import co.usco.facultad.ingenieria.pagina.security.AuthoritiesConstants;
 import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Sort;
@@ -17,6 +20,7 @@ import org.springframework.data.r2dbc.convert.R2dbcConverter;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.data.relational.core.sql.Column;
 import org.springframework.data.relational.core.sql.Expression;
 import org.springframework.data.relational.core.sql.Table;
@@ -68,6 +72,10 @@ interface UserRepositoryInternal extends DeleteExtended<User> {
     Mono<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
     Flux<User> findAllWithAuthorities(Pageable pageable);
+
+    Flux<User> findAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auth, String nameCompleteFilter);
+
+    Mono<Long> countWithSpecicatedAuthorities(List<String> authorities, String nameCompleteFilter);
 }
 
 class UserRepositoryInternalImpl implements UserRepositoryInternal {
@@ -116,6 +124,66 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
             )
             .skip(page * size)
             .take(size);
+    }
+
+    @Override
+    public Flux<User> findAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auths, String nameCompleteFilter) {
+        return findAllWithAuthorities(pageable).collectList()
+            .map(users -> {
+                if (auths != null && auths.size() > 0) {
+                    return users.stream().filter(user -> user.getAuthorities().stream()
+                        .anyMatch(authority -> auths.contains(authority.getName()))).collect(Collectors.toList());
+                } else {
+                    return users;
+                }
+            })
+            .map(users -> users.stream().map(user -> {
+                if (user.getNameComplete() == null) {
+                    user.setNameComplete("");
+                }
+                return user;
+            }).collect(Collectors.toList()))
+            .map(users -> {
+                if (nameCompleteFilter != null && !nameCompleteFilter.isBlank()) {
+                    return users.stream().filter(user -> user.getNameComplete().toLowerCase().trim().contains(nameCompleteFilter.toLowerCase().trim()))
+                        .collect(Collectors.toList());
+                } else {
+                    return users;
+                }
+            })
+            .map(users -> users.stream().filter(Objects::nonNull).collect(Collectors.toList()))
+            .flatMapMany(Flux::fromIterable);
+    }
+
+    @Override
+    public Mono<Long> countWithSpecicatedAuthorities(List<String> authorities, String nameCompleteFilter) {
+        String conditionAuth = " ";
+        if (authorities != null && authorities.size() > 0) {
+            conditionAuth = conditionAuth.concat("where ");
+            conditionAuth = conditionAuth.concat(" (");
+            for (int i = 0; i<authorities.size(); i++) {
+                conditionAuth = conditionAuth.concat("ua.authority_name like '%" + authorities.get(i) + "%'");
+                if ((i + 1) <authorities.size()) {
+                    conditionAuth = conditionAuth.concat(" OR ");
+                }
+            }
+            conditionAuth = conditionAuth.concat(") ");
+        }
+        if (nameCompleteFilter != null && !nameCompleteFilter.isBlank()) {
+            if (conditionAuth.contains("where")) {
+                conditionAuth = conditionAuth.concat(" AND ");
+            } else {
+                conditionAuth = conditionAuth.concat("where ");
+            }
+            conditionAuth = conditionAuth.concat("u.name_complete like '%" + nameCompleteFilter.toLowerCase().trim() + "%'");
+        }
+        return db
+            .sql("select count(*) from (select u.id from jhi_user u " +
+                "LEFT JOIN jhi_user_authority ua ON u.id=ua.user_id " +
+                conditionAuth +
+                " group by u.id) src")
+            .map((row, rowMetadata) -> (long) row.get(0))
+            .one();
     }
 
     @Override

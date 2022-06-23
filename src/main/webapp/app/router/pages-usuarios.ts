@@ -7,6 +7,7 @@ const ProgramaFormulario = () => import('@/pages/private/programa-formulario/pro
 const SedesLista = () => import('@/pages/private/sedes-lista/sedes-lista.vue');
 const SedesFormulario = () => import('@/pages/private/sedes-formulario/sedes-formulario.vue');
 const ProfesoresLista = () => import('@/pages/private/profesores-lista/profesores-lista.vue');
+const ProfesorFormulario = () => import('@/pages/private/profesor-formulario/profesor-formulario.vue');
 
 export default {
   path: 'ingreso',
@@ -58,6 +59,18 @@ export default {
       path: 'profesores-lista',
       name: 'usuario_profesores_lista',
       component: ProfesoresLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'profesores-descripcion/:userLogin',
+      name: 'usuario_profesores_descripcion',
+      component: ProfesorFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'profesores-crear',
+      name: 'usuario_profesores_crear',
+      component: ProfesorFormulario,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
   ],

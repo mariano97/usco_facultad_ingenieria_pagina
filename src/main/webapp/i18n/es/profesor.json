@@ -1,4 +1,17 @@
 {
+  "profesor": {
+    "formulario": {
+      "labels": {
+        "primerNombre": "Primer Nombre",
+        "segundoNombre": "Segundo Nombre",
+        "lastName": "Apillidos",
+        "email": "Correo electronico",
+        "emailAlternativo":"Correo Electronico Alternativo",
+        "telCelular": "Celular",
+        "perfil": "Perfil"
+      }
+    }
+  },
   "paginaFacultadIngenieriaProyectoApp": {
     "profesor": {
       "home": {

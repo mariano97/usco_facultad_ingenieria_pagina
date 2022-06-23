@@ -135,6 +135,8 @@ public class AccountResource {
                 userService.updateUser(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
+                    userDTO.getSecondName(),
+                    userDTO.getNameComplete(),
                     userDTO.getEmail(),
                     userDTO.getLangKey(),
                     userDTO.getImageUrl()

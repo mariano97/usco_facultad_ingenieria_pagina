@@ -5,6 +5,14 @@ public class UsuarioProfesorFullDTO {
     private AdminUserDTO adminUserDTO;
     private ProfesorDTO profesorDTO;
 
+    public UsuarioProfesorFullDTO() {
+    }
+
+    public UsuarioProfesorFullDTO(AdminUserDTO adminUserDTO, ProfesorDTO profesorDTO) {
+        this.adminUserDTO = adminUserDTO;
+        this.profesorDTO = profesorDTO;
+    }
+
     public AdminUserDTO getAdminUserDTO() {
         return adminUserDTO;
     }

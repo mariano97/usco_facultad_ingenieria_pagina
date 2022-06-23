@@ -124,6 +124,12 @@ class ProfesorRepositoryInternalImpl extends SimpleR2dbcRepository<Profesor, Lon
         return findAllBy(page);
     }
 
+    @Override
+    public Mono<Profesor> findOneByUserId(Long userId) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("user_id"), Conditions.just(userId.toString()));
+        return createQuery(null, whereClause).one();
+    }
+
     private Profesor process(Row row, RowMetadata metadata) {
         Profesor entity = profesorMapper.apply(row, "e");
         entity.setTablaElementoCatalogo(tablaelementocatalogoMapper.apply(row, "tablaElementoCatalogo"));

@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import co.usco.facultad.ingenieria.pagina.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -121,6 +123,8 @@ public class UserService {
                     newUser.setPassword(encryptedPassword);
                     newUser.setFirstName(userDTO.getFirstName());
                     newUser.setLastName(userDTO.getLastName());
+                    newUser.setSecondName(userDTO.getSecondName());
+                    newUser.setNameComplete(generateNameComplete(userDTO.getFirstName(), userDTO.getSecondName(), userDTO.getLastName()));
                     if (userDTO.getEmail() != null) {
                         newUser.setEmail(userDTO.getEmail().toLowerCase());
                     }
@@ -152,6 +156,8 @@ public class UserService {
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setSecondName(userDTO.getSecondName());
+        user.setNameComplete(generateNameComplete(userDTO.getFirstName(), userDTO.getSecondName(), userDTO.getLastName()));
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
@@ -190,9 +196,13 @@ public class UserService {
         return userRepository
             .findById(userDTO.getId())
             .flatMap(user -> {
+                log.debug("dentro de updateUser: {}", user);
+                log.debug("dentro de updateUser2: {}", userDTO);
                 user.setLogin(userDTO.getLogin().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
+                user.setSecondName(userDTO.getSecondName());
+                user.setNameComplete(generateNameComplete(userDTO.getFirstName(), userDTO.getSecondName(), userDTO.getLastName()));
                 if (userDTO.getEmail() != null) {
                     user.setEmail(userDTO.getEmail().toLowerCase());
                 }
@@ -233,13 +243,15 @@ public class UserService {
      * @return a completed {@link Mono}.
      */
     @Transactional
-    public Mono<Void> updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public Mono<Void> updateUser(String firstName, String lastName, String secondName, String nameComplete, String email, String langKey, String imageUrl) {
         return SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .flatMap(user -> {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
+                user.setSecondName(secondName);
+                user.setNameComplete(generateNameComplete(firstName, secondName, lastName));
                 if (email != null) {
                     user.setEmail(email.toLowerCase());
                 }
@@ -304,6 +316,59 @@ public class UserService {
         return userRepository.findAllByIdNotNullAndActivatedIsTrue(pageable).map(UserDTO::new);
     }
 
+    @Transactional
+    public Mono<AdminUserDTO> createUserProfesor(AdminUserDTO adminUserDTO) {
+        return userRepository
+            .findOneByLogin(adminUserDTO.getLogin())
+            .hasElement()
+            .flatMap(loginExists -> {
+                if (Boolean.TRUE.equals(loginExists)) {
+                    return Mono.error(new LoginAlreadyUsedException());
+                }
+                return userRepository.findOneByEmailIgnoreCase(adminUserDTO.getEmail());
+            })
+            .hasElement()
+            .flatMap(emailExists -> {
+                if (Boolean.TRUE.equals(emailExists)) {
+                    return Mono.error(new co.usco.facultad.ingenieria.pagina.web.rest.errors.EmailAlreadyUsedException());
+                }
+                return createUser(adminUserDTO);
+            }).map(AdminUserDTO::new);
+    }
+
+    @Transactional
+    public Mono<AdminUserDTO> updateUserProfesor(AdminUserDTO adminUserDTO) {
+        return userRepository
+            .findOneByEmailIgnoreCase(adminUserDTO.getEmail())
+            .filter(user -> !user.getId().equals(adminUserDTO.getId()))
+            .hasElement()
+            .flatMap(emailExists -> {
+                if (Boolean.TRUE.equals(emailExists)) {
+                    return Mono.error(new co.usco.facultad.ingenieria.pagina.web.rest.errors.EmailAlreadyUsedException());
+                }
+                return userRepository.findOneByLogin(adminUserDTO.getLogin().toLowerCase());
+            })
+            .filter(user -> !user.getId().equals(adminUserDTO.getId()))
+            .hasElement()
+            .flatMap(loginExists -> {
+                if (Boolean.TRUE.equals(loginExists)) {
+                    return Mono.error(new LoginAlreadyUsedException());
+                }
+                log.debug("user: {}", adminUserDTO);
+                return updateUser(adminUserDTO);
+            });
+    }
+
+    @Transactional(readOnly = true)
+    public Flux<AdminUserDTO> getAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auths, String nameCompleteFilter) {
+        return userRepository.findAllWithAuthoritiesAndSpecicatedAuthorities(pageable, auths, nameCompleteFilter).map(AdminUserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Mono<Long> countWithSpecicatedAuthorities(List<String> authorities, String nameCompleteFilter) {
+        return userRepository.countWithSpecicatedAuthorities(authorities, nameCompleteFilter);
+    }
+
     @Transactional(readOnly = true)
     public Mono<Long> countManagedUsers() {
         return userRepository.count();
@@ -351,5 +416,19 @@ public class UserService {
     @Transactional(readOnly = true)
     public Flux<String> getAuthorities() {
         return authorityRepository.findAll().map(Authority::getName);
+    }
+
+    private String generateNameComplete(String firstName, String secondName, String lastName) {
+        String nameComplete = "";
+        if (firstName != null && firstName.length() > 0) {
+            nameComplete = nameComplete.concat(firstName).concat(" ");
+        }
+        if (secondName != null && secondName.length() > 0) {
+            nameComplete = nameComplete.concat(secondName).concat(" ");
+        }
+        if (lastName != null && lastName.length() > 0) {
+            nameComplete = nameComplete.concat(lastName);
+        }
+        return nameComplete;
     }
 }

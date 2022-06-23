@@ -68,5 +68,7 @@ interface ProfesorRepositoryInternal {
 
     Flux<Profesor> findAllWithEagerRelationships(Pageable page);
 
+    Mono<Profesor> findOneByUserId(Long userId);
+
     Mono<Void> deleteById(Long id);
 }

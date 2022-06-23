@@ -15,6 +15,7 @@ import PaisesService from './paises/paises.service';
 import EstadosService from './estados/estados.service';
 import CiudadService from './ciudad/ciudad.service';
 import OpenStreetMapService from '@/shared/services/open-street-map.service';
+import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
 // jhipster-needle-add-entity-service-to-entities-component-import - JHipster will import entities services here
 
 @Component
@@ -35,4 +36,5 @@ export default class Entities extends Vue {
   @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
   @Provide('utilsService') private utilsService = () => new UtilsService();
   @Provide('openStreetMapService') private openStreetMapService = () => new OpenStreetMapService();
+  @Provide('usuarioProfesorFullService') private usuarioProfesorFullService = () => new UsuarioProfesorFullService();
 }

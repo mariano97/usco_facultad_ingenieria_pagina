@@ -44,8 +44,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String firstName;
 
     @Size(max = 50)
+    @Column("second_name")
+    private String secondName;
+
+    @Size(max = 50)
     @Column("last_name")
     private String lastName;
+
+    @Size(max = 200)
+    @Column("name_complete")
+    private String nameComplete;
 
     @Email
     @Size(min = 5, max = 254)
@@ -112,12 +120,28 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.firstName = firstName;
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getNameComplete() {
+        return nameComplete;
+    }
+
+    public void setNameComplete(String nameComplete) {
+        this.nameComplete = nameComplete;
     }
 
     public String getEmail() {
@@ -207,7 +231,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return "User{" +
             "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
+            ", secondName='" + secondName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", nameComplete='" + nameComplete + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +

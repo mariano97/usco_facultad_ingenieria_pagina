@@ -81,6 +81,12 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Mono<ProfesorDTO> findOneByUserId(Long userId) {
+        return profesorRepository.findOneByUserId(userId).map(profesorMapper::toDto);
+    }
+
+    @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Profesor : {}", id);
         return profesorRepository.deleteById(id);

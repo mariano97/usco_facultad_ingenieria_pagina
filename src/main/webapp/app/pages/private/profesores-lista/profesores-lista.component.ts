@@ -3,13 +3,14 @@ import { IProfesor } from './../../../shared/model/profesor.model';
 import ProfesorService from '@/entities/profesor/profesor.service';
 import AlertService from '@/shared/alert/alert.service';
 import { Component, Inject, Vue } from 'vue-property-decorator';
-import UserManagementService from '@/admin/user-management/user-management.service';
 import './profesores-lista.scss';
+import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
+import { Authority, AuthorityString } from '@/shared/security/authority';
 
 @Component
 export default class ProfesoresLista extends Vue {
   @Inject('profesorService') private profesorService: () => ProfesorService;
-  @Inject('userManagementService') private userManagementService: () => UserManagementService;
+  @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('alertService') private alertService: () => AlertService;
 
   public itemsPerPage = 20;
@@ -24,20 +25,20 @@ export default class ProfesoresLista extends Vue {
   public usuarios: IUser[] = [];
 
   public mounted(): void {
-    console.log("profesores");
     this.consultarProfesores();
   }
 
-  public consultarProfesores(): void {
+  public consultarProfesores(nameCompleteFilter?: string): void {
     const paginacionQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
-    this.userManagementService()
-      .retrieve(paginacionQuery)
+    this.usuarioProfesorFullService()
+      .getAllUsuariosProfesor(this.$store.getters.authenticated, paginacionQuery, [Authority.PROFESOR], nameCompleteFilter)
       .then(res => {
         this.usuarios = res.data;
+        console.log(this.usuarios);
         this.totalItems = Number(res.headers['x-total-count']);
         this.queryCount = this.totalItems;
       })
@@ -79,5 +80,27 @@ export default class ProfesoresLista extends Vue {
     this.propOrder = propOrder;
     this.reverse = !this.reverse;
     this.transition();
+  }
+
+  public generateRolesString(autorities?: string[]): string {
+    console.log(autorities);
+    let strRole = '';
+    if (autorities) {
+      autorities
+        .filter(auth => auth !== Authority.ADMIN && auth !== Authority.USER)
+        .map((auth, index) => {
+          if (auth === Authority.PROFESOR) {
+            strRole += AuthorityString.PROFESOR;
+          } else if (auth === Authority.DECANO) {
+            strRole += AuthorityString.DECANO;
+          } else if (auth === Authority.JEFE_PROGRAMA) {
+            strRole += AuthorityString.JEFE_PROGRAMA;
+          }
+          if (index + 1 < autorities.filter(auth2 => auth2 !== Authority.ADMIN && auth2 !== Authority.USER).length && strRole.length > 0) {
+            strRole += ', ';
+          }
+        });
+    }
+    return strRole;
   }
 }

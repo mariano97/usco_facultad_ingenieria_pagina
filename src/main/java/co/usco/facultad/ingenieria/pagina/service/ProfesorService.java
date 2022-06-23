@@ -64,6 +64,8 @@ public interface ProfesorService {
      */
     Mono<ProfesorDTO> findOne(Long id);
 
+    Mono<ProfesorDTO> findOneByUserId(Long userId);
+
     /**
      * Delete the "id" profesor.
      *
