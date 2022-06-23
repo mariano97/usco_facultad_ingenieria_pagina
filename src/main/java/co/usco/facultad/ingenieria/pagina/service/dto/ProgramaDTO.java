@@ -61,6 +61,9 @@ public class ProgramaDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Boolean estado;
 
+    @NotNull(message = "must not be null")
+    private String emailContacto;
+
     private TablaElementoCatalogoDTO nivelFormacion;
 
     private TablaElementoCatalogoDTO tipoFormacion;
@@ -215,6 +218,14 @@ public class ProgramaDTO implements Serializable {
         this.estado = estado;
     }
 
+    public String getEmailContacto() {
+        return emailContacto;
+    }
+
+    public void setEmailContacto(String emailContacto) {
+        this.emailContacto = emailContacto;
+    }
+
     public TablaElementoCatalogoDTO getNivelFormacion() {
         return nivelFormacion;
     }
@@ -298,6 +309,7 @@ public class ProgramaDTO implements Serializable {
             ", dirigidoAQuien='" + getDirigidoAQuien() + "'" +
             ", costoPrograma=" + getCostoPrograma() +
             ", estado='" + getEstado() + "'" +
+            ", emailContacto='" + getEmailContacto() + "'" +
             ", nivelFormacion=" + getNivelFormacion() +
             ", tipoFormacion=" + getTipoFormacion() +
             ", facultad=" + getFacultad() +

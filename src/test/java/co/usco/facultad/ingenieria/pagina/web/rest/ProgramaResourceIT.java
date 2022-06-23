@@ -98,6 +98,9 @@ class ProgramaResourceIT {
     private static final Boolean DEFAULT_ESTADO = false;
     private static final Boolean UPDATED_ESTADO = true;
 
+    private static final String DEFAULT_EMAIL_CONTACTO = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_CONTACTO = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/programas";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -148,7 +151,8 @@ class ProgramaResourceIT {
             .urlFotoPrograma(DEFAULT_URL_FOTO_PROGRAMA)
             .dirigidoAQuien(DEFAULT_DIRIGIDO_A_QUIEN)
             .costoPrograma(DEFAULT_COSTO_PROGRAMA)
-            .estado(DEFAULT_ESTADO);
+            .estado(DEFAULT_ESTADO)
+            .emailContacto(DEFAULT_EMAIL_CONTACTO);
         // Add required entity
         TablaElementoCatalogo tablaElementoCatalogo;
         tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createEntity(em)).block();
@@ -186,7 +190,8 @@ class ProgramaResourceIT {
             .urlFotoPrograma(UPDATED_URL_FOTO_PROGRAMA)
             .dirigidoAQuien(UPDATED_DIRIGIDO_A_QUIEN)
             .costoPrograma(UPDATED_COSTO_PROGRAMA)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .emailContacto(UPDATED_EMAIL_CONTACTO);
         // Add required entity
         TablaElementoCatalogo tablaElementoCatalogo;
         tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createUpdatedEntity(em)).block();
@@ -258,6 +263,7 @@ class ProgramaResourceIT {
         assertThat(testPrograma.getDirigidoAQuien()).isEqualTo(DEFAULT_DIRIGIDO_A_QUIEN);
         assertThat(testPrograma.getCostoPrograma()).isEqualByComparingTo(DEFAULT_COSTO_PROGRAMA);
         assertThat(testPrograma.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testPrograma.getEmailContacto()).isEqualTo(DEFAULT_EMAIL_CONTACTO);
     }
 
     @Test
@@ -548,6 +554,28 @@ class ProgramaResourceIT {
     }
 
     @Test
+    void checkEmailContactoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = programaRepository.findAll().collectList().block().size();
+        // set the field null
+        programa.setEmailContacto(null);
+
+        // Create the Programa, which fails.
+        ProgramaDTO programaDTO = programaMapper.toDto(programa);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(programaDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<Programa> programaList = programaRepository.findAll().collectList().block();
+        assertThat(programaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllProgramas() {
         // Initialize the database
         programaRepository.save(programa).block();
@@ -598,7 +626,9 @@ class ProgramaResourceIT {
             .jsonPath("$.[*].costoPrograma")
             .value(hasItem(sameNumber(DEFAULT_COSTO_PROGRAMA)))
             .jsonPath("$.[*].estado")
-            .value(hasItem(DEFAULT_ESTADO.booleanValue()));
+            .value(hasItem(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.[*].emailContacto")
+            .value(hasItem(DEFAULT_EMAIL_CONTACTO));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -670,7 +700,9 @@ class ProgramaResourceIT {
             .jsonPath("$.costoPrograma")
             .value(is(sameNumber(DEFAULT_COSTO_PROGRAMA)))
             .jsonPath("$.estado")
-            .value(is(DEFAULT_ESTADO.booleanValue()));
+            .value(is(DEFAULT_ESTADO.booleanValue()))
+            .jsonPath("$.emailContacto")
+            .value(is(DEFAULT_EMAIL_CONTACTO));
     }
 
     @Test
@@ -711,7 +743,8 @@ class ProgramaResourceIT {
             .urlFotoPrograma(UPDATED_URL_FOTO_PROGRAMA)
             .dirigidoAQuien(UPDATED_DIRIGIDO_A_QUIEN)
             .costoPrograma(UPDATED_COSTO_PROGRAMA)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .emailContacto(UPDATED_EMAIL_CONTACTO);
         ProgramaDTO programaDTO = programaMapper.toDto(updatedPrograma);
 
         webTestClient
@@ -744,6 +777,7 @@ class ProgramaResourceIT {
         assertThat(testPrograma.getDirigidoAQuien()).isEqualTo(UPDATED_DIRIGIDO_A_QUIEN);
         assertThat(testPrograma.getCostoPrograma()).isEqualByComparingTo(UPDATED_COSTO_PROGRAMA);
         assertThat(testPrograma.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testPrograma.getEmailContacto()).isEqualTo(UPDATED_EMAIL_CONTACTO);
     }
 
     @Test
@@ -836,7 +870,8 @@ class ProgramaResourceIT {
             .perfilOcupacional(UPDATED_PERFIL_OCUPACIONAL)
             .urlFotoPrograma(UPDATED_URL_FOTO_PROGRAMA)
             .dirigidoAQuien(UPDATED_DIRIGIDO_A_QUIEN)
-            .costoPrograma(UPDATED_COSTO_PROGRAMA);
+            .costoPrograma(UPDATED_COSTO_PROGRAMA)
+            .emailContacto(UPDATED_EMAIL_CONTACTO);
 
         webTestClient
             .patch()
@@ -868,6 +903,7 @@ class ProgramaResourceIT {
         assertThat(testPrograma.getDirigidoAQuien()).isEqualTo(UPDATED_DIRIGIDO_A_QUIEN);
         assertThat(testPrograma.getCostoPrograma()).isEqualByComparingTo(UPDATED_COSTO_PROGRAMA);
         assertThat(testPrograma.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testPrograma.getEmailContacto()).isEqualTo(UPDATED_EMAIL_CONTACTO);
     }
 
     @Test
@@ -898,7 +934,8 @@ class ProgramaResourceIT {
             .urlFotoPrograma(UPDATED_URL_FOTO_PROGRAMA)
             .dirigidoAQuien(UPDATED_DIRIGIDO_A_QUIEN)
             .costoPrograma(UPDATED_COSTO_PROGRAMA)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .emailContacto(UPDATED_EMAIL_CONTACTO);
 
         webTestClient
             .patch()
@@ -930,6 +967,7 @@ class ProgramaResourceIT {
         assertThat(testPrograma.getDirigidoAQuien()).isEqualTo(UPDATED_DIRIGIDO_A_QUIEN);
         assertThat(testPrograma.getCostoPrograma()).isEqualByComparingTo(UPDATED_COSTO_PROGRAMA);
         assertThat(testPrograma.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testPrograma.getEmailContacto()).isEqualTo(UPDATED_EMAIL_CONTACTO);
     }
 
     @Test

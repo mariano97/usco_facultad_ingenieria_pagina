@@ -44,6 +44,7 @@ public class ProgramaRowMapper implements BiFunction<Row, String, Programa> {
         entity.setDirigidoAQuien(converter.fromRow(row, prefix + "_dirigido_a_quien", String.class));
         entity.setCostoPrograma(converter.fromRow(row, prefix + "_costo_programa", BigDecimal.class));
         entity.setEstado(converter.fromRow(row, prefix + "_estado", Boolean.class));
+        entity.setEmailContacto(converter.fromRow(row, prefix + "_email_contacto", String.class));
         entity.setNivelFormacionId(converter.fromRow(row, prefix + "_nivel_formacion_id", Long.class));
         entity.setTipoFormacionId(converter.fromRow(row, prefix + "_tipo_formacion_id", Long.class));
         entity.setFacultadId(converter.fromRow(row, prefix + "_facultad_id", Long.class));

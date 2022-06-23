@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity TituloAcademicoProfesor.
+    -->
+    <changeSet id="20220623030400-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tabla_elemento_catalogo_id"
+                                 baseTableName="titulo_academico_profesor"
+                                 constraintName="fk_titulo_academico_profesor__tabla_elemento_catalogo_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_elemento_catalogo"/>
+
+        <addForeignKeyConstraint baseColumnNames="profesor_id"
+                                 baseTableName="titulo_academico_profesor"
+                                 constraintName="fk_titulo_academico_profesor__profesor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profesor"/>
+
+        <addForeignKeyConstraint baseColumnNames="paises_id"
+                                 baseTableName="titulo_academico_profesor"
+                                 constraintName="fk_titulo_academico_profesor__paises_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="paises"/>
+    </changeSet>
+</databaseChangeLog>

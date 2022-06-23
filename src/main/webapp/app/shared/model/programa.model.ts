@@ -22,6 +22,7 @@ export interface IPrograma {
   dirigidoAQuien?: string | null;
   costoPrograma?: number;
   estado?: boolean;
+  emailContacto?: string;
   nivelFormacion?: ITablaElementoCatalogo;
   tipoFormacion?: ITablaElementoCatalogo;
   facultad?: IFacultad;
@@ -49,6 +50,7 @@ export class Programa implements IPrograma {
     public dirigidoAQuien?: string | null,
     public costoPrograma?: number,
     public estado?: boolean,
+    public emailContacto?: string,
     public nivelFormacion?: ITablaElementoCatalogo,
     public tipoFormacion?: ITablaElementoCatalogo,
     public facultad?: IFacultad,

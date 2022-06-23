@@ -14,12 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="segundo_nombre" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="segundo_apellido" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="email_alternativo" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -65,8 +59,6 @@
                   tableName="profesor"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="segundo_nombre" type="string"/>
-            <column name="segundo_apellido" type="string"/>
             <column name="email_alternativo" type="string"/>
             <column name="activo" type="boolean"/>
             <column name="perfil" type="string"/>

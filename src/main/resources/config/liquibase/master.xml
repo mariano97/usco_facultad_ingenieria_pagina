@@ -26,6 +26,7 @@
     <include file="config/liquibase/changelog/20220615020828_added_entity_Paises.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220615021037_added_entity_Estados.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220615022512_added_entity_Ciudad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220623030400_added_entity_TituloAcademicoProfesor.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20220511135227_added_entity_constraints_TablaElementoCatalogo.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220511152408_added_entity_constraints_Programa.xml" relativeToChangelogFile="false"/>
@@ -35,6 +36,7 @@
     <include file="config/liquibase/changelog/20220615021037_added_entity_constraints_Estados.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220615022512_added_entity_constraints_Ciudad.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220526225738_added_entity_constraints_Sede.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220623030400_added_entity_constraints_TituloAcademicoProfesor.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

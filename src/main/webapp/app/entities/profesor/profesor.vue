@@ -32,14 +32,6 @@
               <span v-text="$t('global.field.id')">ID</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'id'"></jhi-sort-indicator>
             </th>
-            <th scope="row" v-on:click="changeOrder('segundoNombre')">
-              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoNombre')">Segundo Nombre</span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'segundoNombre'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" v-on:click="changeOrder('segundoApellido')">
-              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoApellido')">Segundo Apellido</span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'segundoApellido'"></jhi-sort-indicator>
-            </th>
             <th scope="row" v-on:click="changeOrder('emailAlternativo')">
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.emailAlternativo')">Email Alternativo</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'emailAlternativo'"></jhi-sort-indicator>
@@ -84,8 +76,6 @@
             <td>
               <router-link :to="{ name: 'ProfesorView', params: { profesorId: profesor.id } }">{{ profesor.id }}</router-link>
             </td>
-            <td>{{ profesor.segundoNombre }}</td>
-            <td>{{ profesor.segundoApellido }}</td>
             <td>{{ profesor.emailAlternativo }}</td>
             <td>{{ profesor.activo }}</td>
             <td>{{ profesor.perfil }}</td>

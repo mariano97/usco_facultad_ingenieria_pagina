@@ -65,6 +65,9 @@
             <column name="estado" type="boolean">
                 <constraints nullable="false" />
             </column>
+            <column name="email_contacto" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="nivel_formacion_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -138,6 +141,7 @@
             <column name="dirigido_a_quien" type="string"/>
             <column name="costo_programa" type="numeric"/>
             <column name="estado" type="boolean"/>
+            <column name="email_contacto" type="string"/>
             <column name="nivel_formacion_id" type="numeric"/>
             <column name="tipo_formacion_id" type="numeric"/>
             <column name="facultad_id" type="numeric"/>

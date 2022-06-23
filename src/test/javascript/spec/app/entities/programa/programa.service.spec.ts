@@ -51,7 +51,8 @@ describe('Service Tests', () => {
         'AAAAAAA',
         'AAAAAAA',
         0,
-        false
+        false,
+        'AAAAAAA'
       );
     });
 
@@ -132,6 +133,7 @@ describe('Service Tests', () => {
             dirigidoAQuien: 'BBBBBB',
             costoPrograma: 1,
             estado: true,
+            emailContacto: 'BBBBBB',
           },
           elemDefault
         );
@@ -170,6 +172,7 @@ describe('Service Tests', () => {
             urlFotoPrograma: 'BBBBBB',
             dirigidoAQuien: 'BBBBBB',
             costoPrograma: 1,
+            emailContacto: 'BBBBBB',
           },
           new Programa()
         );
@@ -219,6 +222,7 @@ describe('Service Tests', () => {
             dirigidoAQuien: 'BBBBBB',
             costoPrograma: 1,
             estado: true,
+            emailContacto: 'BBBBBB',
           },
           elemDefault
         );

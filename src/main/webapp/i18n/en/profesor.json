@@ -18,8 +18,6 @@
         "title": "Profesor"
       },
       "id": "ID",
-      "segundoNombre": "Segundo Nombre",
-      "segundoApellido": "Segundo Apellido",
       "emailAlternativo": "Email Alternativo",
       "activo": "Activo",
       "perfil": "Perfil",

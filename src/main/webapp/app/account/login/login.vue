@@ -26,7 +26,7 @@
                 class="form-control"
                 id="contrasena"
                 name="password"
-                placeholder="••••••••••••"
+                placeholder="contraseña"
                 v-model="userLoginAccount.password"
                 required
               />

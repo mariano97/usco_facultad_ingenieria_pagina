@@ -71,6 +71,12 @@ const Ciudad = () => import('@/entities/ciudad/ciudad.vue');
 const CiudadUpdate = () => import('@/entities/ciudad/ciudad-update.vue');
 // prettier-ignore
 const CiudadDetails = () => import('@/entities/ciudad/ciudad-details.vue');
+// prettier-ignore
+const TituloAcademicoProfesor = () => import('@/entities/titulo-academico-profesor/titulo-academico-profesor.vue');
+// prettier-ignore
+const TituloAcademicoProfesorUpdate = () => import('@/entities/titulo-academico-profesor/titulo-academico-profesor-update.vue');
+// prettier-ignore
+const TituloAcademicoProfesorDetails = () => import('@/entities/titulo-academico-profesor/titulo-academico-profesor-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -341,6 +347,30 @@ export default {
       path: 'ciudad/:ciudadId/view',
       name: 'CiudadView',
       component: CiudadDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'titulo-academico-profesor',
+      name: 'TituloAcademicoProfesor',
+      component: TituloAcademicoProfesor,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'titulo-academico-profesor/new',
+      name: 'TituloAcademicoProfesorCreate',
+      component: TituloAcademicoProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'titulo-academico-profesor/:tituloAcademicoProfesorId/edit',
+      name: 'TituloAcademicoProfesorEdit',
+      component: TituloAcademicoProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'titulo-academico-profesor/:tituloAcademicoProfesorId/view',
+      name: 'TituloAcademicoProfesorView',
+      component: TituloAcademicoProfesorDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

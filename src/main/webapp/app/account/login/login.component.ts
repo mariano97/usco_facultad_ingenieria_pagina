@@ -13,12 +13,10 @@ export default class Login extends Vue {
   public userLoginAccount: any = {
     username: undefined,
     password: undefined,
-    rememberMe: false,
+    rememberMe: true,
   };
 
   public doLogin(): void {
-    console.log("dentro de login");
-    console.log(this.userLoginAccount);
     axios
       .post('api/authenticate', this.userLoginAccount)
       .then(result => {

@@ -109,6 +109,12 @@
             <span>{{ programa.estado }}</span>
           </dd>
           <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.emailContacto')">Email Contacto</span>
+          </dt>
+          <dd>
+            <span>{{ programa.emailContacto }}</span>
+          </dd>
+          <dt>
             <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.nivelFormacion')">Nivel Formacion</span>
           </dt>
           <dd>

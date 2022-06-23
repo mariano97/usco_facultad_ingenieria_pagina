@@ -1,0 +1,29 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "tituloAcademicoProfesor": {
+      "home": {
+        "title": "Titulo Academico Profesors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Titulo Academico Profesor",
+        "createOrEditLabel": "Crear o editar Titulo Academico Profesor",
+        "notFound": "Ningún Titulo Academico Profesors encontrado"
+      },
+      "created": "Un nuevo Titulo Academico Profesor ha sido creado con el identificador {{ param }}",
+      "updated": "Un Titulo Academico Profesor ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Titulo Academico Profesor ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Titulo Academico Profesor {{ id }}?"
+      },
+      "detail": {
+        "title": "Titulo Academico Profesor"
+      },
+      "id": "ID",
+      "nombreTitulo": "Nombre Titulo",
+      "nombreUniversidadTitulo": "Nombre Universidad Titulo",
+      "yearTitulo": "Year Titulo",
+      "tablaElementoCatalogo": "Tabla Elemento Catalogo",
+      "profesor": "Profesor",
+      "paises": "Paises"
+    }
+  }
+}

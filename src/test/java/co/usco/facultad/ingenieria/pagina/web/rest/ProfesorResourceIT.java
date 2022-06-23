@@ -43,12 +43,6 @@ import reactor.core.publisher.Mono;
 @WithMockUser
 class ProfesorResourceIT {
 
-    private static final String DEFAULT_SEGUNDO_NOMBRE = "AAAAAAAAAA";
-    private static final String UPDATED_SEGUNDO_NOMBRE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_SEGUNDO_APELLIDO = "AAAAAAAAAA";
-    private static final String UPDATED_SEGUNDO_APELLIDO = "BBBBBBBBBB";
-
     private static final String DEFAULT_EMAIL_ALTERNATIVO = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL_ALTERNATIVO = "BBBBBBBBBB";
 
@@ -101,8 +95,6 @@ class ProfesorResourceIT {
      */
     public static Profesor createEntity(EntityManager em) {
         Profesor profesor = new Profesor()
-            .segundoNombre(DEFAULT_SEGUNDO_NOMBRE)
-            .segundoApellido(DEFAULT_SEGUNDO_APELLIDO)
             .emailAlternativo(DEFAULT_EMAIL_ALTERNATIVO)
             .activo(DEFAULT_ACTIVO)
             .perfil(DEFAULT_PERFIL)
@@ -128,8 +120,6 @@ class ProfesorResourceIT {
      */
     public static Profesor createUpdatedEntity(EntityManager em) {
         Profesor profesor = new Profesor()
-            .segundoNombre(UPDATED_SEGUNDO_NOMBRE)
-            .segundoApellido(UPDATED_SEGUNDO_APELLIDO)
             .emailAlternativo(UPDATED_EMAIL_ALTERNATIVO)
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
@@ -186,8 +176,6 @@ class ProfesorResourceIT {
         List<Profesor> profesorList = profesorRepository.findAll().collectList().block();
         assertThat(profesorList).hasSize(databaseSizeBeforeCreate + 1);
         Profesor testProfesor = profesorList.get(profesorList.size() - 1);
-        assertThat(testProfesor.getSegundoNombre()).isEqualTo(DEFAULT_SEGUNDO_NOMBRE);
-        assertThat(testProfesor.getSegundoApellido()).isEqualTo(DEFAULT_SEGUNDO_APELLIDO);
         assertThat(testProfesor.getEmailAlternativo()).isEqualTo(DEFAULT_EMAIL_ALTERNATIVO);
         assertThat(testProfesor.getActivo()).isEqualTo(DEFAULT_ACTIVO);
         assertThat(testProfesor.getPerfil()).isEqualTo(DEFAULT_PERFIL);
@@ -303,10 +291,6 @@ class ProfesorResourceIT {
             .expectBody()
             .jsonPath("$.[*].id")
             .value(hasItem(profesor.getId().intValue()))
-            .jsonPath("$.[*].segundoNombre")
-            .value(hasItem(DEFAULT_SEGUNDO_NOMBRE))
-            .jsonPath("$.[*].segundoApellido")
-            .value(hasItem(DEFAULT_SEGUNDO_APELLIDO))
             .jsonPath("$.[*].emailAlternativo")
             .value(hasItem(DEFAULT_EMAIL_ALTERNATIVO))
             .jsonPath("$.[*].activo")
@@ -357,10 +341,6 @@ class ProfesorResourceIT {
             .expectBody()
             .jsonPath("$.id")
             .value(is(profesor.getId().intValue()))
-            .jsonPath("$.segundoNombre")
-            .value(is(DEFAULT_SEGUNDO_NOMBRE))
-            .jsonPath("$.segundoApellido")
-            .value(is(DEFAULT_SEGUNDO_APELLIDO))
             .jsonPath("$.emailAlternativo")
             .value(is(DEFAULT_EMAIL_ALTERNATIVO))
             .jsonPath("$.activo")
@@ -397,8 +377,6 @@ class ProfesorResourceIT {
         // Update the profesor
         Profesor updatedProfesor = profesorRepository.findById(profesor.getId()).block();
         updatedProfesor
-            .segundoNombre(UPDATED_SEGUNDO_NOMBRE)
-            .segundoApellido(UPDATED_SEGUNDO_APELLIDO)
             .emailAlternativo(UPDATED_EMAIL_ALTERNATIVO)
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
@@ -420,8 +398,6 @@ class ProfesorResourceIT {
         List<Profesor> profesorList = profesorRepository.findAll().collectList().block();
         assertThat(profesorList).hasSize(databaseSizeBeforeUpdate);
         Profesor testProfesor = profesorList.get(profesorList.size() - 1);
-        assertThat(testProfesor.getSegundoNombre()).isEqualTo(UPDATED_SEGUNDO_NOMBRE);
-        assertThat(testProfesor.getSegundoApellido()).isEqualTo(UPDATED_SEGUNDO_APELLIDO);
         assertThat(testProfesor.getEmailAlternativo()).isEqualTo(UPDATED_EMAIL_ALTERNATIVO);
         assertThat(testProfesor.getActivo()).isEqualTo(UPDATED_ACTIVO);
         assertThat(testProfesor.getPerfil()).isEqualTo(UPDATED_PERFIL);
@@ -511,12 +487,10 @@ class ProfesorResourceIT {
         partialUpdatedProfesor.setId(profesor.getId());
 
         partialUpdatedProfesor
-            .segundoNombre(UPDATED_SEGUNDO_NOMBRE)
-            .segundoApellido(UPDATED_SEGUNDO_APELLIDO)
             .emailAlternativo(UPDATED_EMAIL_ALTERNATIVO)
             .activo(UPDATED_ACTIVO)
+            .perfil(UPDATED_PERFIL)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
-            .oficina(UPDATED_OFICINA)
             .userId(UPDATED_USER_ID);
 
         webTestClient
@@ -532,13 +506,11 @@ class ProfesorResourceIT {
         List<Profesor> profesorList = profesorRepository.findAll().collectList().block();
         assertThat(profesorList).hasSize(databaseSizeBeforeUpdate);
         Profesor testProfesor = profesorList.get(profesorList.size() - 1);
-        assertThat(testProfesor.getSegundoNombre()).isEqualTo(UPDATED_SEGUNDO_NOMBRE);
-        assertThat(testProfesor.getSegundoApellido()).isEqualTo(UPDATED_SEGUNDO_APELLIDO);
         assertThat(testProfesor.getEmailAlternativo()).isEqualTo(UPDATED_EMAIL_ALTERNATIVO);
         assertThat(testProfesor.getActivo()).isEqualTo(UPDATED_ACTIVO);
-        assertThat(testProfesor.getPerfil()).isEqualTo(DEFAULT_PERFIL);
+        assertThat(testProfesor.getPerfil()).isEqualTo(UPDATED_PERFIL);
         assertThat(testProfesor.getTelefonoCelular()).isEqualTo(UPDATED_TELEFONO_CELULAR);
-        assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
+        assertThat(testProfesor.getOficina()).isEqualTo(DEFAULT_OFICINA);
         assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
@@ -554,8 +526,6 @@ class ProfesorResourceIT {
         partialUpdatedProfesor.setId(profesor.getId());
 
         partialUpdatedProfesor
-            .segundoNombre(UPDATED_SEGUNDO_NOMBRE)
-            .segundoApellido(UPDATED_SEGUNDO_APELLIDO)
             .emailAlternativo(UPDATED_EMAIL_ALTERNATIVO)
             .activo(UPDATED_ACTIVO)
             .perfil(UPDATED_PERFIL)
@@ -576,8 +546,6 @@ class ProfesorResourceIT {
         List<Profesor> profesorList = profesorRepository.findAll().collectList().block();
         assertThat(profesorList).hasSize(databaseSizeBeforeUpdate);
         Profesor testProfesor = profesorList.get(profesorList.size() - 1);
-        assertThat(testProfesor.getSegundoNombre()).isEqualTo(UPDATED_SEGUNDO_NOMBRE);
-        assertThat(testProfesor.getSegundoApellido()).isEqualTo(UPDATED_SEGUNDO_APELLIDO);
         assertThat(testProfesor.getEmailAlternativo()).isEqualTo(UPDATED_EMAIL_ALTERNATIVO);
         assertThat(testProfesor.getActivo()).isEqualTo(UPDATED_ACTIVO);
         assertThat(testProfesor.getPerfil()).isEqualTo(UPDATED_PERFIL);

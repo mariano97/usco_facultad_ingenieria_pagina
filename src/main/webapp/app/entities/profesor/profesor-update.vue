@@ -17,40 +17,6 @@
           <div class="form-group">
             <label
               class="form-control-label"
-              v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoNombre')"
-              for="profesor-segundoNombre"
-              >Segundo Nombre</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              name="segundoNombre"
-              id="profesor-segundoNombre"
-              data-cy="segundoNombre"
-              :class="{ valid: !$v.profesor.segundoNombre.$invalid, invalid: $v.profesor.segundoNombre.$invalid }"
-              v-model="$v.profesor.segundoNombre.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoApellido')"
-              for="profesor-segundoApellido"
-              >Segundo Apellido</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              name="segundoApellido"
-              id="profesor-segundoApellido"
-              data-cy="segundoApellido"
-              :class="{ valid: !$v.profesor.segundoApellido.$invalid, invalid: $v.profesor.segundoApellido.$invalid }"
-              v-model="$v.profesor.segundoApellido.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.emailAlternativo')"
               for="profesor-emailAlternativo"
               >Email Alternativo</label

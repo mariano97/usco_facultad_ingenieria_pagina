@@ -108,6 +108,10 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.estado')">Estado</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('emailContacto')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.emailContacto')">Email Contacto</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'emailContacto'"></jhi-sort-indicator>
+            </th>
             <th scope="row" v-on:click="changeOrder('nivelFormacion.nombre')">
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.nivelFormacion')">Nivel Formacion</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nivelFormacion.nombre'"></jhi-sort-indicator>
@@ -145,6 +149,7 @@
             <td>{{ programa.dirigidoAQuien }}</td>
             <td>{{ programa.costoPrograma }}</td>
             <td>{{ programa.estado }}</td>
+            <td>{{ programa.emailContacto }}</td>
             <td>
               <div v-if="programa.nivelFormacion">
                 <router-link :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: programa.nivelFormacion.id } }">{{

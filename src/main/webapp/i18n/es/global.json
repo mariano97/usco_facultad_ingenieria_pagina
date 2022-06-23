@@ -22,6 +22,7 @@
         "paises": "Paises",
         "estados": "Estados",
         "ciudad": "Ciudad",
+        "tituloAcademicoProfesor": "Titulo Academico Profesor",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

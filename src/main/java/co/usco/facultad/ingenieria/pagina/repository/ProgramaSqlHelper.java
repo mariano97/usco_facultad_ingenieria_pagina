@@ -28,6 +28,7 @@ public class ProgramaSqlHelper {
         columns.add(Column.aliased("dirigido_a_quien", table, columnPrefix + "_dirigido_a_quien"));
         columns.add(Column.aliased("costo_programa", table, columnPrefix + "_costo_programa"));
         columns.add(Column.aliased("estado", table, columnPrefix + "_estado"));
+        columns.add(Column.aliased("email_contacto", table, columnPrefix + "_email_contacto"));
 
         columns.add(Column.aliased("nivel_formacion_id", table, columnPrefix + "_nivel_formacion_id"));
         columns.add(Column.aliased("tipo_formacion_id", table, columnPrefix + "_tipo_formacion_id"));

@@ -29,7 +29,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       service = new ProfesorService();
-      elemDefault = new Profesor(123, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
+      elemDefault = new Profesor(123, 'AAAAAAA', false, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -81,8 +81,6 @@ describe('Service Tests', () => {
       it('should update a Profesor', async () => {
         const returnedFromService = Object.assign(
           {
-            segundoNombre: 'BBBBBB',
-            segundoApellido: 'BBBBBB',
             emailAlternativo: 'BBBBBB',
             activo: true,
             perfil: 'BBBBBB',
@@ -115,9 +113,8 @@ describe('Service Tests', () => {
       it('should partial update a Profesor', async () => {
         const patchObject = Object.assign(
           {
-            segundoNombre: 'BBBBBB',
             emailAlternativo: 'BBBBBB',
-            userId: 1,
+            perfil: 'BBBBBB',
           },
           new Profesor()
         );
@@ -145,8 +142,6 @@ describe('Service Tests', () => {
       it('should return a list of Profesor', async () => {
         const returnedFromService = Object.assign(
           {
-            segundoNombre: 'BBBBBB',
-            segundoApellido: 'BBBBBB',
             emailAlternativo: 'BBBBBB',
             activo: true,
             perfil: 'BBBBBB',

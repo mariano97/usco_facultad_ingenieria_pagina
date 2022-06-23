@@ -18,8 +18,6 @@ import ProfesorService from './profesor.service';
 
 const validations: any = {
   profesor: {
-    segundoNombre: {},
-    segundoApellido: {},
     emailAlternativo: {},
     activo: {
       required,

@@ -7,18 +7,6 @@
         </h2>
         <dl class="row jh-entity-details">
           <dt>
-            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoNombre')">Segundo Nombre</span>
-          </dt>
-          <dd>
-            <span>{{ profesor.segundoNombre }}</span>
-          </dd>
-          <dt>
-            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.segundoApellido')">Segundo Apellido</span>
-          </dt>
-          <dd>
-            <span>{{ profesor.segundoApellido }}</span>
-          </dd>
-          <dt>
             <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.emailAlternativo')">Email Alternativo</span>
           </dt>
           <dd>

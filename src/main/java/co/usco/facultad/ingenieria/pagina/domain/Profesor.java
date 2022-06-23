@@ -22,12 +22,6 @@ public class Profesor implements Serializable {
     @Column("id")
     private Long id;
 
-    @Column("segundo_nombre")
-    private String segundoNombre;
-
-    @Column("segundo_apellido")
-    private String segundoApellido;
-
     @Column("email_alternativo")
     private String emailAlternativo;
 
@@ -79,32 +73,6 @@ public class Profesor implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSegundoNombre() {
-        return this.segundoNombre;
-    }
-
-    public Profesor segundoNombre(String segundoNombre) {
-        this.setSegundoNombre(segundoNombre);
-        return this;
-    }
-
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
-    }
-
-    public String getSegundoApellido() {
-        return this.segundoApellido;
-    }
-
-    public Profesor segundoApellido(String segundoApellido) {
-        this.setSegundoApellido(segundoApellido);
-        return this;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
     }
 
     public String getEmailAlternativo() {
@@ -284,8 +252,6 @@ public class Profesor implements Serializable {
     public String toString() {
         return "Profesor{" +
             "id=" + getId() +
-            ", segundoNombre='" + getSegundoNombre() + "'" +
-            ", segundoApellido='" + getSegundoApellido() + "'" +
             ", emailAlternativo='" + getEmailAlternativo() + "'" +
             ", activo='" + getActivo() + "'" +
             ", perfil='" + getPerfil() + "'" +

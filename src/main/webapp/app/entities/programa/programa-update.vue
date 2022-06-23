@@ -408,6 +408,29 @@
           <div class="form-group">
             <label
               class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.emailContacto')"
+              for="programa-emailContacto"
+              >Email Contacto</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="emailContacto"
+              id="programa-emailContacto"
+              data-cy="emailContacto"
+              :class="{ valid: !$v.programa.emailContacto.$invalid, invalid: $v.programa.emailContacto.$invalid }"
+              v-model="$v.programa.emailContacto.$model"
+              required
+            />
+            <div v-if="$v.programa.emailContacto.$anyDirty && $v.programa.emailContacto.$invalid">
+              <small class="form-text text-danger" v-if="!$v.programa.emailContacto.required" v-text="$t('entity.validation.required')">
+                This field is required.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.programa.nivelFormacion')"
               for="programa-nivelFormacion"
               >Nivel Formacion</label

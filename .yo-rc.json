@@ -30,14 +30,15 @@
       "RedesPrograma",
       "Paises",
       "Estados",
-      "Ciudad"
+      "Ciudad",
+      "TituloAcademicoProfesor"
     ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.8.1",
     "jwtSecretKey": "MzliNzI1MDliZDIxOGNlODEwNjJlNzlkNzI2MmEyYmM3NTZlMzdjNTk2ZWRkOGZlMTZjODEzYWFjNjEzMGEwY2RiMTU2MGFhZjlmMGI3NmI5NzhmMTU0ODliYjZhNDE1NDBhZjZkYWQ2YTk4ZmMxOTM4ZTc5NDE5Yzk5MGMxZGU=",
     "languages": ["es", "en"],
-    "lastLiquibaseTimestamp": 1655259912000,
+    "lastLiquibaseTimestamp": 1655953440000,
     "messageBroker": false,
     "nativeLanguage": "es",
     "otherModules": [],

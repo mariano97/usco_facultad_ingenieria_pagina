@@ -87,6 +87,10 @@ public class Programa implements Serializable {
     @Column("estado")
     private Boolean estado;
 
+    @NotNull(message = "must not be null")
+    @Column("email_contacto")
+    private String emailContacto;
+
     @Transient
     @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
     private TablaElementoCatalogo nivelFormacion;
@@ -351,6 +355,19 @@ public class Programa implements Serializable {
         this.estado = estado;
     }
 
+    public String getEmailContacto() {
+        return this.emailContacto;
+    }
+
+    public Programa emailContacto(String emailContacto) {
+        this.setEmailContacto(emailContacto);
+        return this;
+    }
+
+    public void setEmailContacto(String emailContacto) {
+        this.emailContacto = emailContacto;
+    }
+
     public TablaElementoCatalogo getNivelFormacion() {
         return this.nivelFormacion;
     }
@@ -508,6 +525,7 @@ public class Programa implements Serializable {
             ", dirigidoAQuien='" + getDirigidoAQuien() + "'" +
             ", costoPrograma=" + getCostoPrograma() +
             ", estado='" + getEstado() + "'" +
+            ", emailContacto='" + getEmailContacto() + "'" +
             "}";
     }
 }
