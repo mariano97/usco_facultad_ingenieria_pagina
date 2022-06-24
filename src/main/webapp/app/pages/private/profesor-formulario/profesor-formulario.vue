@@ -249,12 +249,12 @@
                   <div class="col-sm-auto opcion_titulo_academico d-flex align-items-center justify-content-center">
                     <a class="opcion_titulo_academico editar_titulo" type="button"
                       @click="openPopupEditarNuevoTituloAcademico(titulo)">
-                      <img alt="ver_documento" src="/content/images/iconos/change-red.png" />
+                      <img alt="ver_titulo" src="/content/images/iconos/change-red.png" />
                     </a>
                   </div>
                   <div class="col-sm-auto opcion_titulo_academico d-flex align-items-center justify-content-center">
                     <a class="opcion_titulo_academico borrar_titulo" type="button" @click="eliminarTituloAcademico(titulo)">
-                      <img alt="ver_documento" src="/content/images/iconos/bin-red.png" />
+                      <img alt="eliminar_titulo" src="/content/images/iconos/bin-red.png" />
                     </a>
                   </div>
                 </div>
