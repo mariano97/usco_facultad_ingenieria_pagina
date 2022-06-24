@@ -1,13 +1,19 @@
+import PaisesService from '@/entities/paises/paises.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+import TituloAcademicoProfesorService from '@/entities/titulo-academico-profesor/titulo-academico-profesor.service';
 import AlertService from '@/shared/alert/alert.service';
 import identificadoresConstants from '@/shared/constants/identificadores.constants';
+import { DATE_FORMAT } from '@/shared/date/filters';
+import { IPaises } from '@/shared/model/paises.model';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+import { ITituloAcademicoProfesor, TituloAcademicoProfesor } from '@/shared/model/titulo-academico-profesor.model';
 import { IUser, User } from '@/shared/model/user.model';
 import { IUsuarioProfesorFull, UsuarioProfesorFull } from '@/shared/model/usuario-profesor.model';
 import { Authority } from '@/shared/security/authority';
 import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
 import UtilsService from '@/shared/services/utils.service';
+import dayjs from 'dayjs';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import { maxLength, minLength, required, email } from 'vuelidate/lib/validators';
 import './profesor-formulario.scss';
@@ -54,6 +60,26 @@ const validations: any = {
       maxLength: maxLength(255),
     },
   },
+  tituloAcademicoProfesor: {
+    nombreTitulo: {
+      required,
+      minLength: minLength(5),
+    },
+    nombreUniversidadTitulo: {
+      required,
+      minLength: minLength(5),
+    },
+    yearTitulo: {
+      required,
+    },
+    tablaElementoCatalogo: {
+      required,
+    },
+    profesor: {},
+    paises: {
+      required,
+    },
+  },
 };
 
 @Component({
@@ -62,18 +88,28 @@ const validations: any = {
 export default class ProfesorFormulario extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
+  @Inject('tituloAcademicoProfesorService') private tituloAcademicoProfesorService: () => TituloAcademicoProfesorService;
+  @Inject('paisesService') private paisesService: () => PaisesService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('utilsService') private utilsService: () => UtilsService;
 
   public usuarioProfesor: IUsuarioProfesorFull = new UsuarioProfesorFull();
   public userAccount: IUser = new User();
   public profesor: IProfesor = new Profesor();
+  public tituloAcademicoProfesor: ITituloAcademicoProfesor = new TituloAcademicoProfesor();
 
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
+  public isSaveTituloAcademico = false;
 
   public tiposProfesoresElemento: ITablaElementoCatalogo[] = [];
+  public listaPaises: IPaises[] = [];
+  public listaTiposTitulosAcademicos: ITablaElementoCatalogo[] = [];
+
+  public titulosAcademicosProfesorLista: ITituloAcademicoProfesor[] = [];
+
+  public dateMax = dayjs().format(DATE_FORMAT);
 
   public beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -83,6 +119,8 @@ export default class ProfesorFormulario extends Vue {
         vm.enableEdit = false;
       }
       vm.consultarTiposProfesores();
+      vm.consultarPaises();
+      vm.consultarTipoTitulosAcademicos();
     });
   }
 
@@ -92,6 +130,19 @@ export default class ProfesorFormulario extends Vue {
       .then(res => {
         this.userAccount = res.adminUserDTO;
         this.profesor = res.profesorDTO;
+        this.consultarTitulosAcademicosProfesor(this.profesor.id);
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  private consultarTitulosAcademicosProfesor(profesorId: number): void {
+    this.titulosAcademicosProfesorLista = [];
+    this.tituloAcademicoProfesorService()
+      .findAllByProfesorId(this.$store.getters.authenticated, profesorId)
+      .then(res => {
+        this.titulosAcademicosProfesorLista = res;
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
@@ -103,6 +154,22 @@ export default class ProfesorFormulario extends Vue {
       .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_PROFESOR)
       .then(res => {
         this.tiposProfesoresElemento = res;
+      });
+  }
+
+  private consultarTipoTitulosAcademicos(): void {
+    this.tablaElementoCatalogoService()
+      .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_TITULO_ACADEMICO)
+      .then(res => {
+        this.listaTiposTitulosAcademicos = res;
+      });
+  }
+
+  private consultarPaises(): void {
+    this.paisesService()
+      .retrieve()
+      .then(res => {
+        this.listaPaises = res.data;
       });
   }
 
@@ -165,6 +232,51 @@ export default class ProfesorFormulario extends Vue {
     }
   }
 
+  public guardarTituloAcademico(): void {
+    this.isSaveTituloAcademico = true;
+    if (this.tituloAcademicoProfesor.id) {
+      this.tituloAcademicoProfesorService()
+        .update(this.tituloAcademicoProfesor)
+        .then(res => {
+          this.isSaveTituloAcademico = false;
+          this.closeAllPopups();
+          this.consultarTitulosAcademicosProfesor(this.profesor.id);
+        })
+        .catch(err => {
+          this.alertService().showHttpError(this, err.response);
+          this.isSaveTituloAcademico = false;
+          this.closeAllPopups();
+        });
+    } else {
+      this.tituloAcademicoProfesor.profesor = {
+        id: this.profesor.id,
+      };
+      this.tituloAcademicoProfesorService()
+        .create(this.tituloAcademicoProfesor)
+        .then(res => {
+          this.titulosAcademicosProfesorLista.push(res);
+          this.isSaveTituloAcademico = false;
+          this.closeAllPopups();
+        })
+        .catch(err => {
+          this.alertService().showHttpError(this, err.response);
+          this.isSaveTituloAcademico = false;
+          this.closeAllPopups();
+        });
+    }
+  }
+
+  public eliminarTituloAcademico(titulo: ITituloAcademicoProfesor): void {
+    this.tituloAcademicoProfesorService()
+      .delete(titulo.id)
+      .then(() => {
+        this.consultarTitulosAcademicosProfesor(this.profesor.id);
+      })
+      .catch(err => {
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
   public enableFormularioEditar(): void {
     this.enableEdit = !this.enableEdit;
   }
@@ -183,5 +295,51 @@ export default class ProfesorFormulario extends Vue {
 
   public countCharacter(maxTamano: number, value: string): number {
     return maxTamano - (value ? value.trim().length : 0);
+  }
+
+  public convertDateTimeFromServer(date: Date): string {
+    if (date && dayjs(date).isValid()) {
+      return dayjs(date).format(DATE_FORMAT);
+    }
+    return null;
+  }
+
+  public updateInstantFieldTituloAcademico(field, event) {
+    console.log(event);
+    if (event.target.value && event.target.value.length > 0 && event.target.validationMessage.length < 1) {
+      this.tituloAcademicoProfesor.yearTitulo = dayjs(event.target.value, DATE_FORMAT).toDate();
+    } else {
+      this.tituloAcademicoProfesor.yearTitulo = null;
+    }
+    this.checkCamposFormularioTitulosAcademicos('');
+  }
+
+  public openPopupEditarNuevoTituloAcademico(tittulo: ITituloAcademicoProfesor): void {
+    this.tituloAcademicoProfesor = tittulo;
+    if (<any>this.$refs.modalPopupCrearEstudioProfesor) {
+      (<any>this.$refs.modalPopupCrearEstudioProfesor).show();
+    }
+  }
+
+  public openPopupAgregarNuevoTituloAcademico(): void {
+    this.tituloAcademicoProfesor = {};
+    if (<any>this.$refs.modalPopupCrearEstudioProfesor) {
+      (<any>this.$refs.modalPopupCrearEstudioProfesor).show();
+      this.tituloAcademicoProfesor.yearTitulo = new Date();
+    }
+  }
+
+  public closePopupAgregarNuevoTituloAcademico(): void {
+    (<any>this.$refs.modalPopupCrearEstudioProfesor).hide();
+    this.tituloAcademicoProfesor = {};
+    this.$v.$reset();
+  }
+
+  public closeAllPopups(): void {
+    this.closePopupAgregarNuevoTituloAcademico();
+  }
+
+  public checkCamposFormularioTitulosAcademicos(event): void {
+    this.$v.$touch();
   }
 }

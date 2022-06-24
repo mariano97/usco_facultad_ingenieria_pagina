@@ -11,8 +11,6 @@ public class ProfesorSqlHelper {
     public static List<Expression> getColumns(Table table, String columnPrefix) {
         List<Expression> columns = new ArrayList<>();
         columns.add(Column.aliased("id", table, columnPrefix + "_id"));
-        columns.add(Column.aliased("segundo_nombre", table, columnPrefix + "_segundo_nombre"));
-        columns.add(Column.aliased("segundo_apellido", table, columnPrefix + "_segundo_apellido"));
         columns.add(Column.aliased("email_alternativo", table, columnPrefix + "_email_alternativo"));
         columns.add(Column.aliased("activo", table, columnPrefix + "_activo"));
         columns.add(Column.aliased("perfil", table, columnPrefix + "_perfil"));

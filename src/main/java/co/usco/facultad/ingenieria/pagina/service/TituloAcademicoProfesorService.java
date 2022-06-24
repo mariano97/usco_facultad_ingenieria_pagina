@@ -41,6 +41,8 @@ public interface TituloAcademicoProfesorService {
      */
     Flux<TituloAcademicoProfesorDTO> findAll(Pageable pageable);
 
+    Flux<TituloAcademicoProfesorDTO> findAllByProfesorId(Long profesorId);
+
     /**
      * Get all the tituloAcademicoProfesors with eager load of many-to-many relationships.
      *

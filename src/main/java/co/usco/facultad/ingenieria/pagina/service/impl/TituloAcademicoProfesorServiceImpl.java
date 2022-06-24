@@ -72,6 +72,12 @@ public class TituloAcademicoProfesorServiceImpl implements TituloAcademicoProfes
         return tituloAcademicoProfesorRepository.findAllBy(pageable).map(tituloAcademicoProfesorMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<TituloAcademicoProfesorDTO> findAllByProfesorId(Long profesorId) {
+        return tituloAcademicoProfesorRepository.findAllByProfesorId(profesorId).map(tituloAcademicoProfesorMapper::toDto);
+    }
+
     public Flux<TituloAcademicoProfesorDTO> findAllWithEagerRelationships(Pageable pageable) {
         return tituloAcademicoProfesorRepository.findAllWithEagerRelationships(pageable).map(tituloAcademicoProfesorMapper::toDto);
     }

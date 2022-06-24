@@ -640,7 +640,6 @@ export default class ProgramaFormulario extends Vue {
   }
 
   public agregarSedeToPrograma(sede: ISede): void {
-    console.log(sede);
     this.sedeAgregadaId = sede.id;
     if (this.programa.id) {
       this.programa.sedes.push(sede);

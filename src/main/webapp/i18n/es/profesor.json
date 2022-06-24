@@ -10,7 +10,20 @@
         "telCelular": "Celular",
         "perfil": "Perfil",
         "oficina": "Oficina",
-        "tipoProfesor": "Tipo de profesor"
+        "tipoProfesor": "Tipo de profesor",
+        "estudiosProfesor": "Estudios realizados"
+      }
+    },
+    "buttons": {
+      "agregarEstudio": "Agregar estudio"
+    },
+    "popups": {
+      "labels": {
+        "nombreTitulo": "Nombre del titulo",
+        "nombreUniversidadTitulo": "Universidad",
+        "yearTitulo": "Año",
+        "tipoTitulo": "Tipo de titulo",
+        "paiseTitulo": "Pais"
       }
     }
   },

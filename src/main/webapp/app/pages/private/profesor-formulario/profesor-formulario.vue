@@ -51,7 +51,7 @@
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.userAccount.firstName.minLength"
-                    v-text="$t('entity.validation.minlength', { max: 5 })">
+                    v-text="$t('entity.validation.minlength', { min: 5 })">
                     This field cannot be longer than 50 characters.
                   </small>
                 </div>
@@ -83,7 +83,7 @@
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.userAccount.lastName.minLength"
-                    v-text="$t('entity.validation.minlength', { max: 5 })">
+                    v-text="$t('entity.validation.minlength', { min: 5 })">
                     This field cannot be longer than 50 characters.
                   </small>
                 </div>
@@ -105,7 +105,7 @@
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.userAccount.email.minLength"
-                    v-text="$t('entity.validation.minlength', { max: 10 })">
+                    v-text="$t('entity.validation.minlength', { min: 10 })">
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.userAccount.email.email"
@@ -196,7 +196,6 @@
                   placeholder="Eg. Profesor graduado de la universida...." v-model="$v.profesor.perfil.$model"
                   :disabled="checkHabilitacionCampos()" required></textarea>
                 <div class="" v-if="$v.profesor.perfil.$anyDirty && $v.profesor.perfil.$invalid">
-                  <div>{{ $v.profesor.perfil }}</div>
                   <small class="form-text text-danger" v-if="!$v.profesor.perfil.required"
                     v-text="$t('entity.validation.required')">
                     Este campo es obligatorio.
@@ -206,7 +205,7 @@
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.profesor.perfil.minLength"
-                    v-text="$t('entity.validation.minlength', { max: 10 })">
+                    v-text="$t('entity.validation.minlength', { min: 10 })">
                     This field cannot be longer than 50 characters.
                   </small>
                 </div>
@@ -232,6 +231,179 @@
           </section>
         </div>
       </form>
+    </section>
+    <section class="seccion_estudios_profesor" v-if="userAccount.id && profesor.id">
+      <div class="tab">
+        <input type="checkbox" id="estudios_profesor" />
+        <label class="tab-label item_acordion" for="estudios_profesor"
+          v-text="$t('profesor.formulario.labels.estudiosProfesor')"></label>
+        <div class="tab-content web_tabs">
+          <div class="">
+            <div class="contenido_listado_estudios">
+              <div class="row mx-0 titulo_academico_item" v-for="titulo in titulosAcademicosProfesorLista"
+                :key="titulo.id">
+                <div class="col container_name_titulo d-flex align-items-center">
+                  <h3>{{ titulo.nombreTitulo + ' - ' + convertDateTimeFromServer(titulo.yearTitulo) }}</h3>
+                </div>
+                <div class="col-sm-auto row mx-0">
+                  <div class="col-sm-auto opcion_titulo_academico d-flex align-items-center justify-content-center">
+                    <a class="opcion_titulo_academico editar_titulo" type="button"
+                      @click="openPopupEditarNuevoTituloAcademico(titulo)">
+                      <img alt="ver_documento" src="/content/images/iconos/change-red.png" />
+                    </a>
+                  </div>
+                  <div class="col-sm-auto opcion_titulo_academico d-flex align-items-center justify-content-center">
+                    <a class="opcion_titulo_academico borrar_titulo" type="button" @click="eliminarTituloAcademico(titulo)">
+                      <img alt="ver_documento" src="/content/images/iconos/bin-red.png" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-3">
+              <button class="btn btn_agregar_estudio_profesor d-flex align-items-center justify-content-center"
+                id="btn_agregar_estudio_profesor" v-text="$t('profesor.buttons.agregarEstudio')"
+                v-on:click="openPopupAgregarNuevoTituloAcademico()">
+                Agregar red social
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <b-modal id="modalPopupCrearEstudioProfesor" ref="modalPopupCrearEstudioProfesor">
+        <div class="modal-body">
+          <div class="">
+            <form name="formTituloEstudioProfesor" role="form" novalidate>
+              <div class="row mx-0">
+                <div class="col form-group">
+                  <label class="form-control-label campo_requerido" for="nombreTitulo"
+                    v-text="$t('profesor.popups.labels.nombreTitulo')"></label>
+                  <input type="text" id="nombreTitulo" name="nombreTitulo" class="form-control"
+                    placeholder="Eg. Ingeniero..." v-model="tituloAcademicoProfesor.nombreTitulo" required
+                    @change="checkCamposFormularioTitulosAcademicos" />
+                  <div
+                    v-if="$v.tituloAcademicoProfesor.nombreTitulo.$anyDirty && $v.tituloAcademicoProfesor.nombreTitulo.$invalid">
+                    <small class="form-text text-danger" v-if="!$v.tituloAcademicoProfesor.nombreTitulo.required"
+                      v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                    <small class="form-text text-danger" v-if="!$v.tituloAcademicoProfesor.nombreTitulo.minLength"
+                      v-text="$t('entity.validation.minlength', { min: 5 })">
+                      This field cannot be longer than 50 characters.
+                    </small>
+                  </div>
+                </div>
+                <div class="col form-group">
+                  <label class="form-control-label campo_requerido" for="nombreUniversidadTitulo"
+                    v-text="$t('profesor.popups.labels.nombreUniversidadTitulo')"></label>
+                  <input type="text" id="nombreUniversidadTitulo" name="nombreUniversidadTitulo" class="form-control"
+                    placeholder="Eg. Universidad..." v-model="tituloAcademicoProfesor.nombreUniversidadTitulo"
+                    @change="checkCamposFormularioTitulosAcademicos" required />
+                  <div
+                    v-if="$v.tituloAcademicoProfesor.nombreUniversidadTitulo.$anyDirty && $v.tituloAcademicoProfesor.nombreUniversidadTitulo.$invalid">
+                    <small class="form-text text-danger"
+                      v-if="!$v.tituloAcademicoProfesor.nombreUniversidadTitulo.required"
+                      v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                    <small class="form-text text-danger"
+                      v-if="!$v.tituloAcademicoProfesor.nombreUniversidadTitulo.minLength"
+                      v-text="$t('entity.validation.minlength', { min: 5 })">
+                      This field cannot be longer than 50 characters.
+                    </small>
+                  </div>
+                </div>
+                <div class="col-3 form-group">
+                  <label class="form-control-label campo_requerido" for="yearTitulo"
+                    v-text="$t('profesor.popups.labels.yearTitulo')"></label>
+                  <input type="date" id="yearTitulo" name="yearTitulo" class="form-control" min="1900-01-01"
+                    :max="dateMax" :value="convertDateTimeFromServer(tituloAcademicoProfesor.yearTitulo)"
+                    @change="updateInstantFieldTituloAcademico('yearTitulo', $event)" required />
+                  <div
+                    v-if="tituloAcademicoProfesor.yearTitulo === null || tituloAcademicoProfesor.yearTitulo === undefined">
+                    <small class="form-text text-danger" v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                  </div>
+                  <!--<div
+                    v-if="$v.tituloAcademicoProfesor.yearTitulo.$anyDirty && $v.tituloAcademicoProfesor.yearTitulo.$invalid">
+                    <small class="form-text text-danger" v-if="!$v.tituloAcademicoProfesor.yearTitulo.required"
+                      v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                  </div>-->
+                </div>
+              </div>
+              <div class="row mx-0">
+                <div class="col-3 form-group">
+                  <label class="form-control-label campo_requerido" for="tablaElementoCatalogo"
+                    v-text="$t('profesor.popups.labels.tipoTitulo')"></label>
+                  <select class="form-control" id="tablaElementoCatalogo" data-cy="tablaElementoCatalogo"
+                    name="tablaElementoCatalogo" v-model="tituloAcademicoProfesor.tablaElementoCatalogo"
+                    @change="checkCamposFormularioTitulosAcademicos" required>
+                    <option v-if="!tituloAcademicoProfesor.tablaElementoCatalogo" v-bind:value="null" selected></option>
+                    <option v-bind:value="
+                      tituloAcademicoProfesor.tablaElementoCatalogo &&
+                      tablaElementoCatalogoOption.id === tituloAcademicoProfesor.tablaElementoCatalogo.id
+                        ? tituloAcademicoProfesor.tablaElementoCatalogo
+                        : tablaElementoCatalogoOption
+                    " v-for="tablaElementoCatalogoOption in listaTiposTitulosAcademicos"
+                      :key="tablaElementoCatalogoOption.id">
+                      {{ tablaElementoCatalogoOption.nombre }}
+                    </option>
+                  </select>
+                  <div
+                    v-if="$v.tituloAcademicoProfesor.tablaElementoCatalogo.$anyDirty && $v.tituloAcademicoProfesor.tablaElementoCatalogo.$invalid">
+                    <small class="form-text text-danger"
+                      v-if="!$v.tituloAcademicoProfesor.tablaElementoCatalogo.required"
+                      v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                  </div>
+                </div>
+                <div class="col-3 form-group">
+                  <label class="form-control-label campo_requerido" for="paises"
+                    v-text="$t('profesor.popups.labels.paiseTitulo')"></label>
+                  <select class="form-control" id="paises" data-cy="paises" name="paises"
+                    v-model="tituloAcademicoProfesor.paises" @change="checkCamposFormularioTitulosAcademicos" required>
+                    <option v-if="!tituloAcademicoProfesor.paises" v-bind:value="null" selected></option>
+                    <option v-bind:value="
+                      tituloAcademicoProfesor.paises && paisesOption.id === tituloAcademicoProfesor.paises.id
+                        ? tituloAcademicoProfesor.paises
+                        : paisesOption
+                    " v-for="paisesOption in listaPaises" :key="paisesOption.id">
+                      {{ paisesOption.nombrePais }}
+                    </option>
+                  </select>
+                  <div v-if="$v.tituloAcademicoProfesor.paises.$anyDirty && $v.tituloAcademicoProfesor.paises.$invalid">
+                    <small class="form-text text-danger" v-if="!$v.tituloAcademicoProfesor.paises.required"
+                      v-text="$t('entity.validation.required')">
+                      This field is required.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div slot="modal-footer">
+          <div class="container_spinner d-flex align-items-center justify-content-center px-3">
+            <b-spinner v-if="isSaveTituloAcademico" type="grow" label="Cargando" variant="danger"></b-spinner>
+          </div>
+          <button v-if="!isSaveTituloAcademico" type="button" class="btn btn_subir_documento"
+            id="programaSubirDocumento" data-cy="entitySubirDocumentoButton" v-text="$t('entity.action.save')"
+            v-on:click="guardarTituloAcademico()"
+            :disabled="$v.tituloAcademicoProfesor.$invalid || isSaveTituloAcademico">
+            guardar
+          </button>
+          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
+            v-on:click="closePopupAgregarNuevoTituloAcademico()">
+            Cancel
+          </button>
+        </div>
+      </b-modal>
     </section>
   </div>
 </template>

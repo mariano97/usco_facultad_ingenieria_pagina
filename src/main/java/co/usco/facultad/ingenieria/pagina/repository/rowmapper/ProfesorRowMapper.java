@@ -25,8 +25,6 @@ public class ProfesorRowMapper implements BiFunction<Row, String, Profesor> {
     public Profesor apply(Row row, String prefix) {
         Profesor entity = new Profesor();
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
-        entity.setSegundoNombre(converter.fromRow(row, prefix + "_segundo_nombre", String.class));
-        entity.setSegundoApellido(converter.fromRow(row, prefix + "_segundo_apellido", String.class));
         entity.setEmailAlternativo(converter.fromRow(row, prefix + "_email_alternativo", String.class));
         entity.setActivo(converter.fromRow(row, prefix + "_activo", Boolean.class));
         entity.setPerfil(converter.fromRow(row, prefix + "_perfil", String.class));

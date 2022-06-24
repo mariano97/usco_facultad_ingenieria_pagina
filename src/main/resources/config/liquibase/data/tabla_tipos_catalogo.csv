@@ -4,3 +4,4 @@ id;nombre;estado;key_identificador
 3;Tipos documentos;true;TIPDOCS01
 4;Tipos de redes sociales;true;TIPRDSCAL
 5;Tipos de profesores;true;TIPPFR
+6;Tipos de tituloas academicos;true;TIPTLSACDS

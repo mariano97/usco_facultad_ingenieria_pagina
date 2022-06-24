@@ -69,6 +69,8 @@ interface TituloAcademicoProfesorRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<TituloAcademicoProfesor> findAllBy(Pageable pageable, Criteria criteria);
 
+    Flux<TituloAcademicoProfesor> findAllByProfesorId(Long profesorId);
+
     Mono<TituloAcademicoProfesor> findOneWithEagerRelationships(Long id);
 
     Flux<TituloAcademicoProfesor> findAllWithEagerRelationships();

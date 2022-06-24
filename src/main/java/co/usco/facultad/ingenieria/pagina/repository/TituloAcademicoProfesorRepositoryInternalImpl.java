@@ -124,6 +124,12 @@ class TituloAcademicoProfesorRepositoryInternalImpl
     }
 
     @Override
+    public Flux<TituloAcademicoProfesor> findAllByProfesorId(Long profesorId) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("profesor_id"), Conditions.just(profesorId.toString()));
+        return createQuery(null, whereClause).all();
+    }
+
+    @Override
     public Mono<TituloAcademicoProfesor> findOneWithEagerRelationships(Long id) {
         return findById(id);
     }

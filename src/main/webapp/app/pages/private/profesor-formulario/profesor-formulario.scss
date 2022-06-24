@@ -64,6 +64,125 @@
       }
     }
   }
+  .seccion_estudios_profesor {
+    margin-top: 2.5rem;
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+    button {
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+
+      &.btn_agregar_estudio_profesor {
+        width: 320px;
+        background: $color-red;
+        color: $color-amarillo;
+
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+    .contenido_listado_estudios {
+      .titulo_academico_item {
+        margin-bottom: 1rem;
+
+        .container_name_titulo {
+          max-width: calc(100% - 260px) !important;
+
+          h3 {
+            color: $color-dark;
+            font-size: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        a.opcion_titulo_academico {
+          padding: 0.5rem;
+
+          img {
+            max-width: 30px;
+
+          }
+
+          &:hover {
+            background-color: $color-red-light;
+          }
+        }
+      }
+    }
+  }
+  .tab {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    overflow: hidden;
+
+    &-label {
+      border-radius: 16px;
+      border: 1px solid $color-red;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      padding: 1em;
+      background: $midnight;
+      font-weight: bold;
+      cursor: pointer;
+
+      /* Icon */
+      &:hover {
+        background: darken($color-gris-light, 10%);
+      }
+
+      &::after {
+        content: '\276F';
+        width: 1em;
+        height: 1em;
+        text-align: center;
+        transition: all 0.35s;
+      }
+    }
+
+    &-content {
+      max-height: 0;
+      padding: auto;
+      color: $midnight;
+      background: $midnight;
+      transition: all 0.35s;
+      width: 100%;
+      //margin-left: 5%;
+    }
+
+    input:checked {
+      +.tab-label {
+
+        //background: darken($midnight, 10%);
+        // border: 1px solid #171f22;
+        &::after {
+          transform: rotate(90deg);
+        }
+      }
+
+      ~.tab-content {
+        max-height: 110vh;
+        padding: 1em;
+      }
+
+      ~.mostrar {
+        display: block;
+      }
+    }
+
+    input[type='checkbox'] {
+      position: absolute;
+      opacity: 0;
+      z-index: -1;
+    }
+  }
   .btn_editar {
     width: 150px;
     height: 50px;

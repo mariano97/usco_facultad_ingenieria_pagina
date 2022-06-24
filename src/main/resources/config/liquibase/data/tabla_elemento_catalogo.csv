@@ -13,3 +13,7 @@ id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
 12;YouTube;RDSCALYUTBE;true;4
 13;Profesor de Planta;PRFRPLT;true;5
 14;Profesor de Suplente;PRFRSPLT;true;5
+15;Doctorado;TLSACDTRD;true;6
+16;Pregrado;TLSACDPGD;true;6
+17;Postgrado;TLSACDPSGD;true;6
+18;Maestria;TLSACDMTRA;true;6

@@ -5,8 +5,23 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ITituloAcademicoProfesor } from '@/shared/model/titulo-academico-profesor.model';
 
 const baseApiUrl = 'api/titulo-academico-profesors';
+const openBaseApiUrl = 'api/open/titulo-academico-profesors';
 
 export default class TituloAcademicoProfesorService {
+  public findAllByProfesorId(isAuthenticated: boolean, profesorId: number): Promise<ITituloAcademicoProfesor[]> {
+    const url = isAuthenticated ? baseApiUrl : openBaseApiUrl;
+    return new Promise<ITituloAcademicoProfesor[]>((resolve, reject) => {
+      axios
+        .get(`${url}/by-profesor-id/${profesorId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public find(id: number): Promise<ITituloAcademicoProfesor> {
     return new Promise<ITituloAcademicoProfesor>((resolve, reject) => {
       axios

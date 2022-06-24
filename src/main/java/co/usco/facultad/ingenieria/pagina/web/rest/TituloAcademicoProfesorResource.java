@@ -204,6 +204,20 @@ public class TituloAcademicoProfesorResource {
             );
     }
 
+    @GetMapping(value = {
+        "/titulo-academico-profesors/by-profesor-id/{id}",
+        "/open/titulo-academico-profesors/by-profesor-id/{id}"
+    })
+    public Mono<ResponseEntity<List<TituloAcademicoProfesorDTO>>> getAllByProfesorId(@PathVariable("id") Long profesorId) {
+        return tituloAcademicoProfesorService
+            .findAllByProfesorId(profesorId)
+            .collectList()
+            .map(tituloAcademicoProfesorDTOS ->
+                ResponseEntity
+                    .ok()
+                    .body(tituloAcademicoProfesorDTOS));
+    }
+
     /**
      * {@code GET  /titulo-academico-profesors/:id} : get the "id" tituloAcademicoProfesor.
      *
