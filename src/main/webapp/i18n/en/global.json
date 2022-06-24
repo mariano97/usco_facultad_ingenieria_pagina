@@ -20,6 +20,7 @@
         "estados": "Estados",
         "ciudad": "Ciudad",
         "tituloAcademicoProfesor": "Titulo Academico Profesor",
+        "cursoMateria": "Curso Materia",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

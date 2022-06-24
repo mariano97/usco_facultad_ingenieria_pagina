@@ -31,14 +31,15 @@
       "Paises",
       "Estados",
       "Ciudad",
-      "TituloAcademicoProfesor"
+      "TituloAcademicoProfesor",
+      "CursoMateria"
     ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.8.1",
     "jwtSecretKey": "MzliNzI1MDliZDIxOGNlODEwNjJlNzlkNzI2MmEyYmM3NTZlMzdjNTk2ZWRkOGZlMTZjODEzYWFjNjEzMGEwY2RiMTU2MGFhZjlmMGI3NmI5NzhmMTU0ODliYjZhNDE1NDBhZjZkYWQ2YTk4ZmMxOTM4ZTc5NDE5Yzk5MGMxZGU=",
     "languages": ["es", "en"],
-    "lastLiquibaseTimestamp": 1655953440000,
+    "lastLiquibaseTimestamp": 1656081399000,
     "messageBroker": false,
     "nativeLanguage": "es",
     "otherModules": [],

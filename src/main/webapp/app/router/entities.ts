@@ -77,6 +77,12 @@ const TituloAcademicoProfesor = () => import('@/entities/titulo-academico-profes
 const TituloAcademicoProfesorUpdate = () => import('@/entities/titulo-academico-profesor/titulo-academico-profesor-update.vue');
 // prettier-ignore
 const TituloAcademicoProfesorDetails = () => import('@/entities/titulo-academico-profesor/titulo-academico-profesor-details.vue');
+// prettier-ignore
+const CursoMateria = () => import('@/entities/curso-materia/curso-materia.vue');
+// prettier-ignore
+const CursoMateriaUpdate = () => import('@/entities/curso-materia/curso-materia-update.vue');
+// prettier-ignore
+const CursoMateriaDetails = () => import('@/entities/curso-materia/curso-materia-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -371,6 +377,30 @@ export default {
       path: 'titulo-academico-profesor/:tituloAcademicoProfesorId/view',
       name: 'TituloAcademicoProfesorView',
       component: TituloAcademicoProfesorDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'curso-materia',
+      name: 'CursoMateria',
+      component: CursoMateria,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'curso-materia/new',
+      name: 'CursoMateriaCreate',
+      component: CursoMateriaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'curso-materia/:cursoMateriaId/edit',
+      name: 'CursoMateriaEdit',
+      component: CursoMateriaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'curso-materia/:cursoMateriaId/view',
+      name: 'CursoMateriaView',
+      component: CursoMateriaDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

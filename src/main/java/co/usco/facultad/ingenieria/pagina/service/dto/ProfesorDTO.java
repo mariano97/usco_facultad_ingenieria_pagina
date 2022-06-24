@@ -11,10 +11,6 @@ public class ProfesorDTO implements Serializable {
 
     private Long id;
 
-    private String segundoNombre;
-
-    private String segundoApellido;
-
     private String emailAlternativo;
 
     @NotNull(message = "must not be null")
@@ -40,22 +36,6 @@ public class ProfesorDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSegundoNombre() {
-        return segundoNombre;
-    }
-
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
     }
 
     public String getEmailAlternativo() {
@@ -148,8 +128,6 @@ public class ProfesorDTO implements Serializable {
     public String toString() {
         return "ProfesorDTO{" +
             "id=" + getId() +
-            ", segundoNombre='" + getSegundoNombre() + "'" +
-            ", segundoApellido='" + getSegundoApellido() + "'" +
             ", emailAlternativo='" + getEmailAlternativo() + "'" +
             ", activo='" + getActivo() + "'" +
             ", perfil='" + getPerfil() + "'" +

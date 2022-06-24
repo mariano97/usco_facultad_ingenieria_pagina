@@ -1,0 +1,27 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "cursoMateria": {
+      "home": {
+        "title": "Curso Materias",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Curso Materia",
+        "createOrEditLabel": "Create or edit a Curso Materia",
+        "notFound": "No Curso Materias found"
+      },
+      "created": "A new Curso Materia is created with identifier {{ param }}",
+      "updated": "A Curso Materia is updated with identifier {{ param }}",
+      "deleted": "A Curso Materia is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Curso Materia {{ id }}?"
+      },
+      "detail": {
+        "title": "Curso Materia"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "numeroCreditos": "Numero Creditos",
+      "semestreImpartida": "Semestre Impartida",
+      "nivelAcademico": "Nivel Academico"
+    }
+  }
+}
