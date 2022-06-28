@@ -8,6 +8,8 @@ const SedesLista = () => import('@/pages/private/sedes-lista/sedes-lista.vue');
 const SedesFormulario = () => import('@/pages/private/sedes-formulario/sedes-formulario.vue');
 const ProfesoresLista = () => import('@/pages/private/profesores-lista/profesores-lista.vue');
 const ProfesorFormulario = () => import('@/pages/private/profesor-formulario/profesor-formulario.vue');
+const CursoMateriaLista = () => import('@/pages/private/curso-materias-lista/curso-materias-lista.vue');
+const CursosMateriasFormulario = () => import('@/pages/private/curos-materias-formulario/curos-materias-formulario.vue');
 
 export default {
   path: 'ingreso',
@@ -71,6 +73,24 @@ export default {
       path: 'profesores-crear',
       name: 'usuario_profesores_crear',
       component: ProfesorFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'materias-lista',
+      name: 'curso_materias_lista',
+      component: CursoMateriaLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'materias-formulario',
+      name: 'curso_materias_descripcion',
+      component: CursosMateriasFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'materias-formulario/:materiaId',
+      name: 'curso_materias_descripcion_updated',
+      component: CursosMateriasFormulario,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
   ],

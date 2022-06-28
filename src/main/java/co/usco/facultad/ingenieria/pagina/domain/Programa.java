@@ -107,7 +107,7 @@ public class Programa implements Serializable {
     private Set<Sede> sedes = new HashSet<>();
 
     @Transient
-    @JsonIgnoreProperties(value = { "tablaElementoCatalogo", "facultad", "programas" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "tablaElementoCatalogo", "facultad", "programas", "cursoMaterias" }, allowSetters = true)
     private Set<Profesor> profesors = new HashSet<>();
 
     @Column("nivel_formacion_id")

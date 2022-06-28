@@ -54,6 +54,10 @@ public class Profesor implements Serializable {
     @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
     private Set<Programa> programas = new HashSet<>();
 
+    @Transient
+    @JsonIgnoreProperties(value = { "nivelAcademico", "profesors" }, allowSetters = true)
+    private Set<CursoMateria> cursoMaterias = new HashSet<>();
+
     @Column("tabla_elemento_catalogo_id")
     private Long tablaElementoCatalogoId;
 
@@ -209,6 +213,31 @@ public class Profesor implements Serializable {
     public Profesor removePrograma(Programa programa) {
         this.programas.remove(programa);
         programa.getProfesors().remove(this);
+        return this;
+    }
+
+    public Set<CursoMateria> getCursoMaterias() {
+        return this.cursoMaterias;
+    }
+
+    public void setCursoMaterias(Set<CursoMateria> cursoMaterias) {
+        this.cursoMaterias = cursoMaterias;
+    }
+
+    public Profesor cursoMaterias(Set<CursoMateria> cursoMaterias) {
+        this.setCursoMaterias(cursoMaterias);
+        return this;
+    }
+
+    public Profesor addCursoMateria(CursoMateria cursoMateria) {
+        this.cursoMaterias.add(cursoMateria);
+        cursoMateria.getProfesors().add(this);
+        return this;
+    }
+
+    public Profesor removeCursoMateria(CursoMateria cursoMateria) {
+        this.cursoMaterias.remove(cursoMateria);
+        cursoMateria.getProfesors().remove(this);
         return this;
     }
 

@@ -56,6 +56,14 @@
       "ownerSide": false,
       "relationshipName": "programa",
       "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "cursoMateria",
+      "otherEntityRelationshipName": "profesor",
+      "ownerSide": true,
+      "relationshipName": "cursoMateria",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

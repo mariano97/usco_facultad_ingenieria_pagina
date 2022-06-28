@@ -13,6 +13,9 @@ import { IFacultad } from '@/shared/model/facultad.model';
 import ProgramaService from '@/entities/programa/programa.service';
 import { IPrograma } from '@/shared/model/programa.model';
 
+import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
+import { ICursoMateria } from '@/shared/model/curso-materia.model';
+
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import ProfesorService from './profesor.service';
 
@@ -60,6 +63,10 @@ export default class ProfesorUpdate extends Vue {
   @Inject('programaService') private programaService: () => ProgramaService;
 
   public programas: IPrograma[] = [];
+
+  @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
+
+  public cursoMaterias: ICursoMateria[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -80,6 +87,7 @@ export default class ProfesorUpdate extends Vue {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.profesor.cursoMaterias = [];
   }
 
   public save(): void {
@@ -156,5 +164,17 @@ export default class ProfesorUpdate extends Vue {
       .then(res => {
         this.programas = res.data;
       });
+    this.cursoMateriaService()
+      .retrieve()
+      .then(res => {
+        this.cursoMaterias = res.data;
+      });
+  }
+
+  public getSelected(selectedVals, option): any {
+    if (selectedVals) {
+      return selectedVals.find(value => option.id === value.id) ?? option;
+    }
+    return option;
   }
 }

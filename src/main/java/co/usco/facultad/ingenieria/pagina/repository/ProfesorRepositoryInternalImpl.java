@@ -1,7 +1,9 @@
 package co.usco.facultad.ingenieria.pagina.repository;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
+import static org.springframework.data.relational.core.query.Query.query;
 
+import co.usco.facultad.ingenieria.pagina.domain.CursoMateria;
 import co.usco.facultad.ingenieria.pagina.domain.Profesor;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.FacultadRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.ProfesorRowMapper;
@@ -51,6 +53,12 @@ class ProfesorRepositoryInternalImpl extends SimpleR2dbcRepository<Profesor, Lon
     private static final Table entityTable = Table.aliased("profesor", EntityManager.ENTITY_ALIAS);
     private static final Table tablaElementoCatalogoTable = Table.aliased("tabla_elemento_catalogo", "tablaElementoCatalogo");
     private static final Table facultadTable = Table.aliased("facultad", "facultad");
+
+    private static final EntityManager.LinkTable cursoMateriaLink = new EntityManager.LinkTable(
+        "rel_profesor__curso_materia",
+        "profesor_id",
+        "curso_materia_id"
+    );
 
     public ProfesorRepositoryInternalImpl(
         R2dbcEntityTemplate template,
@@ -139,6 +147,22 @@ class ProfesorRepositoryInternalImpl extends SimpleR2dbcRepository<Profesor, Lon
 
     @Override
     public <S extends Profesor> Mono<S> save(S entity) {
-        return super.save(entity);
+        return super.save(entity).flatMap((S e) -> updateRelations(e));
+    }
+
+    protected <S extends Profesor> Mono<S> updateRelations(S entity) {
+        Mono<Void> result = entityManager
+            .updateLinkTable(cursoMateriaLink, entity.getId(), entity.getCursoMaterias().stream().map(CursoMateria::getId))
+            .then();
+        return result.thenReturn(entity);
+    }
+
+    @Override
+    public Mono<Void> deleteById(Long entityId) {
+        return deleteRelations(entityId).then(super.deleteById(entityId));
+    }
+
+    protected Mono<Void> deleteRelations(Long entityId) {
+        return entityManager.deleteFromLinkTable(cursoMateriaLink, entityId);
     }
 }

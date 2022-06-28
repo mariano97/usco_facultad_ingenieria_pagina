@@ -1,7 +1,9 @@
 package co.usco.facultad.ingenieria.pagina.service.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.*;
 
 /**
@@ -29,6 +31,8 @@ public class ProfesorDTO implements Serializable {
     private TablaElementoCatalogoDTO tablaElementoCatalogo;
 
     private FacultadDTO facultad;
+
+    private Set<CursoMateriaDTO> cursoMaterias = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -102,6 +106,14 @@ public class ProfesorDTO implements Serializable {
         this.facultad = facultad;
     }
 
+    public Set<CursoMateriaDTO> getCursoMaterias() {
+        return cursoMaterias;
+    }
+
+    public void setCursoMaterias(Set<CursoMateriaDTO> cursoMaterias) {
+        this.cursoMaterias = cursoMaterias;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -136,6 +148,7 @@ public class ProfesorDTO implements Serializable {
             ", userId=" + getUserId() +
             ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
             ", facultad=" + getFacultad() +
+            ", cursoMaterias=" + getCursoMaterias() +
             "}";
     }
 }

@@ -38,6 +38,11 @@ public interface ProfesorRepository extends ReactiveCrudRepository<Profesor, Lon
     @Query("SELECT * FROM profesor entity WHERE entity.facultad_id IS NULL")
     Flux<Profesor> findAllWhereFacultadIsNull();
 
+    @Query(
+        "SELECT entity.* FROM profesor entity JOIN rel_profesor__curso_materia joinTable ON entity.id = joinTable.curso_materia_id WHERE joinTable.curso_materia_id = :id"
+    )
+    Flux<Profesor> findByCursoMateria(Long id);
+
     @Override
     <S extends Profesor> Mono<S> save(S entity);
 

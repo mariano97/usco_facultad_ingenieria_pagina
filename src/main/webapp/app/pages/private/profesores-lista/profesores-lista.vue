@@ -8,7 +8,7 @@
         <div class="">
           <router-link :to="{ name: 'usuario_profesores_crear'  }">
             <button class="btn btn-crear-profesor d-flex align-items-center justify-content-center"
-              v-text="$t('paginas.privado.sedes-lista.buttons.button-crear')"></button>
+              v-text="$t('paginas.privado.profesores-lista.buttons.button-crear')"></button>
           </router-link>
         </div>
       </div>
@@ -28,10 +28,8 @@
                 <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nameComplete'">
                 </jhi-sort-indicator>
               </th>
-              <th scope="col" v-on:click="changeOrder('lastName')">
-                <span v-text="$t('userManagement.lastName')">Email</span>
-                <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'lastName'">
-                </jhi-sort-indicator>
+              <th scope="col">
+                <span v-text="$t('userManagement.roles')"></span>
               </th>
             </tr>
           </thead>
@@ -44,6 +42,17 @@
             </router-link>
           </tbody>
         </table>
+      </div>
+      <div class="d-flex justify-content-end pr-4 mt-3 content-paginacion" v-show="usuarios && usuarios.length > 0">
+        <div class="" style="width: fit-content;">
+          <div class="row justify-content-center">
+            <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>
+          </div>
+          <div class="row justify-content-center">
+            <b-pagination size="md" :total-rows="totalItems" v-model="page" :per-page="itemsPerPage"
+              :change="loadPage(page)"></b-pagination>
+          </div>
+        </div>
       </div>
     </section>
   </div>

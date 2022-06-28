@@ -30,6 +30,13 @@
       "relationshipName": "nivelAcademico",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityName": "profesor",
+      "otherEntityRelationshipName": "cursoMateria",
+      "ownerSide": false,
+      "relationshipName": "profesor",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

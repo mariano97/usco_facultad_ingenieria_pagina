@@ -7,6 +7,9 @@ import AlertService from '@/shared/alert/alert.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 
+import ProfesorService from '@/entities/profesor/profesor.service';
+import { IProfesor } from '@/shared/model/profesor.model';
+
 import { ICursoMateria, CursoMateria } from '@/shared/model/curso-materia.model';
 import CursoMateriaService from './curso-materia.service';
 
@@ -41,6 +44,10 @@ export default class CursoMateriaUpdate extends Vue {
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
 
   public tablaElementoCatalogos: ITablaElementoCatalogo[] = [];
+
+  @Inject('profesorService') private profesorService: () => ProfesorService;
+
+  public profesors: IProfesor[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -126,6 +133,11 @@ export default class CursoMateriaUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.tablaElementoCatalogos = res.data;
+      });
+    this.profesorService()
+      .retrieve()
+      .then(res => {
+        this.profesors = res.data;
       });
   }
 }

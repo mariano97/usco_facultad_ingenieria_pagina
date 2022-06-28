@@ -17,3 +17,6 @@ id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
 16;Pregrado;TLSACDPGD;true;6
 17;Postgrado;TLSACDPSGD;true;6
 18;Maestria;TLSACDMTRA;true;6
+19;Pregrado;NVADMCPGD;true;7
+20;Maestria;NVADMCMTR;true;7
+21;Postgrado;NVADMCPTGD;true;7

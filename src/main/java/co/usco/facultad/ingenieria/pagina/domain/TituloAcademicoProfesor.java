@@ -38,7 +38,7 @@ public class TituloAcademicoProfesor implements Serializable {
     private TablaElementoCatalogo tablaElementoCatalogo;
 
     @Transient
-    @JsonIgnoreProperties(value = { "tablaElementoCatalogo", "facultad", "programas" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "tablaElementoCatalogo", "facultad", "programas", "cursoMaterias" }, allowSetters = true)
     private Profesor profesor;
 
     @Transient

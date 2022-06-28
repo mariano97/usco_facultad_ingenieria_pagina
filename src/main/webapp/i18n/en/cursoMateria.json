@@ -21,7 +21,8 @@
       "nombre": "Nombre",
       "numeroCreditos": "Numero Creditos",
       "semestreImpartida": "Semestre Impartida",
-      "nivelAcademico": "Nivel Academico"
+      "nivelAcademico": "Nivel Academico",
+      "profesor": "Profesor"
     }
   }
 }

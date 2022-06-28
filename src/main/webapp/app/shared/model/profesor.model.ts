@@ -1,6 +1,7 @@
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 import { IFacultad } from '@/shared/model/facultad.model';
 import { IPrograma } from '@/shared/model/programa.model';
+import { ICursoMateria } from '@/shared/model/curso-materia.model';
 
 export interface IProfesor {
   id?: number;
@@ -13,6 +14,7 @@ export interface IProfesor {
   tablaElementoCatalogo?: ITablaElementoCatalogo;
   facultad?: IFacultad;
   programas?: IPrograma[] | null;
+  cursoMaterias?: ICursoMateria[] | null;
 }
 
 export class Profesor implements IProfesor {
@@ -26,7 +28,8 @@ export class Profesor implements IProfesor {
     public userId?: number,
     public tablaElementoCatalogo?: ITablaElementoCatalogo,
     public facultad?: IFacultad,
-    public programas?: IPrograma[] | null
+    public programas?: IPrograma[] | null,
+    public cursoMaterias?: ICursoMateria[] | null
   ) {
     this.activo = this.activo ?? false;
   }

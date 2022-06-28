@@ -202,6 +202,7 @@
           "programas": "Programas",
           "profesores": "Profesores",
           "sedes": "Sedes",
+          "materias": "Materias",
           "salir": "Salir"
         }
       },
@@ -229,7 +230,16 @@
         }
       },
       "profesores-lista": {
-        "title-page": "Lista de profesores"
+        "title-page": "Lista de profesores",
+        "buttons": {
+          "button-crear": "Crear profesor"
+        }
+      },
+      "materias-lista": {
+        "title-page": "Lista de materias",
+        "buttons": {
+          "button-crear": "Crear materia"
+        }
       }
     }
   }

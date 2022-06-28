@@ -188,6 +188,7 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('userManagement.updated', { param: res.adminUserDTO.email });
           this.$root.$bvToast.toast(message.toString(), {

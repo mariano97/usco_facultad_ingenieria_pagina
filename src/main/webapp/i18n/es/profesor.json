@@ -56,7 +56,8 @@
       "userId": "User Id",
       "tablaElementoCatalogo": "Tabla Elemento Catalogo",
       "facultad": "Facultad",
-      "programa": "Programa"
+      "programa": "Programa",
+      "cursoMateria": "Curso Materia"
     }
   }
 }

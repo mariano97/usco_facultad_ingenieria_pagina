@@ -19,5 +19,17 @@
                                  constraintName="fk_profesor__facultad_id"
                                  referencedColumnNames="id"
                                  referencedTableName="facultad"/>
+
+        <addForeignKeyConstraint baseColumnNames="profesor_id"
+                                 baseTableName="rel_profesor__curso_materia"
+                                 constraintName="fk_rel_profesor__curso_materia__profesor_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="profesor"/>
+
+        <addForeignKeyConstraint baseColumnNames="curso_materia_id"
+                                 baseTableName="rel_profesor__curso_materia"
+                                 constraintName="fk_rel_profesor__curso_materia__curso_materia_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="curso_materia"/>
     </changeSet>
 </databaseChangeLog>

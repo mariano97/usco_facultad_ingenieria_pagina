@@ -2,6 +2,8 @@ package co.usco.facultad.ingenieria.pagina.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -35,6 +37,10 @@ public class CursoMateria implements Serializable {
     @Transient
     @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
     private TablaElementoCatalogo nivelAcademico;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "tablaElementoCatalogo", "facultad", "programas", "cursoMaterias" }, allowSetters = true)
+    private Set<Profesor> profesors = new HashSet<>();
 
     @Column("nivel_academico_id")
     private Long nivelAcademicoId;
@@ -104,6 +110,37 @@ public class CursoMateria implements Serializable {
 
     public CursoMateria nivelAcademico(TablaElementoCatalogo tablaElementoCatalogo) {
         this.setNivelAcademico(tablaElementoCatalogo);
+        return this;
+    }
+
+    public Set<Profesor> getProfesors() {
+        return this.profesors;
+    }
+
+    public void setProfesors(Set<Profesor> profesors) {
+        if (this.profesors != null) {
+            this.profesors.forEach(i -> i.removeCursoMateria(this));
+        }
+        if (profesors != null) {
+            profesors.forEach(i -> i.addCursoMateria(this));
+        }
+        this.profesors = profesors;
+    }
+
+    public CursoMateria profesors(Set<Profesor> profesors) {
+        this.setProfesors(profesors);
+        return this;
+    }
+
+    public CursoMateria addProfesor(Profesor profesor) {
+        this.profesors.add(profesor);
+        profesor.getCursoMaterias().add(this);
+        return this;
+    }
+
+    public CursoMateria removeProfesor(Profesor profesor) {
+        this.profesors.remove(profesor);
+        profesor.getCursoMaterias().remove(this);
         return this;
     }
 

@@ -38,7 +38,6 @@ export default class ProfesoresLista extends Vue {
       .getAllUsuariosProfesor(this.$store.getters.authenticated, paginacionQuery, [Authority.PROFESOR], nameCompleteFilter)
       .then(res => {
         this.usuarios = res.data;
-        console.log(this.usuarios);
         this.totalItems = Number(res.headers['x-total-count']);
         this.queryCount = this.totalItems;
       })

@@ -10,6 +10,8 @@ import CursoMateriaClass from '@/entities/curso-materia/curso-materia-update.com
 import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
 
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+
+import ProfesorService from '@/entities/profesor/profesor.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -46,6 +48,11 @@ describe('Component Tests', () => {
 
           tablaElementoCatalogoService: () =>
             sinon.createStubInstance<TablaElementoCatalogoService>(TablaElementoCatalogoService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          profesorService: () =>
+            sinon.createStubInstance<ProfesorService>(ProfesorService, {
               retrieve: sinon.stub().resolves({}),
             } as any),
         },
