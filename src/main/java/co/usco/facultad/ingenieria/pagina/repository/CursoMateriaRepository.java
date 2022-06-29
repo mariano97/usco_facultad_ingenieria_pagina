@@ -56,6 +56,8 @@ interface CursoMateriaRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<CursoMateria> findAllBy(Pageable pageable, Criteria criteria);
 
+    Flux<CursoMateria> findAllByProfesorRelation(Long programaId);
+
     Mono<CursoMateria> findOneWithEagerRelationships(Long id);
 
     Flux<CursoMateria> findAllWithEagerRelationships();

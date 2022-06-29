@@ -5,8 +5,37 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ICursoMateria } from '@/shared/model/curso-materia.model';
 
 const baseApiUrl = 'api/curso-materias';
+const openBaseApiUrl = 'api/open/curso-materias';
 
 export default class CursoMateriaService {
+  public findAllByProfesorId(isAutenticate: boolean, profesorId: number): Promise<ICursoMateria[]> {
+    const url = isAutenticate ? baseApiUrl : openBaseApiUrl;
+    return new Promise<ICursoMateria[]>((resolve, reject) => {
+      axios
+        .get(`${url}/by-profesor-id/${profesorId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public findAllMateriasPagination(isAutenticate: boolean, pagination?: any): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : openBaseApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(url + `?${buildPaginationQueryOpts(pagination)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public find(id: number): Promise<ICursoMateria> {
     return new Promise<ICursoMateria>((resolve, reject) => {
       axios

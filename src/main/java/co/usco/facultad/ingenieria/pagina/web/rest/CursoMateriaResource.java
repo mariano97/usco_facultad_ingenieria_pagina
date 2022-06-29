@@ -177,7 +177,10 @@ public class CursoMateriaResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of cursoMaterias in body.
      */
-    @GetMapping("/curso-materias")
+    @GetMapping(value = {
+        "/curso-materias",
+        "/open/curso-materias"
+    })
     public Mono<ResponseEntity<List<CursoMateriaDTO>>> getAllCursoMaterias(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request,
@@ -198,6 +201,18 @@ public class CursoMateriaResource {
                     )
                     .body(countWithEntities.getT2())
             );
+    }
+
+    @GetMapping(value = {
+        "/curso-materias/by-profesor-id/{id}",
+        "/open/curso-materias/by-profesor-id/{id}"
+    })
+    public Mono<ResponseEntity<List<CursoMateriaDTO>>> getAllByProfesorId(@PathVariable("id") Long profesorId) {
+        return cursoMateriaService.findAllByProfesorIdRelation(profesorId)
+            .collectList()
+            .map(cursoMateriaDTOS -> ResponseEntity
+                .ok()
+                .body(cursoMateriaDTOS));
     }
 
     /**

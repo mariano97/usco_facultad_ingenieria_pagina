@@ -65,6 +65,12 @@ public class CursoMateriaServiceImpl implements CursoMateriaService {
         return cursoMateriaRepository.findAllBy(pageable).map(cursoMateriaMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<CursoMateriaDTO> findAllByProfesorIdRelation(Long profesorId) {
+        return cursoMateriaRepository.findAllByProfesorRelation(profesorId).map(cursoMateriaMapper::toDto);
+    }
+
     public Flux<CursoMateriaDTO> findAllWithEagerRelationships(Pageable pageable) {
         return cursoMateriaRepository.findAllWithEagerRelationships(pageable).map(cursoMateriaMapper::toDto);
     }

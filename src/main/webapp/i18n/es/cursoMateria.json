@@ -1,4 +1,14 @@
 {
+  "materias": {
+    "formulario": {
+      "labels": {
+        "semestreImpartida": "Semestre",
+        "nombre": "Nombre",
+        "numeroCreditos":"Creditos",
+        "nivelAcademico":"Nivel académico"
+      }
+    }
+  },
   "paginaFacultadIngenieriaProyectoApp": {
     "cursoMateria": {
       "home": {

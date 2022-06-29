@@ -70,7 +70,7 @@
     }
   }
 }
-
+#modalPopupAgregarMateria,
 #modalPopupCrearEstudioProfesor,
 #modalPopupCrearDocumentoPrograma,
 #modalPopupEliminarDocumentoPrograma,
@@ -80,6 +80,10 @@
     .modal-dialog {
       max-width: 80vw !important;
     }
+  }
+  .nombre_propiedad {
+    color: $color-dark;
+    font-size: 18px;
   }
   button {
     width: 200px !important;

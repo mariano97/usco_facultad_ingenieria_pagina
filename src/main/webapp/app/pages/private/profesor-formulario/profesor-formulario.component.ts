@@ -1,9 +1,12 @@
+import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
 import PaisesService from '@/entities/paises/paises.service';
+import ProfesorService from '@/entities/profesor/profesor.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import TituloAcademicoProfesorService from '@/entities/titulo-academico-profesor/titulo-academico-profesor.service';
 import AlertService from '@/shared/alert/alert.service';
 import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { DATE_FORMAT } from '@/shared/date/filters';
+import { ICursoMateria } from '@/shared/model/curso-materia.model';
 import { IPaises } from '@/shared/model/paises.model';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
@@ -86,9 +89,11 @@ const validations: any = {
   validations: validations,
 })
 export default class ProfesorFormulario extends Vue {
+  @Inject('profesorService') private profesorService: () => ProfesorService;
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('tituloAcademicoProfesorService') private tituloAcademicoProfesorService: () => TituloAcademicoProfesorService;
+  @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
   @Inject('paisesService') private paisesService: () => PaisesService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('utilsService') private utilsService: () => UtilsService;
@@ -102,12 +107,16 @@ export default class ProfesorFormulario extends Vue {
   public isModeEdit = false;
   public enableEdit = true;
   public isSaveTituloAcademico = false;
+  public isAgregarCurso = false;
 
   public tiposProfesoresElemento: ITablaElementoCatalogo[] = [];
   public listaPaises: IPaises[] = [];
   public listaTiposTitulosAcademicos: ITablaElementoCatalogo[] = [];
+  public listaCursosMaterias: ICursoMateria[] = [];
 
   public titulosAcademicosProfesorLista: ITituloAcademicoProfesor[] = [];
+
+  public cursoMateriaSeleccionado: ICursoMateria = {};
 
   public dateMax = dayjs().format(DATE_FORMAT);
 
@@ -121,6 +130,7 @@ export default class ProfesorFormulario extends Vue {
       vm.consultarTiposProfesores();
       vm.consultarPaises();
       vm.consultarTipoTitulosAcademicos();
+      vm.consultarCursosMaterias();
     });
   }
 
@@ -131,6 +141,7 @@ export default class ProfesorFormulario extends Vue {
         this.userAccount = res.adminUserDTO;
         this.profesor = res.profesorDTO;
         this.consultarTitulosAcademicosProfesor(this.profesor.id);
+        this.consultarCursosMateriaProfesor(this.profesor.id);
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
@@ -170,6 +181,26 @@ export default class ProfesorFormulario extends Vue {
       .retrieve()
       .then(res => {
         this.listaPaises = res.data;
+      });
+  }
+
+  private consultarCursosMaterias(): void {
+    this.cursoMateriaService()
+      .retrieve()
+      .then(res => {
+        this.listaCursosMaterias = res.data;
+      });
+  }
+
+  private consultarCursosMateriaProfesor(profesorId: number): void {
+    this.profesor.cursoMaterias = [];
+    this.cursoMateriaService()
+      .findAllByProfesorId(this.$store.getters.authenticated, profesorId)
+      .then(res => {
+        this.profesor.cursoMaterias = res;
+      })
+      .catch(err => {
+        this.profesor.cursoMaterias = [];
       });
   }
 
@@ -315,6 +346,68 @@ export default class ProfesorFormulario extends Vue {
     this.checkCamposFormularioTitulosAcademicos('');
   }
 
+  public filterListaCursosMaterias(): ICursoMateria[] {
+    if (this.profesor.id && this.profesor.cursoMaterias) {
+      if (this.isAgregarCurso) {
+        return this.listaCursosMaterias.filter(curso => {
+          return this.profesor.cursoMaterias.findIndex(cursoTemp => cursoTemp.id === curso.id) < 0;
+        });
+      }
+    }
+    return this.listaCursosMaterias;
+  }
+
+  public eliminarCursoMateria(cursoMaterio: ICursoMateria): void {
+    if (this.profesor.id) {
+      const indexCursoMateria = this.profesor.cursoMaterias.indexOf(cursoMaterio);
+      this.profesor.cursoMaterias.splice(indexCursoMateria, 1);
+      this.profesorService()
+        .update(this.profesor)
+        .then(res => {
+          this.profesor = res;
+          this.consultarCursosMateriaProfesor(this.profesor.id);
+        })
+        .catch(() => {
+          this.profesor.cursoMaterias.push(cursoMaterio);
+        });
+    } else {
+      if (this.profesor.cursoMaterias) {
+        const indexCurso = this.profesor.cursoMaterias.indexOf(cursoMaterio);
+        this.profesor.cursoMaterias.splice(indexCurso, 1);
+      }
+    }
+  }
+
+  public agregarCursoMateria(cursoMateria: ICursoMateria): void {
+    if (this.profesor.id) {
+      this.profesor.cursoMaterias.push(cursoMateria);
+      this.profesorService()
+        .update(this.profesor)
+        .then(res => {
+          this.profesor = res;
+          this.cursoMateriaSeleccionado = {};
+          this.consultarCursosMateriaProfesor(this.profesor.id);
+          this.closeAllPopups();
+        })
+        .catch(err => {
+          const indexCurso = this.profesor.cursoMaterias.indexOf(cursoMateria);
+          this.profesor.cursoMaterias.splice(indexCurso, 1);
+          this.cursoMateriaSeleccionado = {};
+          this.closeAllPopups();
+        });
+    } else {
+      if (this.profesor.cursoMaterias) {
+        this.profesor.cursoMaterias.push(cursoMateria);
+        this.cursoMateriaSeleccionado = {};
+        this.closeAllPopups();
+      } else {
+        this.profesor.cursoMaterias = [cursoMateria];
+        this.cursoMateriaSeleccionado = {};
+        this.closeAllPopups();
+      }
+    }
+  }
+
   public openPopupEditarNuevoTituloAcademico(tittulo: ITituloAcademicoProfesor): void {
     this.tituloAcademicoProfesor = tittulo;
     if (<any>this.$refs.modalPopupCrearEstudioProfesor) {
@@ -336,11 +429,45 @@ export default class ProfesorFormulario extends Vue {
     this.$v.$reset();
   }
 
+  public openPopupEditarCursoMateria(curso: ICursoMateria): void {
+    this.cursoMateriaSeleccionado = {};
+    if (<any>this.$refs.modalPopupAgregarMateria) {
+      (<any>this.$refs.modalPopupAgregarMateria).show();
+      this.cursoMateriaSeleccionado = curso;
+      this.isAgregarCurso = false;
+    }
+  }
+
+  public openPopupAgregarCursoMateria(): void {
+    this.cursoMateriaSeleccionado = {};
+    if (<any>this.$refs.modalPopupAgregarMateria) {
+      (<any>this.$refs.modalPopupAgregarMateria).show();
+      this.isAgregarCurso = true;
+    }
+  }
+
+  public closePopupAgregarCursoMateria(): void {
+    (<any>this.$refs.modalPopupAgregarMateria).hide();
+    this.cursoMateriaSeleccionado = {};
+    this.isAgregarCurso = false;
+  }
+
   public closeAllPopups(): void {
     this.closePopupAgregarNuevoTituloAcademico();
+    this.closePopupAgregarCursoMateria();
   }
 
   public checkCamposFormularioTitulosAcademicos(event): void {
     this.$v.$touch();
+  }
+
+  public changeCursoMateria(event): void {
+    this.cursoMateriaSeleccionado = {};
+    if (event.target.value) {
+      const listCursoMateriaFilter = this.listaCursosMaterias.filter(curso => curso.id === Number(event.target.value));
+      if (listCursoMateriaFilter.length > 0) {
+        this.cursoMateriaSeleccionado = listCursoMateriaFilter[0];
+      }
+    }
   }
 }

@@ -89,6 +89,24 @@ class CursoMateriaRepositoryInternalImpl extends SimpleR2dbcRepository<CursoMate
         return db.sql(select).map(this::process);
     }
 
+    RowsFetchSpec<CursoMateria> createQueryRelationManyToManyProfesor(Pageable pageable, Condition whereClause) {
+        List<Expression> columns = CursoMateriaSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(nivelAcademicoTable, "nivelAcademico"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(nivelAcademicoTable)
+            .on(Column.create("nivel_academico_id", entityTable))
+            .equals(Column.create("id", nivelAcademicoTable))
+            .leftOuterJoin(EntityRelationshipManager.profesorCursoMateriaRelationManyToMany)
+            .on(Column.create("id", entityTable))
+            .equals(Column.create("curso_materia_id", EntityRelationshipManager.profesorCursoMateriaRelationManyToMany));
+        // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
+        String select = entityManager.createSelect(selectFrom, CursoMateria.class, pageable, whereClause);
+        return db.sql(select).map(this::process);
+    }
+
     @Override
     public Flux<CursoMateria> findAll() {
         return findAllBy(null);
@@ -98,6 +116,12 @@ class CursoMateriaRepositoryInternalImpl extends SimpleR2dbcRepository<CursoMate
     public Mono<CursoMateria> findById(Long id) {
         Comparison whereClause = Conditions.isEqual(entityTable.column("id"), Conditions.just(id.toString()));
         return createQuery(null, whereClause).one();
+    }
+
+    @Override
+    public Flux<CursoMateria> findAllByProfesorRelation(Long programaId) {
+        Comparison whereClause = Conditions.isEqual(EntityRelationshipManager.profesorCursoMateriaRelationManyToMany.column("profesor_id"), Conditions.just(programaId.toString()));
+        return createQueryRelationManyToManyProfesor(null, whereClause).all();
     }
 
     @Override

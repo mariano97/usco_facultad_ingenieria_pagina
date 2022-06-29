@@ -116,6 +116,60 @@
       }
     }
   }
+  section.seccion_cursos_profesor {
+    margin-top: 2.5rem;
+
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+
+    button {
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+
+      &.btn_agregar_materia_profesor {
+        width: 320px;
+        background: $color-red;
+        color: $color-amarillo;
+
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+    .contenido_listado_materias {
+      .curso_materia_item {
+        margin-bottom: 1rem;
+
+        .container_name {
+          max-width: calc(100% - 260px) !important;
+
+          h3 {
+            color: $color-dark;
+            font-size: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        a.opcion_curso_materia {
+          padding: 0.5rem;
+
+          img {
+            max-width: 30px;
+
+          }
+
+          &:hover {
+            background-color: $color-red-light;
+          }
+        }
+      }
+    }
+  }
   .tab {
     margin-top: 1rem;
     margin-bottom: 1rem;

@@ -11,11 +11,13 @@
         "perfil": "Perfil",
         "oficina": "Oficina",
         "tipoProfesor": "Tipo de profesor",
-        "estudiosProfesor": "Estudios realizados"
+        "estudiosProfesor": "Estudios realizados",
+        "materiasProfesor": "Materias asignadas"
       }
     },
     "buttons": {
-      "agregarEstudio": "Agregar estudio"
+      "agregarEstudio": "Agregar estudio",
+      "agregarCursoMateria": "Agregar materia"
     },
     "popups": {
       "labels": {
@@ -23,7 +25,8 @@
         "nombreUniversidadTitulo": "Universidad",
         "yearTitulo": "Año",
         "tipoTitulo": "Tipo de titulo",
-        "paiseTitulo": "Pais"
+        "paiseTitulo": "Pais",
+        "cursoMateria": "Materia"
       }
     }
   },
