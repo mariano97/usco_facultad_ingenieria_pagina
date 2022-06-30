@@ -43,6 +43,9 @@ public class Profesor implements Serializable {
     @Column("user_id")
     private Long userId;
 
+    @Column("url_foto_profesor")
+    private String urlFotoProfesor;
+
     @Transient
     @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
     private TablaElementoCatalogo tablaElementoCatalogo;
@@ -155,6 +158,19 @@ public class Profesor implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUrlFotoProfesor() {
+        return this.urlFotoProfesor;
+    }
+
+    public Profesor urlFotoProfesor(String urlFotoProfesor) {
+        this.setUrlFotoProfesor(urlFotoProfesor);
+        return this;
+    }
+
+    public void setUrlFotoProfesor(String urlFotoProfesor) {
+        this.urlFotoProfesor = urlFotoProfesor;
     }
 
     public TablaElementoCatalogo getTablaElementoCatalogo() {
@@ -287,6 +303,7 @@ public class Profesor implements Serializable {
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", oficina='" + getOficina() + "'" +
             ", userId=" + getUserId() +
+            ", urlFotoProfesor='" + getUrlFotoProfesor() + "'" +
             "}";
     }
 }

@@ -43,6 +43,12 @@
             <span>{{ profesor.userId }}</span>
           </dd>
           <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.urlFotoProfesor')">Url Foto Profesor</span>
+          </dt>
+          <dd>
+            <span>{{ profesor.urlFotoProfesor }}</span>
+          </dd>
+          <dt>
             <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
           </dt>
           <dd>

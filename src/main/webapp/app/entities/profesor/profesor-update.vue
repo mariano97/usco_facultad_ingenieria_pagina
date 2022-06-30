@@ -128,6 +128,23 @@
           <div class="form-group">
             <label
               class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.urlFotoProfesor')"
+              for="profesor-urlFotoProfesor"
+              >Url Foto Profesor</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="urlFotoProfesor"
+              id="profesor-urlFotoProfesor"
+              data-cy="urlFotoProfesor"
+              :class="{ valid: !$v.profesor.urlFotoProfesor.$invalid, invalid: $v.profesor.urlFotoProfesor.$invalid }"
+              v-model="$v.profesor.urlFotoProfesor.$model"
+            />
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')"
               for="profesor-tablaElementoCatalogo"
               >Tabla Elemento Catalogo</label

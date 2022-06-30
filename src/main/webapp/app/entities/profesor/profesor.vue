@@ -56,6 +56,10 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.userId')">User Id</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'userId'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('urlFotoProfesor')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.urlFotoProfesor')">Url Foto Profesor</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'urlFotoProfesor'"></jhi-sort-indicator>
+            </th>
             <th scope="row" v-on:click="changeOrder('tablaElementoCatalogo.nombre')">
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
               <jhi-sort-indicator
@@ -82,6 +86,7 @@
             <td>{{ profesor.telefonoCelular }}</td>
             <td>{{ profesor.oficina }}</td>
             <td>{{ profesor.userId }}</td>
+            <td>{{ profesor.urlFotoProfesor }}</td>
             <td>
               <div v-if="profesor.tablaElementoCatalogo">
                 <router-link

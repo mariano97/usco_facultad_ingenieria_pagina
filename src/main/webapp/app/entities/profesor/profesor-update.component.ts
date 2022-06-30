@@ -34,6 +34,7 @@ const validations: any = {
       required,
       numeric,
     },
+    urlFotoProfesor: {},
     tablaElementoCatalogo: {
       required,
     },

@@ -29,6 +29,10 @@
       "fieldName": "userId",
       "fieldType": "Long",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "urlFotoProfesor",
+      "fieldType": "String"
     }
   ],
   "jpaMetamodelFiltering": false,

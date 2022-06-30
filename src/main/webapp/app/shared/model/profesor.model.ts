@@ -11,6 +11,7 @@ export interface IProfesor {
   telefonoCelular?: string | null;
   oficina?: string | null;
   userId?: number;
+  urlFotoProfesor?: string | null;
   tablaElementoCatalogo?: ITablaElementoCatalogo;
   facultad?: IFacultad;
   programas?: IPrograma[] | null;
@@ -26,6 +27,7 @@ export class Profesor implements IProfesor {
     public telefonoCelular?: string | null,
     public oficina?: string | null,
     public userId?: number,
+    public urlFotoProfesor?: string | null,
     public tablaElementoCatalogo?: ITablaElementoCatalogo,
     public facultad?: IFacultad,
     public programas?: IPrograma[] | null,

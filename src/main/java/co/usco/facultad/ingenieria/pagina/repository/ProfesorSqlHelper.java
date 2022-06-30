@@ -17,6 +17,7 @@ public class ProfesorSqlHelper {
         columns.add(Column.aliased("telefono_celular", table, columnPrefix + "_telefono_celular"));
         columns.add(Column.aliased("oficina", table, columnPrefix + "_oficina"));
         columns.add(Column.aliased("user_id", table, columnPrefix + "_user_id"));
+        columns.add(Column.aliased("url_foto_profesor", table, columnPrefix + "_url_foto_profesor"));
 
         columns.add(Column.aliased("tabla_elemento_catalogo_id", table, columnPrefix + "_tabla_elemento_catalogo_id"));
         columns.add(Column.aliased("facultad_id", table, columnPrefix + "_facultad_id"));

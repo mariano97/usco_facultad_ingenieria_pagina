@@ -28,6 +28,8 @@ public class ProfesorDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Long userId;
 
+    private String urlFotoProfesor;
+
     private TablaElementoCatalogoDTO tablaElementoCatalogo;
 
     private FacultadDTO facultad;
@@ -90,6 +92,14 @@ public class ProfesorDTO implements Serializable {
         this.userId = userId;
     }
 
+    public String getUrlFotoProfesor() {
+        return urlFotoProfesor;
+    }
+
+    public void setUrlFotoProfesor(String urlFotoProfesor) {
+        this.urlFotoProfesor = urlFotoProfesor;
+    }
+
     public TablaElementoCatalogoDTO getTablaElementoCatalogo() {
         return tablaElementoCatalogo;
     }
@@ -146,6 +156,7 @@ public class ProfesorDTO implements Serializable {
             ", telefonoCelular='" + getTelefonoCelular() + "'" +
             ", oficina='" + getOficina() + "'" +
             ", userId=" + getUserId() +
+            ", urlFotoProfesor='" + getUrlFotoProfesor() + "'" +
             ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
             ", facultad=" + getFacultad() +
             ", cursoMaterias=" + getCursoMaterias() +
