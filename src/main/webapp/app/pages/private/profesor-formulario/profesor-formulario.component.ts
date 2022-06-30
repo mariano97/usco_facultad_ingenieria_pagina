@@ -6,6 +6,7 @@ import TituloAcademicoProfesorService from '@/entities/titulo-academico-profesor
 import AlertService from '@/shared/alert/alert.service';
 import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { DATE_FORMAT } from '@/shared/date/filters';
+import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import { ICursoMateria } from '@/shared/model/curso-materia.model';
 import { IPaises } from '@/shared/model/paises.model';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
@@ -108,6 +109,11 @@ export default class ProfesorFormulario extends Vue {
   public enableEdit = true;
   public isSaveTituloAcademico = false;
   public isAgregarCurso = false;
+  public showImage = false;
+
+  public imageProfilePrograma: any;
+  private file: any = null;
+  private archvivoProgramaImageProfile: IArchivosPrograma = {};
 
   public tiposProfesoresElemento: ITablaElementoCatalogo[] = [];
   public listaPaises: IPaises[] = [];
@@ -202,6 +208,45 @@ export default class ProfesorFormulario extends Vue {
       .catch(err => {
         this.profesor.cursoMaterias = [];
       });
+  }
+
+  public changeImage(event): void {
+    console.log(event.target.files);
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+      if (!allowedImageTypes.includes(file.type)) {
+        console.log("tipo no permitido");
+        return;
+      }
+      this.file = file;
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        this.imageProfilePrograma = fileReader.result;
+        this.showImage = true;
+      };
+      console.log(this.file.type);
+      if (this.userAccount.id) {
+        this.showImage = false;
+        /*if (this.archvivoProgramaImageProfile.id) {
+          this.updateFileToStorage(
+            this.file.type,
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false),
+            this.archvivoProgramaImageProfile.id,
+            this.file
+          );
+        } else {
+          this.uploadFileToStorage(
+            this.file.type,
+            this.programa.id,
+            identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
+            this.file,
+            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false)
+          );
+        }*/
+      }
+    }
   }
 
   public guardar(): void {
