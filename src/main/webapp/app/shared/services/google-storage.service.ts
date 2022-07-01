@@ -1,3 +1,4 @@
+import { IProfesor } from '@/shared/model/profesor.model';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import axios from 'axios';
 
@@ -13,6 +14,45 @@ export default class GoogleStorageService {
           params: {
             fileName: fileName,
             generation: generation,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public downloadFileByOnlyFileName(isAutenticate: boolean, fileName: string): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : baseApiUrlOpen;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${url}/download/by-file-name`, {
+          params: {
+            fileName: fileName,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFotoPerfilProfesor(contentType: string, profesorId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<IProfesor>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/profesor-upload-files`, formdata, {
+          params: {
+            contentType: contentType,
+            profesorId: profesorId,
+            carpeta: nameCarpeta,
           },
         })
         .then(res => {

@@ -1,6 +1,60 @@
+import { Store } from 'vuex';
+import { IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { uuid } from 'vue-uuid';
 
 export default class UtilsService {
+  private listFiles: IFileDownloaded[] = [];
+
+  constructor(private store: Store<any>) {}
+
+  public obtenerFileByFileName(fileName: string): IFileDownloaded {
+    return this.store.getters.obtenerFileByFileName(fileName); // this.listFiles.find(file => file.fileName === fileName);
+  }
+
+  public existeFileInList(fileName: string): boolean {
+    console.log(fileName);
+    console.log(this.store.getters.obtenerListaFile);
+    return this.store.getters.existeFileInList(fileName);
+    /* const listaFilesFilter = this.listFiles.filter(file => file.fileName === fileName);
+    return listaFilesFilter.length > 0; */
+  }
+
+  public actualizarFileInList(fileName: string, file: any): void {
+    this.store.commit('actualizarGoogleFileInList', {
+      fileName: fileName,
+      codeGenration: undefined,
+      file: file,
+    });
+    /* const indexFile = this.listFiles.findIndex(fileTemp => fileTemp.fileName === fileName);
+    if (indexFile >= 0) {
+      this.listFiles[indexFile].file = file;
+    } */
+  }
+
+  public agregarFileToList(fileName: string, file: any): void {
+    console.log('dentro de agregar file');
+    console.log(fileName);
+    if (!this.existeFileInList(fileName)) {
+      this.store.commit('agregarGoogleFileToList', {
+        fileName: fileName,
+        codeGenration: undefined,
+        file: file,
+      });
+    } else {
+      this.actualizarFileInList(fileName, file);
+    }
+    console.log(this.store.getters.obtenerListaFile);
+    /* if (!this.existeFileInList(fileName)) {
+      this.listFiles.push({
+        file: file,
+        fileName: fileName,
+      });
+    } else {
+      this.actualizarFileInList(fileName, file);
+    }
+    console.log(this.listFiles); */
+  }
+
   public generateUUIDIdentifcator(): string {
     return uuid.v4();
   }

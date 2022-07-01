@@ -1,3 +1,4 @@
+import { fileGoogleStorageDownloadedStore } from './store/files-list-store';
 import Vuex from 'vuex';
 import VueI18n, { DateTimeFormats } from 'vue-i18n';
 import JhiFormatter from './formatter';
@@ -169,6 +170,7 @@ export function initVueXStore(vue) {
     modules: {
       accountStore,
       translationStore,
+      fileGoogleStorageDownloadedStore,
     },
   });
 }

@@ -35,8 +35,8 @@
       <form name="editForm" role="form" novalidate v-on:submit.prevent="guardar()">
         <div class="">
           <div class="container_upload_image d-flex align-items-end" :class="{ 'flex-column': showImage }">
-            <img v-if="showImage" class="image_programa" alt="imagen_programa"
-              :src="imageProfilePrograma | headerFileBase64" />
+            <img v-if="showImage" class="image_profesor" alt="imagen_programa"
+              :src="imageProfileProfesor | headerFileBase64" />
             <a id="hide" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
               <label for="file-input" class="row mx-0 align-items-center justify-content-center">
                 <div class="col-sm-auto">

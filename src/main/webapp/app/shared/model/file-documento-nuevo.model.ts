@@ -9,3 +9,8 @@ export interface IFileDocumentoNuevo {
   isValidDoc?: boolean;
   archivoDocumentoPrograma?: IArchivosPrograma;
 }
+
+export interface IFileDownloaded {
+  fileName?: string;
+  file?: any;
+}

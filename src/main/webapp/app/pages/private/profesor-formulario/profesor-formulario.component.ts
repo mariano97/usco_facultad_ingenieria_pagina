@@ -4,10 +4,12 @@ import ProfesorService from '@/entities/profesor/profesor.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
 import TituloAcademicoProfesorService from '@/entities/titulo-academico-profesor/titulo-academico-profesor.service';
 import AlertService from '@/shared/alert/alert.service';
+import carpetasarchivosConstants from '@/shared/constants/carpetasarchivos.constants';
 import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { DATE_FORMAT } from '@/shared/date/filters';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import { ICursoMateria } from '@/shared/model/curso-materia.model';
+import { IFileDocumentoNuevo, IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { IPaises } from '@/shared/model/paises.model';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
@@ -15,6 +17,7 @@ import { ITituloAcademicoProfesor, TituloAcademicoProfesor } from '@/shared/mode
 import { IUser, User } from '@/shared/model/user.model';
 import { IUsuarioProfesorFull, UsuarioProfesorFull } from '@/shared/model/usuario-profesor.model';
 import { Authority } from '@/shared/security/authority';
+import GoogleStorageService from '@/shared/services/google-storage.service';
 import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
 import UtilsService from '@/shared/services/utils.service';
 import dayjs from 'dayjs';
@@ -94,6 +97,7 @@ export default class ProfesorFormulario extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('tituloAcademicoProfesorService') private tituloAcademicoProfesorService: () => TituloAcademicoProfesorService;
+  @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
   @Inject('paisesService') private paisesService: () => PaisesService;
   @Inject('alertService') private alertService: () => AlertService;
@@ -110,10 +114,11 @@ export default class ProfesorFormulario extends Vue {
   public isSaveTituloAcademico = false;
   public isAgregarCurso = false;
   public showImage = false;
+  public showSpinnerLoader = false;
 
-  public imageProfilePrograma: any;
+  public imageProfileProfesor: any;
   private file: any = null;
-  private archvivoProgramaImageProfile: IArchivosPrograma = {};
+  public programaDocumentoNuevo: IFileDocumentoNuevo = {};
 
   public tiposProfesoresElemento: ITablaElementoCatalogo[] = [];
   public listaPaises: IPaises[] = [];
@@ -146,6 +151,7 @@ export default class ProfesorFormulario extends Vue {
       .then(res => {
         this.userAccount = res.adminUserDTO;
         this.profesor = res.profesorDTO;
+        this.downloadImageProfesorPerfil();
         this.consultarTitulosAcademicosProfesor(this.profesor.id);
         this.consultarCursosMateriaProfesor(this.profesor.id);
       })
@@ -211,42 +217,103 @@ export default class ProfesorFormulario extends Vue {
   }
 
   public changeImage(event): void {
+    this.programaDocumentoNuevo = {};
     console.log(event.target.files);
     if (event.target.files && event.target.files.length > 0) {
+      let message = '';
       const file = event.target.files[0];
-      const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-      if (!allowedImageTypes.includes(file.type)) {
+      this.programaDocumentoNuevo = {
+        file: file,
+        nombre: file.name,
+        size: file.size,
+        tipoDocumento: file.type,
+        isValidDoc: false,
+      };
+      const allowedImageTypes = carpetasarchivosConstants.TIPOS_IMAGEN_PERMITIDOS;
+      const sizeMaxFile = carpetasarchivosConstants.TAMANO_MAXIMO_ARCHIVOS;
+      if (!allowedImageTypes.includes(this.programaDocumentoNuevo.file.type)) {
         console.log("tipo no permitido");
+        message = this.$t('archivosPrograma.errors.tipyFileInvalid', {
+          filesValid: allowedImageTypes.map(type => this.utilsService().changeTypeFileToString(type)).join(', '),
+        }).toString();
+      }
+      if (this.programaDocumentoNuevo.size > sizeMaxFile) {
+        message = this.$t('archivosPrograma.errors.sizeMax', { sizeMax: this.utilsService().sizeToMB(sizeMaxFile) }).toString();
+      }
+      if (message.length > 0) {
+        this.$root.$bvToast.toast(message.toString(), {
+          toaster: 'b-toaster-top-center',
+          title: 'Info',
+          variant: 'info',
+          solid: true,
+          autoHideDelay: 5000,
+        });
         return;
       }
       this.file = file;
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        this.imageProfilePrograma = fileReader.result;
+        this.imageProfileProfesor = fileReader.result;
         this.showImage = true;
       };
-      console.log(this.file.type);
-      if (this.userAccount.id) {
+      if (this.profesor.id) {
         this.showImage = false;
-        /*if (this.archvivoProgramaImageProfile.id) {
-          this.updateFileToStorage(
-            this.file.type,
-            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false),
-            this.archvivoProgramaImageProfile.id,
-            this.file
-          );
-        } else {
-          this.uploadFileToStorage(
-            this.file.type,
-            this.programa.id,
-            identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER,
-            this.file,
-            this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, false)
-          );
-        }*/
+        this.uploadFileToStorage(
+          this.file.type,
+          this.profesor.id,
+          this.file,
+          this.generateUrlFotoPerfilFolderUpload(this.userAccount.login + '', this.userAccount.id),
+          false
+        );
       }
     }
+  }
+
+  private downloadImageProfesorPerfil(): void {
+    if (this.profesor.id && this.profesor.urlFotoProfesor) {
+      if (this.utilsService().existeFileInList(this.profesor.urlFotoProfesor)) {
+        const file: IFileDownloaded = this.utilsService().obtenerFileByFileName(this.profesor.urlFotoProfesor);
+        this.imageProfileProfesor = file.file;
+        this.showImage = true;
+      } else {
+        this.googleStorageService()
+          .downloadFileByOnlyFileName(this.$store.getters.authenticated, this.profesor.urlFotoProfesor)
+          .then(res => {
+            this.imageProfileProfesor = res;
+            this.showImage = true;
+            this.utilsService().agregarFileToList(this.profesor.urlFotoProfesor, res);
+          });
+      }
+    }
+  }
+
+  private uploadFileToStorage(contentType: string, profesorId: number, file: File, nameCarpeta: string, isPopup?: boolean): void {
+    this.showSpinnerLoader = true;
+    this.googleStorageService()
+      .uploadFotoPerfilProfesor(contentType, profesorId, nameCarpeta, file)
+      .then(res => {
+        this.profesor = res;
+        this.showSpinnerLoader = false;
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
+      })
+      .catch(err => {
+        this.showSpinnerLoader = false;
+        if (isPopup && isPopup === true) {
+          this.closeAllPopups();
+        }
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  private generateUrlFotoPerfilFolderUpload(userLogin: string, userId: number): string {
+    userLogin = userLogin.replace(' ', '-');
+    return carpetasarchivosConstants.CARPETA_BASE_PROFESOR_FOTO_PERFIL.replace('{{login}}', userLogin + '').replace(
+      '{{userId}}',
+      userId + ''
+    );
   }
 
   public guardar(): void {
@@ -293,6 +360,14 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          if (this.file !== null) {
+            this.uploadFileToStorage(
+              this.file.type,
+              this.profesor.id,
+              this.file,
+              this.generateUrlFotoPerfilFolderUpload(this.userAccount.login + '', this.userAccount.id)
+            );
+          }
           this.$router.push({ name: 'usuario_profesores_lista' });
           const message = this.$t('userManagement.created', { param: res.adminUserDTO.email });
           this.$root.$bvToast.toast(message.toString(), {

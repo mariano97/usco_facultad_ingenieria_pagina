@@ -2,6 +2,7 @@ package co.usco.facultad.ingenieria.pagina.web.rest;
 
 import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +74,7 @@ public class GoogleCloudStorageResource {
     }
 
     @PutMapping(value = {
-        "google-cloud-storage/programa-upload-files"
+        "/google-cloud-storage/programa-upload-files"
     })
     public Mono<ResponseEntity<ArchivosProgramaDTO>> updateProgramaUploadFile(@RequestParam("carpeta") String carpeta,
                                                                               @RequestParam("contentType") String contentType,
@@ -88,6 +89,24 @@ public class GoogleCloudStorageResource {
                 .body(result));
     }
 
+    @PutMapping(value = {
+        "/google-cloud-storage/profesor-upload-files"
+    })
+    public Mono<ResponseEntity<ProfesorDTO>> updateProfesorFotoPerfil(
+        @RequestParam("carpeta") String carpeta,
+        @RequestParam("contentType") String contentType,
+        @RequestParam("profesorId") Long profesorId,
+        @RequestPart("file") FilePart filePart
+    ) {
+        if (profesorId == null || profesorId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.uploadFotoProfesorToStorage(contentType, profesorId, carpeta, filePart)
+            .map(result -> ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result));
+    }
+
     @GetMapping(value = {
         "/open/google-cloud-storage/download",
         "/google-cloud-storage/download"
@@ -95,6 +114,16 @@ public class GoogleCloudStorageResource {
     public Mono<ResponseEntity<String>> downloadFile (@RequestParam("fileName") String fileName,
                                                                  @RequestParam("generation") Long generation) {
         return googleCloudStorageService.downloadFileFromStorage(fileName, generation).map(byteArrayOutputStream -> ResponseEntity
+            .ok()
+            .body(byteArrayOutputStream));
+    }
+
+    @GetMapping(value = {
+        "/open/google-cloud-storage/download/by-file-name",
+        "/google-cloud-storage/download/by-file-name"
+    })
+    public Mono<ResponseEntity<String>> downloadFileByFileName (@RequestParam("fileName") String fileName) {
+        return googleCloudStorageService.downloadFileFromStorage(fileName).map(byteArrayOutputStream -> ResponseEntity
             .ok()
             .body(byteArrayOutputStream));
     }

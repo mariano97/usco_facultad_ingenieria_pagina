@@ -3,9 +3,12 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 import co.usco.facultad.ingenieria.pagina.constants.GoogleServiceProps;
 import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
 import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
+import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.TablaElementoCatalogoDTO;
+import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -38,8 +41,11 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     private final ArchivosProgramaService archivosProgramaService;
 
-    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService) {
+    private final ProfesorService profesorService;
+
+    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService) {
         this.archivosProgramaService = archivosProgramaService;
+        this.profesorService = profesorService;
     }
 
 
@@ -139,25 +145,43 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     }
 
     @Override
+    public Mono<ProfesorDTO> uploadFotoProfesorToStorage(String contentType, Long profesorId, String carpeta, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap ->
+                profesorService.findOne(profesorId).flatMap(profesorDTO -> {
+                    if (profesorDTO.getUrlFotoProfesor() != null && !profesorDTO.getUrlFotoProfesor().isBlank()) {
+                        deleteFileOfStorage(profesorDTO.getUrlFotoProfesor())
+                            .doOnSuccess(aBoolean -> log.debug(">>>>>File Object delete")).subscribe(aBoolean -> log.debug("file eliminado"));
+                    }
+                    profesorDTO.setUrlFotoProfesor((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                    return profesorService.update(profesorDTO);
+                })
+            );
+    }
+
+    @Override
     public Mono<String> downloadFileFromStorage(String fileName, Long generation) {
         return Mono.just(storage).map(googleStorage -> {
             Blob blob = googleStorage.get(BlobId.of(bucketName, fileName, generation));
             return blob.reader();
-        }).flatMap(readChannel -> {
-            InputStream inputStream = Channels.newInputStream(readChannel);
-            byte[] content = {};
-            // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(0);
-            ByteArrayResource byteArrayResource = new ByteArrayResource(content);
-            try {
-                content = IOUtils.toByteArray(inputStream);
-                /* byteArrayOutputStream = new ByteArrayOutputStream(content.length);
-                byteArrayOutputStream.write(content, 0, content.length); */
-                byteArrayResource = new ByteArrayResource(content);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            byteArrayResource = new ByteArrayResource(content);
-            return Mono.just(Base64.getEncoder().encodeToString(content));
+        }).flatMap(this::getStreamOfFileDownloaded);
+    }
+
+    @Override
+    public Mono<String> downloadFileFromStorage(String fileName) {
+        return Mono.just(storage).map(googleStorage -> {
+            Blob blob = googleStorage.get(BlobId.of(bucketName, fileName));
+            return blob.reader();
+        }).flatMap(this::getStreamOfFileDownloaded);
+    }
+
+    @Override
+    public Mono<Boolean> deleteFileOfStorage(String fileName) {
+        return Mono.just(storage).map(googleStorage -> {
+            BlobId blobId = BlobId.of(bucketName, fileName);
+            return blobId;
+        }).flatMap(blobId -> {
+            boolean deleteStorageResult = storage.delete(blobId);
+            return Mono.just(deleteStorageResult);
         });
     }
 
@@ -179,6 +203,26 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
             .flatMap(aBoolean -> archivosProgramaService.delete(archivoProgramaId));
     }
 
+    private Mono<String> getStreamOfFileDownloaded(ReadChannel readChannel) {
+        if (readChannel == null) {
+            return Mono.just("");
+        }
+        InputStream inputStream = Channels.newInputStream(readChannel);
+        byte[] content = {};
+        // ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(0);
+        ByteArrayResource byteArrayResource = new ByteArrayResource(content);
+        try {
+            content = IOUtils.toByteArray(inputStream);
+                /* byteArrayOutputStream = new ByteArrayOutputStream(content.length);
+                byteArrayOutputStream.write(content, 0, content.length); */
+            byteArrayResource = new ByteArrayResource(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byteArrayResource = new ByteArrayResource(content);
+        return Mono.just(Base64.getEncoder().encodeToString(content));
+    }
+
     private byte[] getArrayBytesFromFile(File file) throws IOException {
         FileInputStream fl = new FileInputStream(file);
         byte[] arr = new byte[(int)file.length()];
@@ -189,6 +233,10 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     private BlobId generateBlobId(String bucketName, @Nullable String directory, String filename) {
         log.debug(">>>>>>>>>< bucketNmae: {}", bucketName);
+        String[] splitFileName = filename.split("\\.");
+        if (splitFileName[0].length() > 10) {
+            filename = splitFileName[0].substring(0, 10).concat(".").concat(splitFileName[splitFileName.length-1]);
+        }
         String filenameNew = UUID.randomUUID().toString().concat("_")
             .concat(filename.replaceAll("\\s", "_").replaceAll("[^a-zA-Z0-9\\s.-]", "_"));
         log.debug(">>>>>>> filename: {}", filename);

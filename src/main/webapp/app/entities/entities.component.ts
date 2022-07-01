@@ -38,7 +38,7 @@ export default class Entities extends Vue {
   @Provide('cursoMateriaService') private cursoMateriaService = () => new CursoMateriaService();
   // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
   @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
-  @Provide('utilsService') private utilsService = () => new UtilsService();
+  // @Provide('utilsService') private utilsService = () => new UtilsService();
   @Provide('openStreetMapService') private openStreetMapService = () => new OpenStreetMapService();
   @Provide('usuarioProfesorFullService') private usuarioProfesorFullService = () => new UsuarioProfesorFullService();
 }

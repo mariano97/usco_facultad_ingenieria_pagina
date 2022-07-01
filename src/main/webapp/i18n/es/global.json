@@ -153,6 +153,8 @@
     "idinvalid": "ID inválido",
     "idnotfound": "ID no encontrado",
     "file": {
+      "tipyFileInvalid": "Tipo de archivo invalido, los archivos validos son {{ filesValid }}",
+      "sizeMax": "El tamaño del archivo es muy grande, el maximo es {{ sizeMax }}",
       "could.not.extract": "No se pudo extraer el fichero",
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }

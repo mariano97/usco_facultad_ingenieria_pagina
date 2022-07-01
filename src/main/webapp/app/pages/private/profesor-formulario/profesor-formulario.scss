@@ -20,6 +20,38 @@
     }
   }
   section.profesor_formulario {
+    .container_upload_image {
+      background: $color-gris-light;
+      height: 350px;
+      margin-bottom: 1.5rem;
+
+      img.image_profesor {
+        max-width: 100%;
+        width: 100%;
+        height: calc(100% - 70px);
+        object-fit: cover;
+      }
+
+      a {
+        background: $color-red-light;
+        height: 70px;
+        width: 100%;
+
+        label {
+          margin: 0px;
+          width: 100%;
+          cursor: pointer;
+
+          img {
+            max-width: 30px;
+          }
+        }
+
+        &>input {
+          display: none;
+        }
+      }
+    }
     label {
       color: $color-gris;
       font-size: 20px;
