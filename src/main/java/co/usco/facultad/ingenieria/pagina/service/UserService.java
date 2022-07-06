@@ -419,6 +419,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Mono<AdminUserDTO> getOneById(Long id) {
+        return userRepository.findById(id).map(AdminUserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public Flux<AdminUserDTO> getAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auths, String nameCompleteFilter) {
         return userRepository.findAllWithAuthoritiesAndSpecicatedAuthorities(pageable, auths, nameCompleteFilter).map(AdminUserDTO::new);
     }

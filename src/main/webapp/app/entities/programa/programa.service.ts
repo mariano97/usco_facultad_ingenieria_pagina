@@ -66,6 +66,24 @@ export default class ProgramaService {
     });
   }
 
+  public findNameProgramaByCodigoSnies(isAutenticate: boolean, codigoSnies: number): Promise<string> {
+    const url = isAutenticate ? `${baseApiUrl}` : `${baseOpenApiUrl}`;
+    return new Promise<string>((resolve, reject) => {
+      axios
+        .get(`${url}/obtner-nombre`, {
+          params: {
+            codigo_snies: codigoSnies,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

@@ -1,5 +1,14 @@
 {
   "profesor": {
+    "titulos": {
+      "title_pagina_profesorado": "Docentes",
+      "title_pagina_profesorado_programa": "Docentes del programa {{programaName}}",
+      "label_busqueda_programa": "Programa",
+      "buttons": {
+        "btn_clean_field": "Limpiar campos",
+        "btn_ver": "Ver"
+      }
+    },
     "formulario": {
       "labels": {
         "primerNombre": "Primer Nombre",

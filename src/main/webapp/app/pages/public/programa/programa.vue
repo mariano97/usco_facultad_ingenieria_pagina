@@ -350,18 +350,21 @@
               </a>
             </div>
           </div>
-          <div class="col card-container-opciones-adicionales">
+          <div class="col card-container-opciones-adicionales" v-if="programa.codigoSnies">
             <div class="content_image">
               <img alt="requisitos" src="/content/images/static/book-teach.jpg" />
             </div>
-            <div class="body">
-              <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
-                <h3 v-text="$t('programa.titulos.profesores')">opcionesGrado</h3>
+            <router-link class="link_info_adicional"
+              :to="{ name: 'profesorado_lista_programa_codigo_snies', params: { programa_codigo_snies: programa.codigoSnies } }">
+              <div class="body">
+                <div class="mt-3 d-flex align-items-center justify-content-center title_opcion">
+                  <h3 v-text="$t('programa.titulos.profesores')"></h3>
+                </div>
+                <div class="mt-3 texto">
+                  <p class="m-0" v-text="$t('programa.opcionesDescripcion.profesores')"></p>
+                </div>
               </div>
-              <div class="mt-3 texto">
-                <p class="m-0" v-text="$t('programa.opcionesDescripcion.profesores')"></p>
-              </div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>

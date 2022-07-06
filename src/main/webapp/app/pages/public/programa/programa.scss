@@ -306,6 +306,24 @@
           }
         }
       }
+      .link_info_adicional {
+        &:hover {
+          text-decoration: none;
+          .body {
+            background: $primary-color;
+            .title_opcion {
+              h3 {
+                color: $color-gris-light;
+              }
+            }
+            .texto {
+              p {
+                color: $color-gris-light;
+              }
+            }
+          }
+        }
+      }
     }
   }
   .container_spinner {

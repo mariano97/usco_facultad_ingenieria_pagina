@@ -46,6 +46,8 @@ public interface UserRepository extends R2dbcRepository<User, Long>, UserReposit
 
     Mono<User> findOneByLogin(String login);
 
+    Mono<User> findById(Long id);
+
     Flux<User> findAllByIdNotNull(Pageable pageable);
 
     Flux<User> findAllByIdNotNullAndActivatedIsTrue(Pageable pageable);

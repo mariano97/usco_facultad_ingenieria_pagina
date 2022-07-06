@@ -65,12 +65,24 @@ public class ProfesorServiceImpl implements ProfesorService {
         return profesorRepository.findAllBy(pageable).map(profesorMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<ProfesorDTO> findAllByProgramaCodigoSnies(Pageable pageable, Long codigoSnies) {
+        return profesorRepository.findAllByProgramaCodigoSnies(pageable,codigoSnies).map(profesorMapper::toDto);
+    }
+
     public Flux<ProfesorDTO> findAllWithEagerRelationships(Pageable pageable) {
         return profesorRepository.findAllWithEagerRelationships(pageable).map(profesorMapper::toDto);
     }
 
     public Mono<Long> countAll() {
         return profesorRepository.count();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<Long> countProfesorByProgramaCodigoSnies(Long codigoSnies) {
+        return profesorRepository.countWithProgramaCodigoSnies(codigoSnies);
     }
 
     @Override

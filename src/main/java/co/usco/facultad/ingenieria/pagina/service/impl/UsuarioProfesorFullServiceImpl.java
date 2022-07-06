@@ -34,6 +34,38 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
     }
 
     @Override
+    public Mono<Long> countTotalProfesor() {
+        return profesorService.countAll();
+    }
+
+    @Override
+    public Mono<Long> countProfesorByProgramaCodigoSnies(Long codigoSnies) {
+        return profesorService.countProfesorByProgramaCodigoSnies(codigoSnies);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<UsuarioProfesorFullDTO> getAllUsuariosProfesorByProgramaCodigoSnies(Pageable pageable, Long codigoSnies) {
+        List<UsuarioProfesorFullDTO> usuarioProfesorFullDTOList = new ArrayList<>();
+        return profesorService.findAllByProgramaCodigoSnies(pageable, codigoSnies)
+            .flatMap(profesorDTO -> userService.getOneById(profesorDTO.getUserId())
+                .map(adminUserDTO -> usuarioProfesorFullDTOList.add(new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO))))
+            .flatMap(addedResult ->
+                Flux.fromIterable(usuarioProfesorFullDTOList));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<UsuarioProfesorFullDTO> getAllUsuarioProfesor(Pageable pageable) {
+        List<UsuarioProfesorFullDTO> usuarioProfesorFullDTOList = new ArrayList<>();
+        return profesorService.findAll(pageable)
+            .flatMap(profesorDTO -> userService.getOneById(profesorDTO.getUserId())
+                .map(adminUserDTO -> usuarioProfesorFullDTOList.add(new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO))))
+            .flatMap(addedResult ->
+                Flux.fromIterable(usuarioProfesorFullDTOList));
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Flux<AdminUserDTO> getAllUsuariosProfesor(Pageable pageable, List<String> auths, String nameCompleteFilter) {
         return userService.getAllWithAuthoritiesAndSpecicatedAuthorities(pageable, auths, nameCompleteFilter);

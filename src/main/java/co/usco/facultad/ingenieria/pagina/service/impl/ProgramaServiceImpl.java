@@ -72,6 +72,11 @@ public class ProgramaServiceImpl implements ProgramaService {
         return programaRepository.findByCodigoSnies(codigoSnies).map(programaMapper::toDto);
     }
 
+    @Override
+    public Mono<String> findNameProgramaByCodigoSnies(Long codigoSnies) {
+        return findByCodigoSnies(codigoSnies).map(ProgramaDTO::getNombre);
+    }
+
     public Flux<ProgramaDTO> findAllWithEagerRelationships(Pageable pageable) {
         return programaRepository.findAllWithEagerRelationships(pageable).map(programaMapper::toDto);
     }

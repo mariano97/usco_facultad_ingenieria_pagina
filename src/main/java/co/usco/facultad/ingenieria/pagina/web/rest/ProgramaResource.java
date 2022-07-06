@@ -202,6 +202,16 @@ public class ProgramaResource {
             );
     }
 
+    @GetMapping(value = {
+        "/programas/obtner-nombre",
+        "/open/programas/obtner-nombre"
+    })
+    public Mono<ResponseEntity<String>> getNameOfPromagaByCodigoSnies(@RequestParam("codigo_snies") Long codigoSnies) {
+        return programaService.findNameProgramaByCodigoSnies(codigoSnies)
+            .map(namePrograma -> ResponseEntity.ok()
+                .body(namePrograma));
+    }
+
     /**
      * {@code GET  /programas/:id} : get the "id" programa.
      *

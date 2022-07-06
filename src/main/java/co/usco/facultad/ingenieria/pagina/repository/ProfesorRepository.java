@@ -67,6 +67,10 @@ interface ProfesorRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Profesor> findAllBy(Pageable pageable, Criteria criteria);
 
+    Mono<Long> countWithProgramaCodigoSnies(Long codigoSnies);
+
+    Flux<Profesor> findAllByProgramaCodigoSnies(Pageable pageable, Long codigoSnies);
+
     Mono<Profesor> findOneWithEagerRelationships(Long id);
 
     Flux<Profesor> findAllWithEagerRelationships();

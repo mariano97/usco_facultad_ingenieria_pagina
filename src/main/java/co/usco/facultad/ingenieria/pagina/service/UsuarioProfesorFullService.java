@@ -10,6 +10,14 @@ import java.util.List;
 
 public interface UsuarioProfesorFullService {
 
+    public Mono<Long> countTotalProfesor();
+
+    public Mono<Long> countProfesorByProgramaCodigoSnies(Long codigoSnies);
+
+    public Flux<UsuarioProfesorFullDTO> getAllUsuariosProfesorByProgramaCodigoSnies(Pageable pageable, Long codigosSnies);
+
+    public Flux<UsuarioProfesorFullDTO> getAllUsuarioProfesor(Pageable pageable);
+
     public Flux<AdminUserDTO> getAllUsuariosProfesor(Pageable pageable, List<String> auths, String nameCompleteFilter);
 
     public Mono<UsuarioProfesorFullDTO> crearUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO);

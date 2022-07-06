@@ -1,6 +1,6 @@
 package co.usco.facultad.ingenieria.pagina.web.rest;
 
-import co.usco.facultad.ingenieria.pagina.security.AuthoritiesConstants;
+import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
 import co.usco.facultad.ingenieria.pagina.service.UserService;
 import co.usco.facultad.ingenieria.pagina.service.UsuarioProfesorFullService;
 import co.usco.facultad.ingenieria.pagina.service.dto.AdminUserDTO;
@@ -25,7 +25,6 @@ import tech.jhipster.web.util.PaginationUtil;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -43,9 +42,12 @@ public class UsuarioProfesorFullResource {
 
     private final UserService userService;
 
-    public UsuarioProfesorFullResource(UsuarioProfesorFullService usuarioProfesorFullService, UserService userService) {
+    private final ProfesorService profesorService;
+
+    public UsuarioProfesorFullResource(UsuarioProfesorFullService usuarioProfesorFullService, UserService userService, ProfesorService profesorService) {
         this.usuarioProfesorFullService = usuarioProfesorFullService;
         this.userService = userService;
+        this.profesorService = profesorService;
     }
 
     @PostMapping(value = {
@@ -106,6 +108,48 @@ public class UsuarioProfesorFullResource {
             .map(page -> PaginationUtil.generatePaginationHttpHeaders(UriComponentsBuilder.fromHttpRequest(request), page))
             .map(headers -> ResponseEntity.ok().headers(headers).body(usuarioProfesorFullService.getAllUsuariosProfesor(pageable, auths, nameCompleteFilter)));
 
+    }
+
+    @GetMapping(value = {
+        "/usuario-profesor-full/all/by-programaga-codigo-snies",
+        "/open/usuario-profesor-full/all/by-programaga-codigo-snies",
+    })
+    public Mono<ResponseEntity<List<UsuarioProfesorFullDTO>>> getAllUsuarioFullProfesor(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        ServerHttpRequest request,
+        @RequestParam(value = "codigo_snies", required = false) Long codigoSnies
+    ) {
+        return usuarioProfesorFullService
+            .countProfesorByProgramaCodigoSnies(codigoSnies)
+            .zipWith(usuarioProfesorFullService.getAllUsuariosProfesorByProgramaCodigoSnies(pageable, codigoSnies).collectList())
+            .map(countWithEntities ->
+                ResponseEntity
+                    .ok()
+                    .headers(
+                        PaginationUtil.generatePaginationHttpHeaders(
+                            UriComponentsBuilder.fromHttpRequest(request),
+                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                    ))
+                    .body(countWithEntities.getT2())
+            );
+    }
+
+    @GetMapping(value = {
+        "/usuario-profesor-full/all",
+        "/open/usuario-profesor-full/all",
+    })
+    public Mono<ResponseEntity<List<UsuarioProfesorFullDTO>>> getAllUsuariosProfesor(@org.springdoc.api.annotations.ParameterObject Pageable pageable,
+                                                                                     ServerHttpRequest request) {
+        return usuarioProfesorFullService
+            .countTotalProfesor()
+            .zipWith(usuarioProfesorFullService.getAllUsuarioProfesor(pageable).collectList())
+            .map(countWithEntities ->
+                ResponseEntity.ok()
+                    .headers(PaginationUtil.generatePaginationHttpHeaders(
+                        UriComponentsBuilder.fromHttpRequest(request),
+                        new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                    ))
+                    .body(countWithEntities.getT2()));
     }
 
     @GetMapping(value = {

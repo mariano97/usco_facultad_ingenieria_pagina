@@ -106,6 +106,31 @@ class ProfesorRepositoryInternalImpl extends SimpleR2dbcRepository<Profesor, Lon
         return db.sql(select).map(this::process);
     }
 
+    RowsFetchSpec<Profesor> createQueryByPrograma(Pageable pageable, Condition whereClause) {
+        List<Expression> columns = ProfesorSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(tablaElementoCatalogoTable, "tablaElementoCatalogo"));
+        columns.addAll(FacultadSqlHelper.getColumns(facultadTable, "facultad"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(tablaElementoCatalogoTable)
+            .on(Column.create("tabla_elemento_catalogo_id", entityTable))
+            .equals(Column.create("id", tablaElementoCatalogoTable))
+            .leftOuterJoin(facultadTable)
+            .on(Column.create("facultad_id", entityTable))
+            .equals(Column.create("id", facultadTable))
+            .leftOuterJoin(EntityRelationshipManager.profesorProgramaRelationManyToMany)
+            .on(Column.create("id", entityTable))
+            .equals(Column.create("profesor_id", EntityRelationshipManager.profesorProgramaRelationManyToMany))
+            .leftOuterJoin(EntityRelationshipManager.programTable)
+            .on(Column.create("programa_id", EntityRelationshipManager.profesorProgramaRelationManyToMany))
+            .equals(Column.create("id", EntityRelationshipManager.programTable));
+        // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
+        String select = entityManager.createSelect(selectFrom, Profesor.class, pageable, whereClause);
+        return db.sql(select).map(this::process);
+    }
+
     @Override
     public Flux<Profesor> findAll() {
         return findAllBy(null);
@@ -115,6 +140,29 @@ class ProfesorRepositoryInternalImpl extends SimpleR2dbcRepository<Profesor, Lon
     public Mono<Profesor> findById(Long id) {
         Comparison whereClause = Conditions.isEqual(entityTable.column("id"), Conditions.just(id.toString()));
         return createQuery(null, whereClause).one();
+    }
+
+    @Override
+    public Mono<Long> countWithProgramaCodigoSnies(Long codigoSnies) {
+        String condition = "";
+        if (codigoSnies != null && codigoSnies > 0) {
+            condition = condition.concat(" where prog.codigo_snies = ").concat(codigoSnies.toString());
+        }
+        return db.sql("select count(*) from (select prf.id from profesor prf " +
+            "left join rel_programa__profesor prog_prf " +
+            "on prf.id = prog_prf.profesor_id " +
+            "left join programa prog " +
+            "on prog_prf.programa_id = prog.id " +
+            condition + ") src")
+            .map((row, rowMetadata) -> (long) row.get(0))
+            .one();
+    }
+
+    @Override
+    public Flux<Profesor> findAllByProgramaCodigoSnies(Pageable pageable, Long codigoSnies) {
+        Comparison whereClause = Conditions.isEqual(EntityRelationshipManager.programTable
+            .column("codigo_snies"), Conditions.just(codigoSnies != null ? codigoSnies.toString() : "0"));
+        return createQueryByPrograma(pageable, whereClause).all();
     }
 
     @Override

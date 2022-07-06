@@ -1,0 +1,184 @@
+@import '../../../../content/scss/custom-variables';
+
+.container-lista-profesorado {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  .section_titulo_profesorado {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    .arraow_return {
+      padding-bottom: 2rem;
+
+      img {
+        max-width: 30px;
+      }
+
+      h2.title_formulario_return {
+        color: $color-gris;
+        font-size: 28px;
+        margin-bottom: 0px !important;
+      }
+    }
+    .container-title_profesorado {
+      max-width: 40%;
+      width: 40%;
+      margin-bottom: 3rem;
+      h1 {
+        color: $color-gris;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  .section_filtros_pagina {
+    .container_campos_busqueda {
+      @media (min-width: 992px) {
+        .col-opcion {
+          width: 300px !important;
+          max-width: 300px !important;
+        }
+      }
+      label {
+        color: $color-gris;
+        font-size: 20px;
+      }
+
+      input,
+      select {
+        border: none;
+        border-color: $color-red;
+        border-radius: 0px;
+        box-shadow: $color-box-shadow;
+      }
+
+      button {
+        height: 50px;
+        width: 100%;
+        min-width: fit-content !important;
+        max-width: 70%;
+        background-color: $color-red;
+        border-radius: 15px;
+        color: $color-amarillo;
+        font-weight: bold;
+
+        &:hover {
+          background-color: $primary-color;
+          color: $color-amarillo-extrem-light;
+        }
+      }
+    }
+  }
+  .section_listado_profesor {
+    @media (min-width: 992px) {
+      .container-resultados-profesores {
+        margin-left: 10vw !important;
+        margin-right: 10vw !important;
+        .col-item-profesor {
+          max-width: 50% !important;
+        }
+      }
+    }
+    .container-resultados-profesores {
+      margin-top: 3rem !important;
+      margin-bottom: 3rem !important;
+      .container_item_profesor {
+        background-color: $color-gris-light;
+        max-width: 100%;
+        width: 100%;
+        .container_imagen {
+          width: 50%;
+          img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+          }
+        }
+        .name_profesor {
+          color: $color-gris;
+          font-size: 24px;
+
+          white-space: nowrap;
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .container_data_profesor {
+          margin-top: 0.5rem;
+          .image_data_profesor {
+            max-width: 30px;
+          }
+          .texto_data_profesor {
+            color: $color-gris;
+            font-size: 18px;
+            margin: 0px;
+
+            white-space: nowrap;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        a {
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          &:hover {
+            text-decoration: none;
+            button.btn_ver_profesor {
+              color: $color-gris-light;
+              background: $primary-color;
+            }
+          }
+          button.btn_ver_profesor {
+            height: 50px;
+            width: 150px;
+            font-size: 20px;
+            color: $color-gris;
+          }
+        }
+      }
+    }
+    .content-paginacion {
+      @media (min-width: 992px) {
+        margin-left: 10vw !important;
+        margin-right: 10vw !important;
+      }
+      margin-top: 3rem !important;
+      margin-bottom: 3rem !important;
+      div.info {
+        color: $color-gris;
+        font-size: 15px;
+      }
+
+      ul {
+        li {
+          &.disabled {
+            display: none;
+          }
+
+          &.active {
+            button {
+              background-color: $color-red  !important;
+              color: $color-gris-light  !important;
+            }
+          }
+
+          &.page-item {
+            button {
+              color: $color-gris;
+
+              &:hover {
+                background-color: $color-red-light;
+
+              }
+            }
+          }
+
+          .page-link {
+            border: 1px solid $color-gris  !important;
+          }
+        }
+      }
+    }
+  }
+}

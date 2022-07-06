@@ -43,6 +43,8 @@ public interface ProgramaService {
 
     Mono<ProgramaDTO> findByCodigoSnies(Long codigoSnies);
 
+    Mono<String> findNameProgramaByCodigoSnies(Long codigoSnies);
+
     /**
      * Get all the programas with eager load of many-to-many relationships.
      *

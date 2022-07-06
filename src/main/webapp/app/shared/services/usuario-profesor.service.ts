@@ -7,6 +7,42 @@ const baseApiUrl = '/api/usuario-profesor-full';
 const openAaseApiUrl = '/api/open/usuario-profesor-full';
 
 export default class UsuarioProfesorFullService {
+  public getAllByProgramaCodigoSnies(isAutenticate: boolean, programaCodigoSnies: number, requ?: any): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
+    let query = buildPaginationQueryOpts(requ);
+    if (programaCodigoSnies !== null && programaCodigoSnies !== undefined) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += 'codigo_snies=';
+      query += programaCodigoSnies.toString();
+    }
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${url}/all/by-programaga-codigo-snies?${query}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getAllUsuariosProfesores(isAutenticate: boolean, requ?: any): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${url}/all?${buildPaginationQueryOpts(requ)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public getOneUsuarioProfesorByUserLogin(isAutenticate: boolean, userLogin: string): Promise<IUsuarioProfesorFull> {
     const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
     return new Promise<IUsuarioProfesorFull>((resolve, reject) => {

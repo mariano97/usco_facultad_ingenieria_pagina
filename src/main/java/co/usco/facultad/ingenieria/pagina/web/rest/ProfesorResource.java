@@ -212,6 +212,15 @@ public class ProfesorResource {
         return ResponseUtil.wrapOrNotFound(profesorDTO);
     }
 
+    @GetMapping("/profesors/by-codigo-snies")
+    public Mono<ResponseEntity<List<ProfesorDTO>>> getAllByProgramaCodigoSnies(
+        @RequestParam("codigo_snies") Long codigoSnies
+    ) {
+        return profesorService.findAllByProgramaCodigoSnies(null, codigoSnies).collectList()
+            .map(profesorDTOS -> ResponseEntity.ok()
+                .body(profesorDTOS));
+    }
+
     /**
      * {@code DELETE  /profesors/:id} : delete the "id" profesor.
      *

@@ -41,6 +41,8 @@ public interface ProfesorService {
      */
     Flux<ProfesorDTO> findAll(Pageable pageable);
 
+    Flux<ProfesorDTO> findAllByProgramaCodigoSnies(Pageable pageable, Long codigoSnies);
+
     /**
      * Get all the profesors with eager load of many-to-many relationships.
      *
@@ -55,6 +57,8 @@ public interface ProfesorService {
      *
      */
     Mono<Long> countAll();
+
+    Mono<Long> countProfesorByProgramaCodigoSnies(Long codigoSnies);
 
     /**
      * Get the "id" profesor.
