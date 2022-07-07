@@ -138,7 +138,11 @@ export default class ProfesoradoLista extends Vue {
     if (this.usuariosProfesores.length > 0) {
       this.usuariosProfesores.map(usuarioProfesorSubArray => {
         usuarioProfesorSubArray.map(usuarioProfesor => {
-          if (!this.utilsService().existeFileInList(usuarioProfesor.profesorDTO.urlFotoProfesor)) {
+          if (
+            usuarioProfesor.profesorDTO &&
+            usuarioProfesor.profesorDTO.urlFotoProfesor &&
+            !this.utilsService().existeFileInList(usuarioProfesor.profesorDTO.urlFotoProfesor)
+          ) {
             this.googleStorageService()
               .downloadFileByOnlyFileName(this.$store.getters.authenticated, usuarioProfesor.profesorDTO.urlFotoProfesor)
               .then(res => {

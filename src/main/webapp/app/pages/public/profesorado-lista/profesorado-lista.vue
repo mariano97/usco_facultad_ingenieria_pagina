@@ -70,7 +70,7 @@
                     </div>
                   </div>
                   <div class="row justify-content-center align-items-center">
-                    <router-link :to="{ name: 'usuario_profesores_crear'  }">
+                    <router-link :to="{ name: 'profesor_informacion', params: { userLogin: profesor.adminUserDTO.login }  }">
                       <button class="btn btn_ver_profesor d-flex align-items-center justify-content-center"
                         v-text="$t('profesor.titulos.buttons.btn_ver')"></button>
                     </router-link>

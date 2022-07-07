@@ -9,6 +9,13 @@
         "btn_ver": "Ver"
       }
     },
+    "tabs": {
+      "labels": {
+        "perfil": "Perfil",
+        "asignaturas": "Asignaturas",
+        "titulos": "Titulos Academicos"
+      }
+    },
     "formulario": {
       "labels": {
         "primerNombre": "Primer Nombre",

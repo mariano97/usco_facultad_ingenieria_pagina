@@ -8,6 +8,7 @@ const ProgramasLista = () => import('@/pages/public/programas-lista/programas-li
 const Programa = () => import('@/pages/public/programa/programa.vue');
 const Pages = () => import('@/pages/pages.vue');
 const ProfesoradoLista = () => import('@/pages/public/profesorado-lista/profesorado-lista.vue');
+const ProfesorInfo = () => import('@/pages/public/profesor-info/profesor-info.vue');
 
 export default {
   path: 'faultad-ingenieria',
@@ -32,6 +33,11 @@ export default {
       path: 'programa-profesorado-lista/:programa_codigo_snies',
       name: 'profesorado_lista_programa_codigo_snies',
       component: ProfesoradoLista,
+    },
+    {
+      path: 'profesor/:userLogin',
+      name: 'profesor_informacion',
+      component: ProfesorInfo,
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
   ]
