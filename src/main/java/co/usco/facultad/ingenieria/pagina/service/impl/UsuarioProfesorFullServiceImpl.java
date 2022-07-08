@@ -1,10 +1,12 @@
 package co.usco.facultad.ingenieria.pagina.service.impl;
 
+import co.usco.facultad.ingenieria.pagina.service.MailService;
 import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
 import co.usco.facultad.ingenieria.pagina.service.UserService;
 import co.usco.facultad.ingenieria.pagina.service.UsuarioProfesorFullService;
 import co.usco.facultad.ingenieria.pagina.service.dto.AdminUserDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.UsuarioProfesorFullDTO;
+import co.usco.facultad.ingenieria.pagina.service.utils.RandomString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -13,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,9 +28,12 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
 
     private final ProfesorService profesorService;
 
-    public UsuarioProfesorFullServiceImpl(UserService userService, ProfesorService profesorService) {
+    private final MailService mailService;
+
+    public UsuarioProfesorFullServiceImpl(UserService userService, ProfesorService profesorService, MailService mailService) {
         this.userService = userService;
         this.profesorService = profesorService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -75,12 +78,17 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
     @Override
     @Transactional
     public Mono<UsuarioProfesorFullDTO> crearUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
-        String password = generatePassword();
+        String password = generatePassword(usuarioProfesorFullDTO.getAdminUserDTO().getEmail());
         return userService.createUserProfesor(usuarioProfesorFullDTO.getAdminUserDTO(), password)
             .flatMap(adminUserDTO -> {
                 usuarioProfesorFullDTO.getProfesorDTO().setUserId(adminUserDTO.getId());
                 return profesorService.save(usuarioProfesorFullDTO.getProfesorDTO())
-                    .map(profesorDTO -> new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO))
+                    .map(profesorDTO -> {
+                        UsuarioProfesorFullDTO usuarioProfesorFullDTOTemp = new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO);
+                        mailService.sendCreacionUsuarioProfesor(usuarioProfesorFullDTOTemp);
+                        mailService.sendPasswordAsignadaUsuarioProfesor(usuarioProfesorFullDTOTemp, password);
+                        return usuarioProfesorFullDTOTemp;
+                    })
                     .flatMap(Mono::just);
             });
     }
@@ -108,7 +116,8 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
             );
     }
 
-    private String generatePassword() {
-        return "usco_ingenieria";
+    private String generatePassword(String email) {
+        RandomString randomString = new RandomString(8);
+        return email.toLowerCase().concat("_usco_ingenieria_").concat(randomString.nextString());
     }
 }

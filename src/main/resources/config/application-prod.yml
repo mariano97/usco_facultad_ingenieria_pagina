@@ -36,10 +36,20 @@ spring:
     contexts: prod
     url: jdbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.gmail.com
+    port: 587
+    username: mariano970419@gmail.com
+    password: qigsuysvfqyvyfjr
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   r2dbc:
     url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root

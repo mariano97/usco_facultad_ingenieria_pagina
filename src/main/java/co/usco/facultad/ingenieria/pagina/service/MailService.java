@@ -5,6 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import co.usco.facultad.ingenieria.pagina.service.dto.UsuarioProfesorFullDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -29,7 +31,11 @@ public class MailService {
 
     private static final String USER = "user";
 
+    private static final String PROFESOR = "profesor";
+
     private static final String BASE_URL = "baseUrl";
+
+    private static final String OTHER_OPTION = "otherOptions";
 
     private final JHipsterProperties jHipsterProperties;
 
@@ -93,6 +99,40 @@ public class MailService {
     }
 
     @Async
+    public void sendEmailFromTemplateUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO, String templateName, String titleKey) {
+        if (usuarioProfesorFullDTO.getAdminUserDTO().getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", usuarioProfesorFullDTO.getAdminUserDTO().getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(usuarioProfesorFullDTO.getAdminUserDTO().getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, usuarioProfesorFullDTO.getAdminUserDTO());
+        context.setVariable(PROFESOR, usuarioProfesorFullDTO.getProfesorDTO());
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(usuarioProfesorFullDTO.getAdminUserDTO().getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendEmailFromTemplateUsuarioProfesorWithOptions(UsuarioProfesorFullDTO usuarioProfesorFullDTO, String templateName, String titleKey, String[] options) {
+        if (usuarioProfesorFullDTO.getAdminUserDTO().getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", usuarioProfesorFullDTO.getAdminUserDTO().getLogin());
+            return;
+        }
+        String lanKey = usuarioProfesorFullDTO.getAdminUserDTO().getLangKey();
+        Locale locale = Locale.forLanguageTag(lanKey != null ? lanKey : "es");
+        Context context = new Context(locale);
+        context.setVariable(USER, usuarioProfesorFullDTO.getAdminUserDTO());
+        context.setVariable(PROFESOR, usuarioProfesorFullDTO.getProfesorDTO());
+        context.setVariable(OTHER_OPTION, options);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(usuarioProfesorFullDTO.getAdminUserDTO().getEmail(), subject, content, false, true);
+    }
+
+    @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
@@ -108,5 +148,18 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    @Async
+    public void sendCreacionUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
+        sendEmailFromTemplateUsuarioProfesor(usuarioProfesorFullDTO, "mail/creacionUsuarioProfesor", "email.usuario.profesor.creation.account");
+    }
+
+    @Async
+    public void sendPasswordAsignadaUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO, String password) {
+        System.out.println("Contraseña generada y a enviar");
+        System.out.println(password);
+        sendEmailFromTemplateUsuarioProfesorWithOptions(usuarioProfesorFullDTO, "mail/passwordAsiganadaUsuarioProfesor",
+            "email.usuario.profesor.password.asignada", new String[]{password});
     }
 }

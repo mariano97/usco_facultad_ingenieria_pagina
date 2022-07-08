@@ -352,7 +352,7 @@ public class UserService {
                         newUser.setEmail(userDTO.getEmail().toLowerCase());
                     }
                     newUser.setImageUrl(userDTO.getImageUrl());
-                    newUser.setLangKey(userDTO.getLangKey());
+                    newUser.setLangKey(userDTO.getLangKey() == null ? "es" : userDTO.getLangKey());
                     // new user is not active
                     newUser.setActivated(true);
                     // new user gets registration key
