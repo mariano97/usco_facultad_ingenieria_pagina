@@ -2,23 +2,12 @@
   <div class="container-fragment-noticias my-5">
     <h2 class="title" v-text="$t('fragments.fragment-noticias.title')"></h2>
     <div class="container-swiper-noticias">
-      <swiper
-        :slides-per-view="3.5"
-        :space-between="30"
-        :loop="false"
-        :navigation="true"
-
-      >
-        <swiper-slide
-          v-for="n in 10"
-          :key="n"
-          class="slide-swiper"
-        >
+      <swiper :slides-per-view="3.5" :space-between="30" :loop="false" :navigation="true"
+        :breakpoints="swiperOptions.breakpoints">
+        <swiper-slide v-for="n in 10" :key="n" class="slide-swiper">
           <div class="card-container-noticias">
             <div class="imagen">
-              <img
-                :src="getImageUrl(34+n)"
-              />
+              <img :src="getImageUrl(34+n)" />
             </div>
             <div class="body">
               <div class="container-fecha mb-2">
@@ -28,12 +17,14 @@
                 <h2 class="title">Title Noticia</h2>
               </div>
               <div class="container-desc-noticia">
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit facilisi magna hendrerit justo ultrices lectus, velit cubilia pharetra condimentum hac natoque commodo cum donec cras integer. </p>
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit facilisi magna hendrerit justo ultrices
+                  lectus, velit cubilia pharetra condimentum hac natoque commodo cum donec cras integer. </p>
               </div>
             </div>
             <div class="boton-ver-mas d-flex justify-content-center align-items-center">
               <router-link :to="{ name: 'JhiUserView' }">
-                <button class="btn btn-ver-mas d-flex justify-content-center" v-text="$t('fragments.fragment-noticias.ver-mas')">
+                <button class="btn btn-ver-mas d-flex justify-content-center"
+                  v-text="$t('fragments.fragment-noticias.ver-mas')">
                   Ver máss
                 </button>
               </router-link>

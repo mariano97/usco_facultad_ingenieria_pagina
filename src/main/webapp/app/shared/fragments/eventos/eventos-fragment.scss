@@ -28,6 +28,14 @@
       &-prev {
         left: 30px;
       }
+      @media (max-width: 999px) {
+        &-next {
+          right: 10px !important;
+        }
+        &-prev {
+          left: 10px !important;
+        }
+      }
     }
     .card-container-eventos {
       .imagen img {
@@ -116,6 +124,29 @@
     }
   }
   .container-ver-todo {
+    @media (max-width: 999px) {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+
+      div {
+
+        &:first-child,
+        &:last-child {
+          display: none !important;
+        }
+
+        a {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+
+          button.btn-ver-todo {
+            width: 90vw !important;
+          }
+        }
+      }
+    }
     hr {
       border-top: $color-primary-border-2px;
       width: 100%;

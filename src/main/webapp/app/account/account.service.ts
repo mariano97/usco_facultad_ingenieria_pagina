@@ -89,6 +89,10 @@ export default class AccountService {
     return this.store.getters.account?.authorities;
   }
 
+  public get userAccount(): any {
+    return this.store.getters.account;
+  }
+
   private checkAuthorities(authorities: any): Promise<boolean> {
     if (this.userAuthorities) {
       for (const authority of authorities) {

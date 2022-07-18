@@ -32,6 +32,8 @@ public class AdminUserDTO {
     @Size(max = 200)
     private String nameComplete;
 
+    private boolean passwordAsignada = false;
+
     @Email
     @Size(min = 5, max = 254)
     private String email;
@@ -65,6 +67,7 @@ public class AdminUserDTO {
         this.secondName = user.getSecondName();
         this.lastName = user.getLastName();
         this.nameComplete = user.getNameComplete();
+        this.passwordAsignada = user.isPasswordAsignada();
         this.email = user.getEmail();
         this.activated = user.isActivated();
         this.imageUrl = user.getImageUrl();
@@ -122,6 +125,14 @@ public class AdminUserDTO {
 
     public void setNameComplete(String nameComplete) {
         this.nameComplete = nameComplete;
+    }
+
+    public boolean isPasswordAsignada() {
+        return passwordAsignada;
+    }
+
+    public void setPasswordAsignada(boolean passwordAsignada) {
+        this.passwordAsignada = passwordAsignada;
     }
 
     public String getEmail() {
@@ -206,6 +217,7 @@ public class AdminUserDTO {
             ", secondName='" + secondName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", nameComplete='" + nameComplete + '\'' +
+            ", passwordAsignada='" + passwordAsignada + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +

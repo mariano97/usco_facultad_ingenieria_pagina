@@ -31,6 +31,17 @@
         color: $color-gris;
         font-size: 15px;
         margin: 0px !important;
+
+        white-space: nowrap;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .email_texto_sidbar, .conatiner_name_usuario {
+        white-space: nowrap;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     section.container-opciones-rutas {

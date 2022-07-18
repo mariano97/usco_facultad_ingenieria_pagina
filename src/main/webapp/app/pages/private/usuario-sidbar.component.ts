@@ -1,8 +1,18 @@
-import { Vue, Component } from 'vue-property-decorator';
+import AccountService from '@/account/account.service';
+import { IUser } from '@/shared/model/user.model';
+import { Vue, Component, Inject } from 'vue-property-decorator';
 import './usuario-sidbar.scss';
 
 @Component
 export default class UsuarioSidbar extends Vue {
+  @Inject('accountService') private accountService: () => AccountService;
+
+  public user: IUser = {};
+
+  public mounted() {
+    const account: IUser = this.accountService().userAccount;
+    this.user = account;
+  }
 
   public logout(): Promise<any> {
     localStorage.removeItem('jhi-authenticationToken');

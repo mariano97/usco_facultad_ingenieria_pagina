@@ -8,13 +8,15 @@
               src="/content/images/jhipster_family_member_1_head-512.png" />
           </div>
           <div class="col">
-            <h3 class="nombre_usuario">ghgjghgj</h3>
+            <div class="conatiner_name_usuario">
+              <h3 class="nombre_usuario">{{ user.nameComplete }}</h3>
+            </div>
             <div class="row mx-0">
               <div class="col-sm-auto px-0">
                 <img alt="mini_usuario_email" class="mini_imagen_sidbar" src="/content/images/iconos/email.png" />
               </div>
-              <div class="col pr-0 d-flex align-items-center">
-                <h4 class="texto_usuario_sidbar">dsffsf</h4>
+              <div class="col pr-0 d-flex align-items-center email_texto_sidbar">
+                <h4 class="texto_usuario_sidbar">{{ user.email }}</h4>
               </div>
             </div>
           </div>

@@ -20,6 +20,7 @@
     "secondName": "Segundo nombre",
     "lastName": "Apellidos",
     "nameComplete": "Nombre completo",
+    "passwordAsignada": "password Asignada",
     "roles": "Roles",
     "email": "Email",
     "activated": "Activado",

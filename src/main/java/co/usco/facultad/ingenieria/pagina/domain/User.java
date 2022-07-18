@@ -55,6 +55,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column("name_complete")
     private String nameComplete;
 
+    @Column("password_asignada")
+    private boolean passwordAsignada = false;
+
     @Email
     @Size(min = 5, max = 254)
     private String email;
@@ -142,6 +145,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setNameComplete(String nameComplete) {
         this.nameComplete = nameComplete;
+    }
+
+    public boolean isPasswordAsignada() {
+        return passwordAsignada;
+    }
+
+    public void setPasswordAsignada(boolean passwordAsignada) {
+        this.passwordAsignada = passwordAsignada;
     }
 
     public String getEmail() {
@@ -234,6 +245,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", secondName='" + secondName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", nameComplete='" + nameComplete + '\'' +
+            ", passwordAsignada='" + passwordAsignada + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated='" + activated + '\'' +

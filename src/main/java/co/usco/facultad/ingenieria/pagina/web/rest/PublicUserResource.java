@@ -26,7 +26,7 @@ import tech.jhipster.web.util.PaginationUtil;
 public class PublicUserResource {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
-        Arrays.asList("id", "login", "firstName", "secondName", "lastName", "nameComplete", "email", "activated", "langKey")
+        Arrays.asList("id", "login", "firstName", "secondName", "lastName", "nameComplete", "passwordAsignada", "email", "activated", "langKey")
     );
 
     private final Logger log = LoggerFactory.getLogger(PublicUserResource.class);

@@ -351,6 +351,7 @@ public class UserService {
                     if (userDTO.getEmail() != null) {
                         newUser.setEmail(userDTO.getEmail().toLowerCase());
                     }
+                    newUser.setPasswordAsignada(true);
                     newUser.setImageUrl(userDTO.getImageUrl());
                     newUser.setLangKey(userDTO.getLangKey() == null ? "es" : userDTO.getLangKey());
                     // new user is not active

@@ -2,22 +2,12 @@
   <div class="container-fragment-eventos my-5">
     <h2 class="title" v-text="$t('fragments.fragment-eventos.title')">Eventos</h2>
     <div class="container-swiper-eventos">
-      <swiper
-        :slides-per-view="3.5"
-        :space-between="30"
-        :loop="false"
-        :navigation="true"
-      >
-        <swiper-slide
-          v-for="n in 4"
-          :key="n"
-          class="slide-swiper"
-        >
+      <swiper :slides-per-view="3.5" :space-between="30" :loop="false" :navigation="true"
+        :breakpoints="swiperOptions.breakpoints">
+        <swiper-slide v-for="n in 4" :key="n" class="slide-swiper">
           <div class="card-container-eventos">
             <div class="imagen">
-              <img
-                :src="getImageUrl(30+n)"
-              />
+              <img :src="getImageUrl(30+n)" />
             </div>
             <div class="body">
               <div class="conatiner-title-eventos">
@@ -25,10 +15,7 @@
               </div>
               <div class="container-lugar mb-2 row mx-0">
                 <div class="col-sm-auto p-0">
-                  <img
-                    alt="map"
-                    src="/content/images/iconos/map.png"
-                  />
+                  <img alt="map" src="/content/images/iconos/map.png" />
                 </div>
                 <div class="col-sm-auto d-flex align-items-center">
                   <h4 class="text-lugar" v-text="$t('fragments.fragment-eventos.text-lugar')">Lugar:</h4>
@@ -39,10 +26,7 @@
               </div>
               <div class="container-fecha mb-2 row mx-0">
                 <div class="col-sm-auto p-0">
-                  <img
-                    alt="map"
-                    src="/content/images/iconos/calendar.png"
-                  />
+                  <img alt="map" src="/content/images/iconos/calendar.png" />
                 </div>
                 <div class="col-sm-auto d-flex align-items-center">
                   <h4 class="text-fecha" v-text="$t('fragments.fragment-eventos.text-fecha')">Fecha:</h4>
@@ -54,7 +38,8 @@
             </div>
             <div class="boton-ver-mas d-flex justify-content-center align-items-center">
               <router-link :to="{ name: 'JhiUserView' }">
-                <button class="btn btn-ver-mas d-flex justify-content-center" v-text="$t('fragments.fragment-eventos.ver-mas')">
+                <button class="btn btn-ver-mas d-flex justify-content-center"
+                  v-text="$t('fragments.fragment-eventos.ver-mas')">
                   Ver más
                 </button>
               </router-link>

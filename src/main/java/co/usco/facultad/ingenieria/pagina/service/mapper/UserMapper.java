@@ -51,6 +51,7 @@ public class UserMapper {
             user.setLastName(userDTO.getLastName());
             user.setSecondName(userDTO.getSecondName());
             user.setNameComplete(userDTO.getNameComplete());
+            user.setPasswordAsignada(userDTO.isPasswordAsignada());
             user.setEmail(userDTO.getEmail());
             user.setImageUrl(userDTO.getImageUrl());
             user.setActivated(userDTO.isActivated());

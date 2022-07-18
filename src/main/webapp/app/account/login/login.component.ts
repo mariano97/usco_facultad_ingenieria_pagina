@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Component, Vue, Inject } from 'vue-property-decorator';
 
 import './login.scss';
+import { IUser } from '@/shared/model/user.model';
 
 @Component
 export default class Login extends Vue {
@@ -37,8 +38,15 @@ export default class Login extends Vue {
           .retrieveAccount()
           .then(res => {
             if (res) {
-              const authoritiesString = this.accountService().userAuthorities as Array<string>;
-              this.redirectSegunAuthorities(authoritiesString);
+              const account: IUser = this.accountService().userAccount;
+              /* if (!account.passwordAsignada) {*/
+                const authoritiesString = this.accountService().userAuthorities as Array<string>;
+                this.redirectSegunAuthorities(authoritiesString);
+              /*} else {
+                this.$router.push({
+                  name: 'ChangePassword',
+                });
+              }*/
             }
           });
       })
@@ -48,8 +56,6 @@ export default class Login extends Vue {
   }
 
   private redirectSegunAuthorities(authorities: string[]): void {
-    console.log("dentro de metodo redirect");
-    console.log(authorities);
     if (authorities.includes(Authority.ADMIN)) {
       this.$router.push('/faultad-ingenieria/programas-lista');
     } else if (authorities.includes(Authority.PROFESOR)) {

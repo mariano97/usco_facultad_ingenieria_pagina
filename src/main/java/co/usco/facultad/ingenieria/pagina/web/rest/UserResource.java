@@ -72,6 +72,7 @@ public class UserResource {
             "secondName",
             "lastName",
             "nameComplete",
+            "passwordAsignada",
             "email",
             "activated",
             "langKey",

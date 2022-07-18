@@ -5,6 +5,7 @@ export interface IUser {
   secondName?: string;
   lastName?: string;
   nameComplete?: string;
+  passwordAsignada?: boolean;
   email?: string;
   activated?: boolean;
   langKey?: string;
@@ -24,6 +25,7 @@ export class User implements IUser {
     public secondName?: string,
     public lastName?: string,
     public nameComplete?: string,
+    public passwordAsignada?: boolean,
     public email?: string,
     public activated?: boolean,
     public langKey?: string,
