@@ -145,6 +145,14 @@
   }
 }
 
+@media (max-width: 999px) {
+  .jh-navbar {
+    a.logo {
+      max-width: 80% !important;
+    }
+  }
+}
+
 @media (max-width: 767px) {
   .jh-navbar {
     .logo {

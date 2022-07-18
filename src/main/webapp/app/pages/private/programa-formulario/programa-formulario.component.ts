@@ -722,6 +722,21 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
+  public validarUrlRedSocial(): boolean {
+    return (
+      this.redesPrograma.urlRedSocial === null || this.redesPrograma.urlRedSocial === undefined || this.redesPrograma.urlRedSocial === ''
+    );
+  }
+
+  public validarTipoRedSocial(): boolean {
+    return (
+      this.redesPrograma.tablaElementoCatalogo === null ||
+      this.redesPrograma.tablaElementoCatalogo === undefined ||
+      this.redesPrograma.tablaElementoCatalogo.id === null ||
+      this.redesPrograma.tablaElementoCatalogo.id === undefined
+    );
+  }
+
   public openPopupActualizarDocumento(accionDocumento: string, archivoProgramaToUpdate: IArchivosPrograma): void {
     this.archivoProgramaToUpdate = archivoProgramaToUpdate;
     this.openPopupCrearDocumentoNuevo(accionDocumento);

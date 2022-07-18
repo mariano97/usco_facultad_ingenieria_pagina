@@ -2,10 +2,36 @@
 
 .container-pagina-programa {
   section.section-encabezado-programa {
+    @media (max-width: 999px) {
+      &.mobile {
+        display: block !important;
+        padding-left: 0rem !important;
+        padding-top: 0rem !important;
+        div.row:first-child {
+          padding-top: 0rem !important;
+          div.col {
+            &:first-child {
+              width: 100% !important;
+              max-width: 100% !important;
+              flex-basis: initial !important;
+            }
+            &.column_informacion_programa {
+              margin-top: 3rem;
+            }
+          }
+        }
+      }
+      &.desktop {
+        display: none !important;
+      }
+    }
     background-color: $color-red-light;
     padding-left: 2rem;
     padding-top: 3rem;
     padding-bottom: 3rem;
+    &.mobile {
+      display: none;
+    }
     .continer-name-title-programa {
       width: 70%;
       margin-bottom: 2.5rem;
@@ -50,6 +76,14 @@
         left: 30px;
         font-weight: bolder;
       }
+      @media (max-width: 999px) {
+        &-next {
+          right: 10px !important;
+        }
+        &-prev {
+          left: 10px !important;
+        }
+      }
     }
     .card-container-presentacion {
       max-width: 80%;
@@ -78,6 +112,12 @@
     padding-bottom: 4.5rem;
     margin-bottom: 5rem;
     .container-title_carateristicas {
+      @media (max-width: 999px) {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin-left: 5vw;
+        margin-right: 5vw;
+      }
       max-width: 40%;
       width: 40%;
       margin-bottom: 3rem;
@@ -90,6 +130,14 @@
     }
     .body_caracteristicas {
       // padding-top: 3rem;
+      @media (max-width: 999px) {
+        .container_caracteristicas_body {
+          height: auto !important;
+          div.col {
+            margin-bottom: 3rem;
+          }
+        }
+      }
       .card-custom {
         border-radius: 16px;
         width: 300px;

@@ -31,11 +31,30 @@ div.container-programas-lista {
         background-color: $primary-color;
         color: $color-amarillo-extrem-light;
       }
+      @media (max-width: 999px) {
+        max-width: 100% !important;
+      }
+    }
+  }
+  @media (max-width: 999px) {
+    .cont_resultados {
+      margin-top: 3rem !important;
+      .container-resultados-programas {
+        margin-top: 2rem !important;
+        div.col:first-child {
+          width: 100% !important;
+          max-width: 100% !important;
+          flex-basis: initial !important;
+        }
+      }
     }
   }
   .container-resultados-programas {
     .container-resultado {
       background-color: $color-gris-light;
+      @media (max-width: 999px) {
+        margin-top: 2rem !important;
+      }
       .col-sm-9 {
         max-width: 85% !important;
         padding-left: 20px;

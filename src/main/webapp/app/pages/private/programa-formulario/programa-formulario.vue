@@ -599,8 +599,19 @@
       </b-modal>
       <b-modal id="modalPopupAgregarRedSocial" ref="modalPopupAgregarRedSocial">
         <div class="modal-body">
-          <form name="formRedSocial" role="form">
+          <form name="formRedSocial" role="form" ref="formulario_redese_sociales_programa">
             <div class="row mx-0">
+              <div class="col form-group">
+                <label class="form-control-label campo_requerido" for="url_red_social_programa"
+                  v-text="$t('programa.popups.labels.urlRedSocial')">Url de la red social</label>
+                <input type="text" id="url_red_social_programa" name="url_red_social_programa" class="form-control"
+                  placeholder="Eg. redSocial.com/pagina" v-model="redesPrograma.urlRedSocial" required />
+                <div v-if="validarUrlRedSocial()">
+                  <small class="form-text text-danger" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
               <div class="col form-group">
                 <label class="form-control-label" v-text="$t('programa.popups.labels.tipoResSocial')"
                   for="tipo_red_social">Tabla elemento catalogo</label>
@@ -615,21 +626,8 @@
                     {{ tipoRedSocial.nombre }}
                   </option>
                 </select>
-                <div
-                  v-if="$v.redesPrograma.tablaElementoCatalogo.$anyDirty && $v.redesPrograma.tablaElementoCatalogo.$invalid">
-                  <small class="form-text text-danger" v-if="!$v.redesPrograma.tablaElementoCatalogo.required"
-                    v-text="$t('entity.validation.required')">
-                    This field is required.
-                  </small>
-                </div>
-              </div>
-              <div class="col form-group">
-                <label class="form-control-label campo_requerido" for="url_red_social_programa"
-                  v-text="$t('programa.popups.labels.urlRedSocial')">Url de la red social</label>
-                <input type="text" id="url_red_social_programa" name="url_red_social_programa" class="form-control"
-                  placeholder="Eg. redSocial.com/pagina" v-model="$v.redesPrograma.urlRedSocial.$model" required />
-                <div v-if="$v.redesPrograma.urlRedSocial.$anyDirty && $v.redesPrograma.urlRedSocial.$invalid">
-                  <small class="form-text text-danger" v-if="!$v.redesPrograma.urlRedSocial.required"
+                <div v-if="validarTipoRedSocial()">
+                  <small class="form-text text-danger"
                     v-text="$t('entity.validation.required')">
                     This field is required.
                   </small>
