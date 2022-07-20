@@ -83,6 +83,24 @@ const CursoMateria = () => import('@/entities/curso-materia/curso-materia.vue');
 const CursoMateriaUpdate = () => import('@/entities/curso-materia/curso-materia-update.vue');
 // prettier-ignore
 const CursoMateriaDetails = () => import('@/entities/curso-materia/curso-materia-details.vue');
+// prettier-ignore
+const Noticia = () => import('@/entities/noticia/noticia.vue');
+// prettier-ignore
+const NoticiaUpdate = () => import('@/entities/noticia/noticia-update.vue');
+// prettier-ignore
+const NoticiaDetails = () => import('@/entities/noticia/noticia-details.vue');
+// prettier-ignore
+const Evento = () => import('@/entities/evento/evento.vue');
+// prettier-ignore
+const EventoUpdate = () => import('@/entities/evento/evento-update.vue');
+// prettier-ignore
+const EventoDetails = () => import('@/entities/evento/evento-details.vue');
+// prettier-ignore
+const Semillero = () => import('@/entities/semillero/semillero.vue');
+// prettier-ignore
+const SemilleroUpdate = () => import('@/entities/semillero/semillero-update.vue');
+// prettier-ignore
+const SemilleroDetails = () => import('@/entities/semillero/semillero-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -401,6 +419,78 @@ export default {
       path: 'curso-materia/:cursoMateriaId/view',
       name: 'CursoMateriaView',
       component: CursoMateriaDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'noticia',
+      name: 'Noticia',
+      component: Noticia,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'noticia/new',
+      name: 'NoticiaCreate',
+      component: NoticiaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'noticia/:noticiaId/edit',
+      name: 'NoticiaEdit',
+      component: NoticiaUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'noticia/:noticiaId/view',
+      name: 'NoticiaView',
+      component: NoticiaDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'evento',
+      name: 'Evento',
+      component: Evento,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'evento/new',
+      name: 'EventoCreate',
+      component: EventoUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'evento/:eventoId/edit',
+      name: 'EventoEdit',
+      component: EventoUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'evento/:eventoId/view',
+      name: 'EventoView',
+      component: EventoDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'semillero',
+      name: 'Semillero',
+      component: Semillero,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'semillero/new',
+      name: 'SemilleroCreate',
+      component: SemilleroUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'semillero/:semilleroId/edit',
+      name: 'SemilleroEdit',
+      component: SemilleroUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'semillero/:semilleroId/view',
+      name: 'SemilleroView',
+      component: SemilleroDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

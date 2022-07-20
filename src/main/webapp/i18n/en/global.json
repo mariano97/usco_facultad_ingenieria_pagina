@@ -21,6 +21,9 @@
         "ciudad": "Ciudad",
         "tituloAcademicoProfesor": "Titulo Academico Profesor",
         "cursoMateria": "Curso Materia",
+        "noticia": "Noticia",
+        "evento": "Evento",
+        "semillero": "Semillero",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

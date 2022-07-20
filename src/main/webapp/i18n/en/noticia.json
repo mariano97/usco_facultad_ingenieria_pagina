@@ -1,0 +1,29 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "noticia": {
+      "home": {
+        "title": "Noticias",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Noticia",
+        "createOrEditLabel": "Create or edit a Noticia",
+        "notFound": "No Noticias found"
+      },
+      "created": "A new Noticia is created with identifier {{ param }}",
+      "updated": "A Noticia is updated with identifier {{ param }}",
+      "deleted": "A Noticia is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Noticia {{ id }}?"
+      },
+      "detail": {
+        "title": "Noticia"
+      },
+      "id": "ID",
+      "titulo": "Titulo",
+      "sintesis": "Sintesis",
+      "cuerpoDescripcion": "Cuerpo Descripcion",
+      "fecha": "Fecha",
+      "urlFoto": "Url Foto",
+      "facultad": "Facultad"
+    }
+  }
+}
