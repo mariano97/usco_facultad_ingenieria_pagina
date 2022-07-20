@@ -175,4 +175,8 @@ export default class ProfesoradoLista extends Vue {
       this.consultarProfesoresByProgramaCodigoSnies();
     }
   }
+
+  public returnUrlHref(): void {
+    return this.$router.go(-1);
+  }
 }

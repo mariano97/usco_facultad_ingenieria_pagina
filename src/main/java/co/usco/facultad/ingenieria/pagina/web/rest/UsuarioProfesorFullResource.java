@@ -5,6 +5,7 @@ import co.usco.facultad.ingenieria.pagina.service.UserService;
 import co.usco.facultad.ingenieria.pagina.service.UsuarioProfesorFullService;
 import co.usco.facultad.ingenieria.pagina.service.dto.AdminUserDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.UsuarioProfesorFullDTO;
+import co.usco.facultad.ingenieria.pagina.utils.UtilsMethods;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,13 @@ public class UsuarioProfesorFullResource {
 
     private final ProfesorService profesorService;
 
-    public UsuarioProfesorFullResource(UsuarioProfesorFullService usuarioProfesorFullService, UserService userService, ProfesorService profesorService) {
+    private final UtilsMethods utilsMethods;
+
+    public UsuarioProfesorFullResource(UsuarioProfesorFullService usuarioProfesorFullService, UserService userService, ProfesorService profesorService, UtilsMethods utilsMethods) {
         this.usuarioProfesorFullService = usuarioProfesorFullService;
         this.userService = userService;
         this.profesorService = profesorService;
+        this.utilsMethods = utilsMethods;
     }
 
     @PostMapping(value = {
@@ -111,6 +115,37 @@ public class UsuarioProfesorFullResource {
     }
 
     @GetMapping(value = {
+        "/usuario-profesor-full/usuario-by-user-id",
+        "/open/usuario-profesor-full/usuario-by-user-id"
+    })
+    public Mono<ResponseEntity<AdminUserDTO>> getUsuarioByUserId(@RequestParam("userId") Long userId) {
+        return userService.getOneById(userId)
+            .map(adminUserDTO -> ResponseEntity.ok().body(adminUserDTO));
+    }
+
+    @GetMapping(value = {
+        "/usuario-profesor-full/name-filtering",
+        "/open/usuario-profesor-full/name-filtering",
+    })
+    public Mono<ResponseEntity<Flux<UsuarioProfesorFullDTO>>> getAllUsuariosProfesorNameCompleteFiltering(
+        @org.springdoc.api.annotations.ParameterObject ServerHttpRequest request,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(value = "auths", required = false) List<String> auths,
+        @RequestParam(value = "nameCompleteFilter", required = false) String nameCompleteFilter
+    ) {
+        return userService
+            .countWithSpecicatedAuthorities(auths, nameCompleteFilter)
+            .map(total -> new PageImpl<>(new ArrayList<>(), pageable, total))
+            .map(page -> PaginationUtil.generatePaginationHttpHeaders(UriComponentsBuilder.fromHttpRequest(request), page))
+            .map(headers -> ResponseEntity.ok().headers(headers).body(usuarioProfesorFullService
+                .getAllUsuariosProfesores(pageable, auths, nameCompleteFilter).collectList()
+                .flatMapMany(usuarioProfesorFullDTOS -> {
+                    List<UsuarioProfesorFullDTO> usuarioProfesorFullDTOListTemp = utilsMethods.cleanListUsuariosProfesores(usuarioProfesorFullDTOS);
+                    return Flux.fromIterable(usuarioProfesorFullDTOListTemp);
+                })));
+    }
+
+    @GetMapping(value = {
         "/usuario-profesor-full/all/by-programaga-codigo-snies",
         "/open/usuario-profesor-full/all/by-programaga-codigo-snies",
     })
@@ -122,16 +157,15 @@ public class UsuarioProfesorFullResource {
         return usuarioProfesorFullService
             .countProfesorByProgramaCodigoSnies(codigoSnies)
             .zipWith(usuarioProfesorFullService.getAllUsuariosProfesorByProgramaCodigoSnies(pageable, codigoSnies).collectList())
-            .map(countWithEntities ->
-                ResponseEntity
-                    .ok()
-                    .headers(
-                        PaginationUtil.generatePaginationHttpHeaders(
-                            UriComponentsBuilder.fromHttpRequest(request),
-                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+            .map(countWithEntities -> {
+                List<UsuarioProfesorFullDTO> usuarioProfesoresList = utilsMethods.cleanListUsuariosProfesores(countWithEntities.getT2());
+                return ResponseEntity.ok()
+                    .headers(PaginationUtil.generatePaginationHttpHeaders(
+                        UriComponentsBuilder.fromHttpRequest(request),
+                        new PageImpl<>(usuarioProfesoresList, pageable, countWithEntities.getT1())
                     ))
-                    .body(countWithEntities.getT2())
-            );
+                    .body(usuarioProfesoresList);
+            });
     }
 
     @GetMapping(value = {
@@ -143,13 +177,16 @@ public class UsuarioProfesorFullResource {
         return usuarioProfesorFullService
             .countTotalProfesor()
             .zipWith(usuarioProfesorFullService.getAllUsuarioProfesor(pageable).collectList())
-            .map(countWithEntities ->
-                ResponseEntity.ok()
+            .map(countWithEntities -> {
+                List<UsuarioProfesorFullDTO> usuarioProfesoresList = utilsMethods.cleanListUsuariosProfesores(countWithEntities.getT2());
+                return ResponseEntity.ok()
                     .headers(PaginationUtil.generatePaginationHttpHeaders(
                         UriComponentsBuilder.fromHttpRequest(request),
-                        new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                        new PageImpl<>(usuarioProfesoresList, pageable, countWithEntities.getT1())
                     ))
-                    .body(countWithEntities.getT2()));
+                    .body(usuarioProfesoresList);
+            });
+
     }
 
     @GetMapping(value = {

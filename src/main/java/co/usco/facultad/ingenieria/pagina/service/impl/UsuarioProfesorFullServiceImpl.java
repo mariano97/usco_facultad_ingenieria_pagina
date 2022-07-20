@@ -5,6 +5,7 @@ import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
 import co.usco.facultad.ingenieria.pagina.service.UserService;
 import co.usco.facultad.ingenieria.pagina.service.UsuarioProfesorFullService;
 import co.usco.facultad.ingenieria.pagina.service.dto.AdminUserDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
 import co.usco.facultad.ingenieria.pagina.service.dto.UsuarioProfesorFullDTO;
 import co.usco.facultad.ingenieria.pagina.service.utils.RandomString;
 import org.slf4j.Logger;
@@ -76,6 +77,20 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
     }
 
     @Override
+    public Mono<AdminUserDTO> getUsuarioById(Long userId) {
+        return userService.getOneById(userId);
+    }
+
+    @Override
+    public Flux<UsuarioProfesorFullDTO> getAllUsuariosProfesores(Pageable pageable, List<String> auths, String nameCompleteFilter) {
+        List<UsuarioProfesorFullDTO> usuarioProfesorFullDTOList = new ArrayList<>();
+        return getAllUsuariosProfesor(pageable, auths, nameCompleteFilter)
+            .flatMap(adminUserDTO -> profesorService.findOneByUserId(adminUserDTO.getId())
+                    .map(profesorDTO -> usuarioProfesorFullDTOList.add(new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO))))
+            .flatMap(addedResult -> Flux.fromIterable(usuarioProfesorFullDTOList));
+    }
+
+    @Override
     @Transactional
     public Mono<UsuarioProfesorFullDTO> crearUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
         String password = generatePassword(usuarioProfesorFullDTO.getAdminUserDTO().getEmail());
@@ -119,5 +134,30 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
     private String generatePassword(String email) {
         RandomString randomString = new RandomString(8);
         return email.toLowerCase().concat("_usco_ingenieria_").concat(randomString.nextString());
+    }
+
+    private boolean existeUsuarioProfesorIntoList(List<UsuarioProfesorFullDTO> usuariosProfesoresFullDTOList, UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
+        return usuariosProfesoresFullDTOList.stream()
+            .filter(usuario -> usuario.getAdminUserDTO().getId().longValue() == usuarioProfesorFullDTO.getAdminUserDTO().getId().longValue())
+            .findFirst()
+            .isPresent();
+    }
+
+    private boolean addUsuarioProfesorToList(List<UsuarioProfesorFullDTO> usuariosProfesoresFullDTOList, UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
+        boolean resultado = false;
+        if (!existeUsuarioProfesorIntoList(usuariosProfesoresFullDTOList, usuarioProfesorFullDTO)) {
+            usuariosProfesoresFullDTOList.add(usuarioProfesorFullDTO);
+            resultado = true;
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("Dentro de metodo addUsuarioProfesorToList");
+            System.out.println(usuariosProfesoresFullDTOList.toString());
+            System.out.println(usuariosProfesoresFullDTOList.size());
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+        }
+        return resultado;
     }
 }

@@ -4,6 +4,14 @@
   margin-top: 3rem;
   margin-bottom: 3rem;
   .section_titulo_profesorado {
+    @media (max-width: 999px) {
+      padding-left: 5vw;
+      padding-right: 5vw;
+      .col-sm-auto {
+        width: auto !important;
+        flex: 0 0 auto !important;
+      }
+    }
     padding-left: 3rem;
     padding-right: 3rem;
     .arraow_return {
@@ -20,6 +28,12 @@
       }
     }
     .container-title_profesorado {
+      @media (max-width: 999px) {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin-left: 5vw;
+        margin-right: 5vw;
+      }
       max-width: 40%;
       width: 40%;
       margin-bottom: 3rem;
@@ -79,6 +93,7 @@
         }
       }
     }
+    min-height: 70vh;
     .container-resultados-profesores {
       margin-top: 3rem !important;
       margin-bottom: 3rem !important;

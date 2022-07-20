@@ -59,6 +59,7 @@
         "pefilEgresado": "Perfil del egresado",
         "documentosProgramaTitle": "Documentos del programa",
         "redesPrograma": "Redes del programa",
+        "profesoresPrograma": "Profesores del programa",
         "sedesPrograma": "Sedes del programa"
       },
       "textos": {
@@ -68,6 +69,7 @@
     "buttons": {
       "agregarDocumento": "Agregar nuevo documento",
       "agregarRedSocial": "Agregar red social",
+      "agregarProfesor": "Agregar profesor",
       "publicPlanEstudio": "Ver plan de estudio",
       "ver": "Ver",
       "agregarSedes": "Agregar sede"

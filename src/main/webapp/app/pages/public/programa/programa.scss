@@ -229,7 +229,12 @@
       max-width: 40%;
       width: 40%;
       margin-bottom: 3rem;
-
+      @media (max-width: 999px) {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin-left: 5vw;
+        margin-right: 5vw;
+      }
       h1 {
         color: $color-gris;
         font-size: 40px;
@@ -240,6 +245,9 @@
     .body_documentos_programa {
       margin-top: 3rem;
       .col_container_archivo {
+        @media (max-width: 999px) {
+          margin-top: 2rem !important;
+        }
         .container_documento_programa {
           background: $color-gris-light;
           max-width: calc(100% - 15px);
@@ -300,12 +308,21 @@
       }
     }
     div.dividor {
+      @media (max-width: 999px) {
+        display: none !important;
+      }
       height: 120px;
     }
     .conatiner_redes_body {
+      @media (max-width: 999px) {
+        margin-top: 1.5rem !important;
+      }
       padding-left: 1rem;
       padding-right: 1rem;
       .container_red_social_item {
+        @media (max-width: 999px) {
+          margin-bottom: 1rem !important;
+        }
         a {
           img {
             width: 60px;
@@ -318,6 +335,11 @@
     margin-bottom: 4rem;
 
     .card-container-opciones-adicionales {
+      @media (max-width: 999px) {
+        max-width: 95vw !important;
+        height: auto !important;
+        margin-bottom: 2rem;
+      }
       max-width: 25vw;
       height: 380px;
       .content_image {

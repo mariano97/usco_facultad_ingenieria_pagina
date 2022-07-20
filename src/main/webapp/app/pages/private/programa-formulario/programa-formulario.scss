@@ -176,6 +176,49 @@
       }
     }
   }
+  section.seccion_profesores_programa {
+    margin-top: 2.5rem;
+
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+
+    button {
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+
+      &.btn_agregar_red_social {
+        width: 320px;
+        background: $color-red;
+        color: $color-amarillo;
+
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+    .contenido_listado_profesores {
+      .container_nombre {
+        width: 85% !important;
+        h3 {
+          color: $color-dark;
+          font-size: 18px;
+        }
+      }
+      .container_option_list {
+        .btn_opcion_item {
+          width: 50px;
+          padding: 0.5rem;
+          img {
+            width: 30px;
+          }
+        }
+      }
+    }
+  }
   section.seccion_redes_programas {
     margin-top: 2.5rem;
     label {

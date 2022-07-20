@@ -4,9 +4,9 @@
       <div class="d-flex justify-content-start arraow_return" v-if="codigoSnies > 0">
         <div class="row mx-0">
           <div class="col-sm-auto px-0 d-flex align-items-center">
-            <router-link :to="{ name: 'Programa_descripcion', params: { codigo_snies: codigoSnies } }" class="">
+            <a @click="returnUrlHref" class="">
               <img alt="retornar" src="/content/images/iconos/left-arrow-red.png" />
-            </router-link>
+            </a>
           </div>
           <div class="col d-flex align-items-center">
             <h2 class="title_formulario_return">Regresar</h2>
@@ -30,7 +30,7 @@
             <select class="form-control" id="select_programa" v-model="formSelectPrograma" @change="filtrarProfesores">
               <option value="0">Seleccione</option>
               <option v-for="(programa, index) in listadoProgramas" :key="index" :value="programa.codigoSnies">{{
-              programa.nombre }}</option>
+                programa.nombre }}</option>
             </select>
           </div>
           <div class="col-sm-auto d-flex justify-content-center align-items-center">
@@ -70,7 +70,8 @@
                     </div>
                   </div>
                   <div class="row justify-content-center align-items-center">
-                    <router-link :to="{ name: 'profesor_informacion', params: { userLogin: profesor.adminUserDTO.login }  }">
+                    <router-link
+                      :to="{ name: 'profesor_informacion', params: { userLogin: profesor.adminUserDTO.login }  }">
                       <button class="btn btn_ver_profesor d-flex align-items-center justify-content-center"
                         v-text="$t('profesor.titulos.buttons.btn_ver')"></button>
                     </router-link>

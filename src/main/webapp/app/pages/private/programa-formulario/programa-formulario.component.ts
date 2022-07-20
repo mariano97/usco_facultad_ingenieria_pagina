@@ -21,6 +21,10 @@ import { IRedesPrograma, RedesPrograma } from '@/shared/model/redes-programa.mod
 import RedesProgramaService from '@/entities/redes-programa/redes-programa.service';
 import SedeService from '@/entities/sede/sede.service';
 import { ISede } from '@/shared/model/sede.model';
+import UsuarioProfesorFullService from '@/shared/services/usuario-profesor.service';
+import { IUsuarioProfesorFull } from '@/shared/model/usuario-profesor.model';
+import { IUser } from '@/shared/model/user.model';
+import { IProfesor } from '@/shared/model/profesor.model';
 
 const validations: any = {
   programa: {
@@ -106,6 +110,7 @@ export default class ProgramaFormulario extends Vue {
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('alertService') private alertService: () => AlertService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
+  @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('archivosProgramaService') private archivosProgramaService: () => ArchivosProgramaService;
   @Inject('redesProgramaService') private redesProgramaService: () => RedesProgramaService;
@@ -144,10 +149,16 @@ export default class ProgramaFormulario extends Vue {
   public popupDocumentoAccion = '';
   public mensajeError = '';
 
-  /* public created(): void {
-    this.consultarListaProgramas();
-    this.consultarTipoFormacion();
-  } */
+  public pageProfesores = 1;
+  public itemsPerPagePorfesores = 10;
+  public totalItemsProfesor = 0;
+  public queryCountProfesor: number = null;
+  public previousPageProfesor = 1;
+  public nameFilterProfesor = '';
+  public profesorAgregadoId = 0;
+
+  public usuariosProfesor: IUsuarioProfesorFull[] = [];
+  public usuariosUser: IUser[] = [];
 
   public beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -470,6 +481,7 @@ export default class ProgramaFormulario extends Vue {
         this.consultarSedesPrograma(this.programa.id);
         this.consultarArchivosPrograma(this.programa.id, false);
         this.consultarRedesPrograma(this.programa.id);
+        this.consultarProfesoresPrograma(this.programa.codigoSnies);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
@@ -515,6 +527,150 @@ export default class ProgramaFormulario extends Vue {
         this.alertService().showHttpError(this, err.response);
       });
   }
+
+  private consultarUsuarioOfProfesor(userId: number): void {
+    this.usuarioProfesorFullService()
+      .getUsuarioByUserId(this.$store.getters.authenticated, userId)
+      .then(res => {
+        this.usuariosUser.push(res);
+      });
+  }
+
+  public filtarNombreProfesor(userId: number): string {
+    const usuarioFilter = this.usuariosUser.filter(usuario => usuario.id === userId);
+    if (usuarioFilter.length > 0) {
+      return usuarioFilter[0].nameComplete;
+    } else {
+      return '';
+    }
+  }
+
+  public consultarProfesoresPrograma(codigoSniesPrograma: number): void {
+    this.usuarioProfesorFullService()
+      .getAllByProgramaCodigoSnies(this.$store.getters.authenticated, codigoSniesPrograma, {
+        page: 0,
+        size: 100000,
+        sort: ['id,asc'],
+      })
+      .then(res => {
+        if (res.data) {
+          res.data.map((usu: IUsuarioProfesorFull) => {
+            this.programa.profesors.push(usu.profesorDTO);
+            this.consultarUsuarioOfProfesor(usu.profesorDTO.userId);
+          });
+        }
+      })
+      .catch(err => {
+        this.programa.profesors = [];
+      });
+  }
+
+  public consultarProfesoresByNameComplete(): void {
+    this.usuariosProfesor = [];
+    const paginacionQuery = {
+      page: this.pageProfesores - 1,
+      size: this.itemsPerPagePorfesores,
+      sort: ['id,asc'],
+    };
+    this.usuarioProfesorFullService()
+      .getAllUsuariosProfesorNameCompleteFiltering(this.$store.getters.authenticated, paginacionQuery, null, this.nameFilterProfesor)
+      .then(res => {
+        this.totalItemsProfesor = Number(res.headers['x-total-count']);
+        this.queryCountProfesor = this.totalItemsProfesor;
+        this.usuariosProfesor = res.data;
+      });
+  }
+
+  public filtrarProfesoresDelPrograma(): IUsuarioProfesorFull[] {
+    let usaurios: IUsuarioProfesorFull[] = [];
+    if (this.programa.profesors && this.programa.profesors.length > 0) {
+      usaurios = this.usuariosProfesor.filter(
+        usuario => this.programa.profesors.filter(profesorsTemp => profesorsTemp.id === usuario.profesorDTO.id).length < 1
+      );
+    } else {
+      usaurios = this.usuariosProfesor;
+    }
+    return usaurios;
+  }
+
+  public loadPageProfesores(page: number): void {
+    if (page !== this.previousPageProfesor) {
+      this.previousPageProfesor = page;
+      this.transition();
+    }
+  }
+
+  public transition(): void {
+    this.consultarProfesoresByNameComplete();
+  }
+
+  public eliminarProfesorToPrograma(profesor: IProfesor): void {
+    this.profesorAgregadoId = profesor.id;
+    if (this.programa.id) {
+      const indexSedePrograma = this.programa.profesors.indexOf(profesor);
+      this.programa.profesors.splice(indexSedePrograma, 1);
+      this.programaService()
+        .update(this.programa)
+        .then(res => {
+          this.programa = res;
+          this.profesorAgregadoId = 0;
+          this.consultarProfesoresPrograma(this.programa.codigoSnies);
+        })
+        .catch(() => {
+          this.programa.profesors.push(profesor);
+          this.profesorAgregadoId = 0;
+        });
+    } else {
+      if (this.programa.profesors) {
+        const indexSedePrograma = this.programa.profesors.indexOf(profesor);
+        this.programa.profesors.splice(indexSedePrograma, 1);
+        this.profesorAgregadoId = 0;
+      } else {
+        this.profesorAgregadoId = 0;
+      }
+    }
+  }
+
+  public agregarProfesorToPrograma(profeosr: IUsuarioProfesorFull): void {
+    this.profesorAgregadoId = profeosr.profesorDTO.id;
+    if (this.programa.id) {
+      this.programa.profesors.push(profeosr.profesorDTO);
+      this.programaService()
+        .update(this.programa)
+        .then(res => {
+          this.programa = res;
+          this.profesorAgregadoId = 0;
+          this.consultarProfesoresPrograma(this.programa.codigoSnies);
+        })
+        .catch(() => {
+          this.profesorAgregadoId = 0;
+          const indexSedeTemp = this.programa.profesors.indexOf(profeosr.profesorDTO);
+          this.programa.profesors.splice(indexSedeTemp, 1);
+        });
+    } else {
+      if (this.programa.profesors) {
+        this.programa.profesors.push(profeosr.profesorDTO);
+        this.sedeAgregadaId = 0;
+      } else {
+        this.programa.profesors = [profeosr.profesorDTO];
+        this.sedeAgregadaId = 0;
+      }
+    }
+  }
+
+  /*public filtrarProfesoresDuplicados(profesores: IProfesor[]): IProfesor[] {
+    const unique: IProfesor[] = [];
+    console.log(profesores);
+
+    profesores.map(x => {
+      console.log("filter " + x.id);
+      console.log(unique.filter(a => a.id === x.id));
+      if (unique.filter(a => a.id === x.id).length < 1) {
+        unique.push(x);
+      }
+    });
+    return unique;
+  }*/
 
   public agregarActualizarRedSocial(): void {
     if (this.programa.id) {
@@ -759,6 +915,12 @@ export default class ProgramaFormulario extends Vue {
     this.openPopupAgregarNuevaRedSocial();
   }
 
+  public openPopupAgregarProfesor(): void {
+    if (<any>this.$refs.modalPopupAgregarProfesores) {
+      (<any>this.$refs.modalPopupAgregarProfesores).show();
+    }
+  }
+
   public openPopupAgregarNuevaRedSocial(): void {
     this.isRedSocialCreatedUptaded = false;
     if (<any>this.$refs.modalPopupAgregarRedSocial) {
@@ -779,6 +941,11 @@ export default class ProgramaFormulario extends Vue {
       this.programaDocumentoNuevo = {};
       this.popupDocumentoAccion = accionDocumento;
     }
+  }
+
+  public closePopupAgregarProfesor(): void {
+    (<any>this.$refs.modalPopupAgregarProfesores).hide();
+    this.profesorAgregadoId = 0;
   }
 
   public closePopupAgregarSede(): void {
@@ -808,6 +975,7 @@ export default class ProgramaFormulario extends Vue {
     this.closePopupCrearDocumentoNuevo();
     this.closePopupEliminarDocumentoPrograma();
     this.closePopupAgregarRedSocial();
+    this.closePopupAgregarProfesor();
     this.mensajeError = '';
   }
 }

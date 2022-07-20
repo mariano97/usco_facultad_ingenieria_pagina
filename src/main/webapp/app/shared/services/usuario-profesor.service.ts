@@ -61,6 +61,58 @@ export default class UsuarioProfesorFullService {
     });
   }
 
+  public getAllUsuariosProfesorNameCompleteFiltering(isAutenticate: boolean, requ?: any, auths?: string[], nameCompleteFilter?: string): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
+    let query = buildPaginationQueryOpts(requ);
+    if (auths !== null && auths !== undefined) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += 'auths=';
+      auths.map((auth, index) => {
+        query += auth;
+        if (index + 1 < auths.length) {
+          query += ',';
+        }
+      });
+    }
+    if (nameCompleteFilter !== null && nameCompleteFilter !== undefined) {
+      if (query.length > 0) {
+        query += '&';
+      }
+      query += 'nameCompleteFilter=';
+      query += nameCompleteFilter.trim();
+    }
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${url}/name-filtering?${query}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getUsuarioByUserId(isAutenticate: boolean, userId: number): Promise<IUser> {
+    const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
+    return new Promise<IUser>((resolve, reject) => {
+      axios
+        .get(`${url}/usuario-by-user-id`, {
+          params: {
+            userId: userId,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    })
+  }
+
   public getAllUsuariosProfesor(isAutenticate: boolean, requ?: any, auths?: string[], nameCompleteFilter?: string): Promise<any> {
     const url = isAutenticate ? baseApiUrl : openAaseApiUrl;
     let query = buildPaginationQueryOpts(requ);

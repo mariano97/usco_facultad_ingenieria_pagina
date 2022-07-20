@@ -20,6 +20,10 @@ public interface UsuarioProfesorFullService {
 
     public Flux<AdminUserDTO> getAllUsuariosProfesor(Pageable pageable, List<String> auths, String nameCompleteFilter);
 
+    public Mono<AdminUserDTO> getUsuarioById(Long userId);
+
+    public Flux<UsuarioProfesorFullDTO> getAllUsuariosProfesores(Pageable pageable, List<String> auths, String nameCompleteFilter);
+
     public Mono<UsuarioProfesorFullDTO> crearUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO);
 
     public Mono<UsuarioProfesorFullDTO> updateUsuarioProfesor(UsuarioProfesorFullDTO usuarioProfesorFullDTO);

@@ -464,6 +464,39 @@
         </div>
       </div>
     </section>
+    <section class="seccion_profesores_programa" v-if="programa.id">
+      <div class="tab">
+        <input type="checkbox" id="profesores_programa" />
+        <label class="tab-label item_acordion" for="profesores_programa"
+          v-text="$t('programa.formulario.labels.profesoresPrograma')"></label>
+        <div class="tab-content web_tabs">
+          <div class="">
+            <div class="contenido_listado_profesores">
+              <div class="row mx-0 sede_item mb-3" v-for="profesorTemp in programa.profesors"
+                :key="profesorTemp.id">
+                <div class="col-sm-auto container_nombre" v-if="filtarNombreProfesor(profesorTemp.userId).length > 0">
+                  <h3>{{ filtarNombreProfesor(profesorTemp.userId) }}</h3>
+                </div>
+                <div class="col-sm-auto d-flex align-items-center container_option_list"
+                  v-if="filtarNombreProfesor(profesorTemp.userId).length > 0">
+                  <a type="button" class="btn btn_opcion_item d-flex justify-content-center align-items-center"
+                    v-on:click="eliminarProfesorToPrograma(profesorTemp)">
+                    <img alt="eliminar_sede_programa" src="/content/images/iconos/minus.png" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-3">
+              <button class="btn btn_agregar_red_social d-flex align-items-center justify-content-center"
+                id="btn_agregar_red_social" v-text="$t('programa.buttons.agregarRedSocial')"
+                v-on:click="openPopupAgregarProfesor()">
+                Agregar profesor
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="seccion_redes_programas" v-if="programa.id">
       <div class="tab">
         <input type="checkbox" id="redes_programa" />
@@ -627,8 +660,7 @@
                   </option>
                 </select>
                 <div v-if="validarTipoRedSocial()">
-                  <small class="form-text text-danger"
-                    v-text="$t('entity.validation.required')">
+                  <small class="form-text text-danger" v-text="$t('entity.validation.required')">
                     This field is required.
                   </small>
                 </div>
@@ -685,6 +717,65 @@
           </button>-->
           <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.close')"
             v-on:click="closePopupAgregarSede()">
+            Cancel
+          </button>
+        </div>
+      </b-modal>
+      <b-modal id="modalPopupAgregarProfesores" ref="modalPopupAgregarProfesores">
+        <div class="modal-body">
+          <div class="">
+            <div class="row mx-0">
+              <div class="col">
+                <input type="text" id="nameFilterProfesorPopup" name="nameFilterProfesorPopup"
+                  v-model="nameFilterProfesor" placeholder="Nombre del profesor" class="form-control" />
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn_subir_documento"
+                  v-on:click="consultarProfesoresByNameComplete()">Buscar
+                  Profesor</button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center respuesta_vacia" v-if="filtrarProfesoresDelPrograma().length < 1">
+              <p>No hay datos</p>
+            </div>
+            <div class="row container_item_profesor mx-0 mb-3" v-for="profesoresTemp in filtrarProfesoresDelPrograma()"
+              :key="profesoresTemp.adminUserDTO.id">
+              <div class="col-sm-auto d-flex align-items-center">
+                <h3>{{ profesoresTemp.adminUserDTO.nameComplete }}</h3>
+              </div>
+              <div class="col-sm-auto row mx-0">
+                <div class="container_spinner d-flex align-items-center justify-content-center px-3 col">
+                  <b-spinner v-if="profesorAgregadoId == profesoresTemp.profesorDTO.id" type="grow" label="Cargando"
+                    variant="danger">
+                  </b-spinner>
+                </div>
+                <div class="col p-0 ">
+                  <a type="button" class="opcion_agregar_sede p-3 d-flex justify-content-center align-items-center"
+                    v-on:click="agregarProfesorToPrograma(profesoresTemp)"
+                    v-if="profesorAgregadoId != profesoresTemp.profesorDTO.id">
+                    <img alt="imagen_agregar_sede" src="/content/images/iconos/add.png" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end pr-4 mt-3 content-paginacion" v-if="totalItemsProfesor > 0">
+              <div class="" style="width: fit-content;">
+                <div class="row justify-content-center">
+                  <jhi-item-count :page="pageProfesores" :total="queryCountProfesor"
+                    :itemsPerPage="itemsPerPagePorfesores">
+                  </jhi-item-count>
+                </div>
+                <div class="row justify-content-center">
+                  <b-pagination size="md" :total-rows="totalItemsProfesor" v-model="pageProfesores"
+                    :per-page="itemsPerPagePorfesores" :change="loadPageProfesores(pageProfesores)"></b-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="modal-footer">
+          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.close')"
+            v-on:click="closePopupAgregarProfesor()">
             Cancel
           </button>
         </div>
