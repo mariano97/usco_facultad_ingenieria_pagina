@@ -1,8 +1,7 @@
 package co.usco.facultad.ingenieria.pagina.web.rest;
 
 import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
-import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
-import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
+import co.usco.facultad.ingenieria.pagina.service.dto.*;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +101,60 @@ public class GoogleCloudStorageResource {
             throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
         }
         return googleCloudStorageService.uploadFotoProfesorToStorage(contentType, profesorId, carpeta, filePart)
+            .map(result -> ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result));
+    }
+
+    @PutMapping(value = {
+        "/google-cloud-storage/noticia-upload-files"
+    })
+    public Mono<ResponseEntity<NoticiaDTO>> updateNoticiaFotoPerfil(
+        @RequestParam("carpeta") String carpeta,
+        @RequestParam("contentType") String contentType,
+        @RequestParam("noticiaId") Long noticiaId,
+        @RequestPart("file") FilePart filePart
+    ) {
+        if (noticiaId == null || noticiaId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.uploadFotoNoticiaToStorage(contentType, noticiaId, carpeta, filePart)
+            .map(result -> ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result));
+    }
+
+    @PutMapping(value = {
+        "/google-cloud-storage/evento-upload-files"
+    })
+    public Mono<ResponseEntity<EventoDTO>> updateEventoFotoPerfil(
+        @RequestParam("carpeta") String carpeta,
+        @RequestParam("contentType") String contentType,
+        @RequestParam("eventoId") Long eventoId,
+        @RequestPart("file") FilePart filePart
+    ) {
+        if (eventoId == null || eventoId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.uploadFotoEventoToStorage(contentType, eventoId, carpeta, filePart)
+            .map(result -> ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result));
+    }
+
+    @PutMapping(value = {
+        "/google-cloud-storage/semillero-upload-files"
+    })
+    public Mono<ResponseEntity<SemilleroDTO>> updateSemilleroFotoPerfil(
+        @RequestParam("carpeta") String carpeta,
+        @RequestParam("contentType") String contentType,
+        @RequestParam("semilleroId") Long semilleroId,
+        @RequestPart("file") FilePart filePart
+    ) {
+        if (semilleroId == null || semilleroId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.uploadFotoSemilleroToStorage(contentType, semilleroId, carpeta, filePart)
             .map(result -> ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
                 .body(result));

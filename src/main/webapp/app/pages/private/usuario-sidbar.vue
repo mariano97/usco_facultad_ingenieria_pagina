@@ -81,6 +81,50 @@
               </button>
             </router-link>
           </div>
+          <div class="">
+            <router-link :to="{ name: 'noticias_lista' }" class="opcion-sidbar">
+              <button class="btn w-100">
+                <div class="row mx-0 align-items-center justify-content-center">
+                  <div class="col-sm-auto">
+                    <img alt="noticias" class="mini_imagen_icon_option"
+                      src="/content/images/iconos/breaking-news-red.png" />
+                  </div>
+                  <div class="col d-flex align-items-center">
+                    <h4 class="texto-opcion">Noticias</h4>
+                  </div>
+                </div>
+              </button>
+            </router-link>
+          </div>
+          <div class="">
+            <router-link :to="{ name: 'evento_lista' }" class="opcion-sidbar">
+              <button class="btn w-100">
+                <div class="row mx-0 align-items-center justify-content-center">
+                  <div class="col-sm-auto">
+                    <img alt="noticias" class="mini_imagen_icon_option"
+                      src="/content/images/iconos/calendar_events_red.png" />
+                  </div>
+                  <div class="col d-flex align-items-center">
+                    <h4 class="texto-opcion">Eventos</h4>
+                  </div>
+                </div>
+              </button>
+            </router-link>
+          </div>
+          <div class="">
+            <router-link :to="{ name: 'semillero_lista' }" class="opcion-sidbar">
+              <button class="btn w-100">
+                <div class="row mx-0 align-items-center justify-content-center">
+                  <div class="col-sm-auto">
+                    <img alt="noticias" class="mini_imagen_icon_option" src="/content/images/iconos/seedbed_red.png" />
+                  </div>
+                  <div class="col d-flex align-items-center">
+                    <h4 class="texto-opcion">Semilleros</h4>
+                  </div>
+                </div>
+              </button>
+            </router-link>
+          </div>
         </div>
       </section>
       <section class="container-opciones-config">

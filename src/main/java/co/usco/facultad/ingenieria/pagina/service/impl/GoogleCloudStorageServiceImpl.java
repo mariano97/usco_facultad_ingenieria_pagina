@@ -1,13 +1,8 @@
 package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.constants.GoogleServiceProps;
-import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
-import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
-import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
-import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
-import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
-import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
-import co.usco.facultad.ingenieria.pagina.service.dto.TablaElementoCatalogoDTO;
+import co.usco.facultad.ingenieria.pagina.service.*;
+import co.usco.facultad.ingenieria.pagina.service.dto.*;
 import com.google.cloud.ReadChannel;
 import com.google.cloud.storage.*;
 import org.apache.commons.io.IOUtils;
@@ -43,9 +38,18 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     private final ProfesorService profesorService;
 
-    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService) {
+    private final NoticiaService noticiaService;
+
+    private final EventoService eventoService;
+
+    private final SemilleroService semilleroService;
+
+    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService, NoticiaService noticiaService, EventoService eventoService, SemilleroService semilleroService) {
         this.archivosProgramaService = archivosProgramaService;
         this.profesorService = profesorService;
+        this.noticiaService = noticiaService;
+        this.eventoService = eventoService;
+        this.semilleroService = semilleroService;
     }
 
 
@@ -156,6 +160,45 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                     return profesorService.update(profesorDTO);
                 })
             );
+    }
+
+    @Override
+    public Mono<NoticiaDTO> uploadFotoNoticiaToStorage(String contentType, Long noticiaId, String carpeta, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap ->
+            noticiaService.findOne(noticiaId).flatMap(noticiaDTO -> {
+                if (noticiaDTO.getUrlFoto() != null && !noticiaDTO.getUrlFoto().isBlank()) {
+                    deleteFileOfStorage(noticiaDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete")).subscribe(aBoolean -> log.debug("File delete"));
+                }
+                noticiaDTO.setUrlFoto((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                return noticiaService.update(noticiaDTO);
+            }));
+    }
+
+    @Override
+    public Mono<EventoDTO> uploadFotoEventoToStorage(String contentType, Long eventoId, String carpeta, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap ->
+            eventoService.findOne(eventoId).flatMap(eventoDTO -> {
+                if (eventoDTO.getUrlFoto() != null && !eventoDTO.getUrlFoto().isBlank()) {
+                    deleteFileOfStorage(eventoDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete")).subscribe(aBoolean -> log.debug("File delete"));
+                }
+                eventoDTO.setUrlFoto((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                return eventoService.update(eventoDTO);
+            }));
+    }
+
+    @Override
+    public Mono<SemilleroDTO> uploadFotoSemilleroToStorage(String contentType, Long semilleroId, String carpeta, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap ->
+            semilleroService.findOne(semilleroId).flatMap(semilleroDTO -> {
+                if (semilleroDTO.getUrlFoto() != null && !semilleroDTO.getUrlFoto().isBlank()) {
+                    deleteFileOfStorage(semilleroDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete")).subscribe(aBoolean -> log.debug("File delete"));
+                }
+                semilleroDTO.setUrlFoto((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                return semilleroService.update(semilleroDTO);
+            }));
     }
 
     @Override

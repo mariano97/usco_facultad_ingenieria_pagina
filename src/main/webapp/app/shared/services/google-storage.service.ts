@@ -1,3 +1,6 @@
+import { ISemillero } from '@/shared/model/semillero.model';
+import { IEvento } from '@/shared/model/evento.model';
+import { INoticia } from '@/shared/model/noticia.model';
 import { IProfesor } from '@/shared/model/profesor.model';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import axios from 'axios';
@@ -52,6 +55,69 @@ export default class GoogleStorageService {
           params: {
             contentType: contentType,
             profesorId: profesorId,
+            carpeta: nameCarpeta,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFotoNoticia(contentType: string, noticiaId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<INoticia>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/noticia-upload-files`, formdata, {
+          params: {
+            contentType: contentType,
+            noticiaId: noticiaId,
+            carpeta: nameCarpeta,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFotoEvento(contentType: string, eventoId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<IEvento>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/evento-upload-files`, formdata, {
+          params: {
+            contentType: contentType,
+            eventoId: eventoId,
+            carpeta: nameCarpeta,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFotoSemillero(contentType: string, semilleroId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<ISemillero>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/semillero-upload-files`, formdata, {
+          params: {
+            contentType: contentType,
+            semilleroId: semilleroId,
             carpeta: nameCarpeta,
           },
         })

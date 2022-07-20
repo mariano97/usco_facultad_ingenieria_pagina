@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const DATE_FORMAT_FULL_MONTH = 'MMMM DD, YYYY'
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
+export const TIME_FORMAT = "HH:mm";
 
 export const DATE_TIME_LONG_FORMAT = 'YYYY-MM-DDTHH:mm';
 

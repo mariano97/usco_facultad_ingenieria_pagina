@@ -44,16 +44,6 @@ export default class ProfesoresLista extends Vue {
       .catch(() => {
         this.usuarios = [];
       });
-    /* this.profesorService()
-      .retrieve(paginacionQuery)
-      .then(res => {
-        this.profesores = res.data;
-        this.totalItems = Number(res.headers['x-total-count']);
-        this.queryCount = this.totalItems;
-      })
-      .catch(() => {
-        this.profesores = [];
-      });*/
   }
 
   public sort(): Array<any> {

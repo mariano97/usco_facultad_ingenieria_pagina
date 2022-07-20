@@ -10,6 +10,12 @@ const ProfesoresLista = () => import('@/pages/private/profesores-lista/profesore
 const ProfesorFormulario = () => import('@/pages/private/profesor-formulario/profesor-formulario.vue');
 const CursoMateriaLista = () => import('@/pages/private/curso-materias-lista/curso-materias-lista.vue');
 const CursosMateriasFormulario = () => import('@/pages/private/curos-materias-formulario/curos-materias-formulario.vue');
+const NoticiasFormulario = () => import('@/pages/private/noticias-formulario/noticias-formulario.vue');
+const NoticiasLista = () => import('@/pages/private/noticias-lista/noticias-lista.vue');
+const EventoFormulario = () => import('@/pages/private/evento-formulario/evento-formulario.vue');
+const EventoLista = () => import('@/pages/private/eventos-lista/eventos-lista.vue');
+const SemilleroFormulario = () => import('@/pages/private/semillero-formulario/semillero-formulario.vue');
+const SemilleroLista = () => import('@/pages/private/semilleros-lista/semilleros-lista.vue');
 
 export default {
   path: 'ingreso',
@@ -91,6 +97,60 @@ export default {
       path: 'materias-formulario/:materiaId',
       name: 'curso_materias_descripcion_updated',
       component: CursosMateriasFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'noticias-lista',
+      name: 'noticias_lista',
+      component: NoticiasLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'noticias-formulario',
+      name: 'noticias_formulario',
+      component: NoticiasFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'noticias-formulario/:noticiaId',
+      name: 'noticias_formulario_descripcion',
+      component: NoticiasFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'evento-lista',
+      name: 'evento_lista',
+      component: EventoLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'evento-formulario',
+      name: 'evento_formulario',
+      component: EventoFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'evento-formulario/:eventoId',
+      name: 'evento_formulario_descripcion',
+      component: EventoFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'semillero-lista',
+      name: 'semillero_lista',
+      component: SemilleroLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'semillero-formulario',
+      name: 'semillero_formulario',
+      component: SemilleroFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'semillero-formulario/:semilleroId',
+      name: 'semillero_formulario_descripcion',
+      component: SemilleroFormulario,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
   ],
