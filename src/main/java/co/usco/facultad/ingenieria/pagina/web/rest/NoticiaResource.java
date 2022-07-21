@@ -6,6 +6,7 @@ import co.usco.facultad.ingenieria.pagina.service.dto.NoticiaDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -168,6 +169,18 @@ public class NoticiaResource {
             });
     }
 
+    @GetMapping(value = {
+        "/noticias/find-by-fecha-mayor",
+        "/open/noticias/find-by-fecha-mayor"
+    })
+    public Mono<ResponseEntity<List<NoticiaDTO>>> getAllByFechaMayorQue(@RequestParam("fechaBase") String fechaBase,
+                                                                        @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        Instant fecha = Instant.parse(fechaBase);
+        return noticiaService.findAllFechaMayorQue(pageable, fecha)
+            .collectList()
+            .map(noticiaDTOS -> ResponseEntity.ok().body(noticiaDTOS));
+    }
+
     /**
      * {@code GET  /noticias} : get all the noticias.
      *
@@ -176,7 +189,10 @@ public class NoticiaResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of noticias in body.
      */
-    @GetMapping("/noticias")
+    @GetMapping(value = {
+        "/noticias",
+        "/open/noticias"
+    })
     public Mono<ResponseEntity<List<NoticiaDTO>>> getAllNoticias(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request,
@@ -205,7 +221,10 @@ public class NoticiaResource {
      * @param id the id of the noticiaDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the noticiaDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/noticias/{id}")
+    @GetMapping(value = {
+        "/noticias/{id}",
+        "/open/noticias/{id}"
+    })
     public Mono<ResponseEntity<NoticiaDTO>> getNoticia(@PathVariable Long id) {
         log.debug("REST request to get Noticia : {}", id);
         Mono<NoticiaDTO> noticiaDTO = noticiaService.findOne(id);

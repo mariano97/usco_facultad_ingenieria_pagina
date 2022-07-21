@@ -7,6 +7,7 @@ export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 export const TIME_FORMAT = "HH:mm";
 
 export const DATE_TIME_LONG_FORMAT = 'YYYY-MM-DDTHH:mm';
+export const DATE_TIME_LONG_FORMAT_UTC = 'YYYY-MM-DDTHH:mm';
 
 export function initFilters() {
   Vue.filter('formatDate', value => {

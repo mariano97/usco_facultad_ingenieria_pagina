@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Service Interface for managing {@link co.usco.facultad.ingenieria.pagina.domain.Evento}.
  */
@@ -40,6 +42,8 @@ public interface EventoService {
      * @return the list of entities.
      */
     Flux<EventoDTO> findAll(Pageable pageable);
+
+    Flux<EventoDTO> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial);
 
     /**
      * Get all the eventos with eager load of many-to-many relationships.

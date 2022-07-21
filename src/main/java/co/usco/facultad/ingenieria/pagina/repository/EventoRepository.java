@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Spring Data SQL reactive repository for the Evento entity.
  */
@@ -61,6 +63,8 @@ interface EventoRepositoryInternal {
     Flux<Evento> findAllWithEagerRelationships();
 
     Flux<Evento> findAllWithEagerRelationships(Pageable page);
+
+    Flux<Evento> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial);
 
     Mono<Void> deleteById(Long id);
 }

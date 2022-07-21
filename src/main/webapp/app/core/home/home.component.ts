@@ -1,5 +1,5 @@
 // import Component from 'vue-class-component';
-import { Inject, Vue, Component } from 'vue-property-decorator';
+import { Inject, Vue, Component, Provide } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
 
 import { Navigation, Pagination } from 'swiper';
@@ -9,6 +9,9 @@ import 'swiper/swiper-bundle.css';
 import './home.scss';
 import NoticiasFragment from '@/shared/fragments/noticias/noticias-fragment.vue';
 import EventosFragment from '@/shared/fragments/eventos/eventos-fragment.vue';
+import EventoService from '@/entities/evento/evento.service';
+import NoticiaService from '@/entities/noticia/noticia.service';
+import GoogleStorageService from '@/shared/services/google-storage.service';
 
 
 SwiperCore.use([Navigation, Pagination]);
@@ -21,6 +24,10 @@ SwiperCore.use([Navigation, Pagination]);
   },
 })
 export default class Home extends Vue {
+  @Provide('noticiaService') private noticiaService = () => new NoticiaService();
+  @Provide('eventoService') private eventoService = () => new EventoService();
+  @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
+
   @Inject('loginService')
   private loginService: () => LoginService;
 

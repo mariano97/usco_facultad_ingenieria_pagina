@@ -116,6 +116,12 @@ class NoticiaRepositoryInternalImpl extends SimpleR2dbcRepository<Noticia, Long>
         return findAllBy(page);
     }
 
+    @Override
+    public Flux<Noticia> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial) {
+        Comparison whereClause = Conditions.isGreaterOrEqualTo(entityTable.column("fecha"), Conditions.just("'".concat(fechaInicial.toString()).concat("'")));
+        return createQuery(pageable, whereClause).all();
+    }
+
     private Noticia process(Row row, RowMetadata metadata) {
         Noticia entity = noticiaMapper.apply(row, "e");
         entity.setFacultad(facultadMapper.apply(row, "facultad"));

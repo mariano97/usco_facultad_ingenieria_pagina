@@ -116,6 +116,12 @@ class EventoRepositoryInternalImpl extends SimpleR2dbcRepository<Evento, Long> i
         return findAllBy(page);
     }
 
+    @Override
+    public Flux<Evento> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial) {
+        Comparison whereClause = Conditions.isGreaterOrEqualTo(entityTable.column("fecha"), Conditions.just("'".concat(fechaInicial.toString()).concat("'")));
+        return createQuery(pageable, whereClause).all();
+    }
+
     private Evento process(Row row, RowMetadata metadata) {
         Evento entity = eventoMapper.apply(row, "e");
         entity.setFacultad(facultadMapper.apply(row, "facultad"));

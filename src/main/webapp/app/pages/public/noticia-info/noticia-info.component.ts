@@ -1,5 +1,6 @@
 import NoticiaService from '@/entities/noticia/noticia.service';
-import { DATE_FORMAT, DATE_TIME_FORMAT, DATE_TIME_LONG_FORMAT, DATE_TIME_LONG_FORMAT_UTC } from '@/shared/date/filters';
+import AlertService from '@/shared/alert/alert.service';
+import { DATE_FORMAT, DATE_TIME_LONG_FORMAT_UTC } from '@/shared/date/filters';
 import { IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { INoticia } from '@/shared/model/noticia.model';
 import GoogleStorageService from '@/shared/services/google-storage.service';
@@ -8,9 +9,8 @@ import dayjs from 'dayjs';
 import { Navigation, Pagination } from 'swiper';
 import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 import { SwiperOptions } from 'swiper-vue2/types/swiper/swiper-options';
-import { Component, Inject, Prop, Vue } from 'vue-property-decorator';
-
-import './noticias-fragment.scss';
+import { Component, Inject, Vue } from 'vue-property-decorator';
+import './noticia-info.scss';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -20,13 +20,14 @@ SwiperCore.use([Navigation, Pagination]);
     SwiperSlide,
   },
 })
-export default class NoticiasFragment extends Vue {
+export default class NoticiaInfo extends Vue {
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('noticiaService') private noticiaService: () => NoticiaService;
+  @Inject('alertService') private alertService: () => AlertService;
 
-  @Prop(String)
-  nombre: string;
+  public noticia: INoticia = {};
+  public otrasNoticias: INoticia[] = [];
 
   public swiperOptions: SwiperOptions = {
     loop: false,
@@ -45,46 +46,64 @@ export default class NoticiasFragment extends Vue {
     },
   };
 
-  public noticias: INoticia[] = [];
-
-  public mounted() {
-    this.consultarEventos();
+  public beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (to.params.noticiaId) {
+        vm.consultarNoticia(to.params.noticiaId);
+      }
+    });
   }
 
-  private consultarEventos(): void {
+  private consultarNoticia(noticiaId: number): void {
+    this.noticiaService()
+      .findCustom(this.$store.getters.authenticated, noticiaId)
+      .then(res => {
+        res.fecha = new Date(res.fecha);
+        this.noticia = res;
+        this.downloadImageProfesorPerfil(this.noticia);
+        this.consultarAnotherNoticias();
+      })
+      .catch(err => {
+        this.$router.go(-1);
+        this.alertService().showHttpError(this, err.response);
+      });
+  }
+
+  private consultarAnotherNoticias(): void {
     const paginacionQuery = {
       page: 0,
-      size: 20,
+      size: 5,
       sort: ['fecha,desc'],
     };
-    const date = new Date();
+    /* const date = new Date();
     if (date.getMonth() === 0) {
       date.setFullYear(date.getFullYear() - 1, 11, 1);
     } else {
       date.setMonth(date.getMonth() - 1);
     }
-
-    const fechaBase = dayjs(date).format(DATE_TIME_LONG_FORMAT_UTC).concat(':00Z');
-    // const fechaBase = dayjs(new Date()).utcOffset().toLocaleString();
+    const fechaBase = dayjs(date).format(DATE_TIME_LONG_FORMAT_UTC).concat(':00Z');*/
     this.noticiaService()
-      .findAllFechaMayorQue(this.$store.getters.authenticated, fechaBase, paginacionQuery)
+      .retrieveCustom(this.$store.getters.authenticated, paginacionQuery)
       .then(res => {
-        this.noticias = res;
-        this.noticias.map(event => {
+        this.otrasNoticias = res.data;
+        const noticiasTemp = this.otrasNoticias.filter(noti => noti.id !== this.noticia.id);
+        this.otrasNoticias = [];
+        this.otrasNoticias = noticiasTemp;
+        this.otrasNoticias.map(event => {
           this.downloadImageProfesorPerfil(event);
         });
       })
       .catch(err => {
-        this.noticias = [];
+        this.otrasNoticias = [];
       });
   }
 
-  private downloadImageProfesorPerfil(evento: INoticia): void {
-    if (evento.id && evento.urlFoto) {
+  private downloadImageProfesorPerfil(noticia: INoticia): void {
+    if (noticia.id && noticia.urlFoto) {
       this.googleStorageService()
-        .downloadFileByOnlyFileName(this.$store.getters.authenticated, evento.urlFoto)
+        .downloadFileByOnlyFileName(this.$store.getters.authenticated, noticia.urlFoto)
         .then(res => {
-          this.utilsService().agregarFileToList(evento.urlFoto, res);
+          this.utilsService().agregarFileToList(noticia.urlFoto, res);
         });
     }
   }
@@ -103,9 +122,4 @@ export default class NoticiasFragment extends Vue {
     }
     return '';
   }
-
-  public getImageUrl (imageId) {
-    return `https://picsum.photos/600/400/?image=${imageId}`;
-  }
-
 }

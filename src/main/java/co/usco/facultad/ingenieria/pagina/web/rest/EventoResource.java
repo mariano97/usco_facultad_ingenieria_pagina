@@ -6,6 +6,7 @@ import co.usco.facultad.ingenieria.pagina.service.dto.EventoDTO;
 import co.usco.facultad.ingenieria.pagina.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -176,7 +177,10 @@ public class EventoResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventos in body.
      */
-    @GetMapping("/eventos")
+    @GetMapping(value = {
+        "/eventos",
+        "/open/eventos"
+    })
     public Mono<ResponseEntity<List<EventoDTO>>> getAllEventos(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request,
@@ -199,13 +203,27 @@ public class EventoResource {
             );
     }
 
+    @GetMapping(value = {
+        "/eventos/find-by-fecha-mayor",
+        "/open/eventos/find-by-fecha-mayor"
+    })
+    public Mono<ResponseEntity<List<EventoDTO>>> getAllByFechaMayorQue(@RequestParam("fechaBase") String fechaBase,
+                                                                       @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        Instant fecha = Instant.parse(fechaBase);
+        return eventoService.findAllFechaMayorQue(pageable, fecha).collectList()
+            .map(eventoDTOS -> ResponseEntity.ok().body(eventoDTOS));
+    }
+
     /**
      * {@code GET  /eventos/:id} : get the "id" evento.
      *
      * @param id the id of the eventoDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the eventoDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/eventos/{id}")
+    @GetMapping(value = {
+        "/eventos/{id}",
+        "/open/eventos/{id}"
+    })
     public Mono<ResponseEntity<EventoDTO>> getEvento(@PathVariable Long id) {
         log.debug("REST request to get Evento : {}", id);
         Mono<EventoDTO> eventoDTO = eventoService.findOne(id);

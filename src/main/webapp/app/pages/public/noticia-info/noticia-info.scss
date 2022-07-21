@@ -1,0 +1,162 @@
+@import '/src/main/webapp/content/scss/custom-variables';
+
+.container_noticia_facultad {
+  margin-top: 4.5rem;
+  margin-bottom: 5rem;
+  .seccion_informacion_principal {
+    .conatiner_info_basic {
+      .container_title {
+        title {
+          color: $color-dark;
+          font-size: 28px;
+          margin: 0px;
+        }
+      }
+      .container_fecha {
+        .fecha {
+          color: $color-red;
+          font-size: 17px;
+        }
+      }
+      .container_sintesis {
+        p {
+          color: $color-gris;
+          font-size: 20px;
+          margin: 0px;
+          white-space: pre-line;
+        }
+      }
+    }
+    .container_imagen {
+      img {
+        @media (min-width: 1000px) {
+          width: 45vw !important;
+          height: 35vw !important;
+        }
+        @media (max-width: 999px) {
+          width: 100% !important;
+          height: 300px;
+        }
+        object-fit: cover;
+      }
+    }
+  }
+  .seccion_cuerpo_noticia {
+    margin-top: 3rem;
+    .conatiner_cuerpo_descripcion {
+      p {
+        color: $color-gris;
+        color: $color-gris;
+        font-size: 20px;
+        margin: 0px;
+        white-space: pre-line;
+      }
+    }
+  }
+  .seccion_otras_noticias {
+    margin-top: 4rem;
+    .container_titulo {
+      margin-bottom: 2rem;
+      .title {
+        color: $color-gris;
+        font-size: 30px;
+        font-weight: 500;
+      }
+    }
+    .container-swiper-noticias {
+      .swiper-button-disabled {
+        display: none;
+      }
+      .swiper-button {
+        &-next, &-prev {
+          width: 50px;
+          height: 50px;
+          color: $color-dark;
+          border-radius: 50%;
+          background: $color-amarillo-extrem-light;
+          box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+          &::after {
+            font-size: 20px;
+          }
+        }
+        &-next {
+          right: 30px;
+        }
+        &-prev {
+          left: 30px;
+        }
+        @media (max-width: 999px) {
+          &-next {
+            right: 10px !important;
+          }
+          &-prev {
+            left: 10px !important;
+          }
+        }
+      }
+      .card-container-noticias {
+        .imagen img {
+          width: 100%;
+          height: 250px;
+          object-fit: cover;
+        }
+        .body {
+          border-top: $color-primary-border;
+          background-color: $color-gris-light;
+          padding-left: 2rem;
+          padding-right: 2rem;
+          padding-top: 1.5rem;
+          padding-bottom: 1.5rem;
+          .container-fecha .fecha {
+            color: $color-red;
+            font-size: 15px;
+            font-weight: bold;
+          }
+          .conatiner-title-noticias .title {
+            color: $color-gris;
+            font-size: 24px;
+            text-align: start !important;
+            font-weight: normal;
+          }
+          .container-desc-noticia p {
+            color: $color-dark;
+            font-size: 15px;
+            line-height: $line-height-20;
+
+            display: block;
+            display: -webkit-box;
+            height: 100px;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+        .boton-ver-mas {
+          background-color: $color-gris-light;
+          a {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &:hover {
+              background-color: $primary-color;
+              color: $color-gris-light !important;
+              text-decoration: none;
+              button.btn-ver-mas {
+                color: $color-gris-light;
+              }
+            }
+            button.btn-ver-mas {
+              color: $color-red;
+              font-size: 20px;
+              text-align: center;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+}

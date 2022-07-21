@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Service Interface for managing {@link co.usco.facultad.ingenieria.pagina.domain.Noticia}.
  */
@@ -40,6 +42,8 @@ public interface NoticiaService {
      * @return the list of entities.
      */
     Flux<NoticiaDTO> findAll(Pageable pageable);
+
+    Flux<NoticiaDTO> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial);
 
     /**
      * Get all the noticias with eager load of many-to-many relationships.

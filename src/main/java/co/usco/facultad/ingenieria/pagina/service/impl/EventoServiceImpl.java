@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Service Implementation for managing {@link Evento}.
  */
@@ -63,6 +65,12 @@ public class EventoServiceImpl implements EventoService {
     public Flux<EventoDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Eventos");
         return eventoRepository.findAllBy(pageable).map(eventoMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<EventoDTO> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial) {
+        return eventoRepository.findAllFechaMayorQue(pageable, fechaInicial).map(eventoMapper::toDto);
     }
 
     public Flux<EventoDTO> findAllWithEagerRelationships(Pageable pageable) {

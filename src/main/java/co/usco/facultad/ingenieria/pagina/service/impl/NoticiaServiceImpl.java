@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 /**
  * Service Implementation for managing {@link Noticia}.
  */
@@ -63,6 +65,11 @@ public class NoticiaServiceImpl implements NoticiaService {
     public Flux<NoticiaDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Noticias");
         return noticiaRepository.findAllBy(pageable).map(noticiaMapper::toDto);
+    }
+
+    @Override
+    public Flux<NoticiaDTO> findAllFechaMayorQue(Pageable pageable, Instant fechaInicial) {
+        return noticiaRepository.findAllFechaMayorQue(pageable, fechaInicial).map(noticiaMapper::toDto);
     }
 
     public Flux<NoticiaDTO> findAllWithEagerRelationships(Pageable pageable) {
