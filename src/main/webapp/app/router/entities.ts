@@ -101,6 +101,12 @@ const Semillero = () => import('@/entities/semillero/semillero.vue');
 const SemilleroUpdate = () => import('@/entities/semillero/semillero-update.vue');
 // prettier-ignore
 const SemilleroDetails = () => import('@/entities/semillero/semillero-details.vue');
+// prettier-ignore
+const EscalafonProfesor = () => import('@/entities/escalafon-profesor/escalafon-profesor.vue');
+// prettier-ignore
+const EscalafonProfesorUpdate = () => import('@/entities/escalafon-profesor/escalafon-profesor-update.vue');
+// prettier-ignore
+const EscalafonProfesorDetails = () => import('@/entities/escalafon-profesor/escalafon-profesor-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -491,6 +497,30 @@ export default {
       path: 'semillero/:semilleroId/view',
       name: 'SemilleroView',
       component: SemilleroDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'escalafon-profesor',
+      name: 'EscalafonProfesor',
+      component: EscalafonProfesor,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'escalafon-profesor/new',
+      name: 'EscalafonProfesorCreate',
+      component: EscalafonProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'escalafon-profesor/:escalafonProfesorId/edit',
+      name: 'EscalafonProfesorEdit',
+      component: EscalafonProfesorUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'escalafon-profesor/:escalafonProfesorId/view',
+      name: 'EscalafonProfesorView',
+      component: EscalafonProfesorDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

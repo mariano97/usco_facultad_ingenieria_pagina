@@ -12,6 +12,12 @@ const validations: any = {
     nombre: {
       required,
     },
+    mision: {
+      required,
+    },
+    vision: {
+      required,
+    },
   },
 };
 

@@ -23,6 +23,14 @@ public class Facultad implements Serializable {
     @Column("nombre")
     private String nombre;
 
+    @NotNull(message = "must not be null")
+    @Column("mision")
+    private String mision;
+
+    @NotNull(message = "must not be null")
+    @Column("vision")
+    private String vision;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -51,6 +59,32 @@ public class Facultad implements Serializable {
         this.nombre = nombre;
     }
 
+    public String getMision() {
+        return this.mision;
+    }
+
+    public Facultad mision(String mision) {
+        this.setMision(mision);
+        return this;
+    }
+
+    public void setMision(String mision) {
+        this.mision = mision;
+    }
+
+    public String getVision() {
+        return this.vision;
+    }
+
+    public Facultad vision(String vision) {
+        this.setVision(vision);
+        return this;
+    }
+
+    public void setVision(String vision) {
+        this.vision = vision;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -76,6 +110,8 @@ public class Facultad implements Serializable {
         return "Facultad{" +
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
+            ", mision='" + getMision() + "'" +
+            ", vision='" + getVision() + "'" +
             "}";
     }
 }

@@ -18,7 +18,9 @@
         "title": "Facultad"
       },
       "id": "ID",
-      "nombre": "Nombre"
+      "nombre": "Nombre",
+      "mision": "Mision",
+      "vision": "Vision"
     }
   }
 }

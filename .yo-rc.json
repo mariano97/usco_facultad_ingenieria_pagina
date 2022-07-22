@@ -35,14 +35,15 @@
       "CursoMateria",
       "Noticia",
       "Evento",
-      "Semillero"
+      "Semillero",
+      "EscalafonProfesor"
     ],
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.8.1",
     "jwtSecretKey": "MzliNzI1MDliZDIxOGNlODEwNjJlNzlkNzI2MmEyYmM3NTZlMzdjNTk2ZWRkOGZlMTZjODEzYWFjNjEzMGEwY2RiMTU2MGFhZjlmMGI3NmI5NzhmMTU0ODliYjZhNDE1NDBhZjZkYWQ2YTk4ZmMxOTM4ZTc5NDE5Yzk5MGMxZGU=",
     "languages": ["es", "en"],
-    "lastLiquibaseTimestamp": 1658333394000,
+    "lastLiquibaseTimestamp": 1658509309000,
     "messageBroker": false,
     "nativeLanguage": "es",
     "otherModules": [],

@@ -26,6 +26,8 @@ public class FacultadRowMapper implements BiFunction<Row, String, Facultad> {
         Facultad entity = new Facultad();
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
         entity.setNombre(converter.fromRow(row, prefix + "_nombre", String.class));
+        entity.setMision(converter.fromRow(row, prefix + "_mision", String.class));
+        entity.setVision(converter.fromRow(row, prefix + "_vision", String.class));
         return entity;
     }
 }

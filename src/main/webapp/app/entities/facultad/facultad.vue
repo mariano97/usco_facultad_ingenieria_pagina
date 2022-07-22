@@ -36,6 +36,14 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.facultad.nombre')">Nombre</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nombre'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('mision')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.facultad.mision')">Mision</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'mision'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('vision')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.facultad.vision')">Vision</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'vision'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -45,6 +53,8 @@
               <router-link :to="{ name: 'FacultadView', params: { facultadId: facultad.id } }">{{ facultad.id }}</router-link>
             </td>
             <td>{{ facultad.nombre }}</td>
+            <td>{{ facultad.mision }}</td>
+            <td>{{ facultad.vision }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'FacultadView', params: { facultadId: facultad.id } }" custom v-slot="{ navigate }">

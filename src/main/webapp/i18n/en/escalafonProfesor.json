@@ -1,0 +1,26 @@
+{
+  "paginaFacultadIngenieriaProyectoApp": {
+    "escalafonProfesor": {
+      "home": {
+        "title": "Escalafon Profesors",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Escalafon Profesor",
+        "createOrEditLabel": "Create or edit a Escalafon Profesor",
+        "notFound": "No Escalafon Profesors found"
+      },
+      "created": "A new Escalafon Profesor is created with identifier {{ param }}",
+      "updated": "A Escalafon Profesor is updated with identifier {{ param }}",
+      "deleted": "A Escalafon Profesor is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Escalafon Profesor {{ id }}?"
+      },
+      "detail": {
+        "title": "Escalafon Profesor"
+      },
+      "id": "ID",
+      "puntucacionPromedio": "Puntucacion Promedio",
+      "fecha": "Fecha",
+      "profesor": "Profesor"
+    }
+  }
+}

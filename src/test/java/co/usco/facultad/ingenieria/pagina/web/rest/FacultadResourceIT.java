@@ -37,6 +37,12 @@ class FacultadResourceIT {
     private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_MISION = "AAAAAAAAAA";
+    private static final String UPDATED_MISION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VISION = "AAAAAAAAAA";
+    private static final String UPDATED_VISION = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/facultads";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -64,7 +70,7 @@ class FacultadResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Facultad createEntity(EntityManager em) {
-        Facultad facultad = new Facultad().nombre(DEFAULT_NOMBRE);
+        Facultad facultad = new Facultad().nombre(DEFAULT_NOMBRE).mision(DEFAULT_MISION).vision(DEFAULT_VISION);
         return facultad;
     }
 
@@ -75,7 +81,7 @@ class FacultadResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Facultad createUpdatedEntity(EntityManager em) {
-        Facultad facultad = new Facultad().nombre(UPDATED_NOMBRE);
+        Facultad facultad = new Facultad().nombre(UPDATED_NOMBRE).mision(UPDATED_MISION).vision(UPDATED_VISION);
         return facultad;
     }
 
@@ -117,6 +123,8 @@ class FacultadResourceIT {
         assertThat(facultadList).hasSize(databaseSizeBeforeCreate + 1);
         Facultad testFacultad = facultadList.get(facultadList.size() - 1);
         assertThat(testFacultad.getNombre()).isEqualTo(DEFAULT_NOMBRE);
+        assertThat(testFacultad.getMision()).isEqualTo(DEFAULT_MISION);
+        assertThat(testFacultad.getVision()).isEqualTo(DEFAULT_VISION);
     }
 
     @Test
@@ -165,6 +173,50 @@ class FacultadResourceIT {
     }
 
     @Test
+    void checkMisionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = facultadRepository.findAll().collectList().block().size();
+        // set the field null
+        facultad.setMision(null);
+
+        // Create the Facultad, which fails.
+        FacultadDTO facultadDTO = facultadMapper.toDto(facultad);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(facultadDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<Facultad> facultadList = facultadRepository.findAll().collectList().block();
+        assertThat(facultadList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkVisionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = facultadRepository.findAll().collectList().block().size();
+        // set the field null
+        facultad.setVision(null);
+
+        // Create the Facultad, which fails.
+        FacultadDTO facultadDTO = facultadMapper.toDto(facultad);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(facultadDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<Facultad> facultadList = facultadRepository.findAll().collectList().block();
+        assertThat(facultadList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllFacultads() {
         // Initialize the database
         facultadRepository.save(facultad).block();
@@ -183,7 +235,11 @@ class FacultadResourceIT {
             .jsonPath("$.[*].id")
             .value(hasItem(facultad.getId().intValue()))
             .jsonPath("$.[*].nombre")
-            .value(hasItem(DEFAULT_NOMBRE));
+            .value(hasItem(DEFAULT_NOMBRE))
+            .jsonPath("$.[*].mision")
+            .value(hasItem(DEFAULT_MISION))
+            .jsonPath("$.[*].vision")
+            .value(hasItem(DEFAULT_VISION));
     }
 
     @Test
@@ -205,7 +261,11 @@ class FacultadResourceIT {
             .jsonPath("$.id")
             .value(is(facultad.getId().intValue()))
             .jsonPath("$.nombre")
-            .value(is(DEFAULT_NOMBRE));
+            .value(is(DEFAULT_NOMBRE))
+            .jsonPath("$.mision")
+            .value(is(DEFAULT_MISION))
+            .jsonPath("$.vision")
+            .value(is(DEFAULT_VISION));
     }
 
     @Test
@@ -229,7 +289,7 @@ class FacultadResourceIT {
 
         // Update the facultad
         Facultad updatedFacultad = facultadRepository.findById(facultad.getId()).block();
-        updatedFacultad.nombre(UPDATED_NOMBRE);
+        updatedFacultad.nombre(UPDATED_NOMBRE).mision(UPDATED_MISION).vision(UPDATED_VISION);
         FacultadDTO facultadDTO = facultadMapper.toDto(updatedFacultad);
 
         webTestClient
@@ -246,6 +306,8 @@ class FacultadResourceIT {
         assertThat(facultadList).hasSize(databaseSizeBeforeUpdate);
         Facultad testFacultad = facultadList.get(facultadList.size() - 1);
         assertThat(testFacultad.getNombre()).isEqualTo(UPDATED_NOMBRE);
+        assertThat(testFacultad.getMision()).isEqualTo(UPDATED_MISION);
+        assertThat(testFacultad.getVision()).isEqualTo(UPDATED_VISION);
     }
 
     @Test
@@ -328,7 +390,7 @@ class FacultadResourceIT {
         Facultad partialUpdatedFacultad = new Facultad();
         partialUpdatedFacultad.setId(facultad.getId());
 
-        partialUpdatedFacultad.nombre(UPDATED_NOMBRE);
+        partialUpdatedFacultad.nombre(UPDATED_NOMBRE).vision(UPDATED_VISION);
 
         webTestClient
             .patch()
@@ -344,6 +406,8 @@ class FacultadResourceIT {
         assertThat(facultadList).hasSize(databaseSizeBeforeUpdate);
         Facultad testFacultad = facultadList.get(facultadList.size() - 1);
         assertThat(testFacultad.getNombre()).isEqualTo(UPDATED_NOMBRE);
+        assertThat(testFacultad.getMision()).isEqualTo(DEFAULT_MISION);
+        assertThat(testFacultad.getVision()).isEqualTo(UPDATED_VISION);
     }
 
     @Test
@@ -357,7 +421,7 @@ class FacultadResourceIT {
         Facultad partialUpdatedFacultad = new Facultad();
         partialUpdatedFacultad.setId(facultad.getId());
 
-        partialUpdatedFacultad.nombre(UPDATED_NOMBRE);
+        partialUpdatedFacultad.nombre(UPDATED_NOMBRE).mision(UPDATED_MISION).vision(UPDATED_VISION);
 
         webTestClient
             .patch()
@@ -373,6 +437,8 @@ class FacultadResourceIT {
         assertThat(facultadList).hasSize(databaseSizeBeforeUpdate);
         Facultad testFacultad = facultadList.get(facultadList.size() - 1);
         assertThat(testFacultad.getNombre()).isEqualTo(UPDATED_NOMBRE);
+        assertThat(testFacultad.getMision()).isEqualTo(UPDATED_MISION);
+        assertThat(testFacultad.getVision()).isEqualTo(UPDATED_VISION);
     }
 
     @Test

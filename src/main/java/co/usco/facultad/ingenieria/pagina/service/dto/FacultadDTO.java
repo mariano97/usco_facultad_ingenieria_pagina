@@ -14,6 +14,12 @@ public class FacultadDTO implements Serializable {
     @NotNull(message = "must not be null")
     private String nombre;
 
+    @NotNull(message = "must not be null")
+    private String mision;
+
+    @NotNull(message = "must not be null")
+    private String vision;
+
     public Long getId() {
         return id;
     }
@@ -28,6 +34,22 @@ public class FacultadDTO implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getMision() {
+        return mision;
+    }
+
+    public void setMision(String mision) {
+        this.mision = mision;
+    }
+
+    public String getVision() {
+        return vision;
+    }
+
+    public void setVision(String vision) {
+        this.vision = vision;
     }
 
     @Override
@@ -57,6 +79,8 @@ public class FacultadDTO implements Serializable {
         return "FacultadDTO{" +
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
+            ", mision='" + getMision() + "'" +
+            ", vision='" + getVision() + "'" +
             "}";
     }
 }

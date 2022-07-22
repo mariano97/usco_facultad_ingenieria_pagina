@@ -1,9 +1,11 @@
 /* tslint:disable max-line-length */
 import axios from 'axios';
 import sinon from 'sinon';
+import dayjs from 'dayjs';
 
-import FacultadService from '@/entities/facultad/facultad.service';
-import { Facultad } from '@/shared/model/facultad.model';
+import { DATE_TIME_FORMAT } from '@/shared/date/filters';
+import EscalafonProfesorService from '@/entities/escalafon-profesor/escalafon-profesor.service';
+import { EscalafonProfesor } from '@/shared/model/escalafon-profesor.model';
 
 const error = {
   response: {
@@ -23,18 +25,25 @@ const axiosStub = {
 };
 
 describe('Service Tests', () => {
-  describe('Facultad Service', () => {
-    let service: FacultadService;
+  describe('EscalafonProfesor Service', () => {
+    let service: EscalafonProfesorService;
     let elemDefault;
+    let currentDate: Date;
 
     beforeEach(() => {
-      service = new FacultadService();
-      elemDefault = new Facultad(123, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      service = new EscalafonProfesorService();
+      currentDate = new Date();
+      elemDefault = new EscalafonProfesor(123, 0, currentDate);
     });
 
     describe('Service methods', () => {
       it('should find an element', async () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            fecha: dayjs(currentDate).format(DATE_TIME_FORMAT),
+          },
+          elemDefault
+        );
         axiosStub.get.resolves({ data: returnedFromService });
 
         return service.find(123).then(res => {
@@ -52,14 +61,20 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should create a Facultad', async () => {
+      it('should create a EscalafonProfesor', async () => {
         const returnedFromService = Object.assign(
           {
             id: 123,
+            fecha: dayjs(currentDate).format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            fecha: currentDate,
+          },
+          returnedFromService
+        );
 
         axiosStub.post.resolves({ data: returnedFromService });
         return service.create({}).then(res => {
@@ -67,7 +82,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not create a Facultad', async () => {
+      it('should not create a EscalafonProfesor', async () => {
         axiosStub.post.rejects(error);
 
         return service
@@ -78,17 +93,21 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should update a Facultad', async () => {
+      it('should update a EscalafonProfesor', async () => {
         const returnedFromService = Object.assign(
           {
-            nombre: 'BBBBBB',
-            mision: 'BBBBBB',
-            vision: 'BBBBBB',
+            puntucacionPromedio: 1,
+            fecha: dayjs(currentDate).format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            fecha: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.put.resolves({ data: returnedFromService });
 
         return service.update(expected).then(res => {
@@ -96,7 +115,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not update a Facultad', async () => {
+      it('should not update a EscalafonProfesor', async () => {
         axiosStub.put.rejects(error);
 
         return service
@@ -107,11 +126,21 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should partial update a Facultad', async () => {
-        const patchObject = Object.assign({}, new Facultad());
+      it('should partial update a EscalafonProfesor', async () => {
+        const patchObject = Object.assign(
+          {
+            fecha: dayjs(currentDate).format(DATE_TIME_FORMAT),
+          },
+          new EscalafonProfesor()
+        );
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            fecha: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.patch.resolves({ data: returnedFromService });
 
         return service.partialUpdate(patchObject).then(res => {
@@ -119,7 +148,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not partial update a Facultad', async () => {
+      it('should not partial update a EscalafonProfesor', async () => {
         axiosStub.patch.rejects(error);
 
         return service
@@ -130,23 +159,27 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should return a list of Facultad', async () => {
+      it('should return a list of EscalafonProfesor', async () => {
         const returnedFromService = Object.assign(
           {
-            nombre: 'BBBBBB',
-            mision: 'BBBBBB',
-            vision: 'BBBBBB',
+            puntucacionPromedio: 1,
+            fecha: dayjs(currentDate).format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            fecha: currentDate,
+          },
+          returnedFromService
+        );
         axiosStub.get.resolves([returnedFromService]);
         return service.retrieve({ sort: {}, page: 0, size: 10 }).then(res => {
           expect(res).toContainEqual(expected);
         });
       });
 
-      it('should not return a list of Facultad', async () => {
+      it('should not return a list of EscalafonProfesor', async () => {
         axiosStub.get.rejects(error);
 
         return service
@@ -157,14 +190,14 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should delete a Facultad', async () => {
+      it('should delete a EscalafonProfesor', async () => {
         axiosStub.delete.resolves({ ok: true });
         return service.delete(123).then(res => {
           expect(res.ok).toBeTruthy();
         });
       });
 
-      it('should not delete a Facultad', async () => {
+      it('should not delete a EscalafonProfesor', async () => {
         axiosStub.delete.rejects(error);
 
         return service
