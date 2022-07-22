@@ -178,6 +178,53 @@
   }
 }
 
+.opciones_facultad {
+  @media (max-width: 999px) {
+    &.desktop {
+      display: none !important;
+    }
+  }
+  /* @media (min-width: 1000px) {
+    &.desktop {
+      display: block !important;
+    }
+  } */
+  background: $color-amarillo-extreme;
+  .opcion {
+    background: transparent;
+    padding: 0px !important;
+    &.router-link-active {
+      display: none !important;
+    }
+    a {
+      width: auto !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &.router-link-active {
+        display: none !important;
+      }
+      &:hover {
+        background-color: $color-red;
+        color: $color-amarillo-extreme  !important;
+        text-decoration: none;
+
+        button.btn-opcion {
+          color: $color-amarillo-extreme;
+        }
+      }
+      button.btn-opcion {
+        color: $color-red;
+        font-size: 20px;
+        text-align: center;
+        font-weight: normal;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+      }
+    }
+  }
+}
+
 @media screen and (min-width: 768px) {
   .jh-navbar-toggler {
     display: none;

@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ISemillero } from '@/shared/model/semillero.model';
 
 const baseApiUrl = 'api/semilleros';
+const baseOpenApiUrl = 'api/open/semilleros';
 
 export default class SemilleroService {
   public find(id: number): Promise<ISemillero> {
@@ -13,6 +14,34 @@ export default class SemilleroService {
         .get(`${baseApiUrl}/${id}`)
         .then(res => {
           resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public findCustom(isAutenticado: boolean, id: number): Promise<ISemillero> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<ISemillero>((resolve, reject) => {
+      axios
+        .get(`${url}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveCustom(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(url + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
         })
         .catch(err => {
           reject(err);

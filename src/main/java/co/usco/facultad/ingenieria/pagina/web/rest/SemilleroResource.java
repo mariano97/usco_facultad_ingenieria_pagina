@@ -176,7 +176,10 @@ public class SemilleroResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of semilleros in body.
      */
-    @GetMapping("/semilleros")
+    @GetMapping(value = {
+        "/semilleros",
+        "/open/semilleros"
+    })
     public Mono<ResponseEntity<List<SemilleroDTO>>> getAllSemilleros(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request,
@@ -205,7 +208,10 @@ public class SemilleroResource {
      * @param id the id of the semilleroDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the semilleroDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/semilleros/{id}")
+    @GetMapping(value = {
+        "/semilleros/{id}",
+        "/open/semilleros/{id}"
+    })
     public Mono<ResponseEntity<SemilleroDTO>> getSemillero(@PathVariable Long id) {
         log.debug("REST request to get Semillero : {}", id);
         Mono<SemilleroDTO> semilleroDTO = semilleroService.findOne(id);

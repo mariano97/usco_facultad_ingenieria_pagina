@@ -11,6 +11,8 @@ const ProfesoradoLista = () => import('@/pages/public/profesorado-lista/profesor
 const ProfesorInfo = () => import('@/pages/public/profesor-info/profesor-info.vue');
 const NoticiasLista = () => import('@/pages/public/noticias-lista/noticias-lista.vue');
 const NoticiaInfo = () => import('@/pages/public/noticia-info/noticia-info.vue');
+const SemillerosLista = () => import('@/pages/public/semilleros-lista/semilleros-lista.vue');
+const SemilleroInfo = () => import('@/pages/public/semillero-info/semillero-info.vue');
 
 export default {
   path: 'faultad-ingenieria',
@@ -51,6 +53,16 @@ export default {
       path: 'noticia-info/:noticiaId',
       name: 'noticia_info_public',
       component: NoticiaInfo,
+    },
+    {
+      path: 'semilleros-lista',
+      name: 'semilleros_lista_public',
+      component: SemillerosLista,
+    },
+    {
+      path: 'semilleros-info/:semilleroId',
+      name: 'semillero_info_public',
+      component: SemilleroInfo,
     },
   ]
 }
