@@ -1,18 +1,22 @@
-import NoticiaService from '@/entities/noticia/noticia.service';
+import EventoService from '@/entities/evento/evento.service';
 import { DATE_FORMAT } from '@/shared/date/filters';
+import { IEvento } from '@/shared/model/evento.model';
 import { IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
-import { INoticia } from '@/shared/model/noticia.model';
 import GoogleStorageService from '@/shared/services/google-storage.service';
 import UtilsService from '@/shared/services/utils.service';
 import dayjs from 'dayjs';
 import { Component, Inject, Vue } from 'vue-property-decorator';
-import './noticias-lista.scss';
+import './eventos-lista.scss';
 
 @Component
-export default class NoticiasLista extends Vue {
+export default class EventosLista extends Vue {
+  @Inject('eventoService') private eventoService: () => EventoService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('utilsService') private utilsService: () => UtilsService;
-  @Inject('noticiaService') private noticiaService: () => NoticiaService;
+
+  public eventos: IEvento[] = [];
+  public eventosArrayListado: IEvento[][] = [];
+  public eventosListado: IEvento[] = [];
 
   public itemsPerPage = 20;
   public queryCount: number = null;
@@ -22,46 +26,24 @@ export default class NoticiasLista extends Vue {
   public reverse = true;
   public totalItems = 0;
 
-  public ultimaNoticia: INoticia = {};
-  public noticiasListado: INoticia[] = [];
-  public noticiasArrayListado: INoticia[][] = [];
-
   public mounted() {
-    this.consultarLastNoticia();
-    this.consultarNoticias();
+    this.consultarEventos();
   }
 
-  private consultarLastNoticia(): void {
+  private consultarEventos(): void {
     const paginacionQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
-    this.noticiaService()
+    this.eventoService()
       .retrieveCustom(this.$store.getters.authenticated, paginacionQuery)
       .then(res => {
-        const noticias: INoticia[] = res.data;
-        if (noticias.length > 0) {
-          this.ultimaNoticia = noticias[0];
-          this.downloadImageProfesorPerfil(this.ultimaNoticia);
-        }
-    })
-  }
-
-  private consultarNoticias(): void {
-    const paginacionQuery = {
-      page: this.page - 1,
-      size: this.itemsPerPage,
-      sort: this.sort(),
-    };
-    this.noticiaService()
-      .retrieveCustom(this.$store.getters.authenticated, paginacionQuery)
-      .then(res => {
-        this.noticiasListado = res.data;
-        this.noticiasListado.map(noti => {
+        this.eventosListado = res.data;
+        this.eventosListado.map(noti => {
           this.downloadImageProfesorPerfil(noti);
         });
-        this.agruparNoticiasInArray(this.noticiasListado);
+        this.agruparNoticiasInArray(this.eventosListado);
         // this.ultimaNoticia = this.noticiasListado[0];
         // this.noticiasListado.splice(0, 1);
         this.totalItems = Number(res.headers['x-total-count']);
@@ -71,21 +53,15 @@ export default class NoticiasLista extends Vue {
       });
   }
 
-  private agruparNoticiasInArray(noticias: INoticia[]): void {
-    this.noticiasArrayListado = [];
-    for (let i = 0; i < noticias.length; i += 2) {
-      if (!(noticias.length % 2) || noticias.length - i != 1) {
-        this.noticiasArrayListado.push([noticias[i], noticias[i + 1]]);
+  private agruparNoticiasInArray(eventos: IEvento[]): void {
+    this.eventosArrayListado = [];
+    for (let i = 0; i < eventos.length; i += 2) {
+      if (!(eventos.length % 2) || eventos.length - i != 1) {
+        this.eventosArrayListado.push([eventos[i], eventos[i + 1]]);
       } else {
-        this.noticiasArrayListado.push([noticias[i], {}]);
+        this.eventosArrayListado.push([eventos[i], {}]);
       }
     }
-  }
-
-  public filtrarNoticias(noticias: INoticia[]): INoticia[][] {
-    const noticiasTemp = noticias.filter(noti => noti.id !== this.ultimaNoticia.id);
-    this.agruparNoticiasInArray(noticiasTemp);
-    return this.noticiasArrayListado;
   }
 
   public sort(): Array<any> {
@@ -107,12 +83,12 @@ export default class NoticiasLista extends Vue {
     this.consultarNoticias();
   }
 
-  private downloadImageProfesorPerfil(noticia: INoticia): void {
-    if (noticia.id && noticia.urlFoto) {
+  private downloadImageProfesorPerfil(evento: IEvento): void {
+    if (evento.id && evento.urlFoto) {
       this.googleStorageService()
-        .downloadFileByOnlyFileName(this.$store.getters.authenticated, noticia.urlFoto)
+        .downloadFileByOnlyFileName(this.$store.getters.authenticated, evento.urlFoto)
         .then(res => {
-          this.utilsService().agregarFileToList(noticia.urlFoto, res);
+          this.utilsService().agregarFileToList(evento.urlFoto, res);
         });
     }
   }

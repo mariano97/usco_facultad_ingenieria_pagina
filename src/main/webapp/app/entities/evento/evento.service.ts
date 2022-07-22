@@ -39,6 +39,33 @@ export default class EventoService {
     });
   }
 
+  public findCustom(isAutenticado: boolean, id: number): Promise<IEvento> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<IEvento>((resolve, reject) => {
+      axios
+        .get(`${url}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveCustom(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
