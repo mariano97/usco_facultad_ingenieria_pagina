@@ -1,4 +1,4 @@
-import { DATE_FORMAT } from '@/shared/date/filters';
+import { DATE_FORMAT, DATE_FORMAT_MONTH } from '@/shared/date/filters';
 import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
 import PaisesService from '@/entities/paises/paises.service';
 import ProfesorService from '@/entities/profesor/profesor.service';
@@ -15,6 +15,8 @@ import dayjs from 'dayjs';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import './profesor-info.scss';
 import { ICursoMateria } from '@/shared/model/curso-materia.model';
+import EscalafonProfesorService from '@/entities/escalafon-profesor/escalafon-profesor.service';
+import { IEscalafonProfesor } from '@/shared/model/escalafon-profesor.model';
 
 @Component
 export default class ProfesorInfo extends Vue {
@@ -22,6 +24,7 @@ export default class ProfesorInfo extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('tituloAcademicoProfesorService') private tituloAcademicoProfesorService: () => TituloAcademicoProfesorService;
+  @Inject('escalafonProfesorService') private escalafonProfesorService: () => EscalafonProfesorService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
   @Inject('paisesService') private paisesService: () => PaisesService;
@@ -37,6 +40,8 @@ export default class ProfesorInfo extends Vue {
 
   public titulosAcademicosProfesorLista: ITituloAcademicoProfesor[][] = [];
   public cursosMateriasProfesorLista: ICursoMateria[][] = [];
+
+  public escalafonoesProfesor: IEscalafonProfesor[] = [];
 
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -54,6 +59,7 @@ export default class ProfesorInfo extends Vue {
         this.downloadImage();
         this.consultarTitulosAcademicosProfesor(this.usuarioProfesor.profesorDTO.id);
         this.consultarCursosMateriaProfesor(this.usuarioProfesor.profesorDTO.id);
+        this.consultarEscalafonProfesor(this.usuarioProfesor.profesorDTO.id);
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
@@ -65,7 +71,7 @@ export default class ProfesorInfo extends Vue {
     this.tituloAcademicoProfesorService()
       .findAllByProfesorId(this.$store.getters.authenticated, profesorId)
       .then(res => {
-        res.sort((a, b) => (a.yearTitulo > b ? -1 : 1));
+        res.sort((a, b) => (a.yearTitulo > b.yearTitulo ? -1 : 1));
         this.agruparTitulosAcademicos(res);
       })
       .catch(err => {
@@ -83,6 +89,19 @@ export default class ProfesorInfo extends Vue {
       })
       .catch(err => {
         this.usuarioProfesor.profesorDTO.cursoMaterias = [];
+      });
+  }
+
+  private consultarEscalafonProfesor(profesorId: number): void {
+    this.escalafonoesProfesor = [];
+    this.escalafonProfesorService()
+      .findByProfesorId(this.$store.getters.authenticated, profesorId)
+      .then(res => {
+        const restEscalafon = res.sort((a, b) => b.fecha < a.fecha ? -1 : 1);
+        this.escalafonoesProfesor = res;
+      })
+      .catch(err => {
+        this.escalafonoesProfesor = [];
       });
   }
 
@@ -141,6 +160,13 @@ export default class ProfesorInfo extends Vue {
       return dateSplit.length > 0 ? dateSplit[0] : dateFormater;
     }
     return '';
+  }
+
+  public convertDateFromServer(date: Date): string {
+    if (date && dayjs(date).isValid()) {
+      return dayjs(date).format(DATE_FORMAT_MONTH);
+    }
+    return null;
   }
 
   public activeTab(tabName: string): void {

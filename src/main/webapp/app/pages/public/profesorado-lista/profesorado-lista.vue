@@ -57,7 +57,7 @@
                     <div class="col-sm-auto px-0">
                       <img class="image_data_profesor" alt="img_email" src="/content/images/iconos/email.png" />
                     </div>
-                    <div class="col">
+                    <div class="col col-email">
                       <h4 class="texto_data_profesor">{{ profesor.adminUserDTO.email }}</h4>
                     </div>
                   </div>

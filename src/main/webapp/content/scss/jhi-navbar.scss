@@ -26,6 +26,12 @@
       padding-left: 1rem;
       padding-right: 0rem;
       background-color: $primary-color;
+
+      @media (min-width: 1000px) {
+        .mobile {
+          display: none !important;
+        }
+      }
       &:empty {
         padding: 0.5rem 0rem;
       }

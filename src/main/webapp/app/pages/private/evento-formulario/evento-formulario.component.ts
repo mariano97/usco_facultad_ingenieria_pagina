@@ -211,7 +211,7 @@ export default class EventoFormulario extends Vue {
               this.generateUrlFotoPerfilFolderUpload(this.evento.id + '')
             );
           }
-          this.$router.push({ name: 'semillero_lista' });
+          this.$router.push({ name: 'evento_lista' });
           // this.$router.go(-1);
           const message = this.$t('paginaFacultadIngenieriaProyectoApp.evento.created', { param: param.id });
           this.$root.$bvToast.toast(message.toString(), {

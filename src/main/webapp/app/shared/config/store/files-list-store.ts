@@ -41,7 +41,10 @@ export const fileGoogleStorageDownloadedStore: Module<IFileGoogleStorageDownLoad
       } else if (payload.fileName) {
         indexFile = state.fileListGoogleStorage.findIndex(file => file.fileName === payload.fileName);
       }
-      if (indexFile >= 0) {
+      if (indexFile >= 0 && state[indexFile]) {
+        console.log(indexFile);
+        console.log(state[indexFile].file);
+        console.log(payload.file);
         state[indexFile].file = payload.file;
       }
     },

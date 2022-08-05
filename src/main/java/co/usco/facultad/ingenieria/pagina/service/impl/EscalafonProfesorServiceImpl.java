@@ -68,6 +68,12 @@ public class EscalafonProfesorServiceImpl implements EscalafonProfesorService {
         return escalafonProfesorRepository.findAllBy(pageable).map(escalafonProfesorMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<EscalafonProfesorDTO> findByProfesorId(Long profesorId) {
+        return escalafonProfesorRepository.findByProfesor(profesorId).map(escalafonProfesorMapper::toDto);
+    }
+
     public Mono<Long> countAll() {
         return escalafonProfesorRepository.count();
     }

@@ -488,7 +488,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-end mt-3">
               <button class="btn btn_agregar_red_social d-flex align-items-center justify-content-center"
-                id="btn_agregar_red_social" v-text="$t('programa.buttons.agregarRedSocial')"
+                id="btn_agregar_red_social"
                 v-on:click="openPopupAgregarProfesor()">
                 Agregar profesor
               </button>

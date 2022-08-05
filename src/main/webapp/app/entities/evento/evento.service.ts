@@ -54,9 +54,10 @@ export default class EventoService {
   }
 
   public retrieveCustom(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(url + `?${buildPaginationQueryOpts(paginationQuery)}`)
         .then(res => {
           resolve(res);
         })

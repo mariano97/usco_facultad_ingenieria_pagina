@@ -90,11 +90,17 @@
               <h3 class="m-0" v-text="$t('profesor.tabs.labels.titulos')"></h3>
             </a>
           </div>
+          <div class="col-sm-auto container_item_tab" v-if="escalafonoesProfesor.length > 0">
+            <a class="d-flex justify-content-center align-items-center"
+              :class="{ active: showTabsInfoProfesor('ESCALAFON') }" @click="activeTab('ESCALAFON')">
+              <h3 class="m-0">Escalafón</h3>
+            </a>
+          </div>
           <div class="col-sm-auto container_item_tab tab_extremos"></div>
         </div>
       </div>
       <div class="container_resultado_select_tab">
-        <div class="" v-if="showTabsInfoProfesor('PERFIL')">
+        <div class="container" v-if="showTabsInfoProfesor('PERFIL')">
           <p class="m-0">{{ usuarioProfesor.profesorDTO.perfil }}</p>
         </div>
         <div class="" v-if="showTabsInfoProfesor('ASIGNATURAS')">
@@ -177,6 +183,27 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="" v-if="showTabsInfoProfesor('ESCALAFON')">
+          <div class="container">
+            <div class="container_items_escalafon row mx-0 my-3">
+              <div class="col container_info d-flex align-items-center justify-content-center">
+                <h3>Promedio</h3>
+              </div>
+              <div class="col container_info d-flex align-items-center justify-content-center">
+                <h3>Año</h3>
+              </div>
+            </div>
+            <div class="container_items_escalafon row mx-0 my-3" v-for="(escalafon, index) in escalafonoesProfesor"
+              :key="index">
+              <div class="col container_info d-flex align-items-center justify-content-center">
+                <h3>{{ escalafon.puntucacionPromedio }}</h3>
+              </div>
+              <div class="col container_info d-flex align-items-center justify-content-center">
+                <h3>{{ convertDateFromServer(escalafon.fecha) }}</h3>
               </div>
             </div>
           </div>

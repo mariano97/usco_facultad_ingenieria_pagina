@@ -287,6 +287,41 @@
         </div>
       </div>
     </section>
+    <section class="seccion_escalafones_profesor" v-if="userAccount.id && profesor.id">
+      <div class="tab">
+        <input type="checkbox" id="escalafon_profesor" />
+        <label class="tab-label item_acordion" for="escalafon_profesor">Escalafones</label>
+        <div class="tab-content web_tabs">
+          <div class="">
+            <div class="container_escalafon_profesores">
+              <div class="row mx-0 escalafon_profesor_item" v-for="escalafon in escalafonoesProfesor"
+                :key="escalafon.id">
+                <div class="col container_promedio_puntuacion d-flex align-items-center justify-content-center">
+                  <h3>{{ escalafon.puntucacionPromedio }}</h3>
+                </div>
+                <div class="col container_ano_escalafon d-flex align-items-center justify-content-center">
+                  <h3>{{ convertDateFromServer(escalafon.fecha) }}</h3>
+                </div>
+                <div class="col-sm-auto row mx-0">
+                  <div class="col-sm-auto opcion_titulo_academico d-flex align-items-center justify-content-center">
+                    <a class="opcion_titulo_academico borrar_titulo" type="button"
+                      @click="eliminarEscalafon(escalafon)">
+                      <img alt="eliminar_titulo" src="/content/images/iconos/bin-red.png" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end mt-3">
+              <button class="btn btn_agregar_escalafon_profesor d-flex align-items-center justify-content-center"
+                id="btn_agregar_materia_profesor" v-on:click="openPopupAgregarEscalafonProfesor()">
+                Agregar Escalafon
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="seccion_cursos_profesor" v-if="userAccount.id && profesor.id">
       <div class="tab">
         <input type="checkbox" id="materias_profesor" />
@@ -509,6 +544,46 @@
           </button>
           <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
             v-on:click="closePopupAgregarCursoMateria()">
+            Cancel
+          </button>
+        </div>
+      </b-modal>
+      <b-modal id="modalPopupAgregarEscalafon" ref="modalPopupAgregarEscalafon">
+        <div class="modal-body">
+          <div class="">
+            <div class="row mx-0">
+              <div class="col form-group">
+                <label class="form-control-label" for="popupInputPuntuacionPromedio">Puntuación Promedio</label>
+                <input type="number" id="popupInputPuntuacionPromedio" name="popupInputPuntuacionPromedio"
+                  class="form-control" v-model="escalafonProfesor.puntucacionPromedio" required />
+                <div v-if="!checkFieldStringValid(escalafonProfesor.puntucacionPromedio)">
+                  <small class="form-text text-danger" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+              <div class="col form-group">
+                <label class="form-control-label" for="popupInputAno">Fecha de la puntuación</label>
+                <input type="month" id="popupInputAno" name="popupInputAno" class="form-control" :max="dateMax"
+                  min="1900-01-01" :value="convertDateFromServer(escalafonProfesor.fecha)"
+                  @change="updateInstantFechaEscalafon($event)" required />
+                <div v-if="!checkFieldFechaValid(escalafonProfesor.fecha)">
+                  <small class="form-text text-danger" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div slot="modal-footer">
+          <button type="button" class="btn btn_subir_documento btn_agregar_curso" id="profesroAgregarCurso"
+            v-text="$t('entity.action.save')" v-on:click="agregarEscalafon(escalafonProfesor)"
+            :disabled="!escalafonProfesor || !escalafonProfesor.puntucacionPromedio || !escalafonProfesor.fecha">
+            guardar
+          </button>
+          <button type="button" class="btn btn_cancelar_subida" v-text="$t('entity.action.cancel')"
+            v-on:click="closePopupAgregarEscalafon()">
             Cancel
           </button>
         </div>

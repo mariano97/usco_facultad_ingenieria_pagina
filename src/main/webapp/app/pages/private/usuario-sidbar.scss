@@ -6,6 +6,10 @@
     background-color: $color-gris-light;
     max-width: 30vw;
     width: 25vw;
+    &.full-screen-sidbar {
+      width: 100vw !important;
+      max-width: 100vw;
+    }
     section.conatiner-encabezado {
       padding-left: 5%;
       padding-right: 5%;
@@ -94,5 +98,8 @@
         }
       }
     }
+  }
+  .sidbar-only-active {
+    display: none !important;
   }
 }

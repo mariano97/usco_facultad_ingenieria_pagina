@@ -148,6 +148,56 @@
       }
     }
   }
+  .seccion_escalafones_profesor {
+    margin-top: 2.5rem;
+    label {
+      color: $color-gris;
+      font-size: 20px;
+    }
+    button {
+      height: 50px;
+      border-radius: 16px;
+      font-size: 20px;
+
+      &.btn_agregar_escalafon_profesor {
+        width: 320px;
+        background: $color-red;
+        color: $color-amarillo;
+
+        &:hover {
+          background: $primary-color;
+          color: $color-gris-light;
+        }
+      }
+    }
+    .container_escalafon_profesores {
+      .escalafon_profesor_item {
+        margin-bottom: 1rem;
+
+        .container_promedio_puntuacion, .container_ano_escalafon {
+          h3 {
+            color: $color-dark;
+            font-size: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        a.opcion_titulo_academico {
+          padding: 0.5rem;
+
+          img {
+            max-width: 30px;
+
+          }
+
+          &:hover {
+            background-color: $color-red-light;
+          }
+        }
+      }
+    }
+  }
   section.seccion_cursos_profesor {
     margin-top: 2.5rem;
 

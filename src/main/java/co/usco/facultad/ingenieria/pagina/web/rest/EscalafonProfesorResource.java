@@ -202,6 +202,15 @@ public class EscalafonProfesorResource {
             );
     }
 
+    @GetMapping(value = {
+        "/escalafon-profesors/by-profesor-id",
+        "/open/escalafon-profesors/by-profesor-id"
+    })
+    public Mono<ResponseEntity<List<EscalafonProfesorDTO>>> getEscalafonProfesorByProfesorId(@RequestParam("profesorId") Long profesorId) {
+        return escalafonProfesorService.findByProfesorId(profesorId).collectList()
+            .map(escalafonProfesorDTOS -> ResponseEntity.ok().body(escalafonProfesorDTOS));
+    }
+
     /**
      * {@code GET  /escalafon-profesors/:id} : get the "id" escalafonProfesor.
      *

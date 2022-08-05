@@ -2,6 +2,7 @@ import Vue from 'vue';
 import dayjs from 'dayjs';
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
+export const DATE_FORMAT_MONTH = 'YYYY-MM';
 export const DATE_FORMAT_FULL_MONTH = 'MMMM DD, YYYY'
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 export const TIME_FORMAT = "HH:mm";

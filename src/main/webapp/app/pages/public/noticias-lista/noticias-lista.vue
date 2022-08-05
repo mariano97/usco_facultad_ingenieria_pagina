@@ -36,7 +36,7 @@
         </div>
       </div>
     </section>
-    <section class="section_listado_otras_noticias">
+    <section class="section_listado_otras_noticias" v-if="noticiasListado.length > 0">
       <div class="">
         <div class="container_resultados_noticias row mx-0 my-3"
           v-for="(noticiasArray, index) in filtrarNoticias(noticiasListado)" :key="index">

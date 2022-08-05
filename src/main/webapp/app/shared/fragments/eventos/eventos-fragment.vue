@@ -37,7 +37,7 @@
               </div>
             </div>
             <div class="boton-ver-mas d-flex justify-content-center align-items-center">
-              <router-link :to="{ name: 'JhiUserView' }">
+              <router-link :to="{ name: 'evento_info_public', params: { eventoId: evento.id } }">
                 <button class="btn btn-ver-mas d-flex justify-content-center"
                   v-text="$t('fragments.fragment-eventos.ver-mas')">
                   Ver más
@@ -53,7 +53,7 @@
         <hr />
       </div>
       <div class="col-sm-auto p-0 d-flex align-items-center">
-        <router-link to="/">
+        <router-link :to="{ name: 'eventos_lista_public' }">
           <button class="btn btn-ver-todo d-flex justify-content-center align-items-center"
             v-text="$t('fragments.fragment-eventos.ver-todo')">Ver todo</button>
         </router-link>

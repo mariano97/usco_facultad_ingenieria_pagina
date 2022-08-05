@@ -59,6 +59,7 @@ export default class EventosFragment extends Vue {
       .findAllFechaMayorQue(this.$store.getters.authenticated, fechaBase, paginacionQuery)
       .then(res => {
         this.eventos = res;
+        this.eventos.sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
         this.eventos.map(event => {
           this.downloadImageProfesorPerfil(event);
         })

@@ -41,6 +41,8 @@ public interface EscalafonProfesorService {
      */
     Flux<EscalafonProfesorDTO> findAll(Pageable pageable);
 
+    Flux<EscalafonProfesorDTO> findByProfesorId(Long profesorId);
+
     /**
      * Returns the number of escalafonProfesors available.
      * @return the number of entities in the database.

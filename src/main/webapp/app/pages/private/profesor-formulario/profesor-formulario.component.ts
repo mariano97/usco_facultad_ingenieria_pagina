@@ -1,4 +1,6 @@
+import { DATE_FORMAT_MONTH } from './../../../shared/date/filters';
 import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
+import EscalafonProfesorService from '@/entities/escalafon-profesor/escalafon-profesor.service';
 import PaisesService from '@/entities/paises/paises.service';
 import ProfesorService from '@/entities/profesor/profesor.service';
 import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
@@ -9,6 +11,7 @@ import identificadoresConstants from '@/shared/constants/identificadores.constan
 import { DATE_FORMAT } from '@/shared/date/filters';
 import { IArchivosPrograma } from '@/shared/model/archivos-programa.model';
 import { ICursoMateria } from '@/shared/model/curso-materia.model';
+import { EscalafonProfesor, IEscalafonProfesor } from '@/shared/model/escalafon-profesor.model';
 import { IFileDocumentoNuevo, IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { IPaises } from '@/shared/model/paises.model';
 import { IProfesor, Profesor } from '@/shared/model/profesor.model';
@@ -97,6 +100,7 @@ export default class ProfesorFormulario extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
   @Inject('tituloAcademicoProfesorService') private tituloAcademicoProfesorService: () => TituloAcademicoProfesorService;
+  @Inject('escalafonProfesorService') private escalafonProfesorService: () => EscalafonProfesorService;
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
   @Inject('paisesService') private paisesService: () => PaisesService;
@@ -108,11 +112,15 @@ export default class ProfesorFormulario extends Vue {
   public profesor: IProfesor = new Profesor();
   public tituloAcademicoProfesor: ITituloAcademicoProfesor = new TituloAcademicoProfesor();
 
+  public escalafonProfesor: IEscalafonProfesor = new EscalafonProfesor();
+  public escalafonoesProfesor: IEscalafonProfesor[] = [];
+
   public isSaving = false;
   public isModeEdit = false;
   public enableEdit = true;
   public isSaveTituloAcademico = false;
   public isAgregarCurso = false;
+  public isAgregarEscalafon = false;
   public showImage = false;
   public showSpinnerLoader = false;
 
@@ -154,6 +162,7 @@ export default class ProfesorFormulario extends Vue {
         this.downloadImageProfesorPerfil();
         this.consultarTitulosAcademicosProfesor(this.profesor.id);
         this.consultarCursosMateriaProfesor(this.profesor.id);
+        this.consultarEscalafonesProfesor(this.profesor.id);
       })
       .catch(err => {
         this.alertService().showHttpError(this, err.response);
@@ -213,6 +222,18 @@ export default class ProfesorFormulario extends Vue {
       })
       .catch(err => {
         this.profesor.cursoMaterias = [];
+      });
+  }
+
+  private consultarEscalafonesProfesor(profesorId: number): void {
+    this.escalafonoesProfesor = [];
+    this.escalafonProfesorService()
+      .findByProfesorId(this.$store.getters.authenticated, profesorId)
+      .then(res => {
+        this.escalafonoesProfesor = res;
+      })
+      .catch(err => {
+        this.escalafonoesProfesor = [];
       });
   }
 
@@ -456,6 +477,13 @@ export default class ProfesorFormulario extends Vue {
     return null;
   }
 
+  public convertDateFromServer(date: Date): string {
+    if (date && dayjs(date).isValid()) {
+      return dayjs(date).format(DATE_FORMAT_MONTH);
+    }
+    return null;
+  }
+
   public updateInstantFieldTituloAcademico(field, event) {
     console.log(event);
     if (event.target.value && event.target.value.length > 0 && event.target.validationMessage.length < 1) {
@@ -528,10 +556,87 @@ export default class ProfesorFormulario extends Vue {
     }
   }
 
+  public eliminarEscalafon(escalafonProfesor: IEscalafonProfesor): void {
+    if (escalafonProfesor.id) {
+      this.isAgregarEscalafon = true;
+      this.escalafonProfesorService()
+        .delete(escalafonProfesor.id)
+        .then(res => {
+          let indexEscalafon = -1;
+          this.escalafonoesProfesor.map((value, index) => {
+            console.log('dentro de map');
+            console.log(value);
+            console.log(escalafonProfesor);
+            if (value.id === escalafonProfesor.id) {
+              indexEscalafon = index;
+            }
+          });
+          if (indexEscalafon > -1) {
+            this.escalafonoesProfesor.splice(indexEscalafon, 1);
+          }
+          this.escalafonProfesor = {};
+        })
+        .catch(err => {
+          this.isAgregarEscalafon = false;
+          this.escalafonProfesor = {};
+          // this.closeAllPopups();
+        });
+    }
+  }
+
+  public agregarEscalafon(escalafonProfesor: IEscalafonProfesor): void {
+    escalafonProfesor.profesor = {
+      id: this.profesor.id,
+    };
+    this.isAgregarEscalafon = true;
+    if (escalafonProfesor.id) {
+      this.escalafonProfesorService()
+        .update(escalafonProfesor)
+        .then(res => {
+          let indexEscalafon = -1;
+          this.escalafonoesProfesor.map((value, index) => {
+            if (value.id === res.id) {
+              indexEscalafon = index;
+            }
+          });
+          if (indexEscalafon > -1) {
+            this.escalafonoesProfesor.splice(indexEscalafon, 1);
+            this.escalafonoesProfesor.push(res);
+          }
+          this.isAgregarEscalafon = false;
+          this.closeAllPopups();
+        })
+        .catch(err => {
+          this.isAgregarEscalafon = false;
+          this.closeAllPopups();
+        });
+    } else {
+      this.escalafonProfesorService()
+        .create(escalafonProfesor)
+        .then(res => {
+          this.escalafonoesProfesor.push(res);
+          this.isAgregarEscalafon = false;
+          this.closeAllPopups();
+        })
+        .catch(err => {
+          this.isAgregarEscalafon = false;
+          this.closeAllPopups();
+        });
+    }
+  }
+
   public openPopupEditarNuevoTituloAcademico(tittulo: ITituloAcademicoProfesor): void {
     this.tituloAcademicoProfesor = tittulo;
     if (<any>this.$refs.modalPopupCrearEstudioProfesor) {
       (<any>this.$refs.modalPopupCrearEstudioProfesor).show();
+    }
+  }
+
+  public openPopupAgregarEscalafonProfesor(): void {
+    this.escalafonProfesor = {};
+    if (<any>this.$refs.modalPopupAgregarEscalafon) {
+      (<any>this.$refs.modalPopupAgregarEscalafon).show();
+      this.escalafonProfesor.fecha = new Date();
     }
   }
 
@@ -572,9 +677,16 @@ export default class ProfesorFormulario extends Vue {
     this.isAgregarCurso = false;
   }
 
+  public closePopupAgregarEscalafon(): void {
+    (<any>this.$refs.modalPopupAgregarEscalafon).hide();
+    this.escalafonProfesor = {};
+    this.isAgregarEscalafon = false;
+  }
+
   public closeAllPopups(): void {
     this.closePopupAgregarNuevoTituloAcademico();
     this.closePopupAgregarCursoMateria();
+    this.closePopupAgregarEscalafon();
   }
 
   public checkCamposFormularioTitulosAcademicos(event): void {
@@ -589,5 +701,25 @@ export default class ProfesorFormulario extends Vue {
         this.cursoMateriaSeleccionado = listCursoMateriaFilter[0];
       }
     }
+  }
+
+  public checkFieldStringValid(field: string): boolean {
+    return field !== null && field !== undefined && field.trim().length > 0;
+  }
+
+  public checkFieldFechaValid(field: any): boolean {
+    return field !== null && field !== undefined;
+  }
+
+  public updateInstantFechaEscalafon(event) {
+    console.log('event');
+    console.log(event);
+    if (event.target.value && event.target.value.length > 0) {
+      const dateTemp = event.target.value.concat('-01');
+      this.escalafonProfesor.fecha = dayjs(dateTemp, DATE_FORMAT).toDate();
+    } else {
+      this.escalafonProfesor.fecha = null;
+    }
+    console.log(this.escalafonProfesor);
   }
 }

@@ -40,6 +40,7 @@ export default class EventosLista extends Vue {
       .retrieveCustom(this.$store.getters.authenticated, paginacionQuery)
       .then(res => {
         this.eventosListado = res.data;
+        this.eventosListado.sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
         this.eventosListado.map(noti => {
           this.downloadImageProfesorPerfil(noti);
         });
@@ -80,7 +81,7 @@ export default class EventosLista extends Vue {
   }
 
   public transition(): void {
-    this.consultarNoticias();
+    this.consultarEventos();
   }
 
   private downloadImageProfesorPerfil(evento: IEvento): void {

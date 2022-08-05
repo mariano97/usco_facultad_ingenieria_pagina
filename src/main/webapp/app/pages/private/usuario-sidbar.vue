@@ -1,6 +1,31 @@
 <template>
   <div class="container-sidbar-usuario row mx-0">
-    <div class="sidbar-usuario">
+    <!--<div class="sidbar-usuario " v-if="pathActive('ingreso/inicio')"
+      :class="{ 'full-screen-sidbar': pathActive('ingreso/inicio') }">
+      <section class="conatiner-encabezado d-flex align-items-center justify-content-start">
+        <div class="horizontal-divides-red row mx-0 w-100">
+          <div class="col-sm-auto">
+            <img alt="imagen_perfil_usuario" class="imagen_usuario rounded-circle"
+              src="/content/images/jhipster_family_member_1_head-512.png" />
+          </div>
+          <div class="col">
+            <div class="conatiner_name_usuario">
+              <h3 class="nombre_usuario">{{ user.nameComplete }}</h3>
+            </div>
+            <div class="row mx-0">
+              <div class="col-sm-auto px-0">
+                <img alt="mini_usuario_email" class="mini_imagen_sidbar" src="/content/images/iconos/email.png" />
+              </div>
+              <div class="col pr-0 d-flex align-items-center email_texto_sidbar">
+                <h4 class="texto_usuario_sidbar">{{ user.email }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>-->
+    <div class="sidbar-usuario"
+      :class="{ 'desactive-sidbar': pathActive('ingreso/inicio') }">
       <section class="conatiner-encabezado d-flex align-items-center justify-content-start">
         <div class="horizontal-divides-red row mx-0 w-100">
           <div class="col-sm-auto">
@@ -144,7 +169,8 @@
         </div>
       </section>
     </div>
-    <div class="col">
+    <div class="col"
+      :class="{ 'sidbar-only-active': pathActive('ingreso/inicio') }">
       <router-view></router-view>
     </div>
   </div>

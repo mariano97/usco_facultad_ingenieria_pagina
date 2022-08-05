@@ -109,12 +109,20 @@
             object-fit: cover;
           }
         }
+        div.d-flex {
+          width: 50% !important;
+          .col-email {
+            width: calc(100% - 40px);
+          }
+        }
         .name_profesor {
           color: $color-gris;
           font-size: 24px;
 
-          white-space: nowrap;
-          display: inline-block;
+          display: block;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
         }
@@ -128,8 +136,10 @@
             font-size: 18px;
             margin: 0px;
 
-            white-space: nowrap;
-            display: inline-block;
+            display: block;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
           }

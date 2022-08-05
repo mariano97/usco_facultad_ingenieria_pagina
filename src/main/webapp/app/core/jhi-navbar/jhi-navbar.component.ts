@@ -34,8 +34,6 @@ export default class JhiNavbar extends Vue {
 
   public pathActive(input) {
     const paths = Array.isArray(input) ? input : [input];
-    console.log('paths: ');
-    console.log(paths);
     return paths.some(path => {
       return this.$route.path.includes(path); // current path starts with this path string
     });
