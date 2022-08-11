@@ -2,8 +2,8 @@
 import axios from 'axios';
 import sinon from 'sinon';
 
-import ArchivosProgramaService from '@/entities/archivos-programa/archivos-programa.service';
-import { ArchivosPrograma } from '@/shared/model/archivos-programa.model';
+import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
+import { Laboratorio } from '@/shared/model/laboratorio.model';
 
 const error = {
   response: {
@@ -23,13 +23,13 @@ const axiosStub = {
 };
 
 describe('Service Tests', () => {
-  describe('ArchivosPrograma Service', () => {
-    let service: ArchivosProgramaService;
+  describe('Laboratorio Service', () => {
+    let service: LaboratorioService;
     let elemDefault;
 
     beforeEach(() => {
-      service = new ArchivosProgramaService();
-      elemDefault = new ArchivosPrograma(123, 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA', false, false, 'AAAAAAA');
+      service = new LaboratorioService();
+      elemDefault = new Laboratorio(123, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 0, 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -52,7 +52,7 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should create a ArchivosPrograma', async () => {
+      it('should create a Laboratorio', async () => {
         const returnedFromService = Object.assign(
           {
             id: 123,
@@ -67,7 +67,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not create a ArchivosPrograma', async () => {
+      it('should not create a Laboratorio', async () => {
         axiosStub.post.rejects(error);
 
         return service
@@ -78,16 +78,16 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should update a ArchivosPrograma', async () => {
+      it('should update a Laboratorio', async () => {
         const returnedFromService = Object.assign(
           {
-            urlName: 'BBBBBB',
-            generationStorage: 1,
-            storageContentType: 'BBBBBB',
-            tipoDocumento: 'BBBBBB',
-            planEstudio: true,
-            microDiseno: true,
-            nombreArchivo: 'BBBBBB',
+            nombre: 'BBBBBB',
+            informacionGeneral: 'BBBBBB',
+            urlFoto: 'BBBBBB',
+            latitud: 1,
+            longitud: 1,
+            correoContacto: 'BBBBBB',
+            direccion: 'BBBBBB',
           },
           elemDefault
         );
@@ -100,7 +100,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not update a ArchivosPrograma', async () => {
+      it('should not update a Laboratorio', async () => {
         axiosStub.put.rejects(error);
 
         return service
@@ -111,14 +111,15 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should partial update a ArchivosPrograma', async () => {
+      it('should partial update a Laboratorio', async () => {
         const patchObject = Object.assign(
           {
-            urlName: 'BBBBBB',
-            generationStorage: 1,
-            microDiseno: true,
+            informacionGeneral: 'BBBBBB',
+            latitud: 1,
+            correoContacto: 'BBBBBB',
+            direccion: 'BBBBBB',
           },
-          new ArchivosPrograma()
+          new Laboratorio()
         );
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -130,7 +131,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not partial update a ArchivosPrograma', async () => {
+      it('should not partial update a Laboratorio', async () => {
         axiosStub.patch.rejects(error);
 
         return service
@@ -141,16 +142,16 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should return a list of ArchivosPrograma', async () => {
+      it('should return a list of Laboratorio', async () => {
         const returnedFromService = Object.assign(
           {
-            urlName: 'BBBBBB',
-            generationStorage: 1,
-            storageContentType: 'BBBBBB',
-            tipoDocumento: 'BBBBBB',
-            planEstudio: true,
-            microDiseno: true,
-            nombreArchivo: 'BBBBBB',
+            nombre: 'BBBBBB',
+            informacionGeneral: 'BBBBBB',
+            urlFoto: 'BBBBBB',
+            latitud: 1,
+            longitud: 1,
+            correoContacto: 'BBBBBB',
+            direccion: 'BBBBBB',
           },
           elemDefault
         );
@@ -161,7 +162,7 @@ describe('Service Tests', () => {
         });
       });
 
-      it('should not return a list of ArchivosPrograma', async () => {
+      it('should not return a list of Laboratorio', async () => {
         axiosStub.get.rejects(error);
 
         return service
@@ -172,14 +173,14 @@ describe('Service Tests', () => {
           });
       });
 
-      it('should delete a ArchivosPrograma', async () => {
+      it('should delete a Laboratorio', async () => {
         axiosStub.delete.resolves({ ok: true });
         return service.delete(123).then(res => {
           expect(res.ok).toBeTruthy();
         });
       });
 
-      it('should not delete a ArchivosPrograma', async () => {
+      it('should not delete a Laboratorio', async () => {
         axiosStub.delete.rejects(error);
 
         return service

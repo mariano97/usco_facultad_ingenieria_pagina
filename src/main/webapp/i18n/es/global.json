@@ -29,6 +29,7 @@
         "evento": "Evento",
         "semillero": "Semillero",
         "escalafonProfesor": "Escalafon Profesor",
+        "laboratorio": "Laboratorio",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

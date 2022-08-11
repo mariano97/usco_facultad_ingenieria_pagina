@@ -135,6 +135,33 @@
           <div class="form-group">
             <label
               class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.microDiseno')"
+              for="archivos-programa-microDiseno"
+              >Micro Diseno</label
+            >
+            <input
+              type="checkbox"
+              class="form-check"
+              name="microDiseno"
+              id="archivos-programa-microDiseno"
+              data-cy="microDiseno"
+              :class="{ valid: !$v.archivosPrograma.microDiseno.$invalid, invalid: $v.archivosPrograma.microDiseno.$invalid }"
+              v-model="$v.archivosPrograma.microDiseno.$model"
+              required
+            />
+            <div v-if="$v.archivosPrograma.microDiseno.$anyDirty && $v.archivosPrograma.microDiseno.$invalid">
+              <small
+                class="form-text text-danger"
+                v-if="!$v.archivosPrograma.microDiseno.required"
+                v-text="$t('entity.validation.required')"
+              >
+                This field is required.
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.archivosPrograma.nombreArchivo')"
               for="archivos-programa-nombreArchivo"
               >Nombre Archivo</label

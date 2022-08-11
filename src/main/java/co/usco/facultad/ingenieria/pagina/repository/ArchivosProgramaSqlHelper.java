@@ -16,6 +16,7 @@ public class ArchivosProgramaSqlHelper {
         columns.add(Column.aliased("storage_content_type", table, columnPrefix + "_storage_content_type"));
         columns.add(Column.aliased("tipo_documento", table, columnPrefix + "_tipo_documento"));
         columns.add(Column.aliased("plan_estudio", table, columnPrefix + "_plan_estudio"));
+        columns.add(Column.aliased("micro_diseno", table, columnPrefix + "_micro_diseno"));
         columns.add(Column.aliased("nombre_archivo", table, columnPrefix + "_nombre_archivo"));
 
         columns.add(Column.aliased("programa_id", table, columnPrefix + "_programa_id"));

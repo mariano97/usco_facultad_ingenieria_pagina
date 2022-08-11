@@ -27,6 +27,9 @@ const validations: any = {
     planEstudio: {
       required,
     },
+    microDiseno: {
+      required,
+    },
     nombreArchivo: {
       required,
     },

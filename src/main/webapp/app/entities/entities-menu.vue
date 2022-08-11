@@ -68,6 +68,10 @@
       <font-awesome-icon icon="asterisk" />
       <span v-text="$t('global.menu.entities.escalafonProfesor')">Escalafon Profesor</span>
     </b-dropdown-item>
+    <b-dropdown-item to="/laboratorio">
+      <font-awesome-icon icon="asterisk" />
+      <span v-text="$t('global.menu.entities.laboratorio')">Laboratorio</span>
+    </b-dropdown-item>
     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
   </div>
 </template>

@@ -27,6 +27,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "microDiseno",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "nombreArchivo",
       "fieldType": "String",
       "fieldValidateRules": ["required"]

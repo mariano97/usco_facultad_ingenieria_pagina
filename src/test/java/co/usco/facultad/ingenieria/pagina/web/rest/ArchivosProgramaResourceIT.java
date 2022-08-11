@@ -58,6 +58,9 @@ class ArchivosProgramaResourceIT {
     private static final Boolean DEFAULT_PLAN_ESTUDIO = false;
     private static final Boolean UPDATED_PLAN_ESTUDIO = true;
 
+    private static final Boolean DEFAULT_MICRO_DISENO = false;
+    private static final Boolean UPDATED_MICRO_DISENO = true;
+
     private static final String DEFAULT_NOMBRE_ARCHIVO = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE_ARCHIVO = "BBBBBBBBBB";
 
@@ -100,6 +103,7 @@ class ArchivosProgramaResourceIT {
             .storageContentType(DEFAULT_STORAGE_CONTENT_TYPE)
             .tipoDocumento(DEFAULT_TIPO_DOCUMENTO)
             .planEstudio(DEFAULT_PLAN_ESTUDIO)
+            .microDiseno(DEFAULT_MICRO_DISENO)
             .nombreArchivo(DEFAULT_NOMBRE_ARCHIVO);
         // Add required entity
         Programa programa;
@@ -125,6 +129,7 @@ class ArchivosProgramaResourceIT {
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
             .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .microDiseno(UPDATED_MICRO_DISENO)
             .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
         // Add required entity
         Programa programa;
@@ -181,6 +186,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(DEFAULT_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(DEFAULT_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(DEFAULT_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getMicroDiseno()).isEqualTo(DEFAULT_MICRO_DISENO);
         assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(DEFAULT_NOMBRE_ARCHIVO);
     }
 
@@ -274,6 +280,28 @@ class ArchivosProgramaResourceIT {
     }
 
     @Test
+    void checkMicroDisenoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = archivosProgramaRepository.findAll().collectList().block().size();
+        // set the field null
+        archivosPrograma.setMicroDiseno(null);
+
+        // Create the ArchivosPrograma, which fails.
+        ArchivosProgramaDTO archivosProgramaDTO = archivosProgramaMapper.toDto(archivosPrograma);
+
+        webTestClient
+            .post()
+            .uri(ENTITY_API_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(TestUtil.convertObjectToJsonBytes(archivosProgramaDTO))
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
+
+        List<ArchivosPrograma> archivosProgramaList = archivosProgramaRepository.findAll().collectList().block();
+        assertThat(archivosProgramaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
     void checkNombreArchivoIsRequired() throws Exception {
         int databaseSizeBeforeTest = archivosProgramaRepository.findAll().collectList().block().size();
         // set the field null
@@ -323,6 +351,8 @@ class ArchivosProgramaResourceIT {
             .value(hasItem(DEFAULT_TIPO_DOCUMENTO))
             .jsonPath("$.[*].planEstudio")
             .value(hasItem(DEFAULT_PLAN_ESTUDIO.booleanValue()))
+            .jsonPath("$.[*].microDiseno")
+            .value(hasItem(DEFAULT_MICRO_DISENO.booleanValue()))
             .jsonPath("$.[*].nombreArchivo")
             .value(hasItem(DEFAULT_NOMBRE_ARCHIVO));
     }
@@ -373,6 +403,8 @@ class ArchivosProgramaResourceIT {
             .value(is(DEFAULT_TIPO_DOCUMENTO))
             .jsonPath("$.planEstudio")
             .value(is(DEFAULT_PLAN_ESTUDIO.booleanValue()))
+            .jsonPath("$.microDiseno")
+            .value(is(DEFAULT_MICRO_DISENO.booleanValue()))
             .jsonPath("$.nombreArchivo")
             .value(is(DEFAULT_NOMBRE_ARCHIVO));
     }
@@ -404,6 +436,7 @@ class ArchivosProgramaResourceIT {
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
             .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .microDiseno(UPDATED_MICRO_DISENO)
             .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
         ArchivosProgramaDTO archivosProgramaDTO = archivosProgramaMapper.toDto(updatedArchivosPrograma);
 
@@ -425,6 +458,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getMicroDiseno()).isEqualTo(UPDATED_MICRO_DISENO);
         assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
     }
 
@@ -514,7 +548,7 @@ class ArchivosProgramaResourceIT {
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
             .planEstudio(UPDATED_PLAN_ESTUDIO)
-            .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
+            .microDiseno(UPDATED_MICRO_DISENO);
 
         webTestClient
             .patch()
@@ -534,7 +568,8 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
-        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
+        assertThat(testArchivosPrograma.getMicroDiseno()).isEqualTo(UPDATED_MICRO_DISENO);
+        assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(DEFAULT_NOMBRE_ARCHIVO);
     }
 
     @Test
@@ -554,6 +589,7 @@ class ArchivosProgramaResourceIT {
             .storageContentType(UPDATED_STORAGE_CONTENT_TYPE)
             .tipoDocumento(UPDATED_TIPO_DOCUMENTO)
             .planEstudio(UPDATED_PLAN_ESTUDIO)
+            .microDiseno(UPDATED_MICRO_DISENO)
             .nombreArchivo(UPDATED_NOMBRE_ARCHIVO);
 
         webTestClient
@@ -574,6 +610,7 @@ class ArchivosProgramaResourceIT {
         assertThat(testArchivosPrograma.getStorageContentType()).isEqualTo(UPDATED_STORAGE_CONTENT_TYPE);
         assertThat(testArchivosPrograma.getTipoDocumento()).isEqualTo(UPDATED_TIPO_DOCUMENTO);
         assertThat(testArchivosPrograma.getPlanEstudio()).isEqualTo(UPDATED_PLAN_ESTUDIO);
+        assertThat(testArchivosPrograma.getMicroDiseno()).isEqualTo(UPDATED_MICRO_DISENO);
         assertThat(testArchivosPrograma.getNombreArchivo()).isEqualTo(UPDATED_NOMBRE_ARCHIVO);
     }
 

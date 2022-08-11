@@ -22,6 +22,7 @@ import NoticiaService from './noticia/noticia.service';
 import EventoService from './evento/evento.service';
 import SemilleroService from './semillero/semillero.service';
 import EscalafonProfesorService from './escalafon-profesor/escalafon-profesor.service';
+import LaboratorioService from './laboratorio/laboratorio.service';
 // jhipster-needle-add-entity-service-to-entities-component-import - JHipster will import entities services here
 
 @Component
@@ -44,6 +45,7 @@ export default class Entities extends Vue {
   @Provide('eventoService') private eventoService = () => new EventoService();
   @Provide('semilleroService') private semilleroService = () => new SemilleroService();
   @Provide('escalafonProfesorService') private escalafonProfesorService = () => new EscalafonProfesorService();
+  @Provide('laboratorioService') private laboratorioService = () => new LaboratorioService();
   // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
   @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
   // @Provide('utilsService') private utilsService = () => new UtilsService();

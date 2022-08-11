@@ -39,6 +39,10 @@ public class ArchivosPrograma implements Serializable {
     private Boolean planEstudio;
 
     @NotNull(message = "must not be null")
+    @Column("micro_diseno")
+    private Boolean microDiseno;
+
+    @NotNull(message = "must not be null")
     @Column("nombre_archivo")
     private String nombreArchivo;
 
@@ -136,6 +140,19 @@ public class ArchivosPrograma implements Serializable {
         this.planEstudio = planEstudio;
     }
 
+    public Boolean getMicroDiseno() {
+        return this.microDiseno;
+    }
+
+    public ArchivosPrograma microDiseno(Boolean microDiseno) {
+        this.setMicroDiseno(microDiseno);
+        return this;
+    }
+
+    public void setMicroDiseno(Boolean microDiseno) {
+        this.microDiseno = microDiseno;
+    }
+
     public String getNombreArchivo() {
         return this.nombreArchivo;
     }
@@ -222,6 +239,7 @@ public class ArchivosPrograma implements Serializable {
             ", storageContentType='" + getStorageContentType() + "'" +
             ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", planEstudio='" + getPlanEstudio() + "'" +
+            ", microDiseno='" + getMicroDiseno() + "'" +
             ", nombreArchivo='" + getNombreArchivo() + "'" +
             "}";
     }

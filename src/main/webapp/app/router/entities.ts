@@ -107,6 +107,12 @@ const EscalafonProfesor = () => import('@/entities/escalafon-profesor/escalafon-
 const EscalafonProfesorUpdate = () => import('@/entities/escalafon-profesor/escalafon-profesor-update.vue');
 // prettier-ignore
 const EscalafonProfesorDetails = () => import('@/entities/escalafon-profesor/escalafon-profesor-details.vue');
+// prettier-ignore
+const Laboratorio = () => import('@/entities/laboratorio/laboratorio.vue');
+// prettier-ignore
+const LaboratorioUpdate = () => import('@/entities/laboratorio/laboratorio-update.vue');
+// prettier-ignore
+const LaboratorioDetails = () => import('@/entities/laboratorio/laboratorio-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -521,6 +527,30 @@ export default {
       path: 'escalafon-profesor/:escalafonProfesorId/view',
       name: 'EscalafonProfesorView',
       component: EscalafonProfesorDetails,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'laboratorio',
+      name: 'Laboratorio',
+      component: Laboratorio,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'laboratorio/new',
+      name: 'LaboratorioCreate',
+      component: LaboratorioUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'laboratorio/:laboratorioId/edit',
+      name: 'LaboratorioEdit',
+      component: LaboratorioUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'laboratorio/:laboratorioId/view',
+      name: 'LaboratorioView',
+      component: LaboratorioDetails,
       meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here

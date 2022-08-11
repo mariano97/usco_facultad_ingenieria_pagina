@@ -25,6 +25,9 @@ public class ArchivosProgramaDTO implements Serializable {
     private Boolean planEstudio;
 
     @NotNull(message = "must not be null")
+    private Boolean microDiseno;
+
+    @NotNull(message = "must not be null")
     private String nombreArchivo;
 
     private ProgramaDTO programa;
@@ -77,6 +80,14 @@ public class ArchivosProgramaDTO implements Serializable {
 
     public void setPlanEstudio(Boolean planEstudio) {
         this.planEstudio = planEstudio;
+    }
+
+    public Boolean getMicroDiseno() {
+        return microDiseno;
+    }
+
+    public void setMicroDiseno(Boolean microDiseno) {
+        this.microDiseno = microDiseno;
     }
 
     public String getNombreArchivo() {
@@ -134,6 +145,7 @@ public class ArchivosProgramaDTO implements Serializable {
             ", storageContentType='" + getStorageContentType() + "'" +
             ", tipoDocumento='" + getTipoDocumento() + "'" +
             ", planEstudio='" + getPlanEstudio() + "'" +
+            ", microDiseno='" + getMicroDiseno() + "'" +
             ", nombreArchivo='" + getNombreArchivo() + "'" +
             ", programa=" + getPrograma() +
             ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
