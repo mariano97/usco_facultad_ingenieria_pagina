@@ -1,19 +1,18 @@
 import { required } from 'vuelidate/lib/validators';
-import AlertService from '@/shared/alert/alert.service';
-import { DATE_FORMAT } from '@/shared/date/filters';
-import { IFileDocumentoNuevo, IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
-import { ISemillero, Semillero } from '@/shared/model/semillero.model';
-import GoogleStorageService from '@/shared/services/google-storage.service';
-import UtilsService from '@/shared/services/utils.service';
-import dayjs from 'dayjs';
 import { Component, Inject, Vue } from 'vue-property-decorator';
-import './semillero-formulario.scss';
-import SemilleroService from '@/entities/semillero/semillero.service';
+import './laboratorio-formulario.scss';
+import { ILaboratorio, Laboratorio } from '@/shared/model/laboratorio.model';
+import AlertService from '@/shared/alert/alert.service';
+import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
+import UtilsService from '@/shared/services/utils.service';
+import GoogleStorageService from '@/shared/services/google-storage.service';
+import { IFileDocumentoNuevo, IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
+import { DATE_FORMAT } from '@/shared/date/filters';
+import dayjs from 'dayjs';
 import carpetasarchivosConstants from '@/shared/constants/carpetasarchivos.constants';
-import './semillero-formulario.scss';
 
 const validations: any = {
-  semillero: {
+  laboratorio: {
     nombre: {
       required,
     },
@@ -21,19 +20,25 @@ const validations: any = {
       required,
     },
     urlFoto: {},
+    latitud: {},
+    longitud: {},
+    correoContacto: {
+      required,
+    },
+    direccion: {},
   },
 };
 
 @Component({
   validations,
 })
-export default class SemilleroFormulario extends Vue {
+export default class LaboratorioFormulario extends Vue {
   @Inject('googleStorageService') private googleStorageService: () => GoogleStorageService;
   @Inject('utilsService') private utilsService: () => UtilsService;
-  @Inject('semilleroService') private semilleroService: () => SemilleroService;
+  @Inject('laboratorioService') private laboratorioService: () => LaboratorioService;
   @Inject('alertService') private alertService: () => AlertService;
 
-  public semillero: ISemillero = new Semillero();
+  public laboratorio: ILaboratorio = new Laboratorio();
 
   public isSaving = false;
   public isModeEdit = false;
@@ -49,19 +54,19 @@ export default class SemilleroFormulario extends Vue {
 
   public beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (to.params.semilleroId) {
-        vm.consultarSemillero(to.params.semilleroId);
+      if (to.params.laboratorioId) {
+        vm.consultarLaboratorio(to.params.laboratorioId);
         vm.isModeEdit = true;
         vm.enableEdit = false;
       }
     });
   }
 
-  public consultarSemillero(semilleroId: number): void {
-    this.semilleroService()
-      .find(semilleroId)
+  public consultarLaboratorio(laboratorioId: number): void {
+    this.laboratorioService()
+      .find(laboratorioId)
       .then(res => {
-        this.semillero = res;
+        this.laboratorio = res;
         this.downloadImageProfesorPerfil();
       })
       .catch(error => {
@@ -72,17 +77,17 @@ export default class SemilleroFormulario extends Vue {
 
   public guardar(): void {
     this.isSaving = true;
-    if (this.semillero.id) {
-      this.semillero.facultad = {
+    if (this.laboratorio.id) {
+      /* this.laboratorio.facultad = {
         id: 1,
-      };
-      this.semilleroService()
-        .update(this.semillero)
+      }; */
+      this.laboratorioService()
+        .update(this.laboratorio)
         .then(res => {
           this.isSaving = false;
           this.enableFormularioEditar();
           this.$router.go(-1);
-          const message = this.$t('paginaFacultadIngenieriaProyectoApp.semillero.updated', { param: res.id });
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.laboratorio.updated', { param: res.id });
           this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Info',
@@ -97,25 +102,25 @@ export default class SemilleroFormulario extends Vue {
           this.alertService().showHttpError(this, error.response);
         });
     } else {
-      this.semillero.facultad = {
+      /* this.laboratorio.facultad = {
         id: 1,
-      };
-      this.semilleroService()
-        .create(this.semillero)
+      }; */
+      this.laboratorioService()
+        .create(this.laboratorio)
         .then(param => {
-          this.semillero = param;
+          this.laboratorio = param;
           this.isSaving = false;
           if (this.file !== null) {
             this.uploadFileToStorage(
               this.file.type,
-              this.semillero.id,
+              this.laboratorio.id,
               this.file,
-              this.generateUrlFotoPerfilFolderUpload(this.semillero.id + '')
+              this.generateUrlFotoPerfilFolderUpload(this.laboratorio.id + '')
             );
           }
-          this.$router.push({ name: 'semillero_lista' });
+          this.$router.push({ name: 'laboratorios_lista' });
           // this.$router.go(-1);
-          const message = this.$t('paginaFacultadIngenieriaProyectoApp.semillero.created', { param: param.id });
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.laboratorio.created', { param: param.id });
           this.$root.$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
             title: 'Success',
@@ -172,41 +177,42 @@ export default class SemilleroFormulario extends Vue {
         this.imageProfileProfesor = fileReader.result;
         this.showImage = true;
       };
-      if (this.semillero.id) {
+      if (this.laboratorio.id) {
         this.showImage = false;
-        this.uploadFileToStorage(this.file.type, this.semillero.id, this.file, this.generateUrlFotoPerfilFolderUpload(this.semillero.id + ''));
+        this.uploadFileToStorage(this.file.type, this.laboratorio.id, this.file, this.generateUrlFotoPerfilFolderUpload(this.laboratorio.id + ''));
       }
     }
   }
 
-  private generateUrlFotoPerfilFolderUpload(semilleroId: string): string {
-    return carpetasarchivosConstants.CARPETA_BASE_SEMILLERO_FOTO_PERFIL.replace('{{labortorioId}}', semilleroId + '');
+
+  private generateUrlFotoPerfilFolderUpload(laboratorioId: string): string {
+    return carpetasarchivosConstants.CARPETA_BASE_LABORATORIO_FOTO_PERFIL.replace('{{laboratorioId}}', laboratorioId + '');
   }
 
   private downloadImageProfesorPerfil(): void {
-    if (this.semillero.id && this.semillero.urlFoto) {
-      if (this.utilsService().existeFileInList(this.semillero.urlFoto)) {
-        const file: IFileDownloaded = this.utilsService().obtenerFileByFileName(this.semillero.urlFoto);
+    if (this.laboratorio.id && this.laboratorio.urlFoto) {
+      if (this.utilsService().existeFileInList(this.laboratorio.urlFoto)) {
+        const file: IFileDownloaded = this.utilsService().obtenerFileByFileName(this.laboratorio.urlFoto);
         this.imageProfileProfesor = file.file;
         this.showImage = true;
       } else {
         this.googleStorageService()
-          .downloadFileByOnlyFileName(this.$store.getters.authenticated, this.semillero.urlFoto)
+          .downloadFileByOnlyFileName(this.$store.getters.authenticated, this.laboratorio.urlFoto)
           .then(res => {
             this.imageProfileProfesor = res;
             this.showImage = true;
-            this.utilsService().agregarFileToList(this.semillero.urlFoto, res);
+            this.utilsService().agregarFileToList(this.laboratorio.urlFoto, res);
           });
       }
     }
   }
 
-  private uploadFileToStorage(contentType: string, semilleroId: number, file: File, nameCarpeta: string): void {
+  private uploadFileToStorage(contentType: string, laboratorioId: number, file: File, nameCarpeta: string): void {
     this.showSpinnerLoader = true;
     this.googleStorageService()
-      .uploadFotoSemillero(contentType, semilleroId, nameCarpeta, file)
+      .uploadFotoLaboratorio(contentType, laboratorioId, nameCarpeta, file)
       .then(res => {
-        this.semillero = res;
+        this.laboratorio = res;
         this.showSpinnerLoader = false;
       })
       .catch(err => {
@@ -244,9 +250,9 @@ export default class SemilleroFormulario extends Vue {
 
   public updateInstantField(field, event) {
     if (event.target.value) {
-      this.semillero[field] = dayjs(event.target.value, DATE_FORMAT);
+      this.laboratorio[field] = dayjs(event.target.value, DATE_FORMAT);
     } else {
-      this.semillero[field] = null;
+      this.laboratorio[field] = null;
     }
   }
 }

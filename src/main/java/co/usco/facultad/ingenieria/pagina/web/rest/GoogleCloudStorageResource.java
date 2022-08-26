@@ -160,6 +160,24 @@ public class GoogleCloudStorageResource {
                 .body(result));
     }
 
+    @PutMapping(value = {
+        "/google-cloud-storage/laboratorio-upload-files"
+    })
+    public Mono<ResponseEntity<LaboratorioDTO>> updateLaboratorioFotoPerfil(
+        @RequestParam("carpeta") String carpeta,
+        @RequestParam("contentType") String contentType,
+        @RequestParam("laboratorioId") Long laboratorioId,
+        @RequestPart("file") FilePart filePart
+    ) {
+        if (laboratorioId == null || laboratorioId == 0L) {
+            throw new BadRequestAlertException("Es necesario tener id del archivos programa", ENTITY_NAME, "idNecesario");
+        }
+        return googleCloudStorageService.uploadFotoLaboratorioToStorage(contentType, laboratorioId, carpeta, filePart)
+            .map(result -> ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+                .body(result));
+    }
+
     @GetMapping(value = {
         "/open/google-cloud-storage/download",
         "/google-cloud-storage/download"

@@ -28,17 +28,25 @@
 
       <b-collapse is-nav id="header-tabs" class="nav-container-items mobile">
         <b-navbar-nav class="ml-auto">
-          <b-nav-item to="/faultad-ingenieria/semilleros-lista" v-if="!authenticated"
+          <b-nav-item to="/faultad-ingenieria/programas-lista" v-if="!authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
-            <h4>Semilleros</h4>
+            <h4 v-text="$t('global.menu.programas')">Programas</h4>
           </b-nav-item>
           <b-nav-item to="/faultad-ingenieria/programa-profesorado-lista" v-if="!authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4 v-text="$t('global.menu.profesorado')"></h4>
           </b-nav-item>
-          <b-nav-item to="/faultad-ingenieria/programas-lista" v-if="!authenticated"
+          <b-nav-item to="/faultad-ingenieria/laboratorios-lista" v-if="!authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
-            <h4 v-text="$t('global.menu.programas')">Programas</h4>
+            <h4>Laboratorios</h4>
+          </b-nav-item>
+          <b-nav-item to="/faultad-ingenieria/semilleros-lista" v-if="!authenticated"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
+            <h4>Semilleros</h4>
+          </b-nav-item>
+          <b-nav-item v-if="!authenticated" href="https://www.usco.edu.co/es/sistemas-de-consultas-academicas/" target="_blank"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center">
+            <h4>Consultas Academicas</h4>
           </b-nav-item>
           <b-nav-item to="/login" exact v-if="!authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center">
@@ -149,17 +157,25 @@
     <div class="opciones_facultad desktop row mx-0 align-items-center justify-content-end" v-if="!authenticated">
       <div class="col-sm-auto opcion">
         <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
-        <router-link to="/faultad-ingenieria/programa-profesorado-lista">
+        <router-link to="/faultad-ingenieria/programas-lista">
           <button class="btn btn-opcion d-flex justify-content-center">
-            Docentes de la facultad
+            Programas
           </button>
         </router-link>
       </div>
       <div class="col-sm-auto opcion">
         <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
-        <router-link to="/faultad-ingenieria/programas-lista">
+        <router-link to="/faultad-ingenieria/programa-profesorado-lista">
           <button class="btn btn-opcion d-flex justify-content-center">
-            Programas
+            Docentes
+          </button>
+        </router-link>
+      </div>
+      <div class="col-sm-auto opcion">
+        <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
+        <router-link :to="{ name: 'laboratorios_lista_public' }">
+          <button class="btn btn-opcion d-flex justify-content-center">
+            Laboratorios
           </button>
         </router-link>
       </div>

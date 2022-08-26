@@ -24,8 +24,7 @@
         </div>
       </section>
     </div>-->
-    <div class="sidbar-usuario"
-      :class="{ 'desactive-sidbar': pathActive('ingreso/inicio') }">
+    <div class="sidbar-usuario" :class="{ 'desactive-sidbar': pathActive('ingreso/inicio') }">
       <section class="conatiner-encabezado d-flex align-items-center justify-content-start">
         <div class="horizontal-divides-red row mx-0 w-100">
           <div class="col-sm-auto">
@@ -150,6 +149,20 @@
               </button>
             </router-link>
           </div>
+          <div class="">
+            <router-link :to="{ name: 'laboratorios_lista' }" class="opcion-sidbar">
+              <button class="btn w-100">
+                <div class="row mx-0 align-items-center justify-content-center">
+                  <div class="col-sm-auto">
+                    <img alt="noticias" class="mini_imagen_icon_option" src="/content/images/iconos/seedbed_red.png" />
+                  </div>
+                  <div class="col d-flex align-items-center">
+                    <h4 class="texto-opcion">Laboratorios</h4>
+                  </div>
+                </div>
+              </button>
+            </router-link>
+          </div>
         </div>
       </section>
       <section class="container-opciones-config">
@@ -169,8 +182,7 @@
         </div>
       </section>
     </div>
-    <div class="col"
-      :class="{ 'sidbar-only-active': pathActive('ingreso/inicio') }">
+    <div class="col" :class="{ 'sidbar-only-active': pathActive('ingreso/inicio') }">
       <router-view></router-view>
     </div>
   </div>

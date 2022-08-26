@@ -176,7 +176,10 @@ public class LaboratorioResource {
      * @param request a {@link ServerHttpRequest} request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of laboratorios in body.
      */
-    @GetMapping("/laboratorios")
+    @GetMapping(value = {
+        "/laboratorios",
+        "/open/laboratorios"
+    })
     public Mono<ResponseEntity<List<LaboratorioDTO>>> getAllLaboratorios(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request
@@ -204,7 +207,10 @@ public class LaboratorioResource {
      * @param id the id of the laboratorioDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the laboratorioDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/laboratorios/{id}")
+    @GetMapping(value = {
+        "/laboratorios/{id}",
+        "/open/laboratorios/{id}"
+    })
     public Mono<ResponseEntity<LaboratorioDTO>> getLaboratorio(@PathVariable Long id) {
         log.debug("REST request to get Laboratorio : {}", id);
         Mono<LaboratorioDTO> laboratorioDTO = laboratorioService.findOne(id);

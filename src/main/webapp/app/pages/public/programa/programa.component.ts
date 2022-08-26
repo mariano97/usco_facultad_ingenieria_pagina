@@ -57,6 +57,7 @@ export default class Programa extends Vue {
   public listArrayArchivosProgramas: IArchivosPrograma[][] = [];
   private archvivoProgramaImageProfile: IArchivosPrograma = {};
   public archivoProgramaPlanEstudio: IArchivosPrograma = {};
+  public archivoProgramaMicroDiseno: IArchivosPrograma = {};
   public listRedesSocialesPrograma: IRedesPrograma[] = [];
   public imageProfilePrograma: any;
   public showImage = false;
@@ -111,6 +112,7 @@ export default class Programa extends Vue {
         this.archivosProgramaList = res;
         this.downloadImageProgramaPerfil();
         this.filterProgramaPlanEstudio();
+        this.filterProgramaMicroDiseno();
         this.agruparArchivosPorgramas(this.archivosProgramaList);
       })
       .catch(err => {
@@ -155,6 +157,15 @@ export default class Programa extends Vue {
     );
     if (archivosPlanEstudio.length > 0) {
       this.archivoProgramaPlanEstudio = archivosPlanEstudio[0];
+    }
+  }
+
+  private filterProgramaMicroDiseno(): void {
+    const archivosMicroDiseno = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_MICRO_DISENO_NUMBER
+    );
+    if (archivosMicroDiseno.length > 0) {
+      this.archivoProgramaMicroDiseno = archivosMicroDiseno[0];
     }
   }
 

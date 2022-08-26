@@ -28,7 +28,7 @@
               </div>
               <div class="col">
                 <h4 class="option">{{ programa.codigoRegistroCalificado + ' de ' +
-                  convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
+                convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
               </div>
             </div>
             <div class="container-opcion row mx-0" v-if="programa.tipoFormacion">
@@ -113,7 +113,7 @@
               </div>
               <div class="col">
                 <h4 class="option">{{ programa.codigoRegistroCalificado + ' de ' +
-                  convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
+                convertDateTimeFromServer(programa.fechaRegistroCalificado) }}</h4>
               </div>
             </div>
             <div class="container-opcion row mx-0" v-if="programa.tipoFormacion">
@@ -208,7 +208,8 @@
           </div>
         </div>
         <div class="body_caracteristicas">
-          <div class="row mx-0 d-flex justify-content-center align-items-center container_caracteristicas_body" style="height: 540px;">
+          <div class="row mx-0 d-flex justify-content-center align-items-center container_caracteristicas_body"
+            style="height: 540px;">
             <div class="col d-flex justify-content-center align-items-center" v-if="programa.perfilEstudiante">
               <div class="card-custom d-flex justify-content-center align-items-center">
                 <div class="face face1 d-flex justify-content-center align-items-center">
@@ -278,8 +279,10 @@
                 </div>
               </div>
             </div>
-            <div class="col d-flex justify-content-center align-items-center" v-if="archivoProgramaPlanEstudio.id">
-              <div class="card-custom d-flex justify-content-center align-items-center">
+            <div class="col d-flex justify-content-center align-items-center"
+              v-if="archivoProgramaPlanEstudio.id || archivoProgramaMicroDiseno.id">
+              <div class="card-custom d-flex justify-content-center align-items-center"
+                v-if="archivoProgramaPlanEstudio.id || archivoProgramaMicroDiseno.id">
                 <div class="face face1 d-flex justify-content-center align-items-center">
                   <div class="content">
                     <div class="d-flex justify-content-center align-items-center">
@@ -292,7 +295,7 @@
                   </div>
                 </div>
                 <div class="face face2">
-                  <div class="content h-50">
+                  <div class="content h-50-" v-if="archivoProgramaPlanEstudio.id">
                     <h2 class="mb-4" v-text="$t('programa.titulos.plan-estudio')"></h2>
                     <div class="m-0 h-100 texto_descripcion d-flex align-items-center justify-content-center">
                       <div class="container_spinner d-flex align-items-center justify-content-center">
@@ -305,6 +308,24 @@
                         v-text="$t('programa.buttons.publicPlanEstudio')" type="button"
                         @click="verArchivoPrograma(archivoProgramaPlanEstudio)">
                         Ver plan de estudio
+                      </button>
+                    </div>
+                  </div>
+                  <div class="p-3" v-if="archivoProgramaMicroDiseno.id && archivoProgramaPlanEstudio.id">
+                    <hr />
+                  </div>
+                  <div class="content h-50-" v-if="archivoProgramaMicroDiseno.id">
+                    <h2 class="mb-4" >Micro Diseño</h2>
+                    <div class="m-0 h-100 texto_descripcion d-flex align-items-center justify-content-center">
+                      <div class="container_spinner d-flex align-items-center justify-content-center">
+                        <b-spinner v-if="showSpinnerPlanEstudio" style="width: 3rem; height: 3rem;" type="grow"
+                          label="Cargando" variant="danger">
+                        </b-spinner>
+                      </div>
+                      <button v-if="archivoProgramaMicroDiseno.id && !showSpinnerPlanEstudio" id="btn_show_plan_estudio"
+                        class="btn btn_show_plan_estudio d-flex align-items-center justify-content-center" type="button"
+                        @click="verArchivoPrograma(archivoProgramaMicroDiseno)">
+                        Ver Micro diseño
                       </button>
                     </div>
                   </div>

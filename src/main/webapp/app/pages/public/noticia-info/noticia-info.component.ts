@@ -11,6 +11,7 @@ import { SwiperCore, Swiper, SwiperSlide } from 'swiper-vue2';
 import { SwiperOptions } from 'swiper-vue2/types/swiper/swiper-options';
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import './noticia-info.scss';
+import 'swiper/swiper-bundle.css';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -28,6 +29,7 @@ export default class NoticiaInfo extends Vue {
 
   public noticia: INoticia = {};
   public otrasNoticias: INoticia[] = [];
+  public showAnotherNoticias = false;
 
   public swiperOptions: SwiperOptions = {
     loop: false,
@@ -51,7 +53,19 @@ export default class NoticiaInfo extends Vue {
       if (to.params.noticiaId) {
         vm.consultarNoticia(to.params.noticiaId);
       }
+      vm.showAnotherNoticias = false;
+      vm.otrasNoticias = [];
+      vm.noticia = {};
     });
+  }
+
+  public beforeRouteUpdate(to, from) {
+    // just use `this`
+    console.log('dentro de beforeRouteUpdate');
+    this.showAnotherNoticias = false;
+    this.otrasNoticias = [];
+    this.noticia = {};
+    this.consultarNoticia(to.params.noticiaId);
   }
 
   private consultarNoticia(noticiaId: number): void {
@@ -92,10 +106,20 @@ export default class NoticiaInfo extends Vue {
         this.otrasNoticias.map(event => {
           this.downloadImageProfesorPerfil(event);
         });
+        setTimeout(() => {
+          this.showAnotherNoticiasMethod();
+        }, 2000);
+
       })
       .catch(err => {
         this.otrasNoticias = [];
       });
+  }
+
+  private showAnotherNoticiasMethod(): void {
+    console.log('dentro de metodo showAnotherNoticiasMethod');
+    this.showAnotherNoticias = true;
+    console.log(this.showAnotherNoticias);
   }
 
   private downloadImageProfesorPerfil(noticia: INoticia): void {

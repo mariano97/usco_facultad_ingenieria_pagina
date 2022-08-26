@@ -83,6 +83,9 @@ export function initFilters() {
       case 'application/pdf':
         newValue = 'PDF';
         break;
+      case 'application/zip':
+        newValue = 'ZIP';
+        break;
       default:
         newValue = value;
         break;
@@ -104,6 +107,9 @@ export function initFilters() {
         break;
       case 'JVBER':
         headerBase64Type = 'data:application/pdf;base64,';
+        break;
+      case 'UESDB':
+        headerBase64Type = 'data:application/zip;base64,';
         break;
       default:
         headerBase64Type = '';

@@ -141,6 +141,9 @@ export default class UtilsService {
       case 'JVBER':
         headerBase64Type = 'data:application/pdf;base64,';
         break;
+      case 'UESDB':
+        headerBase64Type = 'data:application/zip;base64,';
+        break;
       default:
         headerBase64Type = '';
         break;

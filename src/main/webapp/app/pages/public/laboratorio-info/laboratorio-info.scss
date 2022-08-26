@@ -1,0 +1,42 @@
+@import '../../../../content/scss/custom-variables';
+
+.container_laboratorio_facultad {
+  margin-bottom: 5rem;
+
+    .seccion_imagen_principal {
+      img {
+        width: 100%;
+
+        @media (min-width: 1000px) {
+          height: 500px;
+        }
+
+        @media (max-width: 999px) {
+          height: 300px;
+        }
+
+        object-fit: cover;
+      }
+    }
+
+    .seccion_info_laboratorio {
+      margin-top: 4rem;
+
+      .container_nombre_laboratorio {
+        .title {
+          color: $color-dark;
+          font-size: 30px;
+        }
+      }
+
+      .container_descripcion {
+        margin-top: 2rem;
+
+        p {
+          color: $color-gris;
+          font-size: 20px;
+          white-space: pre-line;
+        }
+      }
+    }
+  }

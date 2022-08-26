@@ -4,8 +4,9 @@ const CARPETA_BASE_PROFESOR_FOTO_PERFIL = 'facultad/ingenieria/profesores/{{logi
 const CARPETA_BASE_NOTICIA_FOTO_PERFIL = 'facultad/ingenieria/noticias/{{noticiaId}}/images';
 const CARPETA_BASE_EVENTO_FOTO_PERFIL = 'facultad/ingenieria/eventos/{{eventoId}}/images';
 const CARPETA_BASE_SEMILLERO_FOTO_PERFIL = 'facultad/ingenieria/semilleros/{{semilleroId}}/images';
+const CARPETA_BASE_LABORATORIO_FOTO_PERFIL = 'facultad/ingenieria/laboratorios/{{labortorioId}}/images';
 const TIPOS_IMAGEN_PERMITIDOS = ['image/png', 'image/jpeg', 'image/jpg'];
-const TIPOS_DOCUMENTOS_PERMITIDOS = ['application/pdf'];
+const TIPOS_DOCUMENTOS_PERMITIDOS = ['application/pdf', 'application/zip'];
 const TAMANO_MAXIMO_ARCHIVOS = 15728640;
 
 export default {
@@ -15,6 +16,7 @@ export default {
   CARPETA_BASE_NOTICIA_FOTO_PERFIL: CARPETA_BASE_NOTICIA_FOTO_PERFIL,
   CARPETA_BASE_EVENTO_FOTO_PERFIL: CARPETA_BASE_EVENTO_FOTO_PERFIL,
   CARPETA_BASE_SEMILLERO_FOTO_PERFIL: CARPETA_BASE_SEMILLERO_FOTO_PERFIL,
+  CARPETA_BASE_LABORATORIO_FOTO_PERFIL: CARPETA_BASE_LABORATORIO_FOTO_PERFIL,
   TIPOS_IMAGEN_PERMITIDOS: TIPOS_IMAGEN_PERMITIDOS,
   TIPOS_DOCUMENTOS_PERMITIDOS: TIPOS_DOCUMENTOS_PERMITIDOS,
   TAMANO_MAXIMO_ARCHIVOS: TAMANO_MAXIMO_ARCHIVOS,

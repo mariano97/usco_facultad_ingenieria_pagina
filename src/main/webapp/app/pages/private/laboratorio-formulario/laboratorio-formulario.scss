@@ -1,0 +1,128 @@
+@import '../../../../content/scss/custom-variables';
+
+.container_formulario_laboratorio {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  section.header_arrow {
+    padding-bottom: 2rem;
+
+    img {
+      max-width: 30px;
+    }
+
+    h2.title_formulario_return {
+      color: $color-gris;
+      font-size: 28px;
+      margin-bottom: 0px !important;
+    }
+  }
+  section.laboratorio_formulario {
+    .container_upload_image {
+      background: $color-gris-light;
+      height: 350px;
+      margin-bottom: 1.5rem;
+
+      img.image_noticia {
+        max-width: 100%;
+        width: 100%;
+        height: calc(100% - 70px);
+        object-fit: cover;
+      }
+
+      a {
+        background: $color-red-light;
+        height: 70px;
+        width: 100%;
+
+        label {
+          margin: 0px;
+          width: 100%;
+          cursor: pointer;
+
+          img {
+            max-width: 30px;
+          }
+        }
+
+        &>input {
+          display: none;
+        }
+      }
+    }
+    label {
+      color: $color-gris;
+      font-size: 20px;
+
+      &.campo_requerido::after {
+        content: ' *';
+        color: $color-red;
+      }
+
+      span.label_important {
+        color: $color-red;
+        font-size: 5px;
+      }
+    }
+    section.buttons_formulario {
+      button {
+        width: 150px;
+        height: 50px;
+        border-radius: 16px;
+        font-size: 20px;
+
+        &.btn_cancel {
+          background: transparent;
+          border: 1px solid $color-red;
+          color: $color-red;
+
+          &:hover {
+            background: $color-red;
+            color: $color-amarillo;
+          }
+        }
+
+        &.btn_guardar {
+          background: $color-red;
+          color: $color-amarillo;
+
+          &:hover {
+            background: $primary-color;
+            color: $color-gris-light;
+          }
+        }
+      }
+    }
+  }
+  .btn_editar {
+    width: 150px;
+    height: 50px;
+    border-radius: 16px;
+    font-size: 20px;
+    background: $color-red;
+    color: $color-amarillo;
+
+    &:hover {
+      background: $primary-color;
+      color: $color-gris-light;
+    }
+  }
+  input,
+  select,
+  textarea {
+    border: none;
+    border-color: $color-red;
+    border-radius: 0px;
+    box-shadow: $color-box-shadow;
+  }
+
+  .count_tamano_text {
+    color: $color-dark;
+    font-size: 70% !important;
+  }
+
+  .count_text_limit {
+    color: $color-red  !important;
+  }
+}

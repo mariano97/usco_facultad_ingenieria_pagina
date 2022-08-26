@@ -238,7 +238,7 @@
                         v-text="$t('entity.validation.required')">
                         This field is required.
                       </small>
-                      <small class="form-text text-danger" v-if="!$v.sede.presentacionPrograma.maxLength"
+                      <small class="form-text text-danger" v-if="!$v.programa.presentacionPrograma.maxLength"
                         v-text="$t('entity.validation.maxlength', { max: 255 })">
                         This field cannot be longer than 10 characters.
                       </small>
@@ -261,7 +261,7 @@
                           v-text="$t('entity.validation.required')">
                           This field is required.
                         </small>
-                        <small class="form-text text-danger" v-if="!$v.sede.mision.maxLength"
+                        <small class="form-text text-danger" v-if="!$v.programa.mision.maxLength"
                           v-text="$t('entity.validation.maxlength', { max: 255 })">
                           This field cannot be longer than 10 characters.
                         </small>
@@ -283,7 +283,7 @@
                           v-text="$t('entity.validation.required')">
                           This field is required.
                         </small>
-                        <small class="form-text text-danger" v-if="!$v.sede.vision.maxLength"
+                        <small class="form-text text-danger" v-if="!$v.programa.vision.maxLength"
                           v-text="$t('entity.validation.maxlength', { max: 255 })">
                           This field cannot be longer than 10 characters.
                         </small>
@@ -311,7 +311,7 @@
                       placeholder="Eg. En el 2025 seremos el programa más..."
                       v-model="$v.programa.perfilEstudiante.$model" :disabled="checkHabilitacionCampos()"></textarea>
                     <div v-if="$v.programa.perfilEstudiante.$anyDirty && $v.programa.perfilEstudiante.$invalid">
-                      <small class="form-text text-danger" v-if="!$v.sede.perfilEstudiante.maxLength"
+                      <small class="form-text text-danger" v-if="!$v.programa.perfilEstudiante.maxLength"
                         v-text="$t('entity.validation.maxlength', { max: 255 })">
                         This field cannot be longer than 10 characters.
                       </small>
@@ -330,7 +330,7 @@
                         rows="5" placeholder="Eg. En el 2025 seremos el programa más..."
                         v-model="$v.programa.perfilOcupacional.$model" :disabled="checkHabilitacionCampos()"></textarea>
                       <div v-if="$v.programa.perfilOcupacional.$anyDirty && $v.programa.perfilOcupacional.$invalid">
-                        <small class="form-text text-danger" v-if="!$v.sede.perfilOcupacional.maxLength"
+                        <small class="form-text text-danger" v-if="!$v.programa.perfilOcupacional.maxLength"
                           v-text="$t('entity.validation.maxlength', { max: 255 })">
                           This field cannot be longer than 10 characters.
                         </small>
@@ -353,7 +353,7 @@
                           v-text="$t('entity.validation.required')">
                           This field is required.
                         </small>
-                        <small class="form-text text-danger" v-if="!$v.sede.perfilEgresado.maxLength"
+                        <small class="form-text text-danger" v-if="!$v.programa.perfilEgresado.maxLength"
                           v-text="$t('entity.validation.maxlength', { max: 255 })">
                           This field cannot be longer than 10 characters.
                         </small>
@@ -430,6 +430,8 @@
                   <h3>{{ archivo.nombreArchivo }}</h3>
                   <span v-if="archivo.tablaElementoCatalogo.id === 7" style="font-size: 18px; color: #8f141b"
                     class="pl-3" v-text="$t('archivosPrograma.labels.planEstudio')">Plan de estudio</span>
+                  <span v-if="archivo.tablaElementoCatalogo.id === 8" style="font-size: 18px; color: #8f141b"
+                    class="pl-3">Micro diseño</span>
                 </div>
                 <div class="col-sm-auto row mx-0">
                   <div class="col-sm-auto opcion_archivo d-flex align-items-center justify-content-center">
@@ -472,8 +474,7 @@
         <div class="tab-content web_tabs">
           <div class="">
             <div class="contenido_listado_profesores">
-              <div class="row mx-0 sede_item mb-3" v-for="profesorTemp in programa.profesors"
-                :key="profesorTemp.id">
+              <div class="row mx-0 sede_item mb-3" v-for="profesorTemp in programa.profesors" :key="profesorTemp.id">
                 <div class="col-sm-auto container_nombre" v-if="filtarNombreProfesor(profesorTemp.userId).length > 0">
                   <h3>{{ filtarNombreProfesor(profesorTemp.userId) }}</h3>
                 </div>
@@ -488,8 +489,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-end mt-3">
               <button class="btn btn_agregar_red_social d-flex align-items-center justify-content-center"
-                id="btn_agregar_red_social"
-                v-on:click="openPopupAgregarProfesor()">
+                id="btn_agregar_red_social" v-on:click="openPopupAgregarProfesor()">
                 Agregar profesor
               </button>
             </div>
@@ -549,6 +549,8 @@
             <div class="mb-3 container_notas">
               <span v-if="!hasArchivoProgramaPlanEstudio"
                 v-text="$t('archivosPrograma.labels.favorSubirPlanEstudio')">Por favor subir el plan de estudio</span>
+              <span v-if="hasArchivoProgramaPlanEstudio && !hasArchivoProgramaMicroDiseno">Por favor subir el micro
+                diseño</span>
             </div>
             <a id="" type="button" class="btn btn-upload d-flex align-items-center justify-content-center">
               <label for="file-crear-documento-nuevo" class="row mx-0 align-items-center justify-content-center">
@@ -556,7 +558,7 @@
                   <h4 v-text="$t('programa.popups.buttons.crearDocumentoNuevo')">Subir documento</h4>
                 </div>
               </label>
-              <input id="file-crear-documento-nuevo" type="file" accept="application/pdf"
+              <input id="file-crear-documento-nuevo" type="file" accept="application/pdf, application/zip"
                 @change="changeAgregarDocumentoNuevo" />
             </a>
             <div class="container_message_error">

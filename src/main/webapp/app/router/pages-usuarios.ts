@@ -16,6 +16,9 @@ const EventoFormulario = () => import('@/pages/private/evento-formulario/evento-
 const EventoLista = () => import('@/pages/private/eventos-lista/eventos-lista.vue');
 const SemilleroFormulario = () => import('@/pages/private/semillero-formulario/semillero-formulario.vue');
 const SemilleroLista = () => import('@/pages/private/semilleros-lista/semilleros-lista.vue');
+const LaboratoriosLista = () => import('@/pages/private/laboratorios-lista/laboratorios-lista.vue');
+const LaboratorioFormulario = () => import('@/pages/private/laboratorio-formulario/laboratorio-formulario.vue');
+
 
 export default {
   path: 'ingreso',
@@ -151,6 +154,24 @@ export default {
       path: 'semillero-formulario/:semilleroId',
       name: 'semillero_formulario_descripcion',
       component: SemilleroFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'laboratorios-lista',
+      name: 'laboratorios_lista',
+      component: LaboratoriosLista,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'laboratorios-formulario',
+      name: 'laboratorio_formulario',
+      component: LaboratorioFormulario,
+      meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+    },
+    {
+      path: 'laboratorios-formulario/:laboratorioId',
+      name: 'laboratorio_formulario_descripcion',
+      component: LaboratorioFormulario,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
     },
   ],

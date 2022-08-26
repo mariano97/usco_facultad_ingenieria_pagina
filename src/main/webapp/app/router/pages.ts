@@ -15,6 +15,8 @@ const EventosLista = () => import('@/pages/public/eventos-lista/eventos-lista.vu
 const EventoInfo = () => import('@/pages/public/evento-info/evento-info.vue');
 const SemillerosLista = () => import('@/pages/public/semilleros-lista/semilleros-lista.vue');
 const SemilleroInfo = () => import('@/pages/public/semillero-info/semillero-info.vue');
+const LaboratoriosLista = () => import('@/pages/public/laboratorios-lista/laboratorios-lista.vue');
+const LaboratorioInfo = () => import('@/pages/public/laboratorio-info/laboratorio-info.vue');
 
 export default {
   path: 'faultad-ingenieria',
@@ -75,6 +77,16 @@ export default {
       path: 'semilleros-info/:semilleroId',
       name: 'semillero_info_public',
       component: SemilleroInfo,
+    },
+    {
+      path: 'laboratorios-lista',
+      name: 'laboratorios_lista_public',
+      component: LaboratoriosLista,
+    },
+    {
+      path: 'laboratorio-info/:laboratorioId',
+      name: 'laboratorio_info_public',
+      component: LaboratorioInfo,
     },
   ]
 }

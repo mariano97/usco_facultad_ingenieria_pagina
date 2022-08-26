@@ -139,6 +139,7 @@ export default class ProgramaFormulario extends Vue {
   public isArchivoDocumentoNuevoUploaded = false;
   public isRedSocialCreatedUptaded = false;
   public hasArchivoProgramaPlanEstudio = false;
+  public hasArchivoProgramaMicroDiseno = false;
   public dateMax = dayjs().format(DATE_FORMAT);
   private carpetaImagen = '';
   private file: any = null;
@@ -230,6 +231,8 @@ export default class ProgramaFormulario extends Vue {
   }
 
   public changeAgregarDocumentoNuevo(event): void {
+    console.log("data documento");
+    console.log(event);
     this.programaDocumentoNuevo = {};
     this.mensajeError = '';
     if (event.target.files && event.target.files.length > 0) {
@@ -240,7 +243,9 @@ export default class ProgramaFormulario extends Vue {
         tipoDocumento: event.target.files[0].type,
         isValidDoc: false,
       };
-      const allowedImageTypes = ['application/pdf'];
+      const allowedImageTypes = !this.hasArchivoProgramaPlanEstudio
+        ? carpetasarchivosConstants.TIPOS_DOCUMENTOS_PERMITIDOS.filter(type => type.includes('pdf'))
+        : carpetasarchivosConstants.TIPOS_DOCUMENTOS_PERMITIDOS; // ['application/pdf'];
       const sizeMaxFile = 15728640;
       if (!this.isValidoTipoDocumento(this.programaDocumentoNuevo, allowedImageTypes)) {
         console.log("tipo no permitido");
@@ -305,12 +310,19 @@ export default class ProgramaFormulario extends Vue {
     if (this.programa.id) {
       if (this.popupDocumentoAccion === this.POPUP_DOCUMENTO_ACCION_CREAR) {
         this.checkHasArchivoProgramaPlanEstudio();
+        this.checkHasArchivoProgramaMicroDiseno();
+        let identificadorTemp = 0;
+        if (!this.hasArchivoProgramaPlanEstudio) {
+          identificadorTemp = identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER;
+        } else if (!this.hasArchivoProgramaMicroDiseno) {
+          identificadorTemp = identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_MICRO_DISENO_NUMBER;
+        } else {
+          identificadorTemp = identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER;
+        }
         this.uploadFileToStorage(
           this.programaDocumentoNuevo.tipoDocumento,
           this.programa.id,
-          this.hasArchivoProgramaPlanEstudio
-            ? identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER
-            : identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER,
+          identificadorTemp,
           this.programaDocumentoNuevo.file,
           this.generateUrlFolderUpload(this.programa.codigoSnies + '', this.programa.nombre, true),
           true
@@ -358,6 +370,7 @@ export default class ProgramaFormulario extends Vue {
       this.programa.facultad = {
         id: 1,
       };
+      this.programa.emailContacto = 'email@contact.com';
       this.programaService()
         .create(this.programa)
         .then(res => {
@@ -401,6 +414,8 @@ export default class ProgramaFormulario extends Vue {
         console.log(this.archivosProgramaList);
         this.showSpinnerLoader = false;
         this.isArchivoDocumentoNuevoUploaded = false;
+        this.checkHasArchivoProgramaPlanEstudio();
+        this.checkHasArchivoProgramaMicroDiseno();
         if (isPopup && isPopup === true) {
           this.closeAllPopups();
         }
@@ -506,6 +521,7 @@ export default class ProgramaFormulario extends Vue {
         this.archivoProgramaToUpdate = {};
         this.archivosProgramaList = res;
         this.checkHasArchivoProgramaPlanEstudio();
+        this.checkHasArchivoProgramaMicroDiseno();
         if (!isPopup) {
           this.downloadImageProgramaPerfil();
         }
@@ -721,6 +737,17 @@ export default class ProgramaFormulario extends Vue {
     }
   }
 
+  public checkHasArchivoProgramaMicroDiseno(): void {
+    const planEstudio = this.archivosProgramaList.filter(
+      archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_MICRO_DISENO_NUMBER
+    );
+    if (planEstudio.length > 0) {
+      this.hasArchivoProgramaMicroDiseno = true;
+    } else {
+      this.hasArchivoProgramaMicroDiseno = false;
+    }
+  }
+
   private downloadImageProgramaPerfil(): void {
     const archivoProgramaImage = this.archivosProgramaList.filter(
       archivo => archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_IMAGE_NUMBER
@@ -743,7 +770,8 @@ export default class ProgramaFormulario extends Vue {
     return archivosProgramaList.filter(
       archivo =>
         archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_DOCUMENTO_NUMBER ||
-        archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER
+        archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_PLAN_ESTUDIO_NUMBER ||
+        archivo.tablaElementoCatalogo.id === identificadoresConstants.IDENTIFICADOR_TIPO_DOCUEMNTO_MICRO_DISENO_NUMBER
     );
   }
 

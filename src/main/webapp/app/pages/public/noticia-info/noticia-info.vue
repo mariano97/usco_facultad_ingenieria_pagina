@@ -25,7 +25,7 @@
         </div>
       </div>
     </section>
-    <section class="seccion_otras_noticias" v-if="otrasNoticias.length > 0">
+    <section class="seccion_otras_noticias" v-if="otrasNoticias.length > 0 && showAnotherNoticias">
       <div class="container_titulo d-flex justify-content-center align-items-center">
         <h2 class="title">Otras Noticias</h2>
       </div>
@@ -50,6 +50,12 @@
                   </div>
                 </div>
                 <div class="boton-ver-mas d-flex justify-content-center align-items-center">
+                  <!--<router-link :to="'/faultad-ingenieria/noticia-info/' + noticiaTemp.id">
+                    <button class="btn btn-ver-mas d-flex justify-content-center"
+                      v-text="$t('fragments.fragment-noticias.ver-mas')">
+                      Ver máss
+                    </button>
+                  </router-link>-->
                   <a :href="'/faultad-ingenieria/noticia-info/' + noticiaTemp.id">
                     <button class="btn btn-ver-mas d-flex justify-content-center"
                       v-text="$t('fragments.fragment-noticias.ver-mas')">

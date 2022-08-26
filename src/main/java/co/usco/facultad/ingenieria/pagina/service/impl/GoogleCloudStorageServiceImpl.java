@@ -44,12 +44,15 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     private final SemilleroService semilleroService;
 
-    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService, NoticiaService noticiaService, EventoService eventoService, SemilleroService semilleroService) {
+    private final LaboratorioService laboratorioService;
+
+    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService, NoticiaService noticiaService, EventoService eventoService, SemilleroService semilleroService, LaboratorioService laboratorioService) {
         this.archivosProgramaService = archivosProgramaService;
         this.profesorService = profesorService;
         this.noticiaService = noticiaService;
         this.eventoService = eventoService;
         this.semilleroService = semilleroService;
+        this.laboratorioService = laboratorioService;
     }
 
 
@@ -128,6 +131,7 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                 archivosProgramaDTO.setUrlName((String) map.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
                 archivosProgramaDTO.setTablaElementoCatalogo(tablaElementoCatalogoDTO);
                 archivosProgramaDTO.setPlanEstudio(elementoCatalogoId == 7);
+                archivosProgramaDTO.setMicroDiseno(elementoCatalogoId == 8);
                 return archivosProgramaService.save(archivosProgramaDTO);
             });
     }
@@ -198,6 +202,19 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
                 }
                 semilleroDTO.setUrlFoto((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
                 return semilleroService.update(semilleroDTO);
+            }));
+    }
+
+    @Override
+    public Mono<LaboratorioDTO> uploadFotoLaboratorioToStorage(String contentType, Long laboratorioId, String carpeta, FilePart filePart) {
+        return uploadFileToStorageMap(carpeta, filePart).flatMap(stringObjectMap ->
+            laboratorioService.findOne(laboratorioId).flatMap(laboratorioDTO -> {
+                if (laboratorioDTO.getUrlFoto() != null && !laboratorioDTO.getUrlFoto().isBlank()) {
+                    deleteFileOfStorage(laboratorioDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete")).subscribe(aBoolean -> log.debug("File delete"));
+                }
+                laboratorioDTO.setUrlFoto((String) stringObjectMap.get(GoogleServiceProps.PROP_NAME_FILE_UPLOAD));
+                return laboratorioService.update(laboratorioDTO);
             }));
     }
 

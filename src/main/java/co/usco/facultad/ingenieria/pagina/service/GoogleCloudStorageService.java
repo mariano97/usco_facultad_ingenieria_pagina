@@ -24,6 +24,8 @@ public interface GoogleCloudStorageService {
 
     public Mono<SemilleroDTO> uploadFotoSemilleroToStorage(String contentType, Long semilleroId, String carpeta, FilePart filePart);
 
+    public Mono<LaboratorioDTO> uploadFotoLaboratorioToStorage(String contentType, Long laboratorioId, String carpeta, FilePart filePart);
+
     public Mono<String> downloadFileFromStorage(String fileName, Long generation);
 
     public Mono<String> downloadFileFromStorage(String fileName);

@@ -368,7 +368,8 @@ export default class ProfesorFormulario extends Vue {
         });
     } else {
       this.userAccount.login = this.utilsService().generateUUIDIdentifcator();
-      this.userAccount.authorities = [Authority.JEFE_PROGRAMA, Authority.PROFESOR, Authority.USER];
+      // this.userAccount.authorities = [Authority.JEFE_PROGRAMA, Authority.PROFESOR, Authority.USER];
+      this.userAccount.authorities = [Authority.PROFESOR, Authority.USER];
       this.profesor.facultad = {
         id: 1,
       };

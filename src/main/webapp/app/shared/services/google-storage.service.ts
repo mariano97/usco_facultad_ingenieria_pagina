@@ -1,3 +1,4 @@
+import { ILaboratorio } from '@/shared/model/laboratorio.model';
 import { ISemillero } from '@/shared/model/semillero.model';
 import { IEvento } from '@/shared/model/evento.model';
 import { INoticia } from '@/shared/model/noticia.model';
@@ -67,7 +68,7 @@ export default class GoogleStorageService {
     });
   }
 
-  public uploadFotoNoticia(contentType: string, noticiaId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+  public uploadFotoNoticia(contentType: string, noticiaId: number, nameCarpeta: string, file: File): Promise<INoticia> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
     return new Promise<INoticia>((resolve, reject) => {
@@ -88,7 +89,7 @@ export default class GoogleStorageService {
     });
   }
 
-  public uploadFotoEvento(contentType: string, eventoId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+  public uploadFotoEvento(contentType: string, eventoId: number, nameCarpeta: string, file: File): Promise<IEvento> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
     return new Promise<IEvento>((resolve, reject) => {
@@ -109,7 +110,7 @@ export default class GoogleStorageService {
     });
   }
 
-  public uploadFotoSemillero(contentType: string, semilleroId: number, nameCarpeta: string, file: File): Promise<IProfesor> {
+  public uploadFotoSemillero(contentType: string, semilleroId: number, nameCarpeta: string, file: File): Promise<ISemillero> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
     return new Promise<ISemillero>((resolve, reject) => {
@@ -118,6 +119,27 @@ export default class GoogleStorageService {
           params: {
             contentType: contentType,
             semilleroId: semilleroId,
+            carpeta: nameCarpeta,
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFotoLaboratorio(contentType: string, laboratorioId: number, nameCarpeta: string, file: File): Promise<ILaboratorio> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+    return new Promise<ILaboratorio>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/laboratorio-upload-files`, formdata, {
+          params: {
+            contentType: contentType,
+            laboratorioId: laboratorioId,
             carpeta: nameCarpeta,
           },
         })

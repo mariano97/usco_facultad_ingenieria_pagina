@@ -13,7 +13,7 @@ export default class ProfesoresLista extends Vue {
   @Inject('usuarioProfesorFullService') private usuarioProfesorFullService: () => UsuarioProfesorFullService;
   @Inject('alertService') private alertService: () => AlertService;
 
-  public itemsPerPage = 20;
+  public itemsPerPage = 10;
   public queryCount: number = null;
   public page = 1;
   public previousPage = 1;

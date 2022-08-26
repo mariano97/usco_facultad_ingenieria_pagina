@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ILaboratorio } from '@/shared/model/laboratorio.model';
 
 const baseApiUrl = 'api/laboratorios';
+const baseOpenApiUrl = 'api/open/laboratorios';
 
 export default class LaboratorioService {
   public find(id: number): Promise<ILaboratorio> {
@@ -13,6 +14,34 @@ export default class LaboratorioService {
         .get(`${baseApiUrl}/${id}`)
         .then(res => {
           resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public findCustom(isAutenticado: boolean, id: number): Promise<ILaboratorio> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<ILaboratorio>((resolve, reject) => {
+      axios
+        .get(`${url}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveCustom(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(url + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
         })
         .catch(err => {
           reject(err);
