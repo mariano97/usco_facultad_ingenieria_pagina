@@ -3,11 +3,15 @@ package co.usco.facultad.ingenieria.pagina.web.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 import co.usco.facultad.ingenieria.pagina.IntegrationTest;
+import co.usco.facultad.ingenieria.pagina.domain.Facultad;
 import co.usco.facultad.ingenieria.pagina.domain.Laboratorio;
+import co.usco.facultad.ingenieria.pagina.domain.TablaElementoCatalogo;
 import co.usco.facultad.ingenieria.pagina.repository.EntityManager;
 import co.usco.facultad.ingenieria.pagina.repository.LaboratorioRepository;
+import co.usco.facultad.ingenieria.pagina.service.LaboratorioService;
 import co.usco.facultad.ingenieria.pagina.service.dto.LaboratorioDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.LaboratorioMapper;
 import java.time.Duration;
@@ -22,14 +26,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link LaboratorioResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_ENTITY_TIMEOUT)
 @WithMockUser
 class LaboratorioResourceIT {
@@ -64,8 +73,14 @@ class LaboratorioResourceIT {
     @Autowired
     private LaboratorioRepository laboratorioRepository;
 
+    @Mock
+    private LaboratorioRepository laboratorioRepositoryMock;
+
     @Autowired
     private LaboratorioMapper laboratorioMapper;
+
+    @Mock
+    private LaboratorioService laboratorioServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -90,6 +105,14 @@ class LaboratorioResourceIT {
             .longitud(DEFAULT_LONGITUD)
             .correoContacto(DEFAULT_CORREO_CONTACTO)
             .direccion(DEFAULT_DIRECCION);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createEntity(em)).block();
+        laboratorio.setTipoLaboratorio(tablaElementoCatalogo);
+        // Add required entity
+        Facultad facultad;
+        facultad = em.insert(FacultadResourceIT.createEntity(em)).block();
+        laboratorio.setFacultad(facultad);
         return laboratorio;
     }
 
@@ -108,6 +131,14 @@ class LaboratorioResourceIT {
             .longitud(UPDATED_LONGITUD)
             .correoContacto(UPDATED_CORREO_CONTACTO)
             .direccion(UPDATED_DIRECCION);
+        // Add required entity
+        TablaElementoCatalogo tablaElementoCatalogo;
+        tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createUpdatedEntity(em)).block();
+        laboratorio.setTipoLaboratorio(tablaElementoCatalogo);
+        // Add required entity
+        Facultad facultad;
+        facultad = em.insert(FacultadResourceIT.createUpdatedEntity(em)).block();
+        laboratorio.setFacultad(facultad);
         return laboratorio;
     }
 
@@ -117,6 +148,8 @@ class LaboratorioResourceIT {
         } catch (Exception e) {
             // It can fail, if other entities are still referring this - it will be removed later.
         }
+        TablaElementoCatalogoResourceIT.deleteEntities(em);
+        FacultadResourceIT.deleteEntities(em);
     }
 
     @AfterEach
@@ -278,6 +311,24 @@ class LaboratorioResourceIT {
             .value(hasItem(DEFAULT_CORREO_CONTACTO))
             .jsonPath("$.[*].direccion")
             .value(hasItem(DEFAULT_DIRECCION));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllLaboratoriosWithEagerRelationshipsIsEnabled() {
+        when(laboratorioServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(laboratorioServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllLaboratoriosWithEagerRelationshipsIsNotEnabled() {
+        when(laboratorioServiceMock.findAllWithEagerRelationships(any())).thenReturn(Flux.empty());
+
+        webTestClient.get().uri(ENTITY_API_URL + "?eagerload=true").exchange().expectStatus().isOk();
+
+        verify(laboratorioServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @Test

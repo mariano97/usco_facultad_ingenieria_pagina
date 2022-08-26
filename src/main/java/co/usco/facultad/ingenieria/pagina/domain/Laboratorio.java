@@ -1,5 +1,6 @@
 package co.usco.facultad.ingenieria.pagina.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.validation.constraints.*;
 import org.springframework.data.annotation.Id;
@@ -42,6 +43,19 @@ public class Laboratorio implements Serializable {
 
     @Column("direccion")
     private String direccion;
+
+    @Transient
+    @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
+    private TablaElementoCatalogo tipoLaboratorio;
+
+    @Transient
+    private Facultad facultad;
+
+    @Column("tipo_laboratorio_id")
+    private Long tipoLaboratorioId;
+
+    @Column("facultad_id")
+    private Long facultadId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -147,6 +161,50 @@ public class Laboratorio implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public TablaElementoCatalogo getTipoLaboratorio() {
+        return this.tipoLaboratorio;
+    }
+
+    public void setTipoLaboratorio(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.tipoLaboratorio = tablaElementoCatalogo;
+        this.tipoLaboratorioId = tablaElementoCatalogo != null ? tablaElementoCatalogo.getId() : null;
+    }
+
+    public Laboratorio tipoLaboratorio(TablaElementoCatalogo tablaElementoCatalogo) {
+        this.setTipoLaboratorio(tablaElementoCatalogo);
+        return this;
+    }
+
+    public Facultad getFacultad() {
+        return this.facultad;
+    }
+
+    public void setFacultad(Facultad facultad) {
+        this.facultad = facultad;
+        this.facultadId = facultad != null ? facultad.getId() : null;
+    }
+
+    public Laboratorio facultad(Facultad facultad) {
+        this.setFacultad(facultad);
+        return this;
+    }
+
+    public Long getTipoLaboratorioId() {
+        return this.tipoLaboratorioId;
+    }
+
+    public void setTipoLaboratorioId(Long tablaElementoCatalogo) {
+        this.tipoLaboratorioId = tablaElementoCatalogo;
+    }
+
+    public Long getFacultadId() {
+        return this.facultadId;
+    }
+
+    public void setFacultadId(Long facultad) {
+        this.facultadId = facultad;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -17,10 +17,10 @@
             <column name="titulo" type="varchar(500)">
                 <constraints nullable="false" />
             </column>
-            <column name="sintesis" type="varchar(500)">
+            <column name="sintesis" type="varchar(1000)">
                 <constraints nullable="false" />
             </column>
-            <column name="cuerpo_descripcion" type="varchar(1000)">
+            <column name="cuerpo_descripcion" type="varchar(2000)">
                 <constraints nullable="false" />
             </column>
             <column name="fecha" type="${datetimeType}">

@@ -32,6 +32,8 @@ public class LaboratorioRowMapper implements BiFunction<Row, String, Laboratorio
         entity.setLongitud(converter.fromRow(row, prefix + "_longitud", Double.class));
         entity.setCorreoContacto(converter.fromRow(row, prefix + "_correo_contacto", String.class));
         entity.setDireccion(converter.fromRow(row, prefix + "_direccion", String.class));
+        entity.setTipoLaboratorioId(converter.fromRow(row, prefix + "_tipo_laboratorio_id", Long.class));
+        entity.setFacultadId(converter.fromRow(row, prefix + "_facultad_id", Long.class));
         return entity;
     }
 }

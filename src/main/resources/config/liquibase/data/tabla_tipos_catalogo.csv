@@ -6,3 +6,4 @@ id;nombre;estado;key_identificador
 5;Tipos de profesores;true;TIPPFR
 6;Tipos de tituloas academicos;true;TIPTLSACDS
 7;Tipos niveles academicos;true;TIPNVADMC
+8;Tipos Laboratorios;true;TIPLABS

@@ -86,8 +86,8 @@
                 <label class="form-control-label campo_requerido" for="sintesis">Sintesis</label>
                 <div class="d-flex justify-content-end">
                   <small class="count_tamano_text"
-                    :class="{ count_text_limit: countCharacter(500, $v.noticia.sintesis.$model) < 10 }">Quedan {{
-                    countCharacter(500, $v.noticia.sintesis.$model) }} caracteres</small>
+                    :class="{ count_text_limit: countCharacter(1000, $v.noticia.sintesis.$model) < 10 }">Quedan {{
+                    countCharacter(1000, $v.noticia.sintesis.$model) }} caracteres</small>
                 </div>
                 <textarea id="sintesis" class="form-control" name="sintesis" cols="50" rows="10"
                   placeholder="Eg. Profesor graduado de la universida...." v-model="$v.noticia.sintesis.$model"
@@ -98,7 +98,7 @@
                     Este campo es obligatorio.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.noticia.sintesis.maxLength"
-                    v-text="$t('entity.validation.maxlength', { max: 500 })">
+                    v-text="$t('entity.validation.maxlength', { max: 1000 })">
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.noticia.sintesis.minLength"
@@ -113,9 +113,9 @@
                 <label class="form-control-label campo_requerido" for="cuerpoDescripcion">Cuerpo Descripcion</label>
                 <div class="d-flex justify-content-end">
                   <small class="count_tamano_text"
-                    :class="{ count_text_limit: countCharacter(1000, $v.noticia.cuerpoDescripcion.$model) < 10 }">Quedan
+                    :class="{ count_text_limit: countCharacter(2000, $v.noticia.cuerpoDescripcion.$model) < 10 }">Quedan
                     {{
-                    countCharacter(1000, $v.noticia.cuerpoDescripcion.$model) }} caracteres</small>
+                    countCharacter(2000, $v.noticia.cuerpoDescripcion.$model) }} caracteres</small>
                 </div>
                 <textarea id="cuerpoDescripcion" class="form-control" name="cuerpoDescripcion" cols="50" rows="10"
                   placeholder="Eg. Profesor graduado de la universida...." v-model="$v.noticia.cuerpoDescripcion.$model"
@@ -126,7 +126,7 @@
                     Este campo es obligatorio.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.noticia.cuerpoDescripcion.maxLength"
-                    v-text="$t('entity.validation.maxlength', { max: 1000 })">
+                    v-text="$t('entity.validation.maxlength', { max: 2000 })">
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.noticia.cuerpoDescripcion.minLength"

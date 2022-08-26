@@ -1,11 +1,11 @@
-id;nombre;informacion_general;url_foto;latitud;longitud;correo_contacto;direccion
-1;Adaptativo Queso;Relacciones deposit;Queso strategize SCSI;79488;23199;cross-media Compatible Grupo;Bricolaje
-2;Granito Guapo;Bebes Cedi Extremadura;repurpose móbil Borders;42493;12446;Loan Central;Decoración política
-3;Siria;Aragón Comunidad Borders;Bahraini Morado;97799;26725;transparent previsión back;wireless
-4;maximize Directo;nacional;modular Ronda Rioja;72188;18650;Money Regional;transmitting
-5;Granito;calculate Compartible middleware;hibrida;20731;78032;embrace misión;Ladrillo Electrónica Adelante
-6;open-source;Account;Ladrillo Central;63789;76700;Ergonómico;envisioneer tolerante
-7;input;deposit digital parse;reboot Sabroso;43675;74385;quantify frictionless Raton;Productor
-8;Colegio reboot;back-end THX;applications;68715;34149;Algodón Guapo;Omán Métricas
-9;Gerente Azerbaijanian;monitor;payment;75905;46913;estructura;del engage Pantalones
-10;Baleares bandwidth Borders;Guapo;Cambridgeshire;12719;24852;back-end Chad;bypassing
+id;nombre;informacion_general;url_foto;latitud;longitud;correo_contacto;direccion;tipo_laboratorio_id;facultad_id
+1;Adaptativo Queso;Relacciones deposit;Queso strategize SCSI;79488;23199;cross-media Compatible Grupo;Bricolaje;1;1
+2;Granito Guapo;Bebes Cedi Extremadura;repurpose móbil Borders;42493;12446;Loan Central;Decoración política;2;2
+3;Siria;Aragón Comunidad Borders;Bahraini Morado;97799;26725;transparent previsión back;wireless;3;3
+4;maximize Directo;nacional;modular Ronda Rioja;72188;18650;Money Regional;transmitting;4;4
+5;Granito;calculate Compartible middleware;hibrida;20731;78032;embrace misión;Ladrillo Electrónica Adelante;5;5
+6;open-source;Account;Ladrillo Central;63789;76700;Ergonómico;envisioneer tolerante;6;6
+7;input;deposit digital parse;reboot Sabroso;43675;74385;quantify frictionless Raton;Productor;7;7
+8;Colegio reboot;back-end THX;applications;68715;34149;Algodón Guapo;Omán Métricas;8;8
+9;Gerente Azerbaijanian;monitor;payment;75905;46913;estructura;del engage Pantalones;9;9
+10;Baleares bandwidth Borders;Guapo;Cambridgeshire;12719;24852;back-end Chad;bypassing;10;10

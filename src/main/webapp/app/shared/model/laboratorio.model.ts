@@ -1,3 +1,6 @@
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+import { IFacultad } from '@/shared/model/facultad.model';
+
 export interface ILaboratorio {
   id?: number;
   nombre?: string;
@@ -7,6 +10,8 @@ export interface ILaboratorio {
   longitud?: number | null;
   correoContacto?: string;
   direccion?: string | null;
+  tipoLaboratorio?: ITablaElementoCatalogo;
+  facultad?: IFacultad;
 }
 
 export class Laboratorio implements ILaboratorio {
@@ -18,6 +23,8 @@ export class Laboratorio implements ILaboratorio {
     public latitud?: number | null,
     public longitud?: number | null,
     public correoContacto?: string,
-    public direccion?: string | null
+    public direccion?: string | null,
+    public tipoLaboratorio?: ITablaElementoCatalogo,
+    public facultad?: IFacultad
   ) {}
 }

@@ -18,6 +18,27 @@ public interface LaboratorioRepository extends ReactiveCrudRepository<Laboratori
     Flux<Laboratorio> findAllBy(Pageable pageable);
 
     @Override
+    Mono<Laboratorio> findOneWithEagerRelationships(Long id);
+
+    @Override
+    Flux<Laboratorio> findAllWithEagerRelationships();
+
+    @Override
+    Flux<Laboratorio> findAllWithEagerRelationships(Pageable page);
+
+    @Query("SELECT * FROM laboratorio entity WHERE entity.tipo_laboratorio_id = :id")
+    Flux<Laboratorio> findByTipoLaboratorio(Long id);
+
+    @Query("SELECT * FROM laboratorio entity WHERE entity.tipo_laboratorio_id IS NULL")
+    Flux<Laboratorio> findAllWhereTipoLaboratorioIsNull();
+
+    @Query("SELECT * FROM laboratorio entity WHERE entity.facultad_id = :id")
+    Flux<Laboratorio> findByFacultad(Long id);
+
+    @Query("SELECT * FROM laboratorio entity WHERE entity.facultad_id IS NULL")
+    Flux<Laboratorio> findAllWhereFacultadIsNull();
+
+    @Override
     <S extends Laboratorio> Mono<S> save(S entity);
 
     @Override
@@ -41,4 +62,11 @@ interface LaboratorioRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Laboratorio> findAllBy(Pageable pageable, Criteria criteria);
 
+    Mono<Laboratorio> findOneWithEagerRelationships(Long id);
+
+    Flux<Laboratorio> findAllWithEagerRelationships();
+
+    Flux<Laboratorio> findAllWithEagerRelationships(Pageable page);
+
+    Mono<Void> deleteById(Long id);
 }

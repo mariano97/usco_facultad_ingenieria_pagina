@@ -28,6 +28,10 @@ public class LaboratorioDTO implements Serializable {
 
     private String direccion;
 
+    private TablaElementoCatalogoDTO tipoLaboratorio;
+
+    private FacultadDTO facultad;
+
     public Long getId() {
         return id;
     }
@@ -92,6 +96,22 @@ public class LaboratorioDTO implements Serializable {
         this.direccion = direccion;
     }
 
+    public TablaElementoCatalogoDTO getTipoLaboratorio() {
+        return tipoLaboratorio;
+    }
+
+    public void setTipoLaboratorio(TablaElementoCatalogoDTO tipoLaboratorio) {
+        this.tipoLaboratorio = tipoLaboratorio;
+    }
+
+    public FacultadDTO getFacultad() {
+        return facultad;
+    }
+
+    public void setFacultad(FacultadDTO facultad) {
+        this.facultad = facultad;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -125,6 +145,8 @@ public class LaboratorioDTO implements Serializable {
             ", longitud=" + getLongitud() +
             ", correoContacto='" + getCorreoContacto() + "'" +
             ", direccion='" + getDireccion() + "'" +
+            ", tipoLaboratorio=" + getTipoLaboratorio() +
+            ", facultad=" + getFacultad() +
             "}";
     }
 }

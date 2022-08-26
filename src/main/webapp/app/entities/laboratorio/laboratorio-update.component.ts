@@ -4,6 +4,12 @@ import { required } from 'vuelidate/lib/validators';
 
 import AlertService from '@/shared/alert/alert.service';
 
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+
+import FacultadService from '@/entities/facultad/facultad.service';
+import { IFacultad } from '@/shared/model/facultad.model';
+
 import { ILaboratorio, Laboratorio } from '@/shared/model/laboratorio.model';
 import LaboratorioService from './laboratorio.service';
 
@@ -22,6 +28,12 @@ const validations: any = {
       required,
     },
     direccion: {},
+    tipoLaboratorio: {
+      required,
+    },
+    facultad: {
+      required,
+    },
   },
 };
 
@@ -33,6 +45,14 @@ export default class LaboratorioUpdate extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
 
   public laboratorio: ILaboratorio = new Laboratorio();
+
+  @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
+
+  public tablaElementoCatalogos: ITablaElementoCatalogo[] = [];
+
+  @Inject('facultadService') private facultadService: () => FacultadService;
+
+  public facultads: IFacultad[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -41,6 +61,7 @@ export default class LaboratorioUpdate extends Vue {
       if (to.params.laboratorioId) {
         vm.retrieveLaboratorio(to.params.laboratorioId);
       }
+      vm.initRelationships();
     });
   }
 
@@ -112,5 +133,16 @@ export default class LaboratorioUpdate extends Vue {
     this.$router.go(-1);
   }
 
-  public initRelationships(): void {}
+  public initRelationships(): void {
+    this.tablaElementoCatalogoService()
+      .retrieve()
+      .then(res => {
+        this.tablaElementoCatalogos = res.data;
+      });
+    this.facultadService()
+      .retrieve()
+      .then(res => {
+        this.facultads = res.data;
+      });
+  }
 }

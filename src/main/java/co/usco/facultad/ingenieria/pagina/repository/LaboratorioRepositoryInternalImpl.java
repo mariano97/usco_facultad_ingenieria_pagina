@@ -3,7 +3,9 @@ package co.usco.facultad.ingenieria.pagina.repository;
 import static org.springframework.data.relational.core.query.Criteria.where;
 
 import co.usco.facultad.ingenieria.pagina.domain.Laboratorio;
+import co.usco.facultad.ingenieria.pagina.repository.rowmapper.FacultadRowMapper;
 import co.usco.facultad.ingenieria.pagina.repository.rowmapper.LaboratorioRowMapper;
+import co.usco.facultad.ingenieria.pagina.repository.rowmapper.TablaElementoCatalogoRowMapper;
 import io.r2dbc.spi.Row;
 import io.r2dbc.spi.RowMetadata;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import org.springframework.data.relational.core.sql.Condition;
 import org.springframework.data.relational.core.sql.Conditions;
 import org.springframework.data.relational.core.sql.Expression;
 import org.springframework.data.relational.core.sql.Select;
-import org.springframework.data.relational.core.sql.SelectBuilder.SelectFromAndJoin;
+import org.springframework.data.relational.core.sql.SelectBuilder.SelectFromAndJoinCondition;
 import org.springframework.data.relational.core.sql.Table;
 import org.springframework.data.relational.repository.support.MappingRelationalEntityInformation;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -42,13 +44,19 @@ class LaboratorioRepositoryInternalImpl extends SimpleR2dbcRepository<Laboratori
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
     private final EntityManager entityManager;
 
+    private final TablaElementoCatalogoRowMapper tablaelementocatalogoMapper;
+    private final FacultadRowMapper facultadMapper;
     private final LaboratorioRowMapper laboratorioMapper;
 
     private static final Table entityTable = Table.aliased("laboratorio", EntityManager.ENTITY_ALIAS);
+    private static final Table tipoLaboratorioTable = Table.aliased("tabla_elemento_catalogo", "tipoLaboratorio");
+    private static final Table facultadTable = Table.aliased("facultad", "facultad");
 
     public LaboratorioRepositoryInternalImpl(
         R2dbcEntityTemplate template,
         EntityManager entityManager,
+        TablaElementoCatalogoRowMapper tablaelementocatalogoMapper,
+        FacultadRowMapper facultadMapper,
         LaboratorioRowMapper laboratorioMapper,
         R2dbcEntityOperations entityOperations,
         R2dbcConverter converter
@@ -61,6 +69,8 @@ class LaboratorioRepositoryInternalImpl extends SimpleR2dbcRepository<Laboratori
         this.db = template.getDatabaseClient();
         this.r2dbcEntityTemplate = template;
         this.entityManager = entityManager;
+        this.tablaelementocatalogoMapper = tablaelementocatalogoMapper;
+        this.facultadMapper = facultadMapper;
         this.laboratorioMapper = laboratorioMapper;
     }
 
@@ -71,7 +81,18 @@ class LaboratorioRepositoryInternalImpl extends SimpleR2dbcRepository<Laboratori
 
     RowsFetchSpec<Laboratorio> createQuery(Pageable pageable, Condition whereClause) {
         List<Expression> columns = LaboratorioSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
-        SelectFromAndJoin selectFrom = Select.builder().select(columns).from(entityTable);
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(tipoLaboratorioTable, "tipoLaboratorio"));
+        columns.addAll(FacultadSqlHelper.getColumns(facultadTable, "facultad"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(tipoLaboratorioTable)
+            .on(Column.create("tipo_laboratorio_id", entityTable))
+            .equals(Column.create("id", tipoLaboratorioTable))
+            .leftOuterJoin(facultadTable)
+            .on(Column.create("facultad_id", entityTable))
+            .equals(Column.create("id", facultadTable));
         // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
         String select = entityManager.createSelect(selectFrom, Laboratorio.class, pageable, whereClause);
         return db.sql(select).map(this::process);
@@ -88,8 +109,25 @@ class LaboratorioRepositoryInternalImpl extends SimpleR2dbcRepository<Laboratori
         return createQuery(null, whereClause).one();
     }
 
+    @Override
+    public Mono<Laboratorio> findOneWithEagerRelationships(Long id) {
+        return findById(id);
+    }
+
+    @Override
+    public Flux<Laboratorio> findAllWithEagerRelationships() {
+        return findAll();
+    }
+
+    @Override
+    public Flux<Laboratorio> findAllWithEagerRelationships(Pageable page) {
+        return findAllBy(page);
+    }
+
     private Laboratorio process(Row row, RowMetadata metadata) {
         Laboratorio entity = laboratorioMapper.apply(row, "e");
+        entity.setTipoLaboratorio(tablaelementocatalogoMapper.apply(row, "tipoLaboratorio"));
+        entity.setFacultad(facultadMapper.apply(row, "facultad"));
         return entity;
     }
 

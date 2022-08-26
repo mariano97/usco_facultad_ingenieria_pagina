@@ -19,6 +19,8 @@ public class LaboratorioSqlHelper {
         columns.add(Column.aliased("correo_contacto", table, columnPrefix + "_correo_contacto"));
         columns.add(Column.aliased("direccion", table, columnPrefix + "_direccion"));
 
+        columns.add(Column.aliased("tipo_laboratorio_id", table, columnPrefix + "_tipo_laboratorio_id"));
+        columns.add(Column.aliased("facultad_id", table, columnPrefix + "_facultad_id"));
         return columns;
     }
 }

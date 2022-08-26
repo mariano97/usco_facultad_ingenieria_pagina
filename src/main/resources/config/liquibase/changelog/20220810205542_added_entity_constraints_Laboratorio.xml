@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Laboratorio.
+    -->
+    <changeSet id="20220810205542-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tipo_laboratorio_id"
+                                 baseTableName="laboratorio"
+                                 constraintName="fk_laboratorio__tipo_laboratorio_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_elemento_catalogo"/>
+
+        <addForeignKeyConstraint baseColumnNames="facultad_id"
+                                 baseTableName="laboratorio"
+                                 constraintName="fk_laboratorio__facultad_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="facultad"/>
+    </changeSet>
+</databaseChangeLog>

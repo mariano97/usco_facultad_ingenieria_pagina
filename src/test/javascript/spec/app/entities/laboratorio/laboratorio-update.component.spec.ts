@@ -9,6 +9,9 @@ import LaboratorioUpdateComponent from '@/entities/laboratorio/laboratorio-updat
 import LaboratorioClass from '@/entities/laboratorio/laboratorio-update.component';
 import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
 
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+
+import FacultadService from '@/entities/facultad/facultad.service';
 import AlertService from '@/shared/alert/alert.service';
 
 const localVue = createLocalVue();
@@ -42,6 +45,16 @@ describe('Component Tests', () => {
         provide: {
           laboratorioService: () => laboratorioServiceStub,
           alertService: () => new AlertService(),
+
+          tablaElementoCatalogoService: () =>
+            sinon.createStubInstance<TablaElementoCatalogoService>(TablaElementoCatalogoService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
+
+          facultadService: () =>
+            sinon.createStubInstance<FacultadService>(FacultadService, {
+              retrieve: sinon.stub().resolves({}),
+            } as any),
         },
       });
       comp = wrapper.vm;

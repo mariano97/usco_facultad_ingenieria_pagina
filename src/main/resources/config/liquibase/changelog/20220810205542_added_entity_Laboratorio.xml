@@ -17,7 +17,7 @@
             <column name="nombre" type="varchar(500)">
                 <constraints nullable="false" />
             </column>
-            <column name="informacion_general" type="varchar(1000)">
+            <column name="informacion_general" type="varchar(2000)">
                 <constraints nullable="false" />
             </column>
             <column name="url_foto" type="varchar(500)">
@@ -34,6 +34,12 @@
             </column>
             <column name="direccion" type="varchar(500)">
                 <constraints nullable="true" />
+            </column>
+            <column name="tipo_laboratorio_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="facultad_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -63,6 +69,8 @@
             <column name="longitud" type="numeric"/>
             <column name="correo_contacto" type="string"/>
             <column name="direccion" type="string"/>
+            <column name="tipo_laboratorio_id" type="numeric"/>
+            <column name="facultad_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

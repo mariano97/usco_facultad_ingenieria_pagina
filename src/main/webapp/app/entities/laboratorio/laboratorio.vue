@@ -60,6 +60,14 @@
               <span v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.direccion')">Direccion</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'direccion'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('tipoLaboratorio.nombre')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.tipoLaboratorio')">Tipo Laboratorio</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tipoLaboratorio.nombre'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" v-on:click="changeOrder('facultad.nombre')">
+              <span v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.facultad')">Facultad</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'facultad.nombre'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -75,6 +83,21 @@
             <td>{{ laboratorio.longitud }}</td>
             <td>{{ laboratorio.correoContacto }}</td>
             <td>{{ laboratorio.direccion }}</td>
+            <td>
+              <div v-if="laboratorio.tipoLaboratorio">
+                <router-link
+                  :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: laboratorio.tipoLaboratorio.id } }"
+                  >{{ laboratorio.tipoLaboratorio.nombre }}</router-link
+                >
+              </div>
+            </td>
+            <td>
+              <div v-if="laboratorio.facultad">
+                <router-link :to="{ name: 'FacultadView', params: { facultadId: laboratorio.facultad.id } }">{{
+                  laboratorio.facultad.nombre
+                }}</router-link>
+              </div>
+            </td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'LaboratorioView', params: { laboratorioId: laboratorio.id } }" custom v-slot="{ navigate }">

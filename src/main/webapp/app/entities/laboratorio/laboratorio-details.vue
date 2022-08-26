@@ -48,6 +48,27 @@
           <dd>
             <span>{{ laboratorio.direccion }}</span>
           </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.tipoLaboratorio')">Tipo Laboratorio</span>
+          </dt>
+          <dd>
+            <div v-if="laboratorio.tipoLaboratorio">
+              <router-link
+                :to="{ name: 'TablaElementoCatalogoView', params: { tablaElementoCatalogoId: laboratorio.tipoLaboratorio.id } }"
+                >{{ laboratorio.tipoLaboratorio.nombre }}</router-link
+              >
+            </div>
+          </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.facultad')">Facultad</span>
+          </dt>
+          <dd>
+            <div v-if="laboratorio.facultad">
+              <router-link :to="{ name: 'FacultadView', params: { facultadId: laboratorio.facultad.id } }">{{
+                laboratorio.facultad.nombre
+              }}</router-link>
+            </div>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>

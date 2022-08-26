@@ -20,12 +20,12 @@ const validations: any = {
     },
     sintesis: {
       required,
-      maxLength: maxLength(500),
+      maxLength: maxLength(1000),
       minLength: minLength(1),
     },
     cuerpoDescripcion: {
       required,
-      maxLength: maxLength(1000),
+      maxLength: maxLength(2000),
       minLength: minLength(1),
     },
     fecha: {

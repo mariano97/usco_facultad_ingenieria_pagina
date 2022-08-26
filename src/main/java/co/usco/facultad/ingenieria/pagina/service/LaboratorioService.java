@@ -42,6 +42,14 @@ public interface LaboratorioService {
     Flux<LaboratorioDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the laboratorios with eager load of many-to-many relationships.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    Flux<LaboratorioDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Returns the number of laboratorios available.
      * @return the number of entities in the database.
      *

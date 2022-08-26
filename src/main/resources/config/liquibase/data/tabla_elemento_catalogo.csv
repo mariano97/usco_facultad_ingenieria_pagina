@@ -20,3 +20,7 @@ id;nombre;abreviatura;estado;tabla_tipos_catalogo_id
 19;Pregrado;NVADMCPGD;true;7
 20;Maestria;NVADMCMTR;true;7
 21;Postgrado;NVADMCPTGD;true;7
+22;Laboratorio;TIPLABLAB;true;8
+23;Granja;TIPLABGRJ;true;8
+24;Museo;TIPLABMSO;true;8
+25;Semillero;TIPLABSEM;true;8

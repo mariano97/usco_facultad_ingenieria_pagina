@@ -152,6 +152,70 @@
               v-model="$v.laboratorio.direccion.$model"
             />
           </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.tipoLaboratorio')"
+              for="laboratorio-tipoLaboratorio"
+              >Tipo Laboratorio</label
+            >
+            <select
+              class="form-control"
+              id="laboratorio-tipoLaboratorio"
+              data-cy="tipoLaboratorio"
+              name="tipoLaboratorio"
+              v-model="laboratorio.tipoLaboratorio"
+              required
+            >
+              <option v-if="!laboratorio.tipoLaboratorio" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="
+                  laboratorio.tipoLaboratorio && tablaElementoCatalogoOption.id === laboratorio.tipoLaboratorio.id
+                    ? laboratorio.tipoLaboratorio
+                    : tablaElementoCatalogoOption
+                "
+                v-for="tablaElementoCatalogoOption in tablaElementoCatalogos"
+                :key="tablaElementoCatalogoOption.id"
+              >
+                {{ tablaElementoCatalogoOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.laboratorio.tipoLaboratorio.$anyDirty && $v.laboratorio.tipoLaboratorio.$invalid">
+            <small class="form-text text-danger" v-if="!$v.laboratorio.tipoLaboratorio.required" v-text="$t('entity.validation.required')">
+              This field is required.
+            </small>
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.laboratorio.facultad')"
+              for="laboratorio-facultad"
+              >Facultad</label
+            >
+            <select
+              class="form-control"
+              id="laboratorio-facultad"
+              data-cy="facultad"
+              name="facultad"
+              v-model="laboratorio.facultad"
+              required
+            >
+              <option v-if="!laboratorio.facultad" v-bind:value="null" selected></option>
+              <option
+                v-bind:value="laboratorio.facultad && facultadOption.id === laboratorio.facultad.id ? laboratorio.facultad : facultadOption"
+                v-for="facultadOption in facultads"
+                :key="facultadOption.id"
+              >
+                {{ facultadOption.nombre }}
+              </option>
+            </select>
+          </div>
+          <div v-if="$v.laboratorio.facultad.$anyDirty && $v.laboratorio.facultad.$invalid">
+            <small class="form-text text-danger" v-if="!$v.laboratorio.facultad.required" v-text="$t('entity.validation.required')">
+              This field is required.
+            </small>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">
