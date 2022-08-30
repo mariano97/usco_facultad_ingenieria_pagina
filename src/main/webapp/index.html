@@ -120,6 +120,7 @@
     <script>
       console.log('navigator');
       console.log(navigator);
+      console.log(window.isSecureContext);
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register('/service-worker.js')

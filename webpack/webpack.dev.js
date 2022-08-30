@@ -21,6 +21,7 @@ module.exports = (env, options) => {
   devConfig.plugins.push(
     new BrowserSyncPlugin(
       {
+        https: false, // cambiar estado para activar o descativar el tls
         host: 'localhost',
         // cambiar siempre por puerto 9000
         port: 9000,
