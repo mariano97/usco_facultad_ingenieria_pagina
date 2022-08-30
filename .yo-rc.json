@@ -62,5 +62,9 @@
     "testFrameworks": [],
     "websocket": false,
     "withAdminUi": true
+  },
+  "generator-jhipster-ionic": {
+    "appDir": null,
+    "ionicDir": "../pagina_facultad_ingenieria_proyecto_ionic"
   }
 }
