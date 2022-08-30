@@ -11,6 +11,9 @@
     </section>
     <section class="section_listado_laboratorio">
       <div class="">
+        <div class="col d-flex align-items-center justify-content-center no_resultados" v-if="laboratoriosArrayLista.length < 1">
+          <p>Los sentimos, no hallamos resultados</p>
+        </div>
         <div class="container_resultados_laboratorios row mx-0 my-3"
           v-for="(laboratorioArray, index) in laboratoriosArrayLista" :key="index">
           <div class="col d-flex justify-content-center align-items-center"
@@ -40,6 +43,17 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end pr-4 mt-3 content-paginacion" v-if="totalItems > 0">
+          <div class="" style="width: fit-content;">
+            <div class="row justify-content-center">
+              <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+              <b-pagination size="md" :total-rows="totalItems" v-model="page" :per-page="itemsPerPage"
+                :change="loadPage(page)"></b-pagination>
             </div>
           </div>
         </div>

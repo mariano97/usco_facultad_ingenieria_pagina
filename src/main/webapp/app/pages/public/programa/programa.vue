@@ -395,7 +395,7 @@
           <div class="row mx-0 justify-content-start conatiner_redes_body">
             <div class="col container_red_social_item" v-for="redSocial in listRedesSocialesPrograma"
               :key="redSocial.id">
-              <a target="_blank" :href="redSocial.urlRedSocial"
+              <a v-on:click="redirectNewPage(redirectToPaginaWeb(redSocial.urlRedSocial))"
                 class="w-100 h-100 d-flex align-items-center justify-content-center">
                 <img v-if="redSocial.tablaElementoCatalogo.id === 8" alt="red_social-facebook"
                   src="/content/images/iconos/facebook.png" />

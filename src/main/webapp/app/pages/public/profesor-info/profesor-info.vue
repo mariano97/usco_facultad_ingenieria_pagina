@@ -104,6 +104,9 @@
           <p class="m-0">{{ usuarioProfesor.profesorDTO.perfil }}</p>
         </div>
         <div class="" v-if="showTabsInfoProfesor('ASIGNATURAS')">
+          <div class="col d-flex align-items-center justify-content-center no_resultados" v-if="cursosMateriasProfesorLista.length < 1">
+            <p>Profesor no tiene cursos</p>
+          </div>
           <div class="container_items_asignaturas row mx-0 my-3"
             v-for="(asignaturas, index) in cursosMateriasProfesorLista" :key="index">
             <div class="col col_item_asignatura mx-3" v-for="(asignatura, index2) in asignaturas" :key="index2">
@@ -142,6 +145,9 @@
           </div>
         </div>
         <div class="" v-if="showTabsInfoProfesor('TITULOS_ACADEMICOS')">
+          <div class="col d-flex align-items-center justify-content-center no_resultados" v-if="titulosAcademicosProfesorLista.length < 1">
+            <p>Profesor no tiene Titulos</p>
+          </div>
           <div class="container_items_titulos_academicos row mx-0 my-3"
             v-for="(titulosAcademicos, index) in titulosAcademicosProfesorLista" :key="index">
             <div class="col col_item_titulo_academico mx-3" v-for="(tituloAcademico, index2) in titulosAcademicos"

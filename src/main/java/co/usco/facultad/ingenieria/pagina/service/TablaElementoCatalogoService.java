@@ -58,6 +58,8 @@ public interface TablaElementoCatalogoService {
      */
     Flux<TablaElementoCatalogoDTO> findByTiposCatalogoKeyIdentificador(String keyIdentificador);
 
+    Mono<Boolean> hasElementsWithAbreviatura(String abreviatura);
+
     /**
      * Returns the number of tablaElementoCatalogos available.
      * @return the number of entities in the database.

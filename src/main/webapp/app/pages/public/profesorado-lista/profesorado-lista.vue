@@ -42,6 +42,9 @@
     </section>
     <section class="section_listado_profesor">
       <div class="">
+        <div class="col d-flex align-items-center justify-content-center no_resultados" v-if="usuariosProfesores.length < 1">
+          <p>Los sentimos, no hallamos resultados</p>
+        </div>
         <div class="container-resultados-profesores row mx-0 my-3" v-for="(profesorArray, index) in usuariosProfesores"
           :key="index">
           <div class="col col-item-profesor" v-for="(profesor, index2) in profesorArray" :key="index2">

@@ -29,9 +29,24 @@
         }
       }
 
+      .container_info_contacto {
+        h3 {
+          color: $color-dark;
+          font-size: 22px;
+        }
+        p {
+          color: $color-gris;
+          font-size: 20px;
+          white-space: pre-line;
+        }
+      }
+
       .container_descripcion {
         margin-top: 2rem;
-
+        h3 {
+          color: $color-dark;
+          font-size: 22px;
+        }
         p {
           color: $color-gris;
           font-size: 20px;

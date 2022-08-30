@@ -35,6 +35,34 @@ export default class LaboratorioService {
     });
   }
 
+  public hasTipoLaboratorio(isAutenticado: boolean, tipoLaboratorioId: number): Promise<boolean> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<boolean>((resolve, reject) => {
+      axios
+        .get(`${url}/has-laboratorio/${tipoLaboratorioId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public getAllByTipoLaboratorio(isAutenticado: boolean, tipoLaboratorioId: number): Promise<ILaboratorio[]> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<ILaboratorio[]>((resolve, reject) => {
+      axios
+        .get(`${url}/by-tipo-laboratorio/${tipoLaboratorioId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieveCustom(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
     const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
     return new Promise<any>((resolve, reject) => {

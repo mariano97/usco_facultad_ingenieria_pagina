@@ -1,3 +1,4 @@
+import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
 import UtilsService from '@/shared/services/utils.service';
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.common with an alias.
@@ -50,6 +51,7 @@ const store = config.initVueXStore(Vue);
 
 const translationService = new TranslationService(store, i18n);
 const loginService = new LoginService();
+const laboratorioService = new LaboratorioService();
 const accountService = new AccountService(store, translationService, router);
 const utilsService = new UtilsService(store);
 
@@ -94,6 +96,7 @@ const vue = new Vue({
     accountService: () => accountService,
     alertService: () => new AlertService(),
     utilsService: () => utilsService,
+    laboratorioService: () => laboratorioService,
   },
   i18n,
   store,

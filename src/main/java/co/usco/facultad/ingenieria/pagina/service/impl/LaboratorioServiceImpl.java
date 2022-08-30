@@ -62,7 +62,10 @@ public class LaboratorioServiceImpl implements LaboratorioService {
     @Transactional(readOnly = true)
     public Flux<LaboratorioDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Laboratorios");
-        return laboratorioRepository.findAllBy(pageable).map(laboratorioMapper::toDto);
+        // return laboratorioRepository.findAllBy(pageable).map(laboratorioMapper::toDto);
+        // se usa este para que solamente traiga laboratorios seria el id 22
+        return laboratorioRepository.findAllByTipoTipoLaboratorioId(pageable, 22L)
+            .map(laboratorioMapper::toDto);
     }
 
     public Flux<LaboratorioDTO> findAllWithEagerRelationships(Pageable pageable) {
@@ -78,6 +81,20 @@ public class LaboratorioServiceImpl implements LaboratorioService {
     public Mono<LaboratorioDTO> findOne(Long id) {
         log.debug("Request to get Laboratorio : {}", id);
         return laboratorioRepository.findOneWithEagerRelationships(id).map(laboratorioMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<Boolean> hasLaboratorioByTipoLaboratorio(Long tipoLaboratorioId) {
+        return laboratorioRepository.findByTipoLaboratorio(tipoLaboratorioId)
+            .collectList().flatMap(laboratorios -> Mono.just(laboratorios.size() > 0));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<LaboratorioDTO> findAllByTipoLaboratorioId(Long tipoLaboratorioId) {
+        return laboratorioRepository.findByTipoLaboratorio(tipoLaboratorioId)
+            .map(laboratorioMapper::toDto);
     }
 
     @Override

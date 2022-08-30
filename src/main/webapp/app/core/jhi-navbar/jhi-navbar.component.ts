@@ -4,6 +4,9 @@ import AccountService from '@/account/account.service';
 import TranslationService from '@/locale/translation.service';
 
 import EntitiesMenu from '@/entities/entities-menu.vue';
+import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
+import { ILaboratorio } from '@/shared/model/laboratorio.model';
 
 @Component({
   components: {
@@ -15,14 +18,56 @@ export default class JhiNavbar extends Vue {
   private loginService: () => LoginService;
   @Inject('translationService') private translationService: () => TranslationService;
 
+  @Inject('laboratorioService') private laboratorioService: () => LaboratorioService;
+
   @Inject('accountService') private accountService: () => AccountService;
   public version = 'v' + VERSION;
   private currentLanguage = this.$store.getters.currentLanguage;
   private languages: any = this.$store.getters.languages;
   private hasAnyAuthorityValues = {};
 
+  public hasLabGranja = false;
+  public hasLabMuseo = false;
+  public labGranja: ILaboratorio = {};
+  public labMuseo: ILaboratorio = {};
+
   created() {
     this.translationService().refreshTranslation(this.currentLanguage);
+  }
+
+  public mounted() {
+    this.chechHasLab(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA);
+    this.chechHasLab(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO);
+  }
+
+  private chechHasLab(tipoLaboratorio: number): void {
+    this.laboratorioService()
+      .hasTipoLaboratorio(this.$store.getters.authenticated, tipoLaboratorio)
+      .then(res => {
+        if (tipoLaboratorio === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
+          this.hasLabGranja = res;
+          this.getLaboratorioByTipoLabId(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA);
+        }
+        if (tipoLaboratorio === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO) {
+          this.hasLabMuseo = res;
+          this.getLaboratorioByTipoLabId(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO);
+        }
+      });
+  }
+
+  private getLaboratorioByTipoLabId(tipoLabId: number): void {
+    this.laboratorioService()
+      .getAllByTipoLaboratorio(this.$store.getters.authenticated, tipoLabId)
+      .then(res => {
+        if (res.length > 0) {
+          if (tipoLabId === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
+            this.labGranja = res[0];
+          }
+          if (tipoLabId === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO) {
+            this.labMuseo = res[0];
+          }
+        }
+      });
   }
 
   public subIsActive(input) {

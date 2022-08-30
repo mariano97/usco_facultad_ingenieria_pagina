@@ -1,3 +1,4 @@
+import { laboratoriosStore } from './store/laboratorio-store';
 import { fileGoogleStorageDownloadedStore } from './store/files-list-store';
 import Vuex from 'vuex';
 import VueI18n, { DateTimeFormats } from 'vue-i18n';
@@ -171,11 +172,12 @@ export function initVueXStore(vue) {
       accountStore,
       translationStore,
       fileGoogleStorageDownloadedStore,
+      laboratoriosStore,
     },
   });
 }
 
-delete Icon.Default.prototype._getIconUrl;
+// delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   iconUrl: require('leaflet/dist/images/marker-icon.png'),

@@ -63,6 +63,8 @@ interface TablaElementoCatalogoRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<TablaElementoCatalogo> findAllBy(Pageable pageable, Criteria criteria);
 
+    Flux<TablaElementoCatalogo> findAllByAbreviatura(String abreviatura);
+
     Mono<TablaElementoCatalogo> findOneWithEagerRelationships(Long id);
 
     Flux<TablaElementoCatalogo> findAllWithEagerRelationships();

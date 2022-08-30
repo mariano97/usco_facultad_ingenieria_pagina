@@ -35,6 +35,23 @@
         }
       }
     }
+    @media (max-width: 991px) {
+      .row:first-child {
+        display: block !important;
+        .col-container-data-info {
+          margin-top: 2rem;
+        }
+      }
+      .container_informacion {
+        .col-container-imagen {
+          img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
     .col-container-data-info {
       .name_profesor {
         color: $color-gris;

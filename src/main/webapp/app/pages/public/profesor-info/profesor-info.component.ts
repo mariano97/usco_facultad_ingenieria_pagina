@@ -135,7 +135,7 @@ export default class ProfesorInfo extends Vue {
     this.titulosAcademicosProfesorLista = [];
     for (let i = 0; i < tutilosAcademicos.length; i += 2) {
       if (!(tutilosAcademicos.length % 2) || tutilosAcademicos.length - i != 1) {
-        this.titulosAcademicosProfesorLista.push([tutilosAcademicos[i], tutilosAcademicos[i + 2]]);
+        this.titulosAcademicosProfesorLista.push([tutilosAcademicos[i], tutilosAcademicos[i + 1]]);
       } else {
         this.titulosAcademicosProfesorLista.push([tutilosAcademicos[i]]);
       }
@@ -146,7 +146,7 @@ export default class ProfesorInfo extends Vue {
     this.cursosMateriasProfesorLista = [];
     for (let i = 0; i < cursosMaterias.length; i += 2) {
       if (!(cursosMaterias.length % 2) || cursosMaterias.length - i != 1) {
-        this.cursosMateriasProfesorLista.push([cursosMaterias[i], cursosMaterias[i + 2]]);
+        this.cursosMateriasProfesorLista.push([cursosMaterias[i], cursosMaterias[i + 1]]);
       } else {
         this.cursosMateriasProfesorLista.push([cursosMaterias[i]]);
       }

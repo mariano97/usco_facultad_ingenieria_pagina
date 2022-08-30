@@ -288,4 +288,26 @@ export default class Programa extends Vue {
       (<any>this.$refs.map).setCenter({ lat: event.latlng.lat, lng: event.latlng.lng }, { lat: 0, lng: 0 });
     }
   }
+
+  public redirectToPaginaWeb(urlWeb?: string): string {
+    const webPage = urlWeb; //this.negocio.paginaWeb;
+    if (webPage === undefined || webPage === null || webPage === '') {
+      return '';
+    } else {
+      if (webPage.startsWith('https://')) {
+        return webPage;
+      } else if (webPage.startsWith('http://')) {
+        return webPage;
+      } else {
+        const web = 'https://'.concat(webPage);
+        return web;
+      }
+    }
+  }
+
+  public redirectNewPage(url: string): void {
+    console.log('url');
+    console.log(url);
+    window.open(url, '_blank');
+  }
 }

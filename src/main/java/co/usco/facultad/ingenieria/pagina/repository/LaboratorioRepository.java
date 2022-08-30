@@ -62,6 +62,10 @@ interface LaboratorioRepositoryInternal {
     // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Laboratorio> findAllBy(Pageable pageable, Criteria criteria);
 
+    Flux<Laboratorio> findAllByTipoTipoLaboratorioId(Pageable pageable, Long tipoCatalogoId);
+
+    Flux<Laboratorio> findAllByTipoTipoLaboratorioId(Long tipoCatalogoId);
+
     Mono<Laboratorio> findOneWithEagerRelationships(Long id);
 
     Flux<Laboratorio> findAllWithEagerRelationships();

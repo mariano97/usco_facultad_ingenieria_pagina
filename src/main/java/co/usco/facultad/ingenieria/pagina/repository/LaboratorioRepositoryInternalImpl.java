@@ -110,6 +110,18 @@ class LaboratorioRepositoryInternalImpl extends SimpleR2dbcRepository<Laboratori
     }
 
     @Override
+    public Flux<Laboratorio> findAllByTipoTipoLaboratorioId(Pageable pageable, Long tipoCatalogoId) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("tipo_laboratorio_id"), Conditions.just(tipoCatalogoId.toString()));
+        return createQuery(pageable, whereClause).all();
+    }
+
+    @Override
+    public Flux<Laboratorio> findAllByTipoTipoLaboratorioId(Long tipoCatalogoId) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("tipo_laboratorio_id"), Conditions.just(tipoCatalogoId.toString()));
+        return createQuery(null, whereClause).all();
+    }
+
+    @Override
     public Mono<Laboratorio> findOneWithEagerRelationships(Long id) {
         return findById(id);
     }

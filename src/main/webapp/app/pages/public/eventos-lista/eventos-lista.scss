@@ -112,4 +112,46 @@
       }
     }
   }
+  .content-paginacion {
+    @media (min-width: 992px) {
+      margin-left: 10vw !important;
+      margin-right: 10vw !important;
+    }
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+    div.info {
+      color: $color-gris;
+      font-size: 15px;
+    }
+
+    ul {
+      li {
+        &.disabled {
+          display: none;
+        }
+
+        &.active {
+          button {
+            background-color: $color-red  !important;
+            color: $color-gris-light  !important;
+          }
+        }
+
+        &.page-item {
+          button {
+            color: $color-gris;
+
+            &:hover {
+              background-color: $color-red-light;
+
+            }
+          }
+        }
+
+        .page-link {
+          border: 1px solid $color-gris  !important;
+        }
+      }
+    }
+  }
 }

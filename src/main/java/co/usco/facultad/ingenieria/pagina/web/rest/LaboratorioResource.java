@@ -217,6 +217,28 @@ public class LaboratorioResource {
         return ResponseUtil.wrapOrNotFound(laboratorioDTO);
     }
 
+    @GetMapping(value = {
+        "/laboratorios/has-laboratorio/{tipoLaboratoriId}",
+        "/open/laboratorios/has-laboratorio/{tipoLaboratoriId}"
+    })
+    public Mono<ResponseEntity<Boolean>> hasLaboratorioByTipoLaboratorio(@PathVariable long tipoLaboratoriId) {
+        return laboratorioService.hasLaboratorioByTipoLaboratorio(tipoLaboratoriId)
+            .map(response ->
+                ResponseEntity
+                    .ok()
+                    .body(response));
+    }
+
+    @GetMapping(value = {
+        "/laboratorios/by-tipo-laboratorio/{tipoLaboratoriId}",
+        "/open/laboratorios/by-tipo-laboratorio/{tipoLaboratoriId}"
+    })
+    public Mono<ResponseEntity<List<LaboratorioDTO>>> getAllByTipoLaboratorioId(@PathVariable long tipoLaboratoriId) {
+        return laboratorioService.findAllByTipoLaboratorioId(tipoLaboratoriId)
+            .collectList().map(response -> ResponseEntity.ok()
+                .body(response));
+    }
+
     /**
      * {@code DELETE  /laboratorios/:id} : delete the "id" laboratorio.
      *

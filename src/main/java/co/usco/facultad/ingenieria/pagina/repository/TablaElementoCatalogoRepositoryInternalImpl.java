@@ -103,6 +103,12 @@ class TablaElementoCatalogoRepositoryInternalImpl
     }
 
     @Override
+    public Flux<TablaElementoCatalogo> findAllByAbreviatura(String abreviatura) {
+        Comparison whereClause = Conditions.isEqual(entityTable.column("abreviatura"), Conditions.just("'".concat(abreviatura).concat("'")));
+        return createQuery(null, whereClause).all();
+    }
+
+    @Override
     public Mono<TablaElementoCatalogo> findOneWithEagerRelationships(Long id) {
         return findById(id);
     }

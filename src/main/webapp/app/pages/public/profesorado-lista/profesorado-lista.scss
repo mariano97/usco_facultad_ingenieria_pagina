@@ -95,12 +95,17 @@
     }
     min-height: 70vh;
     .container-resultados-profesores {
-      margin-top: 3rem !important;
-      margin-bottom: 3rem !important;
+      @media (min-width: 992px) {
+        margin-top: 3rem !important;
+        margin-bottom: 3rem !important;
+      }
       .container_item_profesor {
         background-color: $color-gris-light;
         max-width: 100%;
         width: 100%;
+        @media (max-width: 992px) {
+          margin-top: 2rem;
+        }
         .container_imagen {
           width: 50%;
           img {

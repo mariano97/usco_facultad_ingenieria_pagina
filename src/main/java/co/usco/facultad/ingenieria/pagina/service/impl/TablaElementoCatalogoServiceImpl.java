@@ -89,6 +89,13 @@ public class TablaElementoCatalogoServiceImpl implements TablaElementoCatalogoSe
         return tablacatalofo;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<Boolean> hasElementsWithAbreviatura(String abreviatura) {
+        return tablaElementoCatalogoRepository.findAllByAbreviatura(abreviatura)
+            .collectList().flatMap(tablaElementoCatalogos -> Mono.just(tablaElementoCatalogos.size() > 0));
+    }
+
     public Mono<Long> countAll() {
         return tablaElementoCatalogoRepository.count();
     }

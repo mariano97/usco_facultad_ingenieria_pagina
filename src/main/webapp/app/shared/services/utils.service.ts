@@ -1,3 +1,5 @@
+import { ILaboratorio } from '@/shared/model/laboratorio.model';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { Store } from 'vuex';
 import { IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { uuid } from 'vue-uuid';
@@ -5,15 +7,41 @@ import { uuid } from 'vue-uuid';
 export default class UtilsService {
   private listFiles: IFileDownloaded[] = [];
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>) { }
+
+  public hasLabMuseoOrGranja(tipoLabId: number): boolean {
+    if (tipoLabId === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
+      return this.store.getters.hasLabGranja();
+    }
+    if (tipoLabId === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO) {
+      return this.store.getters.hasLabMuseo();
+    }
+    return false;
+  }
+
+  public obtenerLaboratorioByTipoLab(tipoLabId: number): ILaboratorio {
+    return this.store.getters.obtenerLaboratorioByTipoLab(tipoLabId);
+  }
+
+  public agregarLaboratorio(laboratorio: ILaboratorio): void {
+    this.store.commit('agregarLaboratorio', laboratorio);
+  }
+
+  public setLabGranja(hasGranja: boolean): void {
+    this.store.commit('setLabGranja', hasGranja);
+  }
+
+  public setLabMuseoa(hasMuseo: boolean): void {
+    this.store.commit('setLabMuseo', hasMuseo);
+  }
 
   public obtenerFileByFileName(fileName: string): IFileDownloaded {
     return this.store.getters.obtenerFileByFileName(fileName); // this.listFiles.find(file => file.fileName === fileName);
   }
 
   public existeFileInList(fileName: string): boolean {
-    console.log(fileName);
-    console.log(this.store.getters.obtenerListaFile);
+    /*console.log(fileName);
+    console.log(this.store.getters.obtenerListaFile);*/
     return this.store.getters.existeFileInList(fileName);
     /* const listaFilesFilter = this.listFiles.filter(file => file.fileName === fileName);
     return listaFilesFilter.length > 0; */
@@ -32,8 +60,8 @@ export default class UtilsService {
   }
 
   public agregarFileToList(fileName: string, file: any): void {
-    console.log('dentro de agregar file');
-    console.log(fileName);
+    /*console.log('dentro de agregar file');
+    console.log(fileName);*/
     if (!this.existeFileInList(fileName)) {
       this.store.commit('agregarGoogleFileToList', {
         fileName: fileName,
@@ -43,7 +71,7 @@ export default class UtilsService {
     } else {
       this.actualizarFileInList(fileName, file);
     }
-    console.log(this.store.getters.obtenerListaFile);
+    //console.log(this.store.getters.obtenerListaFile);
     /* if (!this.existeFileInList(fileName)) {
       this.listFiles.push({
         file: file,

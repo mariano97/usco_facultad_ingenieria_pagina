@@ -232,22 +232,22 @@ export default class SedesFormulario extends Vue {
         lat: 2.38942,
         lon: -75.8926236,
       };*/
-      <any>this.$refs.map.setCenter({ lat: 2.38942, lng: -75.8926236 }, {lat: 0, lng:0});
+      (<any>this.$refs.map).setCenter({ lat: 2.38942, lng: -75.8926236 }, {lat: 0, lng:0});
     } else if (Number(event.target.value) === 1) {
       /* this.coordenadas = {
         lat: 3.3758991,
         lon: -74.8019303,
       }; */
-      <any>this.$refs.map.setCenter({ lat: 3.3758991, lng: -74.8019303 }, {lat: 0, lng:0});
+      (<any>this.$refs.map).setCenter({ lat: 3.3758991, lng: -74.8019303 }, {lat: 0, lng:0});
     } else {
       /* this.coordenadas = {
         lat: 0,
         lon: 0,
       }; */
-      <any>this.$refs.map.setCenter({lat: 0, lng:0}, {lat: 0, lng:0});
+      (<any>this.$refs.map).setCenter({lat: 0, lng:0}, {lat: 0, lng:0});
     }
     this.zoomMap = 16;
-    this.showMap = true;
+    // this.showMap = true;
     console.log(<any>this.$refs.map);
   }
 }

@@ -61,8 +61,32 @@
                   </small>
                 </div>
               </div>
-              <div class="px-2">
-
+              <div class="col form-group">
+                <label class="form-control-label campo_requerido">Tipo de laboratorio</label>
+                <select
+                  class="form-control"
+                  id="tipoLaboratorio"
+                  name="tipoLaboratorio"
+                  v-model="laboratorio.tipoLaboratorio"
+                  :disabled="checkHabilitacionCampos()"
+                  required
+                >
+                  <option v-if="!laboratorio.tipoLaboratorio" v-bind:value="null" selected>Seleccione</option>
+                  <option
+                    v-bind:value="
+                      laboratorio.tipoLaboratorio && tipoLab.id === laboratorio.tipoLaboratorio.id ? laboratorio.tipoLaboratorio : tipoLab
+                    "
+                    v-for="tipoLab in filterTiposLaboratorio()"
+                    :key="tipoLab.id"
+                  >
+                    {{ tipoLab.nombre }}
+                  </option>
+                </select>
+                <div v-if="$v.laboratorio.tipoLaboratorio.$anyDirty && $v.laboratorio.tipoLaboratorio.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.laboratorio.tipoLaboratorio.required" v-text="$t('entity.validation.required')">
+                    This field is required.
+                  </small>
+                </div>
               </div>
               <div class="col form-group px-0">
                 <label class="form-control-label campo_requerido" for="correoContacto">Correo de contacto</label>
@@ -79,6 +103,36 @@
                     This field cannot be longer than 50 characters.
                   </small>
                   <small class="form-text text-danger" v-if="!$v.laboratorio.correoContacto.minLength"
+                    v-text="$t('entity.validation.minlength', { min: 1 })">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row mx-0">
+              <div class="col form-group px-0">
+                <label class="form-control-label" for="direccion">Dirección / Ubicación</label>
+                <div class="d-flex justify-content-end">
+                  <small class="count_tamano_text"
+                    :class="{ count_text_limit: countCharacter(500, $v.laboratorio.direccion.$model) < 10 }">Quedan
+                    {{
+                    countCharacter(500, $v.laboratorio.direccion.$model) }} caracteres</small>
+                </div>
+                <textarea id="direccion" class="form-control" name="direccion" cols="50" rows="10"
+                  placeholder="Eg. Cra 1H...."
+                  v-model="$v.laboratorio.direccion.$model" :disabled="checkHabilitacionCampos()"
+                  required></textarea>
+                <div class=""
+                  v-if="$v.laboratorio.direccion.$anyDirty && $v.laboratorio.direccion.$invalid">
+                  <small class="form-text text-danger" v-if="!$v.laboratorio.direccion.required"
+                    v-text="$t('entity.validation.required')">
+                    Este campo es obligatorio.
+                  </small>
+                  <small class="form-text text-danger" v-if="!$v.laboratorio.direccion.maxLength"
+                    v-text="$t('entity.validation.maxlength', { max: 500 })">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                  <small class="form-text text-danger" v-if="!$v.laboratorio.direccion.minLength"
                     v-text="$t('entity.validation.minlength', { min: 1 })">
                     This field cannot be longer than 50 characters.
                   </small>

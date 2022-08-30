@@ -116,8 +116,10 @@
         }
       }
     </script>
-    <!-- uncomment this for adding service worker
+    <!--uncomment this for adding service worker-->
     <script>
+      console.log('navigator');
+      console.log(navigator);
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
           navigator.serviceWorker.register('/service-worker.js')
@@ -127,7 +129,7 @@
         });
       }
     </script>
-    -->
+
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

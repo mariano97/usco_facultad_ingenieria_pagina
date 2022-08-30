@@ -64,6 +64,10 @@ public interface LaboratorioService {
      */
     Mono<LaboratorioDTO> findOne(Long id);
 
+    Mono<Boolean> hasLaboratorioByTipoLaboratorio(Long tipoLaboratorioId);
+
+    Flux<LaboratorioDTO> findAllByTipoLaboratorioId(Long tipoLaboratorioId);
+
     /**
      * Delete the "id" laboratorio.
      *

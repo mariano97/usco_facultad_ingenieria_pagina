@@ -344,6 +344,14 @@ label {
   }
 }
 
+.no_resultados {
+  p {
+    color: $color-gris;
+    font-size: 20px;
+    white-space: pre-line;
+  }
+}
+
 @import 'jhi-navbar.scss';
 @import 'jhi_footer.scss';
 @import 'popups.scss';

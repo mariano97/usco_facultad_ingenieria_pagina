@@ -10,6 +10,9 @@ import { IFileDocumentoNuevo, IFileDownloaded } from '@/shared/model/file-docume
 import { DATE_FORMAT } from '@/shared/date/filters';
 import dayjs from 'dayjs';
 import carpetasarchivosConstants from '@/shared/constants/carpetasarchivos.constants';
+import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
+import TablaElementoCatalogoService from '@/entities/tabla-elemento-catalogo/tabla-elemento-catalogo.service';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
 
 const validations: any = {
   laboratorio: {
@@ -26,6 +29,11 @@ const validations: any = {
       required,
     },
     direccion: {},
+    tipoLaboratorio: {
+      required,
+    },
+    facultad: {
+    },
   },
 };
 
@@ -37,6 +45,7 @@ export default class LaboratorioFormulario extends Vue {
   @Inject('utilsService') private utilsService: () => UtilsService;
   @Inject('laboratorioService') private laboratorioService: () => LaboratorioService;
   @Inject('alertService') private alertService: () => AlertService;
+  @Inject('tablaElementoCatalogoService') private tablaElementoCatalogoService: () => TablaElementoCatalogoService;
 
   public laboratorio: ILaboratorio = new Laboratorio();
 
@@ -46,9 +55,14 @@ export default class LaboratorioFormulario extends Vue {
   public showImage = false;
   public showSpinnerLoader = false;
 
+  public hasLaboratorioGranja = false;
+  public hasLaboratorioMuseo = false;
+
   public imageProfileProfesor: any;
   private file: any = null;
   public programaDocumentoNuevo: IFileDocumentoNuevo = {};
+
+  public tiposLaboratorios: ITablaElementoCatalogo[] = [];
 
   public dateMax = dayjs().format(DATE_FORMAT);
 
@@ -59,6 +73,7 @@ export default class LaboratorioFormulario extends Vue {
         vm.isModeEdit = true;
         vm.enableEdit = false;
       }
+      vm.consultarInfoExtraLaboratorio();
     });
   }
 
@@ -75,12 +90,58 @@ export default class LaboratorioFormulario extends Vue {
       });
   }
 
+  public consultarInfoExtraLaboratorio(): void {
+    this.consultarElementosFormulario();
+    this.hasLaboratorioByTipo(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA);
+    this.hasLaboratorioByTipo(identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO);
+  }
+
+  public consultarElementosFormulario(): void {
+    this.tablaElementoCatalogoService()
+      .getAllByTipoCatalogoKeyIdentificador(this.$store.getters.authenticated, identificadoresConstants.IDENTIFICADOR_TIPO_LABORATORIO)
+      .then(res => {
+        this.tiposLaboratorios = res;
+      });
+  }
+
+  public hasLaboratorioByTipo(tipoLaboratorio: number): void {
+    this.laboratorioService()
+      .hasTipoLaboratorio(this.$store.getters.authenticated, tipoLaboratorio)
+      .then(res => {
+        if (tipoLaboratorio === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
+          this.hasLaboratorioGranja = res;
+        }
+        if (tipoLaboratorio === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO) {
+          this.hasLaboratorioMuseo = res;
+        }
+      });
+  }
+
+  public filterTiposLaboratorio(): ITablaElementoCatalogo[] {
+    return this.tiposLaboratorios.filter(typeLab => {
+      console.log(typeLab);
+      if (this.hasLaboratorioGranja && this.hasLaboratorioMuseo) {
+        return (
+          typeLab.id !== identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA &&
+          typeLab.id !== identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO &&
+          typeLab.id !== 25
+        );
+      } else if (this.hasLaboratorioGranja) {
+        return typeLab.id !== identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA && typeLab.id !== 25;
+      } else if (this.hasLaboratorioMuseo) {
+        return typeLab.id !== identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO && typeLab.id !== 25;
+      } else {
+        return typeLab.id !== 25;
+      }
+    });
+  }
+
   public guardar(): void {
     this.isSaving = true;
     if (this.laboratorio.id) {
-      /* this.laboratorio.facultad = {
+      this.laboratorio.facultad = {
         id: 1,
-      }; */
+      };
       this.laboratorioService()
         .update(this.laboratorio)
         .then(res => {
@@ -102,9 +163,9 @@ export default class LaboratorioFormulario extends Vue {
           this.alertService().showHttpError(this, error.response);
         });
     } else {
-      /* this.laboratorio.facultad = {
+      this.laboratorio.facultad = {
         id: 1,
-      }; */
+      };
       this.laboratorioService()
         .create(this.laboratorio)
         .then(param => {

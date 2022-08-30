@@ -44,6 +44,18 @@
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4>Semilleros</h4>
           </b-nav-item>
+          <b-nav-item :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labGranja.id } }" v-if="hasLabGranja && !authenticated"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
+            <h4>Granja</h4>
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labMuseo.id } }" v-if="hasLabMuseo && !authenticated"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
+            <h4>Museo</h4>
+          </b-nav-item>
+          <!--<b-nav-item to="/faultad-ingenieria/semilleros-lista" v-if="!authenticated"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
+            <h4>Semilleros</h4>
+          </b-nav-item>-->
           <b-nav-item v-if="!authenticated" href="https://www.usco.edu.co/es/sistemas-de-consultas-academicas/" target="_blank"
             class="nav-item-ingresar d-flex justify-content-center align-items-center">
             <h4>Consultas Academicas</h4>
@@ -184,6 +196,22 @@
         <router-link :to="{ name: 'semilleros_lista_public' }">
           <button class="btn btn-opcion d-flex justify-content-center">
             Semilleros
+          </button>
+        </router-link>
+      </div>
+      <div class="col-sm-auto opcion" v-if="hasLabGranja && !authenticated">
+        <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
+        <router-link :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labGranja.id } }">
+          <button class="btn btn-opcion d-flex justify-content-center">
+            Granja
+          </button>
+        </router-link>
+      </div>
+      <div class="col-sm-auto opcion" v-if="hasLabMuseo && !authenticated">
+        <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
+        <router-link :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labMuseo.id } }">
+          <button class="btn btn-opcion d-flex justify-content-center">
+            Museo
           </button>
         </router-link>
       </div>
