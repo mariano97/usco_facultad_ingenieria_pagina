@@ -217,7 +217,3 @@ jhipster:
 
 google-config:
   bucket-name: arched-catwalk-352122.appspot.com
-
-java:
-  runtime:
-    version: 11
