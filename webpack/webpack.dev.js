@@ -23,10 +23,12 @@ module.exports = (env, options) => {
       {
         https: false, // cambiar estado para activar o descativar el tls
         host: 'localhost',
+        // host: '192.168.10.11',
         // cambiar siempre por puerto 9000
         port: 9000,
         proxy: {
           target: `http://localhost:${options.watch ? '8081' : '9060'}`,
+          // target: `http://192.168.10.11:${options.watch ? '8081' : '9060'}`,
           ws: true,
         },
         socket: {

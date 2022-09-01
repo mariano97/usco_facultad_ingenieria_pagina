@@ -40,6 +40,7 @@ public interface LaboratorioService {
      * @return the list of entities.
      */
     Flux<LaboratorioDTO> findAll(Pageable pageable);
+    Flux<LaboratorioDTO> findAllReal(Pageable pageable);
 
     /**
      * Get all the laboratorios with eager load of many-to-many relationships.

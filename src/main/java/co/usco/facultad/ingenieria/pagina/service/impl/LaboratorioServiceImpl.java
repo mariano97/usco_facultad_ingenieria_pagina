@@ -68,6 +68,11 @@ public class LaboratorioServiceImpl implements LaboratorioService {
             .map(laboratorioMapper::toDto);
     }
 
+    @Override
+    public Flux<LaboratorioDTO> findAllReal(Pageable pageable) {
+        return laboratorioRepository.findAllBy(pageable).map(laboratorioMapper::toDto);
+    }
+
     public Flux<LaboratorioDTO> findAllWithEagerRelationships(Pageable pageable) {
         return laboratorioRepository.findAllWithEagerRelationships(pageable).map(laboratorioMapper::toDto);
     }
