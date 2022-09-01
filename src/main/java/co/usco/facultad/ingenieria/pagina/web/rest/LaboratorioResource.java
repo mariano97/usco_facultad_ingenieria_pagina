@@ -201,6 +201,31 @@ public class LaboratorioResource {
             );
     }
 
+    @GetMapping(value = {
+        "/laboratorios/reales",
+        "/open/laboratorios/reales"
+    })
+    public Mono<ResponseEntity<List<LaboratorioDTO>>> getAllRealesLaboratorios(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        ServerHttpRequest request
+    ) {
+        log.debug("REST request to get a page of Laboratorios");
+        return laboratorioService
+            .countAll()
+            .zipWith(laboratorioService.findAllReal(pageable).collectList())
+            .map(countWithEntities ->
+                ResponseEntity
+                    .ok()
+                    .headers(
+                        PaginationUtil.generatePaginationHttpHeaders(
+                            UriComponentsBuilder.fromHttpRequest(request),
+                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                        )
+                    )
+                    .body(countWithEntities.getT2())
+            );
+    }
+
     /**
      * {@code GET  /laboratorios/:id} : get the "id" laboratorio.
      *

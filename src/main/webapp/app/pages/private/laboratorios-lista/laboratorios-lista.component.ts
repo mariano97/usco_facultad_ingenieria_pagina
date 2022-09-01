@@ -30,7 +30,8 @@ export default class LaboratoriosLista extends Vue {
       sort: this.sort(),
     };
     this.laboratorioService()
-      .retrieve(paginacionQuery)
+      //.retrieve(paginacionQuery)
+      .retrieveReales(this.$store.getters.authenticated, paginacionQuery)
       .then(res => {
         this.laboratorios = res.data;
         this.totalItems = Number(res.headers['x-total-count']);

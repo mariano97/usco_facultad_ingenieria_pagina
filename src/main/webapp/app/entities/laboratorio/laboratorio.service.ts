@@ -77,6 +77,20 @@ export default class LaboratorioService {
     });
   }
 
+  public retrieveReales(isAutenticado: boolean, paginationQuery?: any): Promise<any> {
+    const url = isAutenticado ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(url + `/reales?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
