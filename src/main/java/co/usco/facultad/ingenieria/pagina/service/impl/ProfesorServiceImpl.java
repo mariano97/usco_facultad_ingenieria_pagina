@@ -2,7 +2,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.domain.Profesor;
 import co.usco.facultad.ingenieria.pagina.repository.ProfesorRepository;
-import co.usco.facultad.ingenieria.pagina.service.ProfesorService;
+import co.usco.facultad.ingenieria.pagina.service.*;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProfesorDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.ProfesorMapper;
 import org.slf4j.Logger;
@@ -22,11 +22,23 @@ public class ProfesorServiceImpl implements ProfesorService {
 
     private final Logger log = LoggerFactory.getLogger(ProfesorServiceImpl.class);
 
+    private final UserService userService;
+
+    private final GoogleCloudStorageService googleCloudStorageService;
+
+    private final EscalafonProfesorService escalafonProfesorService;
+
+    private final TituloAcademicoProfesorService tituloAcademicoProfesorService;
+
     private final ProfesorRepository profesorRepository;
 
     private final ProfesorMapper profesorMapper;
 
-    public ProfesorServiceImpl(ProfesorRepository profesorRepository, ProfesorMapper profesorMapper) {
+    public ProfesorServiceImpl(UserService userService, GoogleCloudStorageService googleCloudStorageService, EscalafonProfesorService escalafonProfesorService, TituloAcademicoProfesorService tituloAcademicoProfesorService, ProfesorRepository profesorRepository, ProfesorMapper profesorMapper) {
+        this.userService = userService;
+        this.googleCloudStorageService = googleCloudStorageService;
+        this.escalafonProfesorService = escalafonProfesorService;
+        this.tituloAcademicoProfesorService = tituloAcademicoProfesorService;
         this.profesorRepository = profesorRepository;
         this.profesorMapper = profesorMapper;
     }
@@ -101,6 +113,21 @@ public class ProfesorServiceImpl implements ProfesorService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Profesor : {}", id);
-        return profesorRepository.deleteById(id);
+
+        return escalafonProfesorService.deleteAllByProfesorId(id).then()
+            .then(tituloAcademicoProfesorService.deleteAllByProfesorId(id)).then()
+            .then(profesorRepository.deleteProfesorCursoMateriaByProfesorId(id)).then()
+            .then(profesorRepository.deleteProfesorProgramaByProfesorId(id)).then()
+            .then(findOne(id))
+            .flatMap(profesorDTO -> {
+                if (profesorDTO.getUrlFotoProfesor() != null && !profesorDTO.getUrlFotoProfesor().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(profesorDTO.getUrlFotoProfesor())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", profesorDTO.getUrlFotoProfesor()));
+                }
+                return userService.deleteUserById(profesorDTO.getUserId());
+            })
+            .then()
+            .then(profesorRepository.deleteById(id)).then();
     }
 }

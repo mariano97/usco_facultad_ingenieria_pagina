@@ -24,16 +24,16 @@
         >
           Editar
         </button>
-        <!--<button
+        <button
           v-if="isModeEdit && !enableEdit"
-          class="btn btn_editar d-flex align-items-center justify-content-center col-sm-auto"
+          class="btn btn_eliminar d-flex align-items-center justify-content-center col-sm-auto px-0"
           type="button"
-          id="btn_editar"
+          id="btn_eliminar"
           v-text="$t('entity.action.delete')"
-          v-on:click="enableFormularioEditar()"
+          v-on:click="eliminar()"
         >
           Eliminar
-        </button>-->
+        </button>
       </div>
     </section>
     <section class="materia_formulario">

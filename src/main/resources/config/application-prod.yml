@@ -52,8 +52,9 @@ spring:
           writetimeout: 5000
   r2dbc:
     url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: root
-    password:
+    #url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: user_projects
+    password: Mario12345
   thymeleaf:
     cache: true
   sleuth:

@@ -2,7 +2,10 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.domain.Programa;
 import co.usco.facultad.ingenieria.pagina.repository.ProgramaRepository;
+import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.ProgramaService;
+import co.usco.facultad.ingenieria.pagina.service.RedesProgramaService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ProgramaDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.ProgramaMapper;
 import org.slf4j.Logger;
@@ -22,11 +25,20 @@ public class ProgramaServiceImpl implements ProgramaService {
 
     private final Logger log = LoggerFactory.getLogger(ProgramaServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
+    private final ArchivosProgramaService archivosProgramaService;
+
+    private final RedesProgramaService redesProgramaService;
+
     private final ProgramaRepository programaRepository;
 
     private final ProgramaMapper programaMapper;
 
-    public ProgramaServiceImpl(ProgramaRepository programaRepository, ProgramaMapper programaMapper) {
+    public ProgramaServiceImpl(GoogleCloudStorageService googleCloudStorageService, ArchivosProgramaService archivosProgramaService, RedesProgramaService redesProgramaService, ProgramaRepository programaRepository, ProgramaMapper programaMapper) {
+        this.googleCloudStorageService = googleCloudStorageService;
+        this.archivosProgramaService = archivosProgramaService;
+        this.redesProgramaService = redesProgramaService;
         this.programaRepository = programaRepository;
         this.programaMapper = programaMapper;
     }
@@ -95,6 +107,24 @@ public class ProgramaServiceImpl implements ProgramaService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Programa : {}", id);
-        return programaRepository.deleteById(id);
+        // return programaRepository.deleteById(id);
+        return archivosProgramaService.deleteAllByProgramaId(id).then()
+            .then(redesProgramaService.deleteAllByProgramaId(id)).then()
+            .then(programaRepository.deleteProgramaProfesorByProgramaId(id)).then()
+            .then(programaRepository.deleteProgramaSedesByProgramaId(id)).then()
+            .then(findOne(id))
+            .flatMap(programaDTO -> {
+                if (programaDTO.getUrlFotoPrograma() != null && !programaDTO.getUrlFotoPrograma().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(programaDTO.getUrlFotoPrograma())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", programaDTO.getUrlFotoPrograma()));
+                }
+                return programaRepository.deleteById(id);
+            }).then();
+        /* return archivosProgramaService.deleteAllByProgramaId(id).then()
+            .then(redesProgramaService.deleteAllByProgramaId(id)).then()
+            .then(programaRepository.deleteProgramaProfesorByProgramaId(id)).then()
+            .then(programaRepository.deleteProgramaSedesByProgramaId(id)).then()
+            .then(programaRepository.deleteById(id)).then(); */
     }
 }

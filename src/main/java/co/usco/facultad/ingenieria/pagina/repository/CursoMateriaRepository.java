@@ -43,6 +43,11 @@ public interface CursoMateriaRepository extends ReactiveCrudRepository<CursoMate
 
     @Override
     Mono<Void> deleteById(Long id);
+
+    @Query(
+            "DELETE FROM rel_profesor__curso_materia cursoMateria WHERE cursoMateria.curso_materia_id = :materiaId"
+    )
+    Mono<Void> deleteProfesorCursoMateriaByMateriaId(Long materiaId);
 }
 
 interface CursoMateriaRepositoryInternal {

@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 import co.usco.facultad.ingenieria.pagina.domain.Evento;
 import co.usco.facultad.ingenieria.pagina.repository.EventoRepository;
 import co.usco.facultad.ingenieria.pagina.service.EventoService;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.EventoDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.EventoMapper;
 import org.slf4j.Logger;
@@ -24,11 +25,14 @@ public class EventoServiceImpl implements EventoService {
 
     private final Logger log = LoggerFactory.getLogger(EventoServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
     private final EventoRepository eventoRepository;
 
     private final EventoMapper eventoMapper;
 
-    public EventoServiceImpl(EventoRepository eventoRepository, EventoMapper eventoMapper) {
+    public EventoServiceImpl(GoogleCloudStorageService googleCloudStorageService, EventoRepository eventoRepository, EventoMapper eventoMapper) {
+        this.googleCloudStorageService = googleCloudStorageService;
         this.eventoRepository = eventoRepository;
         this.eventoMapper = eventoMapper;
     }
@@ -91,6 +95,16 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Evento : {}", id);
-        return eventoRepository.deleteById(id);
+        //return eventoRepository.deleteById(id);
+        return findOne(id)
+            .flatMap(eventoDTO -> {
+                if (eventoDTO.getUrlFoto() != null && !eventoDTO.getUrlFoto().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(eventoDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", eventoDTO.getUrlFoto()));
+                }
+                return eventoRepository.deleteById(id);
+            })
+            .then();
     }
 }

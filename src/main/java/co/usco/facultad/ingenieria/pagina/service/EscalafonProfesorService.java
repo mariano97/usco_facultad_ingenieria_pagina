@@ -65,4 +65,6 @@ public interface EscalafonProfesorService {
      * @return a Mono to signal the deletion
      */
     Mono<Void> delete(Long id);
+
+    Mono<Void> deleteAllByProfesorId(Long profesorId);
 }

@@ -98,4 +98,13 @@ public class TituloAcademicoProfesorServiceImpl implements TituloAcademicoProfes
         log.debug("Request to delete TituloAcademicoProfesor : {}", id);
         return tituloAcademicoProfesorRepository.deleteById(id);
     }
+
+
+    @Override
+    @Transactional
+    public Mono<Void> deleteAllByProfesorId(Long profesorId) {
+        return findAllByProfesorId(profesorId)
+            .flatMap(tituloAcademicoProfesorDTO -> delete(tituloAcademicoProfesorDTO.getId()))
+            .then();
+    }
 }

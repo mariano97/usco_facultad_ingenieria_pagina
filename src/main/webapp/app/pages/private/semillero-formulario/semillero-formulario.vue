@@ -19,6 +19,16 @@
           id="btn_editar" v-text="$t('entity.action.edit')" v-on:click="enableFormularioEditar()">
           Editar
         </button>
+        <button
+          v-if="isModeEdit && !enableEdit"
+          class="btn btn_eliminar d-flex align-items-center justify-content-center col-sm-auto px-0"
+          type="button"
+          id="btn_eliminar"
+          v-text="$t('entity.action.delete')"
+          v-on:click="eliminar()"
+        >
+          Eliminar
+        </button>
       </div>
     </section>
     <section class="semillero_formulario">

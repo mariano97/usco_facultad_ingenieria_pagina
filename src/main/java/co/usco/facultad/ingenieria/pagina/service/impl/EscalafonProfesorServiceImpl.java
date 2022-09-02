@@ -87,7 +87,21 @@ public class EscalafonProfesorServiceImpl implements EscalafonProfesorService {
 
     @Override
     public Mono<Void> delete(Long id) {
+        log.debug("");
+        log.debug("");
+        log.debug("");
+        log.debug("--------------------------------------------");
         log.debug("Request to delete EscalafonProfesor : {}", id);
         return escalafonProfesorRepository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Void> deleteAllByProfesorId(Long profesorId) {
+        return findByProfesorId(profesorId).flatMap(escalafonProfesorDTO -> delete(escalafonProfesorDTO.getId())).then();
+        /* return findByProfesorId(profesorId).map(escalafonProfesorDTO ->
+            delete(escalafonProfesorDTO.getId()))
+            .doOnNext(voidMono -> log.debug("Elemento eliminado"))
+            .doOnComplete(() -> log.debug("elemento eliminado"))
+            .then();*/
     }
 }

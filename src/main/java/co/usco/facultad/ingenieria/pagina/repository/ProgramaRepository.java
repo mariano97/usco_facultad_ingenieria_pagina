@@ -68,6 +68,16 @@ public interface ProgramaRepository extends ReactiveCrudRepository<Programa, Lon
 
     @Override
     Mono<Void> deleteById(Long id);
+
+    @Query(
+        "DELETE FROM rel_programa__profesor progprof WHERE progprof.programa_id = :programaId"
+    )
+    Mono<Void> deleteProgramaProfesorByProgramaId(Long programaId);
+
+    @Query(
+        "DELETE FROM rel_programa__sede progsede WHERE progsede.programa_id = :programaId"
+    )
+    Mono<Void> deleteProgramaSedesByProgramaId(Long programaId);
 }
 
 interface ProgramaRepositoryInternal {
