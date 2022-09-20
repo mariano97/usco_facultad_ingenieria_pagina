@@ -1,5 +1,6 @@
 import LaboratorioService from '@/entities/laboratorio/laboratorio.service';
 import AlertService from '@/shared/alert/alert.service';
+import identificadoresConstants from '@/shared/constants/identificadores.constants';
 import { DATE_FORMAT } from '@/shared/date/filters';
 import { IFileDownloaded } from '@/shared/model/file-documento-nuevo.model';
 import { ILaboratorio } from '@/shared/model/laboratorio.model';
@@ -17,6 +18,7 @@ export default class LaboratorioInfo extends Vue {
   @Inject('alertService') private alertService: () => AlertService;
 
   public laboratorio: ILaboratorio = {};
+  public urlSitio = '';
 
   public beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -26,17 +28,37 @@ export default class LaboratorioInfo extends Vue {
     });
   }
 
+  public beforeRouteUpdate(to, from) {
+    // just use `this`
+    console.log('dentro de beforeRouteUpdate');
+    console.log(to);
+    console.log(from);
+    // this.$router.replace(to.path);
+    this.laboratorio = {};
+    this.consultarSemillero(to.params.laboratorioId);
+  }
+
   private consultarSemillero(laboratorioId: number): void {
     this.laboratorioService()
       .findCustom(this.$store.getters.authenticated, laboratorioId)
       .then(res => {
         this.laboratorio = res;
+        this.asignarUrl(this.laboratorio);
         this.downloadImagePerfil(this.laboratorio);
       })
       .catch(err => {
         this.$router.go(-1);
         this.alertService().showHttpError(this, err.response);
       });
+  }
+
+  private asignarUrl(laboratorio: ILaboratorio): void {
+    if (laboratorio.tipoLaboratorio.id === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
+      this.urlSitio = 'https://www.usco.edu.co/es/granja-usco/';
+    }
+    if (laboratorio.tipoLaboratorio.id === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_MUSEO) {
+      this.urlSitio = '';
+    }
   }
 
   private downloadImagePerfil(laboratorio: ILaboratorio): void {

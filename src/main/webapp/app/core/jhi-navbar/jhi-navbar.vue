@@ -44,11 +44,11 @@
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4>Semilleros</h4>
           </b-nav-item>
-          <b-nav-item :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labGranja.id } }" v-if="hasLabGranja && !authenticated"
+          <b-nav-item :to="{ name: 'laboratorio_info_granja_public', params: { laboratorioId: labGranja.id } }" v-if="hasLabGranja && !authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4>Granja</h4>
           </b-nav-item>
-          <b-nav-item :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labMuseo.id } }" v-if="hasLabMuseo && !authenticated"
+          <b-nav-item :to="{ name: 'laboratorio_info_museo_public', params: { laboratorioId: labMuseo.id } }" v-if="hasLabMuseo && !authenticated"
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4>Museo</h4>
           </b-nav-item>
@@ -56,6 +56,10 @@
             class="nav-item-ingresar d-flex justify-content-center align-items-center mobile">
             <h4>Semilleros</h4>
           </b-nav-item>-->
+          <b-nav-item v-if="!authenticated" href="https://www.usco.edu.co/es/" target="_blank"
+            class="nav-item-ingresar d-flex justify-content-center align-items-center">
+            <h4>Usco</h4>
+          </b-nav-item>
           <b-nav-item v-if="!authenticated" href="https://www.usco.edu.co/es/sistemas-de-consultas-academicas/" target="_blank"
             class="nav-item-ingresar d-flex justify-content-center align-items-center">
             <h4>Consultas Academicas</h4>
@@ -201,19 +205,29 @@
       </div>
       <div class="col-sm-auto opcion" v-if="hasLabGranja && !authenticated">
         <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
-        <router-link :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labGranja.id } }">
+        <router-link :to="{ name: 'laboratorio_info_granja_public', params: { laboratorioId: labGranja.id } }" replace>
           <button class="btn btn-opcion d-flex justify-content-center">
             Granja
           </button>
         </router-link>
+        <!--<a :href="'/faultad-ingenieria/laboratorio-info/' + labGranja.id">
+          <button class="btn btn-opcion d-flex justify-content-center">
+            Granja
+          </button>
+        </a>-->
       </div>
       <div class="col-sm-auto opcion" v-if="hasLabMuseo && !authenticated">
         <!--:class="{ 'router-link-active': pathActive('semillero') }"-->
-        <router-link :to="{ name: 'laboratorio_info_public', params: { laboratorioId: labMuseo.id } }">
+        <router-link :to="{ name: 'laboratorio_info_museo_public', params: { laboratorioId: labMuseo.id } }" replace>
           <button class="btn btn-opcion d-flex justify-content-center">
             Museo
           </button>
         </router-link>
+        <!--<a :href="'/faultad-ingenieria/laboratorio-info/' + labMuseo.id">
+          <button class="btn btn-opcion d-flex justify-content-center">
+            Museo
+          </button>
+        </a>-->
       </div>
     </div>
   </div>

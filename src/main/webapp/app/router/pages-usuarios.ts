@@ -161,6 +161,7 @@ export default {
       name: 'laboratorios_lista',
       component: LaboratoriosLista,
       meta: { authorities: [Authority.DECANO, Authority.JEFE_PROGRAMA, Authority.PROFESOR] },
+      alias: '/laboratorios',
     },
     {
       path: 'laboratorios-formulario',
