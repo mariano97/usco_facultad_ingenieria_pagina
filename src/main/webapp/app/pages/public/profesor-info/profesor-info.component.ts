@@ -38,6 +38,7 @@ export default class ProfesorInfo extends Vue {
     profesorDTO: {},
   };
 
+  public titulosProfesor: ITituloAcademicoProfesor[] = [];
   public titulosAcademicosProfesorLista: ITituloAcademicoProfesor[][] = [];
   public cursosMateriasProfesorLista: ICursoMateria[][] = [];
 
@@ -72,6 +73,7 @@ export default class ProfesorInfo extends Vue {
       .findAllByProfesorId(this.$store.getters.authenticated, profesorId)
       .then(res => {
         res.sort((a, b) => (a.yearTitulo > b.yearTitulo ? -1 : 1));
+        this.titulosProfesor = res;
         this.agruparTitulosAcademicos(res);
       })
       .catch(err => {
