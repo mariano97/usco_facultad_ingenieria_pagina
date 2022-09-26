@@ -48,12 +48,20 @@
                 <h2 class="texto m-0">{{ usuarioProfesor.profesorDTO.tablaElementoCatalogo.nombre }}</h2>
               </div>
             </div>
-            <div class="row mx-0 container_data_info" v-if="titulosProfesor.length > 0 && titulosProfesor[0].tablaElementoCatalogo">
+            <!---<div class="row mx-0 container_data_info" v-if="titulosProfesor.length > 0 && titulosProfesor[0].tablaElementoCatalogo">
               <div class="col-sm-auto px-0">
                 <img alt="aimgen_email" src="/content/images/iconos/id-card-red.png" />
               </div>
               <div class="col texto_info">
                 <h2 class="texto m-0">{{ 'Titulo: ' + titulosProfesor[0].tablaElementoCatalogo.nombre }}</h2>
+              </div>
+            </div>-->
+            <div class="row mx-0 container_data_info" v-if="usuarioProfesor.profesorDTO.tituloAcademico">
+              <div class="col-sm-auto px-0">
+                <img alt="aimgen_email" src="/content/images/iconos/id-card-red.png" />
+              </div>
+              <div class="col texto_info">
+                <h2 class="texto m-0">{{ 'Titulo: ' + usuarioProfesor.profesorDTO.tituloAcademico }}</h2>
               </div>
             </div>
             <div class="row mx-0 container_data_info" v-if="usuarioProfesor.profesorDTO.oficina">

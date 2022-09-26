@@ -43,6 +43,10 @@ public interface CursoMateriaService {
 
     Flux<CursoMateriaDTO> findAllByProfesorIdRelation(Long profesorId);
 
+    Flux<CursoMateriaDTO> findAllByProgramaIdRelation(Pageable pageable, Long programaId);
+
+    Mono<Long> countWithProgramaId(Long programaId);
+
     /**
      * Get all the cursoMaterias with eager load of many-to-many relationships.
      *

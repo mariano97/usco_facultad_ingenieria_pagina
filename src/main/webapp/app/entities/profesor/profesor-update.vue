@@ -145,6 +145,23 @@
           <div class="form-group">
             <label
               class="form-control-label"
+              v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tituloAcademico')"
+              for="profesor-tituloAcademico"
+              >Titulo Academico</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="tituloAcademico"
+              id="profesor-tituloAcademico"
+              data-cy="tituloAcademico"
+              :class="{ valid: !$v.profesor.tituloAcademico.$invalid, invalid: $v.profesor.tituloAcademico.$invalid }"
+              v-model="$v.profesor.tituloAcademico.$model"
+            />
+          </div>
+          <div class="form-group">
+            <label
+              class="form-control-label"
               v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')"
               for="profesor-tablaElementoCatalogo"
               >Tabla Elemento Catalogo</label

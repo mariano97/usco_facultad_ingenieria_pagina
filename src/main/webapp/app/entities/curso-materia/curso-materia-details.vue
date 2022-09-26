@@ -35,6 +35,15 @@
               >
             </div>
           </dd>
+          <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.cursoMateria.programa')">Programa</span>
+          </dt>
+          <dd>
+            <span v-for="(programa, i) in cursoMateria.programas" :key="programa.id"
+              >{{ i > 0 ? ', ' : '' }}
+              <router-link :to="{ name: 'ProgramaView', params: { programaId: programa.id } }">{{ programa.nombre }}</router-link>
+            </span>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>

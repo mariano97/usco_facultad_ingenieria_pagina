@@ -115,6 +115,32 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
         return db.sql(select).map(this::process);
     }
 
+    RowsFetchSpec<Programa> createQueryToCursoMateriaManyToMany(Pageable pageable, Condition whereClause) {
+        List<Expression> columns = ProgramaSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(nivelFormacionTable, "nivelFormacion"));
+        columns.addAll(TablaElementoCatalogoSqlHelper.getColumns(tipoFormacionTable, "tipoFormacion"));
+        columns.addAll(FacultadSqlHelper.getColumns(facultadTable, "facultad"));
+        SelectFromAndJoinCondition selectFrom = Select
+            .builder()
+            .select(columns)
+            .from(entityTable)
+            .leftOuterJoin(nivelFormacionTable)
+            .on(Column.create("nivel_formacion_id", entityTable))
+            .equals(Column.create("id", nivelFormacionTable))
+            .leftOuterJoin(tipoFormacionTable)
+            .on(Column.create("tipo_formacion_id", entityTable))
+            .equals(Column.create("id", tipoFormacionTable))
+            .leftOuterJoin(facultadTable)
+            .on(Column.create("facultad_id", entityTable))
+            .equals(Column.create("id", facultadTable))
+            .leftOuterJoin(EntityRelationshipManager.programaCursoMateriaRetionManyToMany)
+            .on(Column.create("id", entityTable))
+            .equals(Column.create("programa_id", EntityRelationshipManager.programaCursoMateriaRetionManyToMany));
+        // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
+        String select = entityManager.createSelect(selectFrom, Programa.class, pageable, whereClause);
+        return db.sql(select).map(this::process);
+    }
+
     @Override
     public Flux<Programa> findAll() {
         return findAllBy(null);
@@ -129,6 +155,14 @@ class ProgramaRepositoryInternalImpl extends SimpleR2dbcRepository<Programa, Lon
     @Override
     public Mono<Programa> findOneWithEagerRelationships(Long id) {
         return findById(id);
+    }
+
+    @Override
+    public Flux<Programa> findAllByCursoMateriaId(Long cursoMateriaId) {
+        Comparison whereClause = Conditions.isEqual(
+            EntityRelationshipManager.programaCursoMateriaRetionManyToMany.column("curso_materia_id"),
+            Conditions.just(cursoMateriaId.toString()));
+        return createQueryToCursoMateriaManyToMany(null, whereClause).all();
     }
 
     @Override

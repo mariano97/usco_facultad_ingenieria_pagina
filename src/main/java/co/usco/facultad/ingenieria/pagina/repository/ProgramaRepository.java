@@ -93,6 +93,8 @@ interface ProgramaRepositoryInternal {
 
     Mono<Programa> findOneWithEagerRelationships(Long id);
 
+    Flux<Programa> findAllByCursoMateriaId(Long cursoMateriaId);
+
     Flux<Programa> findAllWithEagerRelationships();
 
     Flux<Programa> findAllWithEagerRelationships(Pageable page);

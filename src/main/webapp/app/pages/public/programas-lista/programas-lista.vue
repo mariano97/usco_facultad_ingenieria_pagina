@@ -16,7 +16,7 @@
             name="namePrograma"
             placeholder="Eg. Ingenieria"
             v-model="formNamePrograma"
-            @change="filtrarProgramas"
+            @keyup="filtrarProgramas"
           />
         </div>
         <div class="col-lg-4 col-sm-auto form-group">

@@ -128,7 +128,8 @@
       "tipoFormacion": "Tipo Formacion",
       "facultad": "Facultad",
       "sede": "Sede",
-      "profesor": "Profesor"
+      "profesor": "Profesor",
+      "cursoMateria": "Curso Materia"
     }
   }
 }

@@ -89,6 +89,12 @@ public class ProgramaServiceImpl implements ProgramaService {
         return findByCodigoSnies(codigoSnies).map(ProgramaDTO::getNombre);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<ProgramaDTO> findAllByCursoMateriaId(Long cursoMateriaId) {
+        return programaRepository.findAllByCursoMateriaId(cursoMateriaId).map(programaMapper::toDto);
+    }
+
     public Flux<ProgramaDTO> findAllWithEagerRelationships(Pageable pageable) {
         return programaRepository.findAllWithEagerRelationships(pageable).map(programaMapper::toDto);
     }

@@ -308,6 +308,7 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
+                user.setPasswordAsignada(false);
                 return user;
             })
             .flatMap(this::saveUser)

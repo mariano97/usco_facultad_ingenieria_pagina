@@ -174,6 +174,13 @@
                 </div>
               </div>
               <div class="col form-group">
+                <label class="form-control-label" for="tituloAcademico">
+                  Titulo Academico
+                </label>
+                <input type="text" id="tituloAcademico" name="tituloAcademico" class="form-control" placeholder="Eg. Ingeniero ..."
+                  v-model="$v.profesor.tituloAcademico.$model" :disabled="checkHabilitacionCampos()"/>
+              </div>
+              <div class="col form-group">
                 <label class="form-control-label campo_requerido" for="tablaElementoCatalogo"
                   v-text="$t('profesor.formulario.labels.tipoProfesor')"></label>
                 <select class="form-control" id="tablaElementoCatalogo" data-cy="tablaElementoCatalogo"

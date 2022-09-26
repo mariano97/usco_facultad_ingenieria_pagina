@@ -14,7 +14,7 @@
       </div>
     </section>
     <section class="tabla-resultados">
-      <div class="">
+      <div class="tabla_container">
         <table class="table">
           <thead class="thead-dark">
             <tr>

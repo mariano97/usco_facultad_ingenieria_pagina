@@ -115,6 +115,7 @@ class CursoMateriaResourceIT {
 
     public static void deleteEntities(EntityManager em) {
         try {
+            em.deleteAll("rel_curso_materia__programa").block();
             em.deleteAll(CursoMateria.class).block();
         } catch (Exception e) {
             // It can fail, if other entities are still referring this - it will be removed later.

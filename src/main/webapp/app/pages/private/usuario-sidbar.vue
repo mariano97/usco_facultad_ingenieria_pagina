@@ -182,7 +182,7 @@
         </div>
       </section>
     </div>
-    <div class="col" :class="{ 'sidbar-only-active': pathActive('ingreso/inicio') }">
+    <div class="col contenido_paginas" :class="{ 'sidbar-only-active': pathActive('ingreso/inicio') }">
       <router-view></router-view>
     </div>
   </div>

@@ -33,6 +33,10 @@
     {
       "fieldName": "urlFotoProfesor",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "tituloAcademico",
+      "fieldType": "String"
     }
   ],
   "jpaMetamodelFiltering": false,

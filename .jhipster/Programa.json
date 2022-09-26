@@ -131,6 +131,13 @@
       "relationshipName": "profesor",
       "relationshipType": "many-to-many",
       "relationshipValidateRules": []
+    },
+    {
+      "otherEntityName": "cursoMateria",
+      "otherEntityRelationshipName": "programa",
+      "ownerSide": false,
+      "relationshipName": "cursoMateria",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

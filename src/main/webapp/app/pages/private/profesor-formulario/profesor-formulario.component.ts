@@ -69,6 +69,7 @@ const validations: any = {
     oficina: {
       maxLength: maxLength(255),
     },
+    tituloAcademico: {},
   },
   tituloAcademicoProfesor: {
     nombreTitulo: {
@@ -206,8 +207,13 @@ export default class ProfesorFormulario extends Vue {
   }
 
   private consultarCursosMaterias(): void {
+    const paginacionQuery = {
+      page: 0,
+      size: 100000,
+      sort: ['nombre,asc'],
+    };
     this.cursoMateriaService()
-      .retrieve()
+      .retrieve(paginacionQuery)
       .then(res => {
         this.listaCursosMaterias = res.data;
       });
@@ -383,6 +389,7 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          this.consultarCursosMateriaProfesor(this.profesor.id);
           this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('userManagement.updated', { param: res.adminUserDTO.email });
@@ -413,6 +420,7 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          this.consultarCursosMateriaProfesor(this.profesor.id);
           if (this.file !== null) {
             this.uploadFileToStorage(
               this.file.type,

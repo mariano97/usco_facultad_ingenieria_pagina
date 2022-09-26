@@ -37,6 +37,14 @@
       "ownerSide": false,
       "relationshipName": "profesor",
       "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "programa",
+      "otherEntityRelationshipName": "cursoMateria",
+      "ownerSide": true,
+      "relationshipName": "programa",
+      "relationshipType": "many-to-many"
     }
   ],
   "service": "serviceImpl"

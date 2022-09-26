@@ -119,4 +119,11 @@
   .sidbar-only-active {
     display: none !important;
   }
+  .contenido_paginas {
+    div {
+      .tabla_container {
+        overflow-x: auto;
+      }
+    }
+  }
 }

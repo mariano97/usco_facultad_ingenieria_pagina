@@ -25,7 +25,10 @@ public class RedesPrograma implements Serializable {
     private String urlRedSocial;
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors", "cursoMaterias" },
+        allowSetters = true
+    )
     private Programa programa;
 
     @Transient

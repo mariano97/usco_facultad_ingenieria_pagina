@@ -35,6 +35,7 @@ const validations: any = {
       numeric,
     },
     urlFotoProfesor: {},
+    tituloAcademico: {},
     tablaElementoCatalogo: {
       required,
     },

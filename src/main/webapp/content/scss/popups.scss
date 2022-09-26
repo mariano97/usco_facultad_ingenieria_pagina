@@ -80,7 +80,8 @@
 #modalPopupAgregarRedSocial,
 #modalPopupAgregarSede,
 #modalPopupAgregarProfesores,
-#modalPopupAgregarEscalafon {
+#modalPopupAgregarEscalafon,
+#modalPopupAgregarPrograma {
   @media (min-width: 992px) {
     .modal-dialog {
       max-width: 80vw !important;
@@ -124,6 +125,12 @@
       color: $color-red;
       font-size: 20px;
       font-weight: 500;
+    }
+  }
+  .container_item_popup {
+    h3 {
+      color: $color-dark;
+      font-size: 24px;
     }
   }
   .respuesta_vacia{

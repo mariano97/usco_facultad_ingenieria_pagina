@@ -30,6 +30,8 @@ public class ProfesorDTO implements Serializable {
 
     private String urlFotoProfesor;
 
+    private String tituloAcademico;
+
     private TablaElementoCatalogoDTO tablaElementoCatalogo;
 
     private FacultadDTO facultad;
@@ -100,6 +102,14 @@ public class ProfesorDTO implements Serializable {
         this.urlFotoProfesor = urlFotoProfesor;
     }
 
+    public String getTituloAcademico() {
+        return tituloAcademico;
+    }
+
+    public void setTituloAcademico(String tituloAcademico) {
+        this.tituloAcademico = tituloAcademico;
+    }
+
     public TablaElementoCatalogoDTO getTablaElementoCatalogo() {
         return tablaElementoCatalogo;
     }
@@ -157,6 +167,7 @@ public class ProfesorDTO implements Serializable {
             ", oficina='" + getOficina() + "'" +
             ", userId=" + getUserId() +
             ", urlFotoProfesor='" + getUrlFotoProfesor() + "'" +
+            ", tituloAcademico='" + getTituloAcademico() + "'" +
             ", tablaElementoCatalogo=" + getTablaElementoCatalogo() +
             ", facultad=" + getFacultad() +
             ", cursoMaterias=" + getCursoMaterias() +

@@ -215,6 +215,31 @@ public class CursoMateriaResource {
                 .body(cursoMateriaDTOS));
     }
 
+    @GetMapping(value = {
+        "/curso-materias/by-programa-id/{id}",
+        "/open/curso-materias/by-programa-id/{id}"
+    })
+    public Mono<ResponseEntity<List<CursoMateriaDTO>>> getAllByProgramaId(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        ServerHttpRequest request,
+        @PathVariable("id") Long programaid
+    ) {
+        return cursoMateriaService.countWithProgramaId(programaid)
+            .zipWith(cursoMateriaService.findAllByProgramaIdRelation(pageable, programaid).collectList())
+            .map(countWithEntities ->
+                ResponseEntity
+                    .ok()
+                    .headers(
+                        PaginationUtil.generatePaginationHttpHeaders(
+                            UriComponentsBuilder.fromHttpRequest(request),
+                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                        )
+                    )
+                    .body(countWithEntities.getT2())
+            );
+        // return cursoMateriaService.findAllByProgramaIdRelation()
+    }
+
     /**
      * {@code GET  /curso-materias/:id} : get the "id" cursoMateria.
      *

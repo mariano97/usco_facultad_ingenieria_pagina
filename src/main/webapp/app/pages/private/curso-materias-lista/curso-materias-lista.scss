@@ -30,6 +30,34 @@
       }
     }
   }
+  section.filtro_materias {
+    .filtros {
+      label {
+        color: $color-dark;
+        font-size: 21px;
+      }
+      select {
+        border: none;
+        border-color: $color-red;
+        border-radius: 0px;
+        box-shadow: $color-box-shadow;
+      }
+      button {
+        &.btn_limpiar {
+          width: 250px;
+          height: 50px;
+          border-radius: 16px;
+          font-size: 20px;
+          background: $color-red;
+          color: $color-amarillo;
+          &:hover {
+            background: $primary-color;
+            color: $color-gris-light;
+          }
+        }
+      }
+    }
+  }
   section.tabla-resultados {
     margin-top: 2.5rem;
 

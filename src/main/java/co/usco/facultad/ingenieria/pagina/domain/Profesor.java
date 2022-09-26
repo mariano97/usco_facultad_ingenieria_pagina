@@ -46,6 +46,9 @@ public class Profesor implements Serializable {
     @Column("url_foto_profesor")
     private String urlFotoProfesor;
 
+    @Column("titulo_academico")
+    private String tituloAcademico;
+
     @Transient
     @JsonIgnoreProperties(value = { "tablaTiposCatalogo" }, allowSetters = true)
     private TablaElementoCatalogo tablaElementoCatalogo;
@@ -54,11 +57,14 @@ public class Profesor implements Serializable {
     private Facultad facultad;
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors", "cursoMaterias" },
+        allowSetters = true
+    )
     private Set<Programa> programas = new HashSet<>();
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelAcademico", "profesors" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "nivelAcademico", "profesors", "programas" }, allowSetters = true)
     private Set<CursoMateria> cursoMaterias = new HashSet<>();
 
     @Column("tabla_elemento_catalogo_id")
@@ -171,6 +177,19 @@ public class Profesor implements Serializable {
 
     public void setUrlFotoProfesor(String urlFotoProfesor) {
         this.urlFotoProfesor = urlFotoProfesor;
+    }
+
+    public String getTituloAcademico() {
+        return this.tituloAcademico;
+    }
+
+    public Profesor tituloAcademico(String tituloAcademico) {
+        this.setTituloAcademico(tituloAcademico);
+        return this;
+    }
+
+    public void setTituloAcademico(String tituloAcademico) {
+        this.tituloAcademico = tituloAcademico;
     }
 
     public TablaElementoCatalogo getTablaElementoCatalogo() {
@@ -304,6 +323,7 @@ public class Profesor implements Serializable {
             ", oficina='" + getOficina() + "'" +
             ", userId=" + getUserId() +
             ", urlFotoProfesor='" + getUrlFotoProfesor() + "'" +
+            ", tituloAcademico='" + getTituloAcademico() + "'" +
             "}";
     }
 }

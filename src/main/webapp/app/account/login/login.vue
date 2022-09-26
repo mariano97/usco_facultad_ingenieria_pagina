@@ -3,7 +3,8 @@
     <div class="row mx-0">
       <div class="col container-formulario">
         <div class="d-flex justify-content-center align-items-center container-title">
-          <h2 class="" v-text="$t('login.title')">Iniciar Sesión</h2>
+          <!--<h2 class="" v-text="$t('login.title')">Iniciar Sesión</h2>-->
+          <h2 class="">{{ titleIngresar }}</h2>
         </div>
         <div class="container-form-login">
           <form id="fomulario-login" name="formularioLogin" role="form" @submit.prevent="doLogin">

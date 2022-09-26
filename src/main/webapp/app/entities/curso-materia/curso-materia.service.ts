@@ -62,6 +62,20 @@ export default class CursoMateriaService {
     });
   }
 
+  public retriveWithPrograma(isAutenticate: boolean, programaId: number, paginationQuery?: any): Promise<any> {
+    const url = isAutenticate ? baseApiUrl : openBaseApiUrl;
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(`${url}/by-programa-id/${programaId}?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

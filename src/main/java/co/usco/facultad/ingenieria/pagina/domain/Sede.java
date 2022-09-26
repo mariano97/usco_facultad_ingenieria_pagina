@@ -59,7 +59,10 @@ public class Sede implements Serializable {
     private String codigoIndicativo;
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors", "cursoMaterias" },
+        allowSetters = true
+    )
     private Set<Programa> programas = new HashSet<>();
 
     @Transient
