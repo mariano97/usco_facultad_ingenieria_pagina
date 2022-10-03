@@ -32,6 +32,11 @@ public interface CursoMateriaRepository extends ReactiveCrudRepository<CursoMate
     @Query("SELECT * FROM curso_materia entity WHERE entity.nivel_academico_id IS NULL")
     Flux<CursoMateria> findAllWhereNivelAcademicoIsNull();
 
+    @Query(
+        "SELECT entity.* FROM curso_materia entity JOIN rel_curso_materia__programa joinTable ON entity.id = joinTable.programa_id WHERE joinTable.programa_id = :id"
+    )
+    Flux<CursoMateria> findByPrograma(Long id);
+
     @Override
     <S extends CursoMateria> Mono<S> save(S entity);
 
@@ -43,6 +48,9 @@ public interface CursoMateriaRepository extends ReactiveCrudRepository<CursoMate
 
     @Override
     Mono<Void> deleteById(Long id);
+
+    @Query("DELETE FROM rel_profesor__curso_materia cursoMateria WHERE cursoMateria.curso_materia_id = :materiaId")
+    Mono<Void> deleteProfesorCursoMateriaByMateriaId(Long materiaId);
 }
 
 interface CursoMateriaRepositoryInternal {
@@ -53,8 +61,15 @@ interface CursoMateriaRepositoryInternal {
     Flux<CursoMateria> findAll();
 
     Mono<CursoMateria> findById(Long id);
-    // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
+    // this is not supported at the moment because of
+    // https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<CursoMateria> findAllBy(Pageable pageable, Criteria criteria);
+
+    Mono<Long> countWithProgramaId(Long programaId);
+
+    Flux<CursoMateria> findByAllByPrograma(Pageable pageable, Long programaId);
+
+    Flux<CursoMateria> findByAllByPrograma(Long programaId);
 
     Flux<CursoMateria> findAllByProfesorRelation(Long programaId);
 

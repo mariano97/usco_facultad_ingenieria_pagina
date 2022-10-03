@@ -133,7 +133,8 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
 
     private String generatePassword(String email) {
         RandomString randomString = new RandomString(8);
-        return email.toLowerCase().concat("_usco_ingenieria_").concat(randomString.nextString());
+        // return email.toLowerCase().concat("_usco_ingenieria_").concat(randomString.nextString());
+        return "".concat("usco_ingenieria_").concat(randomString.nextString());
     }
 
     private boolean existeUsuarioProfesorIntoList(List<UsuarioProfesorFullDTO> usuariosProfesoresFullDTOList, UsuarioProfesorFullDTO usuarioProfesorFullDTO) {
@@ -148,15 +149,6 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
         if (!existeUsuarioProfesorIntoList(usuariosProfesoresFullDTOList, usuarioProfesorFullDTO)) {
             usuariosProfesoresFullDTOList.add(usuarioProfesorFullDTO);
             resultado = true;
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("Dentro de metodo addUsuarioProfesorToList");
-            System.out.println(usuariosProfesoresFullDTOList.toString());
-            System.out.println(usuariosProfesoresFullDTOList.size());
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
         }
         return resultado;
     }

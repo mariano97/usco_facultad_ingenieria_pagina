@@ -64,6 +64,9 @@ class ProfesorResourceIT {
     private static final String DEFAULT_URL_FOTO_PROFESOR = "AAAAAAAAAA";
     private static final String UPDATED_URL_FOTO_PROFESOR = "BBBBBBBBBB";
 
+    private static final String DEFAULT_TITULO_ACADEMICO = "AAAAAAAAAA";
+    private static final String UPDATED_TITULO_ACADEMICO = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/profesors";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -104,7 +107,8 @@ class ProfesorResourceIT {
             .telefonoCelular(DEFAULT_TELEFONO_CELULAR)
             .oficina(DEFAULT_OFICINA)
             .userId(DEFAULT_USER_ID)
-            .urlFotoProfesor(DEFAULT_URL_FOTO_PROFESOR);
+            .urlFotoProfesor(DEFAULT_URL_FOTO_PROFESOR)
+            .tituloAcademico(DEFAULT_TITULO_ACADEMICO);
         // Add required entity
         TablaElementoCatalogo tablaElementoCatalogo;
         tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createEntity(em)).block();
@@ -130,7 +134,8 @@ class ProfesorResourceIT {
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
             .oficina(UPDATED_OFICINA)
             .userId(UPDATED_USER_ID)
-            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR);
+            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR)
+            .tituloAcademico(UPDATED_TITULO_ACADEMICO);
         // Add required entity
         TablaElementoCatalogo tablaElementoCatalogo;
         tablaElementoCatalogo = em.insert(TablaElementoCatalogoResourceIT.createUpdatedEntity(em)).block();
@@ -189,6 +194,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getOficina()).isEqualTo(DEFAULT_OFICINA);
         assertThat(testProfesor.getUserId()).isEqualTo(DEFAULT_USER_ID);
         assertThat(testProfesor.getUrlFotoProfesor()).isEqualTo(DEFAULT_URL_FOTO_PROFESOR);
+        assertThat(testProfesor.getTituloAcademico()).isEqualTo(DEFAULT_TITULO_ACADEMICO);
     }
 
     @Test
@@ -311,7 +317,9 @@ class ProfesorResourceIT {
             .jsonPath("$.[*].userId")
             .value(hasItem(DEFAULT_USER_ID.intValue()))
             .jsonPath("$.[*].urlFotoProfesor")
-            .value(hasItem(DEFAULT_URL_FOTO_PROFESOR));
+            .value(hasItem(DEFAULT_URL_FOTO_PROFESOR))
+            .jsonPath("$.[*].tituloAcademico")
+            .value(hasItem(DEFAULT_TITULO_ACADEMICO));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -363,7 +371,9 @@ class ProfesorResourceIT {
             .jsonPath("$.userId")
             .value(is(DEFAULT_USER_ID.intValue()))
             .jsonPath("$.urlFotoProfesor")
-            .value(is(DEFAULT_URL_FOTO_PROFESOR));
+            .value(is(DEFAULT_URL_FOTO_PROFESOR))
+            .jsonPath("$.tituloAcademico")
+            .value(is(DEFAULT_TITULO_ACADEMICO));
     }
 
     @Test
@@ -394,7 +404,8 @@ class ProfesorResourceIT {
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
             .oficina(UPDATED_OFICINA)
             .userId(UPDATED_USER_ID)
-            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR);
+            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR)
+            .tituloAcademico(UPDATED_TITULO_ACADEMICO);
         ProfesorDTO profesorDTO = profesorMapper.toDto(updatedProfesor);
 
         webTestClient
@@ -417,6 +428,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
         assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testProfesor.getUrlFotoProfesor()).isEqualTo(UPDATED_URL_FOTO_PROFESOR);
+        assertThat(testProfesor.getTituloAcademico()).isEqualTo(UPDATED_TITULO_ACADEMICO);
     }
 
     @Test
@@ -505,7 +517,8 @@ class ProfesorResourceIT {
             .perfil(UPDATED_PERFIL)
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
             .userId(UPDATED_USER_ID)
-            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR);
+            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR)
+            .tituloAcademico(UPDATED_TITULO_ACADEMICO);
 
         webTestClient
             .patch()
@@ -527,6 +540,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getOficina()).isEqualTo(DEFAULT_OFICINA);
         assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testProfesor.getUrlFotoProfesor()).isEqualTo(UPDATED_URL_FOTO_PROFESOR);
+        assertThat(testProfesor.getTituloAcademico()).isEqualTo(UPDATED_TITULO_ACADEMICO);
     }
 
     @Test
@@ -547,7 +561,8 @@ class ProfesorResourceIT {
             .telefonoCelular(UPDATED_TELEFONO_CELULAR)
             .oficina(UPDATED_OFICINA)
             .userId(UPDATED_USER_ID)
-            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR);
+            .urlFotoProfesor(UPDATED_URL_FOTO_PROFESOR)
+            .tituloAcademico(UPDATED_TITULO_ACADEMICO);
 
         webTestClient
             .patch()
@@ -569,6 +584,7 @@ class ProfesorResourceIT {
         assertThat(testProfesor.getOficina()).isEqualTo(UPDATED_OFICINA);
         assertThat(testProfesor.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testProfesor.getUrlFotoProfesor()).isEqualTo(UPDATED_URL_FOTO_PROFESOR);
+        assertThat(testProfesor.getTituloAcademico()).isEqualTo(UPDATED_TITULO_ACADEMICO);
     }
 
     @Test

@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,13 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     private final LaboratorioService laboratorioService;
 
-    public GoogleCloudStorageServiceImpl(ArchivosProgramaService archivosProgramaService, ProfesorService profesorService, NoticiaService noticiaService, EventoService eventoService, SemilleroService semilleroService, LaboratorioService laboratorioService) {
+    public GoogleCloudStorageServiceImpl(
+        @Lazy ArchivosProgramaService archivosProgramaService,
+        @Lazy ProfesorService profesorService,
+        @Lazy NoticiaService noticiaService,
+        @Lazy EventoService eventoService,
+        @Lazy SemilleroService semilleroService,
+        @Lazy LaboratorioService laboratorioService) {
         this.archivosProgramaService = archivosProgramaService;
         this.profesorService = profesorService;
         this.noticiaService = noticiaService;
@@ -236,11 +243,16 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     @Override
     public Mono<Boolean> deleteFileOfStorage(String fileName) {
+        log.debug("");
+        log.debug("");
+        log.debug("----------------------------> dentro de deleteFileOfStorage()");
+        log.debug("fileName: {}", fileName);
         return Mono.just(storage).map(googleStorage -> {
             BlobId blobId = BlobId.of(bucketName, fileName);
             return blobId;
         }).flatMap(blobId -> {
             boolean deleteStorageResult = storage.delete(blobId);
+            log.debug("<<<<<<<<<<Result delete: {}>>>>>>", deleteStorageResult);
             return Mono.just(deleteStorageResult);
         });
     }

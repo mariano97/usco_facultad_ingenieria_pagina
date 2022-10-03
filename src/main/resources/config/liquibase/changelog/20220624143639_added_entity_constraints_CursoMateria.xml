@@ -13,5 +13,17 @@
                                  constraintName="fk_curso_materia__nivel_academico_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tabla_elemento_catalogo"/>
+
+        <addForeignKeyConstraint baseColumnNames="curso_materia_id"
+                                 baseTableName="rel_curso_materia__programa"
+                                 constraintName="fk_rel_curso_materia__programa__curso_materia_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="curso_materia"/>
+
+        <addForeignKeyConstraint baseColumnNames="programa_id"
+                                 baseTableName="rel_curso_materia__programa"
+                                 constraintName="fk_rel_curso_materia__programa__programa_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="programa"/>
     </changeSet>
 </databaseChangeLog>

@@ -45,6 +45,8 @@ public interface ProgramaService {
 
     Mono<String> findNameProgramaByCodigoSnies(Long codigoSnies);
 
+    Flux<ProgramaDTO> findAllByCursoMateriaId(Long cursoMateriaId);
+
     /**
      * Get all the programas with eager load of many-to-many relationships.
      *

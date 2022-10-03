@@ -1,5 +1,6 @@
 import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.model';
 import { IProfesor } from '@/shared/model/profesor.model';
+import { IPrograma } from '@/shared/model/programa.model';
 
 export interface ICursoMateria {
   id?: number;
@@ -8,6 +9,7 @@ export interface ICursoMateria {
   semestreImpartida?: number;
   nivelAcademico?: ITablaElementoCatalogo;
   profesors?: IProfesor[] | null;
+  programas?: IPrograma[] | null;
 }
 
 export class CursoMateria implements ICursoMateria {
@@ -17,6 +19,7 @@ export class CursoMateria implements ICursoMateria {
     public numeroCreditos?: number,
     public semestreImpartida?: number,
     public nivelAcademico?: ITablaElementoCatalogo,
-    public profesors?: IProfesor[] | null
+    public profesors?: IProfesor[] | null,
+    public programas?: IPrograma[] | null
   ) {}
 }

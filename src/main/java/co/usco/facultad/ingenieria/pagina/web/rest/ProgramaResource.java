@@ -212,6 +212,16 @@ public class ProgramaResource {
                 .body(namePrograma));
     }
 
+    @GetMapping(value = {
+        "/programas/find-by-curso-materia-id/{id}",
+        "/open/programas/find-by-curso-materia-id/{id}"
+    })
+    public Mono<ResponseEntity<List<ProgramaDTO>>> getAllByCursoMateria(@PathVariable("id") Long cursoMateriaId) {
+        return programaService.findAllByCursoMateriaId(cursoMateriaId).collectList()
+            .map(programaDTOS ->
+                ResponseEntity.ok().body(programaDTOS));
+    }
+
     /**
      * {@code GET  /programas/:id} : get the "id" programa.
      *

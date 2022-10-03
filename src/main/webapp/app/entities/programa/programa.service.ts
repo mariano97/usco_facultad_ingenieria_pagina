@@ -34,6 +34,20 @@ export default class ProgramaService {
     });
   }
 
+  public findAllByCursoMateria(isAutenticate: boolean, cursoMateriaId: number): Promise<IPrograma[]> {
+    const url = isAutenticate ? baseApiUrl : baseOpenApiUrl;
+    return new Promise<IPrograma[]>((resolve, reject) => {
+      axios
+        .get(`${url}/find-by-curso-materia-id/${cursoMateriaId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    })
+  }
+
   public findAll(isAutenticate: boolean): Promise<IPrograma[]> {
     const url = isAutenticate ? baseApiUrl : baseOpenApiUrl;
     return new Promise<IPrograma[]>((resolve, reject) => {

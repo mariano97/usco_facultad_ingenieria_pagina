@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 import co.usco.facultad.ingenieria.pagina.domain.ArchivosPrograma;
 import co.usco.facultad.ingenieria.pagina.repository.ArchivosProgramaRepository;
 import co.usco.facultad.ingenieria.pagina.service.ArchivosProgramaService;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.ArchivosProgramaDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.ArchivosProgramaMapper;
 import org.slf4j.Logger;
@@ -22,14 +23,17 @@ public class ArchivosProgramaServiceImpl implements ArchivosProgramaService {
 
     private final Logger log = LoggerFactory.getLogger(ArchivosProgramaServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
     private final ArchivosProgramaRepository archivosProgramaRepository;
 
     private final ArchivosProgramaMapper archivosProgramaMapper;
 
     public ArchivosProgramaServiceImpl(
-        ArchivosProgramaRepository archivosProgramaRepository,
+        GoogleCloudStorageService googleCloudStorageService, ArchivosProgramaRepository archivosProgramaRepository,
         ArchivosProgramaMapper archivosProgramaMapper
     ) {
+        this.googleCloudStorageService = googleCloudStorageService;
         this.archivosProgramaRepository = archivosProgramaRepository;
         this.archivosProgramaMapper = archivosProgramaMapper;
     }
@@ -93,5 +97,22 @@ public class ArchivosProgramaServiceImpl implements ArchivosProgramaService {
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete ArchivosPrograma : {}", id);
         return archivosProgramaRepository.deleteById(id);
+    }
+
+    @Override
+    public Mono<Void> deleteAllByProgramaId(Long programaId) {
+        return findAllByPrograma(programaId)
+            .flatMap(archivosProgramaDTO -> {
+                if (archivosProgramaDTO.getUrlName() != null && !archivosProgramaDTO.getUrlName().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(archivosProgramaDTO.getUrlName())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", archivosProgramaDTO.getUrlName()));
+                }
+                return delete(archivosProgramaDTO.getId());
+            })
+            .then();
+        /*return findAllByPrograma(programaId)
+            .flatMap(archivosProgramaDTO -> delete(archivosProgramaDTO.getId()))
+            .then();*/
     }
 }

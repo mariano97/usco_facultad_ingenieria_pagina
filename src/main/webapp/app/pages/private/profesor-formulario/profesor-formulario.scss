@@ -20,6 +20,13 @@
     }
   }
   section.profesor_formulario {
+    @media (max-width: 991px) {
+      .col-3,
+      .col-5 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+      }
+    }
     .container_upload_image {
       background: $color-gris-light;
       height: 350px;

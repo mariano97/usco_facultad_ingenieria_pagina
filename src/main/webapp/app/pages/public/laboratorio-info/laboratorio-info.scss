@@ -53,5 +53,21 @@
           white-space: pre-line;
         }
       }
+      .links {
+        margin-top: 2rem;
+
+        h3 {
+          color: $color-dark;
+          font-size: 22px;
+        }
+
+        a {
+          color: $color-gris;
+          font-size: 20px;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
     }
   }

@@ -2,6 +2,7 @@ import { ITablaElementoCatalogo } from '@/shared/model/tabla-elemento-catalogo.m
 import { IFacultad } from '@/shared/model/facultad.model';
 import { ISede } from '@/shared/model/sede.model';
 import { IProfesor } from '@/shared/model/profesor.model';
+import { ICursoMateria } from '@/shared/model/curso-materia.model';
 
 export interface IPrograma {
   id?: number;
@@ -28,6 +29,7 @@ export interface IPrograma {
   facultad?: IFacultad;
   sedes?: ISede[] | null;
   profesors?: IProfesor[] | null;
+  cursoMaterias?: ICursoMateria[] | null;
 }
 
 export class Programa implements IPrograma {
@@ -55,7 +57,8 @@ export class Programa implements IPrograma {
     public tipoFormacion?: ITablaElementoCatalogo,
     public facultad?: IFacultad,
     public sedes?: ISede[] | null,
-    public profesors?: IProfesor[] | null
+    public profesors?: IProfesor[] | null,
+    public cursoMaterias?: ICursoMateria[] | null
   ) {
     this.estado = this.estado ?? false;
   }

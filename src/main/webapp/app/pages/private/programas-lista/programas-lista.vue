@@ -15,7 +15,7 @@
       </div>
     </section>
     <section class="tabla-resultados">
-      <div class="">
+      <div class="tabla_container">
         <table class="table" aria-describedby="programas">
           <thead class="thead-dark">
             <tr>

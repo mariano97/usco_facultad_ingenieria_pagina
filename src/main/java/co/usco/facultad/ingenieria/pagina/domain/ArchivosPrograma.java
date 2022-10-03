@@ -47,7 +47,10 @@ public class ArchivosPrograma implements Serializable {
     private String nombreArchivo;
 
     @Transient
-    @JsonIgnoreProperties(value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "nivelFormacion", "tipoFormacion", "facultad", "sedes", "profesors", "cursoMaterias" },
+        allowSetters = true
+    )
     private Programa programa;
 
     @Transient

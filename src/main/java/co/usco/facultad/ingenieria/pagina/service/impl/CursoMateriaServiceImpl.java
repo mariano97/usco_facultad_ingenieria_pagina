@@ -3,6 +3,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 import co.usco.facultad.ingenieria.pagina.domain.CursoMateria;
 import co.usco.facultad.ingenieria.pagina.repository.CursoMateriaRepository;
 import co.usco.facultad.ingenieria.pagina.service.CursoMateriaService;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.dto.CursoMateriaDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.CursoMateriaMapper;
 import org.slf4j.Logger;
@@ -71,6 +72,18 @@ public class CursoMateriaServiceImpl implements CursoMateriaService {
         return cursoMateriaRepository.findAllByProfesorRelation(profesorId).map(cursoMateriaMapper::toDto);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Flux<CursoMateriaDTO> findAllByProgramaIdRelation(Pageable pageable, Long programaId) {
+        return cursoMateriaRepository.findByAllByPrograma(pageable, programaId).map(cursoMateriaMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Mono<Long> countWithProgramaId(Long programaId) {
+        return cursoMateriaRepository.countWithProgramaId(programaId);
+    }
+
     public Flux<CursoMateriaDTO> findAllWithEagerRelationships(Pageable pageable) {
         return cursoMateriaRepository.findAllWithEagerRelationships(pageable).map(cursoMateriaMapper::toDto);
     }
@@ -89,6 +102,9 @@ public class CursoMateriaServiceImpl implements CursoMateriaService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete CursoMateria : {}", id);
-        return cursoMateriaRepository.deleteById(id);
+        //return cursoMateriaRepository.deleteById(id);
+        return cursoMateriaRepository.deleteProfesorCursoMateriaByMateriaId(id).then()
+            .then(cursoMateriaRepository.deleteById(id));
+
     }
 }

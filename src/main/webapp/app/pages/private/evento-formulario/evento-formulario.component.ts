@@ -166,6 +166,37 @@ export default class EventoFormulario extends Vue {
       });
   }
 
+  public eliminar(): void {
+    if (this.evento.id) {
+      this.eventoService()
+        .delete(this.evento.id)
+        .then(res => {
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.evento.deleted', { param: this.evento.titulo });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.$router.go(-1);
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    } else {
+      const message = 'No se hallo datos a eliminar';
+      this.$bvToast.toast(message.toString(), {
+        toaster: 'b-toaster-top-center',
+        title: 'Info',
+        variant: 'danger',
+        solid: true,
+        autoHideDelay: 5000,
+      });
+      this.$router.go(-1);
+    }
+  }
+
   public guardar(): void {
     this.isSaving = true;
     if (this.evento.id) {

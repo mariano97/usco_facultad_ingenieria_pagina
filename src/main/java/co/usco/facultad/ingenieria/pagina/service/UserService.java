@@ -232,6 +232,15 @@ public class UserService {
             .then();
     }
 
+    @Transactional
+    public Mono<Void> deleteUserById(Long id) {
+        return userRepository
+            .findById(id)
+            .flatMap(user -> userRepository.delete(user).thenReturn(user))
+            .doOnNext(user -> log.debug("Deleted User: {}", user))
+            .then();
+    }
+
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      *
@@ -299,6 +308,7 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
+                user.setPasswordAsignada(false);
                 return user;
             })
             .flatMap(this::saveUser)

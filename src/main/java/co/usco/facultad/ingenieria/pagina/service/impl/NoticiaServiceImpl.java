@@ -2,6 +2,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.domain.Noticia;
 import co.usco.facultad.ingenieria.pagina.repository.NoticiaRepository;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.NoticiaService;
 import co.usco.facultad.ingenieria.pagina.service.dto.NoticiaDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.NoticiaMapper;
@@ -24,11 +25,14 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     private final Logger log = LoggerFactory.getLogger(NoticiaServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
     private final NoticiaRepository noticiaRepository;
 
     private final NoticiaMapper noticiaMapper;
 
-    public NoticiaServiceImpl(NoticiaRepository noticiaRepository, NoticiaMapper noticiaMapper) {
+    public NoticiaServiceImpl(GoogleCloudStorageService googleCloudStorageService, NoticiaRepository noticiaRepository, NoticiaMapper noticiaMapper) {
+        this.googleCloudStorageService = googleCloudStorageService;
         this.noticiaRepository = noticiaRepository;
         this.noticiaMapper = noticiaMapper;
     }
@@ -90,6 +94,16 @@ public class NoticiaServiceImpl implements NoticiaService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Noticia : {}", id);
-        return noticiaRepository.deleteById(id);
+        // return noticiaRepository.deleteById(id);
+        return findOne(id)
+            .flatMap(noticiaDTO -> {
+                if (noticiaDTO.getUrlFoto() != null && !noticiaDTO.getUrlFoto().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(noticiaDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", noticiaDTO.getUrlFoto()));
+                }
+                return noticiaRepository.deleteById(id);
+            })
+            .then();
     }
 }

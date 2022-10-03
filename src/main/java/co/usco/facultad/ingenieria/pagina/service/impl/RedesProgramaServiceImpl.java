@@ -90,4 +90,11 @@ public class RedesProgramaServiceImpl implements RedesProgramaService {
         log.debug("Request to delete RedesPrograma : {}", id);
         return redesProgramaRepository.deleteById(id);
     }
+
+    @Override
+    public Mono<Void> deleteAllByProgramaId(Long programaId) {
+        return findAllByProgramaId(programaId)
+            .flatMap(redesProgramaDTO -> delete(redesProgramaDTO.getId()))
+            .then();
+    }
 }

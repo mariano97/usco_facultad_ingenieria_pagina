@@ -17,6 +17,14 @@ export default class Login extends Vue {
     rememberMe: true,
   };
 
+  public titleIngresar = 'Ingresar';
+
+  public mounted(): void {
+    if (this.$route.query.passChanged && this.$route.query.passChanged === '1') {
+      this.titleIngresar = 'Vuelve a ingresar';
+    }
+  }
+
   public doLogin(): void {
     axios
       .post('api/authenticate', this.userLoginAccount)
@@ -39,14 +47,15 @@ export default class Login extends Vue {
           .then(res => {
             if (res) {
               const account: IUser = this.accountService().userAccount;
-              /* if (!account.passwordAsignada) {*/
+              if (!account.passwordAsignada) {
                 const authoritiesString = this.accountService().userAuthorities as Array<string>;
                 this.redirectSegunAuthorities(authoritiesString);
-              /*} else {
+              } else {
                 this.$router.push({
                   name: 'ChangePassword',
+                  query: { passAsigned: '1' },
                 });
-              }*/
+              }
             }
           });
       })

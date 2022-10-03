@@ -5,7 +5,7 @@
       <div class="container-slider">
         <swiper :slides-per-view="1" :space-between="0" :loop="true" :pagination="true" :navigation="true" autoplay
           @swiper="onSwiper" @slideChange="onSlideChange">
-          <swiper-slide v-for="n in 7" :key="n" class="test" :class="{test_2: true}">
+          <swiper-slide v-for="n in imgArray.length" :key="n" class="test" :class="{test_2: true}">
             <img :src="getImageUrl(n)" class="img-fluid w-100 mx-auto" blank="true">
           </swiper-slide>
         </swiper>

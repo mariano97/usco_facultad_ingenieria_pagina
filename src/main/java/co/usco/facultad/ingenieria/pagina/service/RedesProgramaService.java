@@ -73,4 +73,6 @@ public interface RedesProgramaService {
      * @return a Mono to signal the deletion
      */
     Mono<Void> delete(Long id);
+
+    Mono<Void> deleteAllByProgramaId(Long programaId);
 }

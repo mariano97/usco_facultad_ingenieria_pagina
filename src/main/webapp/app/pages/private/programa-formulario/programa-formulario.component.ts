@@ -343,6 +343,37 @@ export default class ProgramaFormulario extends Vue {
     return maxTamano - (value ? value.trim().length : 0);
   }
 
+  public eliminar(): void {
+    if (this.programa.id) {
+      this.programaService()
+        .delete(this.programa.id)
+        .then(res => {
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.programa.deleted', { param: this.programa.id });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.$router.go(-1);
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    } else {
+      const message = 'No se hallo datos a eliminar';
+      this.$bvToast.toast(message.toString(), {
+        toaster: 'b-toaster-top-center',
+        title: 'Info',
+        variant: 'danger',
+        solid: true,
+        autoHideDelay: 5000,
+      });
+      this.$router.go(-1);
+    }
+  }
+
   public guardar(): void {
     this.isSaving = true;
     if (this.programa.id) {

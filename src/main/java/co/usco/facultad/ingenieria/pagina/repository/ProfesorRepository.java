@@ -54,6 +54,16 @@ public interface ProfesorRepository extends ReactiveCrudRepository<Profesor, Lon
 
     @Override
     Mono<Void> deleteById(Long id);
+
+    @Query(
+        "DELETE FROM rel_profesor__curso_materia cursoMateria WHERE cursoMateria.profesor_id = :profesorId"
+    )
+    Mono<Void> deleteProfesorCursoMateriaByProfesorId(Long profesorId);
+
+    @Query(
+        "DELETE FROM rel_programa__profesor programa WHERE programa.profesor_id = :profesorId"
+    )
+    Mono<Void> deleteProfesorProgramaByProfesorId(Long profesorId);
 }
 
 interface ProfesorRepositoryInternal {

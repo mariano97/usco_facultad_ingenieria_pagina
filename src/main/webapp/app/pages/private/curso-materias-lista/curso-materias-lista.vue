@@ -13,8 +13,43 @@
         </div>
       </div>
     </section>
+    <section class="filtro_materias">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="row mx-0 filtros">
+          <div class="col-sm-auto">
+            <label
+              class="form-control-label"
+              for="programasFacultad"
+            >
+              Programa
+            </label>
+            <select
+              class="form-control"
+              id="programasFacultad"
+              name="programasFacultad"
+              v-model="programaSeleccionadaId"
+              @change="changeProgramaSeleccionado"
+            >
+              <option v-bind:value="null" selected>Seleccione</option>
+              <option
+                :value="programa.id"
+                v-for="programa in programasFacultad"
+                :key="programa.id"
+              >
+                {{programa.nombre}}
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-auto d-flex align-items-center">
+            <button class="btn btn_limpiar" @click="limpiarCampos">
+              Limpiar campos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
     <section class="tabla-resultados">
-      <div class="">
+      <div class="tabla_container">
         <table class="table">
           <thead class="thead-dark">
             <tr>

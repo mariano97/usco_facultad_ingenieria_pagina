@@ -3,8 +3,8 @@
     <div class="row justify-content-center">
       <div class="col-md-8 toastify-container">
         <h2 v-if="account" id="password-title">
-          <span v-html="$t('password.title', { username: username })">
-            Password for [<strong>{{ username }}</strong
+          <span v-html="$t('password.title', { username: nombreCompleto })">
+            Password for [<strong>{{ nombreCompleto }}</strong
             >]</span
           >
         </h2>
@@ -102,7 +102,7 @@
               required
               data-cy="confirmPassword"
             />
-            <div v-if="$v.resetPassword.confirmPassword.$anyDirty && $v.resetPassword.confirmPassword.$invalid">
+            <!--<div v-if="$v.resetPassword.confirmPassword.$anyDirty && $v.resetPassword.confirmPassword.$invalid">
               <small
                 class="form-text text-danger"
                 v-if="!$v.resetAccount.confirmPassword.sameAsPassword"
@@ -110,7 +110,7 @@
               >
                 The password and its confirmation do not match!
               </small>
-            </div>
+            </div>-->
           </div>
 
           <button

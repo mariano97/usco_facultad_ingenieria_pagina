@@ -19,16 +19,16 @@
           id="btn_editar" v-text="$t('entity.action.edit')" v-on:click="enableFormularioEditar()">
           Editar
         </button>
-        <!--<button
+        <button
           v-if="isModeEdit && !enableEdit"
-          class="btn btn_editar d-flex align-items-center justify-content-center col-sm-auto"
+          class="btn btn_eliminar d-flex align-items-center justify-content-center col-sm-auto px-0"
           type="button"
-          id="btn_editar"
+          id="btn_eliminar"
           v-text="$t('entity.action.delete')"
-          v-on:click="enableFormularioEditar()"
+          v-on:click="eliminar()"
         >
           Eliminar
-        </button>-->
+        </button>
       </div>
     </section>
     <section class="profesor_formulario">
@@ -172,6 +172,13 @@
                     This field cannot be longer than 50 characters.
                   </small>
                 </div>
+              </div>
+              <div class="col form-group">
+                <label class="form-control-label" for="tituloAcademico">
+                  Titulo Academico
+                </label>
+                <input type="text" id="tituloAcademico" name="tituloAcademico" class="form-control" placeholder="Eg. Ingeniero ..."
+                  v-model="$v.profesor.tituloAcademico.$model" :disabled="checkHabilitacionCampos()"/>
               </div>
               <div class="col form-group">
                 <label class="form-control-label campo_requerido" for="tablaElementoCatalogo"

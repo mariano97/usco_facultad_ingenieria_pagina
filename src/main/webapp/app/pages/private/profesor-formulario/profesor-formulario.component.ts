@@ -69,6 +69,7 @@ const validations: any = {
     oficina: {
       maxLength: maxLength(255),
     },
+    tituloAcademico: {},
   },
   tituloAcademicoProfesor: {
     nombreTitulo: {
@@ -206,8 +207,13 @@ export default class ProfesorFormulario extends Vue {
   }
 
   private consultarCursosMaterias(): void {
+    const paginacionQuery = {
+      page: 0,
+      size: 100000,
+      sort: ['nombre,asc'],
+    };
     this.cursoMateriaService()
-      .retrieve()
+      .retrieve(paginacionQuery)
       .then(res => {
         this.listaCursosMaterias = res.data;
       });
@@ -337,6 +343,37 @@ export default class ProfesorFormulario extends Vue {
     );
   }
 
+  public eliminar(): void {
+    if (this.profesor.id) {
+      this.profesorService()
+        .delete(this.profesor.id)
+        .then(res => {
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.profesor.deleted', { param: this.profesor.id });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.$router.go(-1);
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    } else {
+      const message = 'No se hallo datos a eliminar';
+      this.$bvToast.toast(message.toString(), {
+        toaster: 'b-toaster-top-center',
+        title: 'Info',
+        variant: 'danger',
+        solid: true,
+        autoHideDelay: 5000,
+      });
+      this.$router.go(-1);
+    }
+  }
+
   public guardar(): void {
     this.isSaving = true;
     if (this.userAccount.id && this.profesor.id) {
@@ -352,6 +389,7 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          this.consultarCursosMateriaProfesor(this.profesor.id);
           this.enableFormularioEditar();
           this.$router.go(-1);
           const message = this.$t('userManagement.updated', { param: res.adminUserDTO.email });
@@ -382,6 +420,7 @@ export default class ProfesorFormulario extends Vue {
         .then(res => {
           this.userAccount = res.adminUserDTO;
           this.profesor = res.profesorDTO;
+          this.consultarCursosMateriaProfesor(this.profesor.id);
           if (this.file !== null) {
             this.uploadFileToStorage(
               this.file.type,

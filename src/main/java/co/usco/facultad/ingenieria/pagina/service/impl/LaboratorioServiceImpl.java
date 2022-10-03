@@ -2,6 +2,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.domain.Laboratorio;
 import co.usco.facultad.ingenieria.pagina.repository.LaboratorioRepository;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.LaboratorioService;
 import co.usco.facultad.ingenieria.pagina.service.dto.LaboratorioDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.LaboratorioMapper;
@@ -22,11 +23,14 @@ public class LaboratorioServiceImpl implements LaboratorioService {
 
     private final Logger log = LoggerFactory.getLogger(LaboratorioServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
     private final LaboratorioRepository laboratorioRepository;
 
     private final LaboratorioMapper laboratorioMapper;
 
-    public LaboratorioServiceImpl(LaboratorioRepository laboratorioRepository, LaboratorioMapper laboratorioMapper) {
+    public LaboratorioServiceImpl(GoogleCloudStorageService googleCloudStorageService, LaboratorioRepository laboratorioRepository, LaboratorioMapper laboratorioMapper) {
+        this.googleCloudStorageService = googleCloudStorageService;
         this.laboratorioRepository = laboratorioRepository;
         this.laboratorioMapper = laboratorioMapper;
     }
@@ -105,6 +109,16 @@ public class LaboratorioServiceImpl implements LaboratorioService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Laboratorio : {}", id);
-        return laboratorioRepository.deleteById(id);
+        // return laboratorioRepository.deleteById(id);
+        return findOne(id)
+            .flatMap(laboratorioDTO -> {
+                if (laboratorioDTO.getUrlFoto() != null && !laboratorioDTO.getUrlFoto().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(laboratorioDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", laboratorioDTO.getUrlFoto()));
+                }
+                return laboratorioRepository.deleteById(id);
+            })
+            .then();
     }
 }

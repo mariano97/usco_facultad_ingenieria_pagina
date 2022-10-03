@@ -2,6 +2,7 @@ package co.usco.facultad.ingenieria.pagina.service.impl;
 
 import co.usco.facultad.ingenieria.pagina.domain.Semillero;
 import co.usco.facultad.ingenieria.pagina.repository.SemilleroRepository;
+import co.usco.facultad.ingenieria.pagina.service.GoogleCloudStorageService;
 import co.usco.facultad.ingenieria.pagina.service.SemilleroService;
 import co.usco.facultad.ingenieria.pagina.service.dto.SemilleroDTO;
 import co.usco.facultad.ingenieria.pagina.service.mapper.SemilleroMapper;
@@ -22,11 +23,14 @@ public class SemilleroServiceImpl implements SemilleroService {
 
     private final Logger log = LoggerFactory.getLogger(SemilleroServiceImpl.class);
 
+    private final GoogleCloudStorageService googleCloudStorageService;
+
     private final SemilleroRepository semilleroRepository;
 
     private final SemilleroMapper semilleroMapper;
 
-    public SemilleroServiceImpl(SemilleroRepository semilleroRepository, SemilleroMapper semilleroMapper) {
+    public SemilleroServiceImpl(GoogleCloudStorageService googleCloudStorageService, SemilleroRepository semilleroRepository, SemilleroMapper semilleroMapper) {
+        this.googleCloudStorageService = googleCloudStorageService;
         this.semilleroRepository = semilleroRepository;
         this.semilleroMapper = semilleroMapper;
     }
@@ -83,6 +87,16 @@ public class SemilleroServiceImpl implements SemilleroService {
     @Override
     public Mono<Void> delete(Long id) {
         log.debug("Request to delete Semillero : {}", id);
-        return semilleroRepository.deleteById(id);
+        // return semilleroRepository.deleteById(id);
+        return findOne(id)
+            .flatMap(semilleroDTO -> {
+                if (semilleroDTO.getUrlFoto() != null && !semilleroDTO.getUrlFoto().isBlank()) {
+                    googleCloudStorageService.deleteFileOfStorage(semilleroDTO.getUrlFoto())
+                        .doOnSuccess(aBoolean -> log.debug(">>>>>> File Object delete"))
+                        .subscribe(aBoolean -> log.info(">>>>>>>>>>>>>>>>> File delete: {}", semilleroDTO.getUrlFoto()));
+                }
+                return semilleroRepository.deleteById(id);
+            })
+            .then();
     }
 }

@@ -166,6 +166,37 @@ export default class NoticiasFormulario extends Vue {
       });
   }
 
+  public eliminar(): void {
+    if (this.noticia.id) {
+      this.noticiaService()
+        .delete(this.noticia.id)
+        .then(res => {
+          const message = this.$t('paginaFacultadIngenieriaProyectoApp.noticia.deleted', { param: this.noticia.titulo });
+          this.$bvToast.toast(message.toString(), {
+            toaster: 'b-toaster-top-center',
+            title: 'Info',
+            variant: 'danger',
+            solid: true,
+            autoHideDelay: 5000,
+          });
+          this.$router.go(-1);
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    } else {
+      const message = 'No se hallo datos a eliminar';
+      this.$bvToast.toast(message.toString(), {
+        toaster: 'b-toaster-top-center',
+        title: 'Info',
+        variant: 'danger',
+        solid: true,
+        autoHideDelay: 5000,
+      });
+      this.$router.go(-1);
+    }
+  }
+
   public guardar(): void {
     this.isSaving = true;
     if (this.noticia.id) {

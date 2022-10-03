@@ -48,6 +48,22 @@
                 <h2 class="texto m-0">{{ usuarioProfesor.profesorDTO.tablaElementoCatalogo.nombre }}</h2>
               </div>
             </div>
+            <!---<div class="row mx-0 container_data_info" v-if="titulosProfesor.length > 0 && titulosProfesor[0].tablaElementoCatalogo">
+              <div class="col-sm-auto px-0">
+                <img alt="aimgen_email" src="/content/images/iconos/id-card-red.png" />
+              </div>
+              <div class="col texto_info">
+                <h2 class="texto m-0">{{ 'Titulo: ' + titulosProfesor[0].tablaElementoCatalogo.nombre }}</h2>
+              </div>
+            </div>-->
+            <div class="row mx-0 container_data_info" v-if="usuarioProfesor.profesorDTO.tituloAcademico">
+              <div class="col-sm-auto px-0">
+                <img alt="aimgen_email" src="/content/images/iconos/id-card-red.png" />
+              </div>
+              <div class="col texto_info">
+                <h2 class="texto m-0">{{ 'Titulo: ' + usuarioProfesor.profesorDTO.tituloAcademico }}</h2>
+              </div>
+            </div>
             <div class="row mx-0 container_data_info" v-if="usuarioProfesor.profesorDTO.oficina">
               <div class="col-sm-auto px-0">
                 <img alt="aimgen_email" src="/content/images/iconos/office-building-red.png" />
@@ -90,12 +106,12 @@
               <h3 class="m-0" v-text="$t('profesor.tabs.labels.titulos')"></h3>
             </a>
           </div>
-          <div class="col-sm-auto container_item_tab" v-if="escalafonoesProfesor.length > 0">
+          <!--<div class="col-sm-auto container_item_tab" v-if="escalafonoesProfesor.length > 0">
             <a class="d-flex justify-content-center align-items-center"
               :class="{ active: showTabsInfoProfesor('ESCALAFON') }" @click="activeTab('ESCALAFON')">
               <h3 class="m-0">Escalafón</h3>
             </a>
-          </div>
+          </div>-->
           <div class="col-sm-auto container_item_tab tab_extremos"></div>
         </div>
       </div>
@@ -193,7 +209,7 @@
             </div>
           </div>
         </div>
-        <div class="" v-if="showTabsInfoProfesor('ESCALAFON')">
+        <!---<div class="" v-if="showTabsInfoProfesor('ESCALAFON')">
           <div class="container">
             <div class="container_items_escalafon row mx-0 my-3">
               <div class="col container_info d-flex align-items-center justify-content-center">
@@ -213,7 +229,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
     </section>
   </div>

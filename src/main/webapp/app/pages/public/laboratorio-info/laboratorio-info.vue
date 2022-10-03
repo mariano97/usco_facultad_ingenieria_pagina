@@ -24,6 +24,14 @@
           <h3>Descripción</h3>
           <p>{{ laboratorio.informacionGeneral }}</p>
         </div>
+        <div class="container_links col links" v-if="urlSitio.length > 0">
+          <h3>Links</h3>
+          <div class="">
+            <a :href="urlSitio" target="_blank">
+              Visita nuestro sitio
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </div>

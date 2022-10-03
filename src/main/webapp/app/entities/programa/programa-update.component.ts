@@ -18,6 +18,9 @@ import { ISede } from '@/shared/model/sede.model';
 import ProfesorService from '@/entities/profesor/profesor.service';
 import { IProfesor } from '@/shared/model/profesor.model';
 
+import CursoMateriaService from '@/entities/curso-materia/curso-materia.service';
+import { ICursoMateria } from '@/shared/model/curso-materia.model';
+
 import { IPrograma, Programa } from '@/shared/model/programa.model';
 import ProgramaService from './programa.service';
 
@@ -107,6 +110,10 @@ export default class ProgramaUpdate extends Vue {
   @Inject('profesorService') private profesorService: () => ProfesorService;
 
   public profesors: IProfesor[] = [];
+
+  @Inject('cursoMateriaService') private cursoMateriaService: () => CursoMateriaService;
+
+  public cursoMaterias: ICursoMateria[] = [];
   public isSaving = false;
   public currentLanguage = '';
 
@@ -233,6 +240,11 @@ export default class ProgramaUpdate extends Vue {
       .retrieve()
       .then(res => {
         this.profesors = res.data;
+      });
+    this.cursoMateriaService()
+      .retrieve()
+      .then(res => {
+        this.cursoMaterias = res.data;
       });
   }
 

@@ -16,8 +16,12 @@
           </div>
         </div>
         <div class="vertical-divider-red"></div>
-        <div class="col-lg-3 col-md-2 col-sm-2">
-
+        <div class="col-sm-5 d-flex align-items-center footer-atencion">
+          <div class="d-flex flex-column align-items-center justify-content-center">
+            <span>Horario de atención al público:</span>
+            <span style="text-align:center;">Lunes a viernes de 8:00 a.m. a 12:00 m. y de 2:00 p.m. a 6:00 p.m</span>
+            <span>Línea Gratuita Nacional: 018000 968722</span>
+          </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-2 col-sm-2"></div>

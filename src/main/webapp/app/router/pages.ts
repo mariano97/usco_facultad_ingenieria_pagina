@@ -82,10 +82,26 @@ export default {
       path: 'laboratorios-lista',
       name: 'laboratorios_lista_public',
       component: LaboratoriosLista,
+      alias: '/laboratorios',
     },
     {
       path: 'laboratorio-info/:laboratorioId',
       name: 'laboratorio_info_public',
+      component: LaboratorioInfo,
+    },
+    {
+      path: 'laboratorio-info/:laboratorioId',
+      name: 'laboratorio_info_public',
+      component: LaboratorioInfo,
+    },
+    {
+      path: 'granja-info/:laboratorioId',
+      name: 'laboratorio_info_granja_public',
+      component: LaboratorioInfo,
+    },
+    {
+      path: 'museo-info/:laboratorioId',
+      name: 'laboratorio_info_museo_public',
       component: LaboratorioInfo,
     },
   ]

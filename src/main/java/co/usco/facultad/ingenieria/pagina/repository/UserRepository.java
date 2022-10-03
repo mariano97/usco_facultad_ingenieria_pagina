@@ -129,8 +129,36 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
     }
 
     @Override
-    public Flux<User> findAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auths, String nameCompleteFilter) {
-        return findAllWithAuthorities(pageable).collectList()
+    public Flux<User> findAllWithAuthoritiesAndSpecicatedAuthorities(Pageable pageable, List<String> auths,
+            String nameCompleteFilter) {
+
+        String property = pageable.getSort().stream().map(Sort.Order::getProperty).findFirst().orElse("id");
+        String direction = String.valueOf(
+                pageable.getSort().stream().map(Sort.Order::getDirection).findFirst().orElse(Sort.DEFAULT_DIRECTION));
+        long page = pageable.getPageNumber();
+        long size = pageable.getPageSize();
+
+        String conditionAuth = this.generarCondicionSQLAuths(auths, nameCompleteFilter);
+
+        return db
+            .sql("select * from jhi_user u " +
+                    "LEFT JOIN jhi_user_authority ua ON u.id=ua.user_id " +
+                    conditionAuth +
+                    "")
+            .map((row, rowMetadata) ->
+                Tuples.of(r2dbcConverter.read(User.class, row, rowMetadata), Optional.ofNullable(row.get("authority_name", String.class)))
+            )
+            .all()
+            .groupBy(t -> t.getT1().getLogin())
+            .flatMap(l -> l.collectList().map(t -> updateUserWithAuthorities(t.get(0).getT1(), t)))
+            .sort(
+                    Sort.Direction.fromString(direction) == Sort.DEFAULT_DIRECTION
+                            ? new BeanComparator<>(property)
+                            : new BeanComparator<>(property).reversed())
+            .skip(page * size)
+            .take(size);
+
+        /* return findAllWithAuthorities(pageable).collectList()
             .map(users -> {
                 if (auths != null && auths.size() > 0) {
                     return users.stream().filter(user -> user.getAuthorities().stream()
@@ -154,31 +182,13 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
                 }
             })
             .map(users -> users.stream().filter(Objects::nonNull).collect(Collectors.toList()))
-            .flatMapMany(Flux::fromIterable);
+            .flatMapMany(Flux::fromIterable); */
     }
 
     @Override
     public Mono<Long> countWithSpecicatedAuthorities(List<String> authorities, String nameCompleteFilter) {
-        String conditionAuth = " ";
-        if (authorities != null && authorities.size() > 0) {
-            conditionAuth = conditionAuth.concat("where ");
-            conditionAuth = conditionAuth.concat(" (");
-            for (int i = 0; i<authorities.size(); i++) {
-                conditionAuth = conditionAuth.concat("ua.authority_name like '%" + authorities.get(i) + "%'");
-                if ((i + 1) <authorities.size()) {
-                    conditionAuth = conditionAuth.concat(" OR ");
-                }
-            }
-            conditionAuth = conditionAuth.concat(") ");
-        }
-        if (nameCompleteFilter != null && !nameCompleteFilter.isBlank()) {
-            if (conditionAuth.contains("where")) {
-                conditionAuth = conditionAuth.concat(" AND ");
-            } else {
-                conditionAuth = conditionAuth.concat("where ");
-            }
-            conditionAuth = conditionAuth.concat("u.name_complete like '%" + nameCompleteFilter.toLowerCase().trim() + "%'");
-        }
+        String conditionAuth = this.generarCondicionSQLAuths(authorities, nameCompleteFilter);
+
         return db
             .sql("select count(*) from (select u.id from jhi_user u " +
                 "LEFT JOIN jhi_user_authority ua ON u.id=ua.user_id " +
@@ -195,6 +205,31 @@ class UserRepositoryInternalImpl implements UserRepositoryInternal {
             .bind("userId", user.getId())
             .then()
             .then(r2dbcEntityTemplate.delete(User.class).matching(query(where("id").is(user.getId()))).all().then());
+    }
+
+    private String generarCondicionSQLAuths(List<String> authorities, String nameCompleteFilter) {
+        String conditionAuth = " ";
+        if (authorities != null && !authorities.isEmpty()) {
+            conditionAuth = conditionAuth.concat("where ");
+            conditionAuth = conditionAuth.concat(" (");
+            for (int i = 0; i < authorities.size(); i++) {
+                conditionAuth = conditionAuth.concat("ua.authority_name like '%" + authorities.get(i) + "%'");
+                if ((i + 1) < authorities.size()) {
+                    conditionAuth = conditionAuth.concat(" OR ");
+                }
+            }
+            conditionAuth = conditionAuth.concat(") ");
+        }
+        if (nameCompleteFilter != null && !nameCompleteFilter.isBlank()) {
+            if (conditionAuth.contains("where")) {
+                conditionAuth = conditionAuth.concat(" AND ");
+            } else {
+                conditionAuth = conditionAuth.concat("where ");
+            }
+            conditionAuth = conditionAuth
+                    .concat("u.name_complete like '%" + nameCompleteFilter.toLowerCase().trim() + "%'");
+        }
+        return conditionAuth;
     }
 
     private Mono<User> findOneWithAuthoritiesBy(String fieldName, Object fieldValue) {

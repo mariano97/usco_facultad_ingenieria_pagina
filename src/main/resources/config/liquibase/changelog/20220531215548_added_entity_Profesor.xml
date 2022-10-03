@@ -35,6 +35,9 @@
             <column name="url_foto_profesor" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="titulo_academico" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="tabla_elemento_catalogo_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -83,6 +86,7 @@
             <column name="oficina" type="string"/>
             <column name="user_id" type="numeric"/>
             <column name="url_foto_profesor" type="string"/>
+            <column name="titulo_academico" type="string"/>
             <column name="tabla_elemento_catalogo_id" type="numeric"/>
             <column name="facultad_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

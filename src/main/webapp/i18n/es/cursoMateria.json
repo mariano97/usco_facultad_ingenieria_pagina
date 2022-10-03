@@ -32,7 +32,8 @@
       "numeroCreditos": "Numero Creditos",
       "semestreImpartida": "Semestre Impartida",
       "nivelAcademico": "Nivel Academico",
-      "profesor": "Profesor"
+      "profesor": "Profesor",
+      "programa": "Programa"
     }
   }
 }

@@ -135,6 +135,26 @@
               This field is required.
             </small>
           </div>
+          <div class="form-group">
+            <label v-text="$t('paginaFacultadIngenieriaProyectoApp.cursoMateria.programa')" for="curso-materia-programa">Programa</label>
+            <select
+              class="form-control"
+              id="curso-materia-programas"
+              data-cy="programa"
+              multiple
+              name="programa"
+              v-if="cursoMateria.programas !== undefined"
+              v-model="cursoMateria.programas"
+            >
+              <option
+                v-bind:value="getSelected(cursoMateria.programas, programaOption)"
+                v-for="programaOption in programas"
+                :key="programaOption.id"
+              >
+                {{ programaOption.nombre }}
+              </option>
+            </select>
+          </div>
         </div>
         <div>
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">

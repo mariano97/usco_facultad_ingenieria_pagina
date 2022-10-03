@@ -49,6 +49,12 @@
             <span>{{ profesor.urlFotoProfesor }}</span>
           </dd>
           <dt>
+            <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tituloAcademico')">Titulo Academico</span>
+          </dt>
+          <dd>
+            <span>{{ profesor.tituloAcademico }}</span>
+          </dd>
+          <dt>
             <span v-text="$t('paginaFacultadIngenieriaProyectoApp.profesor.tablaElementoCatalogo')">Tabla Elemento Catalogo</span>
           </dt>
           <dd>

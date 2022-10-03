@@ -36,7 +36,7 @@ export default class ChangePassword extends Vue {
   resetPassword: any = {
     currentPassword: null,
     newPassword: null,
-    confirmPassword: null,
+    confirmPassword: '',
   };
 
   public changePassword(): void {
@@ -54,6 +54,12 @@ export default class ChangePassword extends Vue {
         .then(() => {
           this.success = 'OK';
           this.error = null;
+          if (this.$route.query.passAsigned && this.$route.query.passAsigned === '1') {
+            localStorage.removeItem('jhi-authenticationToken');
+            sessionStorage.removeItem('jhi-authenticationToken');
+            this.$store.commit('logout');
+            return this.$router.push('/login?passChanged=1');
+          }
         })
         .catch(() => {
           this.success = null;
@@ -64,5 +70,9 @@ export default class ChangePassword extends Vue {
 
   public get username(): string {
     return this.$store.getters.account?.login ?? '';
+  }
+
+  public get nombreCompleto(): string {
+    return this.$store.getters.account?.nameComplete ?? '';
   }
 }

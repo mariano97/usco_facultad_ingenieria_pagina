@@ -28,6 +28,16 @@ export default class Home extends Vue {
   @Provide('eventoService') private eventoService = () => new EventoService();
   @Provide('googleStorageService') private googleStorageService = () => new GoogleStorageService();
 
+  public imgArray = [
+    '/content/images/imagenes_usco/ussco_entrada_principal.jpeg',
+    '/content/images/imagenes_usco/estudiantes_usco.jpeg',
+    '/content/images/imagenes_usco/facultad_ingenieria.jpeg',
+    '/content/images/imagenes_usco/ESTUDIANTES-QUIMBO-PARA-SUBIR-A-LA-WEB1.jpeg',
+    '/content/images/imagenes_usco/museo_usco.jpeg',
+    '/content/images/imagenes_usco/granja_experimental.jpeg',
+    '/content/images/imagenes_usco/granaja.jpeg',
+  ];
+
   @Inject('loginService')
   private loginService: () => LoginService;
 
@@ -44,12 +54,14 @@ export default class Home extends Vue {
   }
 
   public getImageUrl(imageId) {
-    const imgArray = ['https://www.uv.mx/prensa/files/2016/11/291116.-Laboratorio-de-ingenieria-aplicada-5-ok.jpg', 'https://cms.tecnalia.com/uploads/2020/06/tecnalia-laboratorio-ingenieria-superficies-1920x1270.jpg',
+    /* const imgArray = ['https://www.uv.mx/prensa/files/2016/11/291116.-Laboratorio-de-ingenieria-aplicada-5-ok.jpg', 'https://cms.tecnalia.com/uploads/2020/06/tecnalia-laboratorio-ingenieria-superficies-1920x1270.jpg',
       'https://www.uv.mx/prensa/files/2016/11/291116.-Laboratorio-de-ingenieria-aplicada-5-ok.jpg', 'https://2.bp.blogspot.com/-GxJFShNRmkU/WL2Ur1-hwmI/AAAAAAAAEGQ/rxeLRi2whzsuOz5Bbxgoyk75_u05AdqHACLcB/s1600/IMG_0713.JPG',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRELeb1lKYRNe08Xwzy3n-AerlOHPX4oyC9xQ&usqp=CAU', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW15kvtSkjsz7ECmm-msBBpyin85-j3W9WUg&usqp=CAU',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe8Z4lbQder9qoNM9rmtvZ_DKNkMX9p2CmtA&usqp=CAU'];
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe8Z4lbQder9qoNM9rmtvZ_DKNkMX9p2CmtA&usqp=CAU']; */
     // return `https://picsum.photos/600/400/?image=${imageId}`;
-    return imgArray[imageId - 1];
+
+
+    return this.imgArray[imageId - 1];
   }
 
   public onSwiper (swiper) {
