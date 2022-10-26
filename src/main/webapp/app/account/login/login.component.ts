@@ -8,6 +8,12 @@ import { IUser } from '@/shared/model/user.model';
 
 @Component
 export default class Login extends Vue {
+vText(vText: any) {
+throw new Error('Method not implemented.');
+}
+$t(arg0: string): unknown {
+throw new Error('Method not implemented.');
+}
   @Inject('accountService')
   private accountService: () => AccountService;
   public authenticationError = null;
