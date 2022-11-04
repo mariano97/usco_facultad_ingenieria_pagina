@@ -1,7 +1,7 @@
 <template>
   <div class="container-lista-profesorado">
     <section class="section_titulo_profesorado">
-      <div class="d-flex justify-content-start arraow_return" v-if="codigoSnies > 0">
+      <div class="d-flex justify-content-start arraow_return" v-if="!showFiltering">
         <div class="row mx-0">
           <div class="col-sm-auto px-0 d-flex align-items-center">
             <a @click="returnUrlHref" class="">
@@ -22,7 +22,7 @@
       </div>
     </section>
     <section class="section_filtros_pagina">
-      <div class="d-flex justify-content-center" v-if="codigoSnies < 1">
+      <div class="d-flex justify-content-center" v-if="showFiltering">
         <div class="container_campos_busqueda row mx-0">
           <div class="col col-opcion form-group">
             <label class="form-control-label" for="select_programa"
@@ -30,7 +30,7 @@
             <select class="form-control" id="select_programa" v-model="formSelectPrograma" @change="filtrarProfesores">
               <option value="0">Seleccione</option>
               <option v-for="(programa, index) in listadoProgramas" :key="index" :value="programa.codigoSnies">{{
-                programa.nombre }}</option>
+              programa.nombre }}</option>
             </select>
           </div>
           <div class="col-sm-auto d-flex justify-content-center align-items-center">

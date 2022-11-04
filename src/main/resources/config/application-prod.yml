@@ -34,11 +34,12 @@ spring:
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
-    url: jdbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: jdbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
   mail:
     host: smtp.gmail.com
     port: 587
-    username: mariano970419@gmail.com
+    username: mariano970419@gmail.comm
     password: qigsuysvfqyvyfjr
     properties:
       mail:
@@ -51,10 +52,19 @@ spring:
           timeout: 5000
           writetimeout: 5000
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    #url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     #url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: user_projects
-    password: Mario12345
+    #username: user_projects
+    #password: Mario12345
+    url: r2dbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+    username: postgres
+    password: software-Fac-2022
+    pool:
+      enabled: true
+      maxSize: 1000
+      validationQuery: SELECT 1
+      maxCreateConnectionTime: 100s
+
   thymeleaf:
     cache: true
   sleuth:

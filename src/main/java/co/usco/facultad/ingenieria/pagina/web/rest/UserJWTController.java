@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller to authenticate users.
@@ -20,6 +22,8 @@ import reactor.core.scheduler.Schedulers;
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
+
+    private final Logger log = LoggerFactory.getLogger(UserJWTController.class);
 
     private final TokenProvider tokenProvider;
 
@@ -32,6 +36,7 @@ public class UserJWTController {
 
     @PostMapping("/authenticate")
     public Mono<ResponseEntity<JWTToken>> authorize(@Valid @RequestBody Mono<LoginVM> loginVM) {
+        log.info("Dentro de autenticate");
         return loginVM
             .flatMap(login ->
                 authenticationManager

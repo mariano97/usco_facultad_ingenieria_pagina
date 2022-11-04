@@ -65,7 +65,7 @@ export default class Login extends Vue {
   }
 
   private redirectSegunAuthorities(authorities: string[]): void {
-    if (authorities.includes(Authority.ADMIN)) {
+    /* if (authorities.includes(Authority.ADMIN)) {
       this.$router.push('/faultad-ingenieria/programas-lista');
     } else if (authorities.includes(Authority.PROFESOR)) {
       this.$router.push({
@@ -73,6 +73,9 @@ export default class Login extends Vue {
       });
     } else {
       console.log("dentro de else");
-    }
+    } */
+    this.$router.push({
+        name: 'inicio_usuario',
+      });
   }
 }

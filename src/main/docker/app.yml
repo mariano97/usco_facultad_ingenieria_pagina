@@ -1,28 +1,39 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
+#version: '2'
 services:
   pagina_facultad_ingenieria_proyecto-app:
     image: pagina_facultad_ingenieria_proyecto
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      # - _JAVA_OPTIONS=-Xmx3g -Xms3g
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_R2DBC_URL=r2dbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-      - SPRING_LIQUIBASE_URL=jdbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-      - JHIPSTER_SLEEP=60 # gives time for microservices to boot before the gateway, the entire stack will be ready to accept incomming requests.
+      #- SPRING_R2DBC_URL=r2dbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      #- SPRING_LIQUIBASE_URL=jdbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      - SPRING_R2DBC_URL=r2dbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      #- JHIPSTER_SLEEP=60 # gives time for microservices to boot before the gateway, the entire stack will be ready to accept incomming requests.
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:8081:8081
-  pagina_facultad_ingenieria_proyecto-mysql:
-    image: mysql:8.0.28
+  #pagina_facultad_ingenieria_proyecto-mysql:
+  #pagina_facultad_ingenieria_proyecto-postgresql:
+    #image: mysql:8.0.28
+    #image: postgresql:14.2
     # volumes:
     #   - ~/volumes/jhipster/pagina_facultad_ingenieria_proyecto/mysql/:/var/lib/mysql/
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=pagina_facultad_ingenieria_proyecto
+     #   - ~/volumes/jhipster/conexion_aws_postgres/postgresql/:/var/lib/postgresql/data/
+    #environment:
+      #- MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      #- MYSQL_DATABASE=pagina_facultad_ingenieria_proyecto
+      #- POSTGRES_USER=conexion_aws_postgres
+      #- POSTGRES_PASSWORD=
+      #- POSTGRES_HOST_AUTH_METHOD=trust
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
-    ports:
-      - 127.0.0.1:3306:3306
-    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    #ports:
+      #- 127.0.0.1:3306:3306
+      #- 127.0.0.1:5432:5432
+    # command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp

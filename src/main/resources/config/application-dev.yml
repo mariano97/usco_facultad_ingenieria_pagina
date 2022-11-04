@@ -35,7 +35,11 @@ spring:
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev
-    url: jdbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: jdbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: jdbc:mysql://kumo01.yoursitesecure.net:3306/ingeusco_pagina_facultad_ingenieria?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: jdbc:mysql://kumo01.yoursitesecure.net:3306/ingeusco_pagina_facultad_ingenieria
+    # url: jdbc:mysql://pagina-usco-ingenieria.c5u6g3hzou8x.us-east-1.rds.amazonaws.com:3306/pagina_facultad_ingenieria_proyecto?characterEncoding=utf8
+    url: jdbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
   mail:
     host: smtp.gmail.com
     port: 587
@@ -54,9 +58,20 @@ spring:
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   r2dbc:
-    url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-    username: user_projects
-    password: Mario12345
+    # url: r2dbc:mysql://localhost:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: r2dbc:mysql://kumo01.yoursitesecure.net:3306/ingeusco_pagina_facultad_ingenieria?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    # url: r2dbc:mysql://kumo01.yoursitesecure.net:3306/ingeusco_pagina_facultad_ingenieria
+    # url: r2dbc:mysql://pagina-usco-ingenieria.c5u6g3hzou8x.us-east-1.rds.amazonaws.com:3306/pagina_facultad_ingenieria_proyecto?characterEncoding=utf8
+    url: r2dbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+    #username: user_projects
+    #password: Mario12345
+    #username: ingeusco_pagina_facultad_2022
+    #password: sofwareFac2022
+    # username: root
+    # password: sofwareFac2022
+    username: postgres
+    # password: software-Facultad-2022
+    password: software-Fac-2022
   thymeleaf:
     cache: false
   sleuth:

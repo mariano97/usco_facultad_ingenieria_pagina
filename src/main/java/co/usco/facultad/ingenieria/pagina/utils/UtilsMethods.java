@@ -23,7 +23,7 @@ public class UtilsMethods {
         if (!existeUsuarioProfesorIntoList(usuariosProfesoresFullDTOList, usuarioProfesorFullDTO)) {
             usuariosProfesoresFullDTOList.add(usuarioProfesorFullDTO);
             resultado = true;
-            System.out.println("");
+            /* System.out.println("");
             System.out.println("");
             System.out.println("");
             System.out.println("Dentro de metodo addUsuarioProfesorToList2");
@@ -31,7 +31,7 @@ public class UtilsMethods {
             System.out.println(usuariosProfesoresFullDTOList.size());
             System.out.println("");
             System.out.println("");
-            System.out.println("");
+            System.out.println(""); */
         }
         return resultado;
     }

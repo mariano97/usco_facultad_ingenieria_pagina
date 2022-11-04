@@ -1,5 +1,6 @@
 import AccountService from '@/account/account.service';
 import { IUser } from '@/shared/model/user.model';
+import { Authority } from '@/shared/security/authority';
 import { Vue, Component, Inject } from 'vue-property-decorator';
 import './usuario-sidbar.scss';
 
@@ -8,6 +9,11 @@ export default class UsuarioSidbar extends Vue {
   @Inject('accountService') private accountService: () => AccountService;
 
   public user: IUser = {};
+  private hasAnyAuthorityValues = {};
+
+  public ROLE_AMIND = Authority.ADMIN;
+  public ROLE_DECANO = Authority.DECANO;
+  public ROLE_JEFE_PROGRAMA = Authority.JEFE_PROGRAMA;
 
   public mounted() {
     const account: IUser = this.accountService().userAccount;
@@ -36,5 +42,20 @@ export default class UsuarioSidbar extends Vue {
     return paths.some(path => {
       return this.$route.path.includes(path); // current path starts with this path string
     });
+  }
+
+  public hasAnyAuthority(authorities: any): boolean {
+    this.accountService()
+      .hasAnyAuthorityAndCheckAuth(authorities)
+      .then(value => {
+        if (this.hasAnyAuthorityValues[authorities] !== value) {
+          this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
+        }
+      });
+    return this.hasAnyAuthorityValues[authorities] ?? false;
+  }
+
+  public get authenticated(): boolean {
+    return this.$store.getters.authenticated;
   }
 }

@@ -9,6 +9,7 @@
     <artifactId>pagina-facultad-ingenieria-proyecto</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <!--<packaging>war</packaging>-->
     <name>Pagina Facultad Ingenieria Proyecto</name>
     <description>Description for pagina_facultad_ingenieria_proyecto</description>
 
@@ -365,7 +366,8 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>mysql</artifactId>
+            <!--<artifactId>mysql</artifactId>-->
+            <artifactId>postgresql</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -373,7 +375,7 @@
             <artifactId>r2dbc-h2</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>provided</scope>
@@ -382,7 +384,21 @@
             <groupId>dev.miku</groupId>
             <artifactId>r2dbc-mysql</artifactId>
             <scope>provided</scope>
+        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.r2dbc</groupId>
+            <artifactId>r2dbc-postgresql</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
         <!--<dependency>
             <groupId>io.opencensus</groupId>
             <artifactId>opencensus-api</artifactId>
@@ -1074,14 +1090,24 @@
                     <artifactId>spring-boot-devtools</artifactId>
                     <optional>true</optional>
                 </dependency>
-                <dependency>
+                <!--<dependency>
                     <groupId>mysql</groupId>
                     <artifactId>mysql-connector-java</artifactId>
                 </dependency>
                 <dependency>
                     <groupId>dev.miku</groupId>
                     <artifactId>r2dbc-mysql</artifactId>
+                </dependency>-->
+
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
                 </dependency>
+                <dependency>
+                    <groupId>io.r2dbc</groupId>
+                    <artifactId>r2dbc-postgresql</artifactId>
+                </dependency>
+
             </dependencies>
             <properties>
                 <!-- default Spring profiles -->
@@ -1090,8 +1116,11 @@
         </profile>
         <profile>
             <id>prod</id>
+            <!--<activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>-->
             <dependencies>
-                <dependency>
+                <!--<dependency>
                     <groupId>org.testcontainers</groupId>
                     <artifactId>mysql</artifactId>
                     <scope>test</scope>
@@ -1103,6 +1132,22 @@
                 <dependency>
                     <groupId>dev.miku</groupId>
                     <artifactId>r2dbc-mysql</artifactId>
+                </dependency>-->
+
+
+
+                <dependency>
+                    <groupId>org.testcontainers</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>io.r2dbc</groupId>
+                    <artifactId>r2dbc-postgresql</artifactId>
                 </dependency>
             </dependencies>
             <build>
@@ -1245,6 +1290,8 @@
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>
+                    <!--Esto linea no estaba, solo se agregar para .war-->
+                    <!--<scope>provided</scope>-->
                 </dependency>
             </dependencies>
             <build>

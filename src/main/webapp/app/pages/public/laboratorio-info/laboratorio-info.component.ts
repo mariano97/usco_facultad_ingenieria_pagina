@@ -53,6 +53,7 @@ export default class LaboratorioInfo extends Vue {
   }
 
   private asignarUrl(laboratorio: ILaboratorio): void {
+    console.error(laboratorio);
     if (laboratorio.tipoLaboratorio.id === identificadoresConstants.IDENTIFICADOR_ID_TIPO_LABORATORIO_GRANJA) {
       this.urlSitio = 'https://www.usco.edu.co/es/granja-usco/';
     }

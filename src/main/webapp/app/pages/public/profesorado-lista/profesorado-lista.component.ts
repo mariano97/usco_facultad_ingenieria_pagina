@@ -20,6 +20,7 @@ export default class ProfesoradoLista extends Vue {
   public codigoSnies = 0;
   public tituloPaginaProfesorado = '';
   public formSelectPrograma = 0;
+  public showFiltering = false;
 
   public itemsPerPage = 8;
   public queryCount: number = null;
@@ -36,7 +37,9 @@ export default class ProfesoradoLista extends Vue {
     next(vm => {
       if (to.params.programa_codigo_snies) {
         vm.codigoSnies = to.params.programa_codigo_snies;
+        vm.showFiltering = false;
       } else {
+        vm.showFiltering = true;
         vm.consultarListadoProgramas();
       }
       vm.obtenerNombrePrograma();

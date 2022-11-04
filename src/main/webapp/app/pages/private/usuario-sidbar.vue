@@ -48,7 +48,7 @@
       </section>
       <section class="container-opciones-rutas">
         <div class="horizontal-divides-red w-100">
-          <div class="sidbar_opcion">
+          <div class="sidbar_opcion" v-if="hasAnyAuthority([ROLE_AMIND, ROLE_DECANO])">
             <router-link :to="{ name: 'usuario_programas_lista' }" class="opcion-sidbar py-4">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
@@ -63,7 +63,7 @@
               </button>
             </router-link>
           </div>
-          <div class="sidbar_opcion">
+          <div class="sidbar_opcion" v-if="hasAnyAuthority([ROLE_AMIND, ROLE_DECANO, ROLE_JEFE_PROGRAMA])">
             <router-link :to="{ name: 'usuario_profesores_lista' }" class="opcion-sidbar">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
@@ -77,7 +77,7 @@
               </button>
             </router-link>
           </div>
-          <div class="sidbar_opcion">
+          <div class="sidbar_opcion" v-if="hasAnyAuthority([ROLE_AMIND, ROLE_DECANO])">
             <router-link :to="{ name: 'usuario_sedes_lista' }" class="opcion-sidbar">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
@@ -91,7 +91,7 @@
               </button>
             </router-link>
           </div>
-          <div class="sidbar_opcion">
+          <div class="sidbar_opcion" v-if="hasAnyAuthority([ROLE_AMIND, ROLE_DECANO, ROLE_JEFE_PROGRAMA])">
             <router-link :to="{ name: 'curso_materias_lista' }" class="opcion-sidbar">
               <button class="btn w-100">
                 <div class="row mx-0 align-items-center justify-content-center">
