@@ -44,7 +44,9 @@ export default class LaboratorioInfo extends Vue {
       .then(res => {
         this.laboratorio = res;
         this.asignarUrl(this.laboratorio);
-        this.downloadImagePerfil(this.laboratorio);
+        if (!this.existImageInlocalList(this.laboratorio.urlFoto)) {
+          this.downloadImagePerfil(this.laboratorio);
+        }
       })
       .catch(err => {
         this.$router.go(-1);
@@ -72,8 +74,12 @@ export default class LaboratorioInfo extends Vue {
     }
   }
 
+  public existImageInlocalList(fileName: string): boolean {
+    return this.utilsService().existeFileInList(fileName);
+  }
+
   public obtenerImagen(fileName: string): any {
-    if (this.utilsService().existeFileInList(fileName)) {
+    if (this.existImageInlocalList(fileName)) {
       const file: IFileDownloaded = this.utilsService().obtenerFileByFileName(fileName);
       return file.file;
     }

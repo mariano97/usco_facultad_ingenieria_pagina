@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.codec.multipart.FilePart;
@@ -26,7 +27,11 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
     private Logger log = LoggerFactory.getLogger(GoogleCloudStorageServiceImpl.class);
 
     // @Value("google-config.bucket-name")
-    private String bucketName = "arched-catwalk-352122.appspot.com";
+    // private String bucketName = "arched-catwalk-352122.appspot.com";
+    private String bucketName = "ingeuscopaginaweb.appspot.com";
+
+    @Value("${google-config.file-url.local-path}")
+    private String urlPathFile;
 
     /*
     @Value("classpath:statics")
@@ -65,8 +70,12 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     @Override
     public Mono<String> uploadFileToStorage(final String carpeta, FilePart filePart) {
-        log.debug(">>>>>>>>Dentro de upload file to Storge: {}, {}", filePart.filename(), filePart.headers().getContentType());
-        File file = new File(filePart.filename());
+        log.debug(">>>>>>>>Dentro de upload file to Storge: {}, {}", filePart.filename(),
+                filePart.headers().getContentType());
+        String pathFile = urlPathFile != null && !urlPathFile.isBlank() ? urlPathFile : "";
+        // String pathFile = urlPathFile != null && !urlPathFile.isBlank() ? System.getProperty("user.dir") + File.separator + "images" + File.separator : "";
+        File file = new File((pathFile + filePart.filename()));
+        log.info("File creado {}, creado en la ruta: {}", file.getName(), file.getAbsolutePath());
         return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
             .then(Mono.just(file)).map(newFile -> {
                 byte[] bytes = {};
@@ -93,7 +102,10 @@ public class GoogleCloudStorageServiceImpl implements GoogleCloudStorageService 
 
     @Override
     public Mono<Map<String, Object>> uploadFileToStorageMap(String carpeta, FilePart filePart) {
-        File file = new File(filePart.filename());
+        String pathFile = urlPathFile != null && !urlPathFile.isBlank() ? urlPathFile : "";
+        // String pathFile = urlPathFile != null && !urlPathFile.isBlank() ? System.getProperty("user.dir") + File.separator + "images" + File.separator : "";
+        File file = new File((pathFile + filePart.filename()));
+        log.info("File creado {}, creado en la ruta: {}", file.getName(), file.getAbsolutePath());
         return filePart.transferTo(file).doOnSuccess(unused -> log.debug(">>>>> conversion satisfactoria"))
             .then(Mono.just(file)).map(newFile -> {
                 byte[] bytes = {};

@@ -17,7 +17,8 @@ import java.io.IOException;
 @Configuration
 public class GoogleConfig {
 
-    @Value("classpath:config/google/firebase-credentials.json")
+    // @Value("classpath:config/google/firebase-credentials.json")
+    @Value("classpath:config/google/ingeuscopaginaweb-credentials.json")
     private Resource resource;
 
     @Bean

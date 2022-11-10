@@ -150,3 +150,7 @@ jhipster:
 # ===================================================================
 
 # application:
+
+google-config:
+  file-url:
+    local-path: /tmp/
