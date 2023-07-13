@@ -26,12 +26,21 @@ export default class NoticiasLista extends Vue {
   public noticiasListado: INoticia[] = [];
   public noticiasArrayListado: INoticia[][] = [];
 
-  public mounted() {
-    this.consultarLastNoticia();
-    this.consultarNoticias();
+
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.consultarLastNoticia();
+      vm.consultarNoticias();
+    });
   }
 
+  /* public mounted() {
+    this.consultarLastNoticia();
+    this.consultarNoticias();
+  } */
+
   private consultarLastNoticia(): void {
+    console.log("dentro de consultar last Noticias");
     const paginacionQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
@@ -49,6 +58,7 @@ export default class NoticiasLista extends Vue {
   }
 
   private consultarNoticias(): void {
+    console.log("dentro de consultar consultarNoticias");
     const paginacionQuery = {
       page: this.page - 1,
       size: this.itemsPerPage,
@@ -57,7 +67,8 @@ export default class NoticiasLista extends Vue {
     this.noticiaService()
       .retrieveCustom(this.$store.getters.authenticated, paginacionQuery)
       .then(res => {
-        this.noticiasListado = res.data;
+        const noticiasListadoTemp = res.data;
+        this.noticiasListado = this.filtrarNoticias(noticiasListadoTemp);
         this.noticiasListado.map(noti => {
           this.downloadImageProfesorPerfil(noti);
         });
@@ -82,10 +93,11 @@ export default class NoticiasLista extends Vue {
     }
   }
 
-  public filtrarNoticias(noticias: INoticia[]): INoticia[][] {
+  public filtrarNoticias(noticias: INoticia[]): INoticia[] {
     const noticiasTemp = noticias.filter(noti => noti.id !== this.ultimaNoticia.id);
-    this.agruparNoticiasInArray(noticiasTemp);
-    return this.noticiasArrayListado;
+    // this.agruparNoticiasInArray(noticiasTemp);
+    // return this.noticiasArrayListado;
+    return noticiasTemp;
   }
 
   public sort(): Array<any> {

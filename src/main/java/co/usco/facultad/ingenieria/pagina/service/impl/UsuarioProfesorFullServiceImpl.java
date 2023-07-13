@@ -100,8 +100,8 @@ public class UsuarioProfesorFullServiceImpl implements UsuarioProfesorFullServic
                 return profesorService.save(usuarioProfesorFullDTO.getProfesorDTO())
                     .map(profesorDTO -> {
                         UsuarioProfesorFullDTO usuarioProfesorFullDTOTemp = new UsuarioProfesorFullDTO(adminUserDTO, profesorDTO);
-                        mailService.sendCreacionUsuarioProfesor(usuarioProfesorFullDTOTemp);
-                        mailService.sendPasswordAsignadaUsuarioProfesor(usuarioProfesorFullDTOTemp, password);
+                        //mailService.sendCreacionUsuarioProfesor(usuarioProfesorFullDTOTemp);
+                        //mailService.sendPasswordAsignadaUsuarioProfesor(usuarioProfesorFullDTOTemp, password);
                         return usuarioProfesorFullDTOTemp;
                     })
                     .flatMap(Mono::just);

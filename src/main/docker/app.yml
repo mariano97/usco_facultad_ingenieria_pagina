@@ -11,8 +11,10 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       #- SPRING_R2DBC_URL=r2dbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
       #- SPRING_LIQUIBASE_URL=jdbc:mysql://pagina_facultad_ingenieria_proyecto-mysql:3306/pagina_facultad_ingenieria_proyecto?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-      - SPRING_R2DBC_URL=r2dbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      #- SPRING_R2DBC_URL=r2dbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      #- SPRING_LIQUIBASE_URL=jdbc:postgresql://pagina-facultad-ingenieria.cnovhc4cmai9.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      - SPRING_R2DBC_URL=r2dbc:postgresql://pagina-facultad-ingenieria.cytqspwkjm9i.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://pagina-facultad-ingenieria.cytqspwkjm9i.us-east-1.rds.amazonaws.com:5432/pagina_facultad_ingenieria_proyecto
       #- JHIPSTER_SLEEP=60 # gives time for microservices to boot before the gateway, the entire stack will be ready to accept incomming requests.
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix

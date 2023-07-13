@@ -39,7 +39,7 @@
     <section class="section_listado_otras_noticias" v-if="noticiasListado.length > 0">
       <div class="">
         <div class="container_resultados_noticias row mx-0 my-3"
-          v-for="(noticiasArray, index) in filtrarNoticias(noticiasListado)" :key="index">
+          v-for="(noticiasArray, index) in noticiasArrayListado" :key="index">
           <div class="col d-flex justify-content-center align-items-center" v-for="(noticia, index2) in noticiasArray"
             :key="index2">
             <div class="container-resultado row mx-0 d-flex justify-content-center align-items-center"

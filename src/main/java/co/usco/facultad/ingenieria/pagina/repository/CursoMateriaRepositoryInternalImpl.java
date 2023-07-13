@@ -151,8 +151,8 @@ class CursoMateriaRepositoryInternalImpl extends SimpleR2dbcRepository<CursoMate
     @Override
     public Mono<Long> countWithProgramaId(Long programaId) {
         return db
-            .sql("select count(*) from (select cm.id, cm.nombre from pagina_facultad_ingenieria_proyecto.curso_materia cm " +
-            "left join pagina_facultad_ingenieria_proyecto.rel_curso_materia__programa rel_cmpg " +
+            .sql("select count(*) from (select cm.id, cm.nombre from curso_materia cm " +
+            "left join rel_curso_materia__programa rel_cmpg " +
             "on cm.id = rel_cmpg.curso_materia_id " +
             "where rel_cmpg.programa_id = " + programaId.longValue() + ") src")
             .map((row, rowMetadata) -> (long) row.get(0))
